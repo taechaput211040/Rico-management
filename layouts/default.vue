@@ -1,0 +1,310 @@
+<template>
+  <v-app>
+    <v-app-bar :clipped-left="clipped" fixed app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-speed-dial
+        absolute
+        right
+        direction="bottom"
+        transition="slide-y-transition"
+      >
+        <template v-slot:activator>
+          <v-btn v-model="fab" color="blue darken-2" dark fab>
+            <v-icon> mdi-account-circle </v-icon>
+          </v-btn>
+        </template>
+        <v-btn fab dark small color="orange">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn @click="logout" fab dark small color="red">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+      </v-speed-dial>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" app fixed
+      ><div class="card-exam p-5 text-h2">LOGO</div>
+      <v-list nav dense>
+        <div v-for="(link, i) in items" :key="i">
+          <v-list-item v-if="!link.subLinks" :to="link.to" class="v-list-item ">
+            <v-list-item-icon>
+              <v-icon>{{ link.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title class="font-weight-bold " v-text="link.title" />
+          </v-list-item>
+
+          <v-list-group
+            v-else
+            :key="link.title"
+            :prepend-icon="link.icon"
+            :value="false"
+          >
+            <template v-slot:activator>
+              <v-list-item-title class="font-weight-bold ">{{
+                link.title
+              }}</v-list-item-title>
+            </template>
+
+            <v-list-item
+              class="font-weight-bold "
+              style="padding-left:50px !important "
+              v-for="sublink in link.subLinks"
+              :to="sublink.to"
+              :key="sublink.text"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ sublink.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title v-text="sublink.text" />
+            </v-list-item>
+          </v-list-group>
+        </div>
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- Sizes your content based upon application components -->
+    <v-main>
+      <v-container>
+        <v-slide-x-transition>
+          <Nuxt />
+        </v-slide-x-transition>
+      </v-container>
+    </v-main>
+
+    <v-footer> </v-footer>
+  </v-app>
+</template>
+
+<script>
+import { mapMutations } from "vuex";
+export default {
+  // middleware: "auth",
+  data() {
+    return {
+      fab: false,
+      dialogOutside: false,
+      dialogInside: false,
+      clipped: false,
+      drawer: true,
+      fixed: false,
+
+      items: [
+        {
+          title: "Dashboard",
+          to: "/",
+          icon: "mdi-view-dashboard"
+        },
+        {
+          title: "จัดการสมาชิก",
+          to: "/member",
+          icon: "mdi-account",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "สมัครสมาชิก",
+              to: "/member/register"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานสมาชิก",
+              to: "/account/reportmember"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "เช็คข้อมูลการเล่น",
+              to: "/account/playinfo"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "ถอนเครดิตสมาชิก(Manual)",
+              to: "/account/witdrawcredit"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "แก้ไขเครดิต/รายการผิดพลาด",
+              to: "/account/editcredit"
+            }
+          ]
+        },
+        {
+          title: "รายงานฝาก/ถอน",
+          to: "/reportTransection",
+          icon: "mdi-credit-card-check",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายการฝากสมาชิก",
+              to: "/member/register"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายการถอนสมาชิก",
+              to: "/account/reportmember"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายการถอนสมาชิกล่าสุด",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายการฝากแรก",
+              to: "/account/playinfo"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายการที่ถูกซ่อน",
+              to: "/account/witdrawcredit"
+            }
+          ]
+        },
+        {
+          title: "รายงานสรุป",
+          to: "/company",
+          icon: "mdi-credit-card-plus-outline",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "กำไร/ขาดทุน",
+              to: "/member/register"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "กำไร/ขาดทุน รายบุคคล",
+              to: "/account/reportmember"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "สรุปโปรโมชัน",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "ภาพรวมสมาชิก",
+              to: "/account/info"
+            }
+          ]
+        },
+        {
+          title: "ตั้งค่าโปรโมชั่น",
+          to: "/playHistory",
+          icon: "mdi-history",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "โปรโมชันทั่วไป",
+              to: "/member/register"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "Cashback",
+              to: "/account/reportmember"
+            }
+          ]
+        },
+        {
+          title: "ตั้งค่า Feature",
+          to: "/downline/Senior",
+          icon: "mdi-gamepad-variant-outline",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "เครดิตฟรี",
+              to: "/member/register"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "กงล้อนำโชค",
+              to: "/account/reportmember"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "เปิดไพ่6ใบ",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "เปิดหีบสมบัติ",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "เช็คอินรายวัน",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "สะสมเเต้ม",
+              to: "/account/info"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "ของพรีเมียม",
+              to: "/account/info"
+            }
+          ]
+        },
+        {
+          title: "ตั้งค่าระบบ",
+          to: "/downline/Agent",
+          icon: "mdi-cog-outline"
+        },
+        {
+          title: "LineNotify",
+          to: "/downline/Member",
+          icon: "mdi-account-circle-outline"
+        },
+        {
+          title: "รายชื่อมิจฉาชีพ",
+          to: "/setting",
+          icon: "mdi-gamepad-square"
+        },
+        {
+          title: "พนักงาน",
+          to: "/setting",
+          icon: "mdi-gamepad-square"
+        },
+        {
+          title: "ธนาคาร",
+          to: "/setting",
+          icon: "mdi-gamepad-square"
+        },
+        {
+          title: "Version",
+          to: "/setting",
+          icon: "mdi-gamepad-square"
+        }
+      ],
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: "SMART BET"
+    };
+  },
+  async created() {
+    // await this.checkauthen();
+  },
+  methods: {
+    // ...mapMutations("auth", ["set_logout"]),
+    // async logout() {
+    //   try {
+    //     let token = localStorage.getItem("key");
+    //     if (token) {
+    //       localStorage.clear();
+    //       this.set_logout();
+    //       this.$router.push("/login");
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
+  }
+};
+</script>

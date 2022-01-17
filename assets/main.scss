@@ -1,0 +1,31 @@
+@import "https://fonts.googleapis.com/css?family=Montserrat";
+@import "https://fonts.googleapis.com/css?family=Kanit";
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+span {
+  font-family: "Montserrat", "Kanit";
+}
+.v-toolbar__content {
+  background-size: cover;
+}
+
+.card-exam {
+  display: flex;
+  height: 100px;
+  /* margin: auto; */
+  justify-content: center;
+  align-items: center;
+}
+.text-drawer{
+  font-size: 20px; 
+}
+.v-list-item{
+  font-size: 20px;
+}
