@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title class="font-weight-bold" v-text="title" />
       <v-spacer />
       <v-speed-dial
         absolute
@@ -18,38 +18,57 @@
         <v-btn fab dark small color="orange">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn @click="logout" fab dark small color="red">
+        <v-btn fab dark small color="red">
           <v-icon>mdi-logout</v-icon>
         </v-btn>
       </v-speed-dial>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" app fixed
-      ><div class="card-exam p-5 text-h2">LOGO</div>
-      <v-list nav dense>
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="clipped"
+      app
+      fixed
+      width="300"
+      ><v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
+        <v-img
+          max-height="150"
+          max-width="150"
+          contain
+          class="ma-auto"
+          src="https://image.smart-ai-api.com/public/Rico-main-resite/Logo_Ricoautocash-01.png"
+        ></v-img>
+      </v-toolbar-title>
+      <v-list dense class="red_list">
         <div v-for="(link, i) in items" :key="i">
-          <v-list-item v-if="!link.subLinks" :to="link.to" class="v-list-item ">
+          <v-list-item
+            active-class="white--text active_list deep-purple"
+            v-if="!link.subLinks"
+            :to="link.to"
+            class="v-list-item font-weight-bold "
+          >
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
 
-            <v-list-item-title class="font-weight-bold " v-text="link.title" />
+            <v-list-item-title class="" v-text="link.title" />
           </v-list-item>
 
           <v-list-group
+            active-class=" deep-purple--text"
             v-else
             :key="link.title"
             :prepend-icon="link.icon"
             :value="false"
           >
             <template v-slot:activator>
-              <v-list-item-title class="font-weight-bold ">{{
+              <v-list-item-title class=" h1">{{
                 link.title
               }}</v-list-item-title>
             </template>
 
             <v-list-item
-              class="font-weight-bold "
-              style="padding-left:50px !important "
+              active-class="white--text active_list deep-purple active_list "
+              style="padding-left:40px !important "
               v-for="sublink in link.subLinks"
               :to="sublink.to"
               :key="sublink.text"
@@ -78,7 +97,6 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
 export default {
   // middleware: "auth",
   data() {
@@ -285,7 +303,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "SMART BET"
+      title: "RICO "
     };
   },
   async created() {
