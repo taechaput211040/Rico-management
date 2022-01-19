@@ -46,13 +46,13 @@ span {
   width: 70px;
   margin: auto;
 }
-.icon-bank{
+.icon-bank {
   width: 50px;
-    margin: auto;
+  margin: auto;
 }
 @media only screen and (min-width: 992px) {
   .v-main__wrap {
-    padding: 1.1rem 2rem 0;
+    padding: 1.1rem 1rem 0;
     background-color: #f4f5fa;
   }
 }
@@ -66,4 +66,18 @@ span {
 .tougle-system {
   display: flex;
   flex-direction: column;
+}
+.showdetail {
+  width: 100%;
+}
+.card_status {
+  background-color: black;
+  border-radius: 10px;
+  padding: 0.25rem;
+  color: #f4f5fa;
+  width: 106px;
+  margin: auto;
+}
+.v-application--is-ltr .v-data-table__mobile-row__cell {
+  width: 140px !important;
 }

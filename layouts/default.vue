@@ -116,7 +116,6 @@ export default {
         },
         {
           title: "จัดการสมาชิก",
-          to: "/member",
           icon: "mdi-account",
           subLinks: [
             {
@@ -127,27 +126,27 @@ export default {
             {
               icon: "mdi-view-dashboard",
               text: "รายงานสมาชิก",
-              to: "/account/reportmember"
+              to: "/member/reportMember"
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
-              to: "/account/info"
+              to: "/member/memberCheck"
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลการเล่น",
-              to: "/account/playinfo"
+              to: "/member/memberReportTransaction"
             },
             {
               icon: "mdi-view-dashboard",
               text: "ถอนเครดิตสมาชิก(Manual)",
-              to: "/account/witdrawcredit"
+              to: "/member/withdrawManual"
             },
             {
               icon: "mdi-view-dashboard",
               text: "แก้ไขเครดิต/รายการผิดพลาด",
-              to: "/account/editcredit"
+              to: "/member/ManualEditCredit"
             }
           ]
         },
