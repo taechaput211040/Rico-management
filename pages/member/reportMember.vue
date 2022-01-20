@@ -2,7 +2,7 @@
   <v-flex>
     <v-container>
       <v-row>
-        <h2 class="mb-2">รายการสมาฃิก</h2>
+        <h2 class="mb-2">รายการสมาชิก</h2>
         <search-filter
           :filter="dateFilter"
           @search="searchdata"

@@ -86,7 +86,7 @@
         ></v-col
       >
       <v-col cols="12" lg="6"
-        ><v-card width="100%" class="elevation-3 rounded-lg pa-3">
+        ><v-card width="100%" height="100%" class="elevation-3 rounded-lg pa-3">
           <v-card-title primary-title class="font-weight-bold">
             บัญชีถอนทั้งหมด
           </v-card-title>
@@ -181,6 +181,16 @@
                     ><br />
                     โดย :
                     <v-chip
+                      v-if="item.topupby === 'AUTO'"
+                      x-small
+                      class="my-1 white--text elevation-2"
+                      color="success"
+                      label
+                    >
+                      {{ item.topupby }}</v-chip
+                    >
+                    <v-chip
+                      v-else
                       x-small
                       class="my-1 white--text elevation-2"
                       color="pink"
@@ -427,7 +437,7 @@ export default {
           sortable: false
         },
         {
-          text: "การดำเนินการ",
+          text: "ดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false
@@ -459,7 +469,7 @@ export default {
           sortable: false
         },
         {
-          text: "การดำเนินการ",
+          text: "ดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false
@@ -485,7 +495,7 @@ export default {
           sortable: false
         },
         {
-          text: "การดำเนินการ",
+          text: "ดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false
@@ -534,7 +544,7 @@ export default {
           class: "col-3"
         },
         {
-          text: "การดำเนินการ",
+          text: "ดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false,
@@ -595,6 +605,23 @@ export default {
           sum: null,
           topupby: "phoe mu kyi",
           updated_at: "2022-01-19 09:58:55"
+        },
+        {
+          afcredit: 337,
+          amount: 225,
+          bfcredit: "0",
+          bonusamount: "112.5",
+          companyBank: "RICO",
+          created_at: "2022-01-19 09:58:55",
+          dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
+          id: 355,
+          member_id: "BE8778856",
+          remark:
+            "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
+          smsdatetime: "2022-01-19T09:27:00",
+          sum: null,
+          topupby: "AUTO",
+          updated_at: "2022-01-19 09:58:55"
         }
       ],
       wdlist: [
@@ -608,6 +635,25 @@ export default {
           bfcredit: 49,
           created_at: "2022-01-19 01:30:22",
           id: 86,
+          name: "htetzaw myo",
+          operator: "Ah Lar Hmwe",
+          remark: "กรุณาทำการโอนด้วยตนเอง",
+          requsettime: "2022-01-19 01:30:18",
+          status: "Success",
+          transferTime: "โอนมือ",
+          type: "common",
+          username: "BE9970678690"
+        },
+        {
+          afAmount: null,
+          afcredit: 0,
+          amount: 50,
+          bankAcc: "09970678690",
+          bankName: "SCB",
+          bfAmount: null,
+          bfcredit: 50,
+          created_at: "2022-01-19 01:30:22",
+          id: 87,
           name: "htetzaw myo",
           operator: "Ah Lar Hmwe",
           remark: "กรุณาทำการโอนด้วยตนเอง",

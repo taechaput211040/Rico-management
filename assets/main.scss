@@ -92,11 +92,25 @@ span {
 }
 
 @media only screen and (min-width: 768px) {
-  .tabledata {
-    .v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
-    .v-data-table > .v-data-table__wrapper > table > thead > tr > td,
-    .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
-      padding: 0 0px !important;
-    }
+  .v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
+  .v-data-table > .v-data-table__wrapper > table > thead > tr > td,
+  .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
+    padding: 0 0px !important;
   }
 }
+
+table thead > tr > th,
+table thead > tr > th > i {
+  color: rgb(53, 49, 49) !important;
+  font-size: 15px !important;
+}
+
+// table thead > tr > th:nth-child(even),
+// table thead > tr > th:nth-child(even).active {
+//   background-color: #4c2e81 !important;
+// }
+
+// table thead > tr > th:nth-child(odd),
+// table thead > tr > th:nth-child(odd).active {
+//   background-color: #3d1866 !important;
+// }
