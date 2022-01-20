@@ -49,24 +49,7 @@
               :key="i"
               class="col text-center tougle-system"
             >
-              <img
-                src="https://image.smart-ai-api.com/public/thongtest/bank/SCB.png"
-                v-if="item.name == 'SCB'"
-                alt=""
-                class="icon-bank img-icon"
-              />
-              <img
-                src="https://image.smart-ai-api.com/public/thongtest/bank/kbank.png"
-                v-if="item.name == 'KBANK'"
-                alt=""
-                class="icon-bank img-icon"
-              />
-              <img
-                src="https://image.smart-ai-api.com/public/thongtest/bank/TRUEWALLET.png"
-                v-if="item.name == 'TRUEWALLET'"
-                alt=""
-                class="icon-bank img-icon"
-              />
+              <img-bank :value="item.name"></img-bank>
               <v-switch
                 class="mx-auto text-center"
                 v-model="item.status"
@@ -86,24 +69,7 @@
             >
               <template #[`item.Companybank`]="{item}">
                 <div class="pa-2">
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/SCB.png"
-                    v-if="item.Companybank == 'SCB'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/kbank.png"
-                    v-if="item.Companybank == 'KBANK'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/TRUEWALLET.png"
-                    v-if="item.Companybank == 'TRUEWALLET'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
+                  <img-bank :value="item.Companybank"></img-bank>
                 </div>
               </template>
               <template #[`item.Companybankname`]="{item}">
@@ -133,24 +99,7 @@
             >
               <template #[`item.Companybank`]="{item}">
                 <div class="pa-2">
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/SCB.png"
-                    v-if="item.Companybank == 'SCB'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/kbank.png"
-                    v-if="item.Companybank == 'KBANK'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
-                  <img
-                    src="https://image.smart-ai-api.com/public/thongtest/bank/TRUEWALLET.png"
-                    v-if="item.Companybank == 'TRUEWALLET'"
-                    alt=""
-                    class="icon-bank img-icon"
-                  />
+                  <img-bank :value="item.Companybank"></img-bank>
                 </div>
               </template>
               <template #[`item.Companybankname`]="{item}">
@@ -170,7 +119,7 @@
     <!-- sectiontable -->
     <!-- secttiondeposit -->
     <v-row>
-      <v-col cols="12" md="12" lg="6">
+      <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-3 mb-5">
           <v-card-title primary-title class="font-weight-bold">
             รายการฝากเงินคงค้าง (ออโต้ไม่ผ่าน)
@@ -184,6 +133,8 @@
             </v-data-table>
           </v-card></v-card
         >
+      </v-col>
+      <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-3">
           <v-card-title primary-title class="font-weight-bold">
             รายการฝากเงินล่าสุด 20 รายการ
@@ -197,7 +148,7 @@
             >
               <template #[`item.no`]="{item}">
                 <div class="text-center my-3 my-md-2  showdetail">
-                  {{ item.companyBank }}<br />
+                  <img-bank :value="item.companyBank"></img-bank>
                   <v-chip
                     class="font-weight-bold pa-2 my-1 elevation-2"
                     color="primary"
@@ -258,7 +209,8 @@
                     label
                     x-small
                   >
-                    <v-icon  class="mr-1">mdi-message-processing</v-icon>SMS</v-chip
+                    <v-icon class="mr-1">mdi-message-processing</v-icon
+                    >SMS</v-chip
                   ><br />
                   {{ item.smsdatetime }}<br />
                 </div>
@@ -283,9 +235,9 @@
               </template>
             </v-data-table>
           </v-card></v-card
-        >
-      </v-col>
-      <v-col cols="12" md="12" lg="6">
+        ></v-col
+      >
+      <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             รายการถอนเงินล่าสุด 20 รายการ
@@ -301,7 +253,7 @@
                 <div class="text-center my-3 my-md-2  showdetail">
                   <div class="font-weight-bold">
                     โอนไป<br />
-                    {{ item.bankName }}
+                    <img-bank :value="item.bankName"></img-bank>
                   </div>
 
                   <v-chip
@@ -400,7 +352,9 @@
                     <br />
                   </div>
                   <span class="font-weight-bold">หลังเติม</span><br />
-                  <span v-if="!item.afAmount" class="font-weight-bold"> - </span>
+                  <span v-if="!item.afAmount" class="font-weight-bold">
+                    -
+                  </span>
                   <span v-else> - </span>
                   <br />
                   <span class="font-weight-bold">ก่อนเติม</span><br />
@@ -435,7 +389,9 @@
   </v-flex>
 </template>
 <script>
+import ImgBank from "../components/ImgBank.vue";
 export default {
+  components: { ImgBank },
   data() {
     return {
       isLoading: false,

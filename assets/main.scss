@@ -47,12 +47,16 @@ span {
   margin: auto;
 }
 .icon-bank {
-  width: 50px;
+  width: 38px;
+  margin: auto;
+}
+.icon-Logo {
+  width: 60px;
   margin: auto;
 }
 @media only screen and (min-width: 992px) {
   .v-main__wrap {
-    padding: 1.1rem 1rem 0;
+    padding: 0.5rem 0.5rem 0;
     background-color: #f4f5fa;
   }
 }
@@ -69,15 +73,30 @@ span {
 }
 .showdetail {
   width: 100%;
+  font-size: 13px;
 }
 .card_status {
   background-color: black;
   border-radius: 10px;
   padding: 0.25rem;
   color: #f4f5fa;
-  width: 106px;
+  width: 76px;
   margin: auto;
 }
 .v-application--is-ltr .v-data-table__mobile-row__cell {
   width: 140px !important;
+}
+
+.detailbank {
+  font-size: 12.5px;
+}
+
+@media only screen and (min-width: 768px) {
+  .tabledata {
+    .v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
+    .v-data-table > .v-data-table__wrapper > table > thead > tr > td,
+    .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
+      padding: 0 0px !important;
+    }
+  }
 }
