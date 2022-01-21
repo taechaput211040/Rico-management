@@ -35,7 +35,7 @@
     <!-- sectiontable -->
     <v-row>
       <v-col cols="12" lg="6"
-        ><v-card width="100%" class="elevation-5 rounded-lg pa-3">
+        ><v-card width="100%" class="elevation-5 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             บัญชีฝากทั้งหมด
           </v-card-title>
@@ -86,7 +86,7 @@
         ></v-col
       >
       <v-col cols="12" lg="6"
-        ><v-card width="100%" height="100%" class="elevation-3 rounded-lg pa-3">
+        ><v-card width="100%" height="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             บัญชีถอนทั้งหมด
           </v-card-title>
@@ -120,7 +120,7 @@
     <!-- secttiondeposit -->
     <v-row>
       <v-col cols="12" md="12" lg="4">
-        <v-card width="100%" class="elevation-3 rounded-lg pa-3 mb-5">
+        <v-card width="100%" class="elevation-3 rounded-lg pa-2 mb-5">
           <v-card-title primary-title class="font-weight-bold">
             รายการฝากเงินคงค้าง (ออโต้ไม่ผ่าน)
           </v-card-title>
@@ -135,7 +135,7 @@
         >
       </v-col>
       <v-col cols="12" md="12" lg="4">
-        <v-card width="100%" class="elevation-3 rounded-lg pa-3">
+        <v-card width="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             รายการฝากเงินล่าสุด 20 รายการ
           </v-card-title>
@@ -658,7 +658,7 @@ export default {
           operator: "Ah Lar Hmwe",
           remark: "กรุณาทำการโอนด้วยตนเอง",
           requsettime: "2022-01-19 01:30:18",
-          status: "Success",
+          status: "Error",
           transferTime: "โอนมือ",
           type: "common",
           username: "BE9970678690"

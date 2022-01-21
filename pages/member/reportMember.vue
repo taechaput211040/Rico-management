@@ -24,10 +24,13 @@
                 hide-default-footer
               >
                 <template #[`item.bankAcc`]="{item}">
-                  <div class="row pa-2 detailbank">
-                    <div class="col-md-4  ma-auto">logo</div>
-                    <div class="col-md-8">
-                      {{ item.bankName }}<br />
+                  <div class="row py-2 detailbank justify-center">
+                    <div class="ma-auto">
+                      <img-bank :value="item.bankName"></img-bank>
+                    </div>
+                    <div class="font-weight-bold">
+                      <span class="primary--text ">{{ item.bankName }}</span
+                      ><br />
                       {{ item.bankAcc }}
                     </div>
                   </div>
@@ -163,7 +166,9 @@
 </template>
 
 <script>
+import ImgBank from "../../components/ImgBank.vue";
 export default {
+  components: { ImgBank },
   data() {
     return {
       dpdialog: false,
@@ -407,6 +412,30 @@ export default {
           status: true,
           updated_at: "2022-01-20 12:51:23",
           username: "BE9778772704",
+          wdAuto: false
+        },
+        {
+          bankAcc: "09687983424",
+          bankAccRef: "X7983424",
+          bankName: "KBZpay",
+          birthdate: null,
+          bonusid: 3,
+          created_at: "2022-01-21 02:08:52",
+          dpAuto: true,
+          gender: "male",
+          knowFrom: "สมัครจากหน้าเว็บ",
+          lastname: "win",
+          lastnameEng: null,
+          lineID: "ไม่มีข้อมูล",
+          name: "aye",
+          nameEng: null,
+          operator: "RICO",
+          phone: "09459897545",
+          recommender: "aye win",
+          remark: null,
+          status: true,
+          updated_at: "2022-01-21 06:53:46",
+          username: "BE9459897545",
           wdAuto: false
         }
       ]

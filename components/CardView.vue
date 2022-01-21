@@ -1,5 +1,5 @@
 <template>
-  <div class=" card-child elevation-5">
+  <div class=" card-child card-dashboard elevation-5">
     <div class="row">
       <div class="col-4 text-center d-flex">
         <div class="ma-auto">
@@ -29,7 +29,7 @@
 export default {
   props: {
     title: { type: String, default: "" },
-    value: { type: Number, default: "" },
+    value: { type: [Number, String], default: "" },
     iconSrc: { type: String, default: "" }
   }
 };

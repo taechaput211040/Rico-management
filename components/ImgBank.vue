@@ -121,6 +121,12 @@
       alt=""
       class=" img-icon icon-Logo"
     />
+    <img
+      src="~/assets/image/bank/KBZpay.png"
+      v-if="value == 'KBZpay'"
+      alt=""
+      class="icon-bank img-icon"
+    />
   </div>
 </template>
 
