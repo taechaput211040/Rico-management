@@ -59,6 +59,13 @@
                       placeholder="หมายเหตุ (ไม่บังคับ)"
                       hide-details="auto"
                     ></v-text-field>
+                    <span class="error--text"
+                      >หมายเหตุ: *** เติมเครดิตในหน้านี้
+                      ใช้ในกรณียอดไม่แสดงในระบบ จะทำการ เติม
+                      เครดิตให้ลูกค้าตามโปรโมชั่นที่ลูกค้ารับอยู่
+                      คิดเป็นจำนวนยอดฝากจริง ***</span
+                    >
+
                     <v-card-actions>
                       <v-btn color="primary" class="ma-auto">เติมเงิน</v-btn>
                     </v-card-actions>
@@ -236,6 +243,12 @@
                         ></v-col>
                       </v-row>
                     </div>
+                    <span class="error--text"
+                      >หมายเหตุ: *** การแก้ไขเครดิตในหน้านี้ จะทำการ เติม เครดิต
+                      รวมทั้งเทิร์น โดยไม่สนใจทุกๆ โปรโมชั่นที่ลูกค้าใช้อยู่
+                      โดยเทิร์นที่ใส่ในหน้านี้จะไปแทนที่เทิร์นเดิมของลูกค้า
+                      ***</span
+                    >
                     <v-card-actions>
                       <v-btn color="primary" class="ma-auto">เติมเครดิต</v-btn>
                     </v-card-actions>
@@ -247,14 +260,31 @@
         </v-col>
       </v-row>
       <v-row class="pa-3">
+        <h2 class="mb-2">ค้นหารายการแก้ไข</h2>
         <search-filter
           :searchinput="false"
           :filter="dateFilter"
           @search="searchdata"
         ></search-filter>
       </v-row>
-      <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
-        <v-card>
+      <v-card width="100%" class="elevation-4 mt-5 rounded-lg pa-2">
+        <v-row class="ma-1">
+          <v-btn color="black" dark class="ma-1 font-weight-bold">ทั้งหมด</v-btn
+          ><v-btn color="grey" dark class="ma-1 font-weight-bold"
+            >รายการไม่เข้าระบบ</v-btn
+          ><v-btn color="error" outlined class="ma-1 font-weight-bold"
+            >ตัดเครดิต</v-btn
+          ><v-btn color="primary" outlined class="ma-1 font-weight-bold"
+            >เติมเครดิต</v-btn
+          ><v-spacer></v-spacer>
+          <span class="font-weight-bold">
+            จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate }} ถึงวันที่
+            {{ dateFilter.endDate }} ทั้งหมดจำนวน
+            {{ itemcredit.length }} รายการ</span
+          >
+        </v-row>
+
+        <v-card class="mt-5">
           <v-data-table
             show-expand
             hide-default-footer
@@ -438,6 +468,7 @@ export default {
       }
     };
   },
+  computed: {},
   methods: {
     searchdata(textSearch) {
       console.log(this.dateFilter, "text :" + textSearch);
