@@ -611,7 +611,7 @@ export default {
           amount: 225,
           bfcredit: "0",
           bonusamount: "112.5",
-          companyBank: "RICO",
+          companyBank: "checkin",
           created_at: "2022-01-19 09:58:55",
           dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
           id: 355,

@@ -131,10 +131,31 @@ table thead > tr > th > i {
   font-weight: bolder !important;
   cursor: pointer;
 }
-.card-report,.card-dashboard {
+.card-report,
+.card-dashboard {
   transition: 0.2s;
 }
-.card-report:hover,.card-dashboard:hover {
+.card-report:hover,
+.card-dashboard:hover {
   transform: scale(1.05);
   transition: 0.2s;
+}
+.v-tabs:not(.v-tabs--vertical):not(.v-tabs--right)
+  > .v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-slide-group--has-affixes)
+  .v-slide-group__prev {
+  display: none !important;
+}
+.el-input__inner {
+  border: 2px solid #c7c7c7 !important;
+}
+.v-expansion-panel-header {
+  padding: 0px 20px !important;
+}
+.v-expansion-panel-content__wrap {
+  padding: 0 5px 6px;
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+.v-application .aligncclass {
+  justify-content: end !important;
 }

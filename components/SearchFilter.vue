@@ -54,7 +54,7 @@
       ><v-divider vertical class="display-mb"></v-divider>
       <v-col cols="12" md="6" lg="6">
         <v-row>
-          <v-col cols="8" md="8"
+          <v-col cols="8" md="8" v-if="searchinput == true"
             ><v-text-field
               label="ค้นหา"
               placeholder="กรอกคำค้นหา"
@@ -65,7 +65,12 @@
               hide-details="auto"
             ></v-text-field
           ></v-col>
-          <v-col cols="4" md="4">
+          <v-col
+            cols="4"
+            md="3"
+            class="d-flex "
+            :class="{ aligncclass: searchinput == false }"
+          >
             <v-btn color="primary" @click="search()">
               <v-icon left dark>
                 mdi-magnify
@@ -73,7 +78,7 @@
               ค้นหา</v-btn
             ></v-col
           >
-          <v-col>
+          <v-col cols="8" class="d-flex">
             <v-btn color="success" class="mx-1" dark @click="toyesterday()"
               ><v-icon left>mdi-menu-left</v-icon> เมื่อวาน</v-btn
             ><v-btn color="warning" class="mx-1" @click="today()"
@@ -94,7 +99,11 @@ export default {
   },
 
   props: {
-    filter: Object
+    filter: Object,
+    searchinput: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     search() {

@@ -127,6 +127,12 @@
       alt=""
       class="icon-bank img-icon"
     />
+     <img
+      src="~/assets/image/bank/checkin.png"
+      v-if="value == 'checkin'"
+      alt=""
+      class="icon-bank img-icon"
+    />
   </div>
 </template>
 
