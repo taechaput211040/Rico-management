@@ -75,7 +75,7 @@
           ></card-report>
         </v-col>
       </v-row>
-      <v-card class="mt-5  pa-3">
+      <v-card class="elevation-4 mt-5 rounded-lg">
         <report-transection
           :dbresult="stats"
           v-if="!this.$route.query.group"

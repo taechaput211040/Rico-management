@@ -9,14 +9,14 @@
         ></search-filter>
       </v-row>
       <v-row>
-        <v-card class="elevation-4 mt-5 pa-2 rounded-lg" width="100%">
-          <div class="my-5 font-weight-bold">
+        <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
+          <div class="ma-5 font-weight-bold">
             จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
             {{ dateFilter.startDate }} ถึงวันที่
             {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemSearch.length }} คน
           </div>
 
-          <v-card class="mt-4 ">
+           <v-card class="elevation-4 mt-5 rounded-lg">
             <div class="tabledata">
               <v-data-table
                 :headers="columnReport"

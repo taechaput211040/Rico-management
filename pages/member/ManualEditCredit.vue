@@ -2,12 +2,12 @@
   <v-flex>
     <v-container>
       <h2 class="mb-2">แก้ไขเครดิต ตัดเครดิต เติมเครดิต</h2>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-card width="100%">
-            <v-expansion-panels>
+      <v-expansion-panels accordion class="mb-5">
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-card width="100%">
               <v-expansion-panel>
-                <v-expansion-panel-header>
+                <v-expansion-panel-header @click="refreshform()">
                   <v-card-title
                     primary-title
                     class="font-weight-bold grey--text"
@@ -27,6 +27,7 @@
                       class="mb-2"
                       dense
                       outlined
+                      v-model="formnoneSystem.username"
                       clearable
                       placeholder="เช่น xx1234567"
                       hide-details="auto"
@@ -34,6 +35,7 @@
                     กรอกจำนวนเงิน
                     <v-text-field
                       class="mb-2"
+                      v-model="formnoneSystem.amount"
                       dense
                       outlined
                       type="number"
@@ -43,7 +45,7 @@
                     เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)
                     <el-time-picker
                       class="full-width mb-2"
-                      v-model="time"
+                      v-model="formnoneSystem.time"
                       format="HH:mm"
                       arrow-control
                       placeholder="เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)"
@@ -54,6 +56,7 @@
                     <v-text-field
                       class="mb-2"
                       dense
+                      v-model="formnoneSystem.remark"
                       outlined
                       clearable
                       placeholder="หมายเหตุ (ไม่บังคับ)"
@@ -71,15 +74,13 @@
                     </v-card-actions>
                   </div></v-expansion-panel-content
                 >
-              </v-expansion-panel></v-expansion-panels
-            >
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card width="100%">
-            <v-expansion-panels>
+              </v-expansion-panel>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card width="100%">
               <v-expansion-panel>
-                <v-expansion-panel-header>
+                <v-expansion-panel-header @click="refreshform()">
                   <v-card-title
                     primary-title
                     class="font-weight-bold error--text"
@@ -99,6 +100,7 @@
                       class="mb-2"
                       dense
                       outlined
+                      v-model="formCutcredit.username"
                       clearable
                       placeholder="เช่น xx1234567"
                       hide-details="auto"
@@ -107,6 +109,7 @@
                     <v-text-field
                       class="mb-2"
                       dense
+                      v-model="formCutcredit.amount"
                       outlined
                       type="number"
                       placeholder="กรอกจำนวนเงิน"
@@ -117,6 +120,7 @@
                       class="mb-2"
                       dense
                       outlined
+                      v-model="formCutcredit.remark"
                       clearable
                       placeholder="หมายเหตุ (ไม่บังคับ)"
                       hide-details="auto"
@@ -127,14 +131,12 @@
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-            </v-expansion-panels>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card width="100%">
-            <v-expansion-panels>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card width="100%">
               <v-expansion-panel>
-                <v-expansion-panel-header>
+                <v-expansion-panel-header @click="refreshform()">
                   <v-card-title
                     primary-title
                     class="font-weight-bold primary--text"
@@ -155,6 +157,7 @@
                       dense
                       outlined
                       clearable
+                      v-model="formTopupCredit.username"
                       placeholder="เช่น xx1234567"
                       hide-details="auto"
                     ></v-text-field>
@@ -162,6 +165,7 @@
                     <v-text-field
                       class="mb-2"
                       dense
+                      v-model="formTopupCredit.bonusCredit"
                       outlined
                       type="number"
                       placeholder="กรอกจำเครดิต"
@@ -170,6 +174,7 @@
                     หมายเหตุ (ไม่บังคับ)
                     <v-text-field
                       class="mb-2"
+                      v-model="formTopupCredit.remark"
                       dense
                       outlined
                       clearable
@@ -184,6 +189,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
+                            v-model="formTopupCredit.tslot"
                             label="เทิร์น SLOT"
                             outlined
                             clearable
@@ -193,6 +199,7 @@
                         ></v-col>
                         <v-col cols="6">
                           <v-text-field
+                            v-model="formTopupCredit.tsportbook"
                             label="เทิร์น SPORTBOOK"
                             dense
                             outlined
@@ -203,6 +210,7 @@
                         ></v-col>
                         <v-col cols="6">
                           <v-text-field
+                            v-model="formTopupCredit.tesport"
                             label="เทิร์น ESPORT"
                             dense
                             outlined
@@ -214,6 +222,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
+                            v-model="formTopupCredit.thorse"
                             label="เทิร์น HORSE RACING"
                             outlined
                             clearable
@@ -224,6 +233,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
+                            v-model="formTopupCredit.tcasino"
                             label="เทิร์น CASINO"
                             outlined
                             type="number"
@@ -235,6 +245,18 @@
                           <v-text-field
                             dense
                             label="เทิร์น LOTTO"
+                            outlined
+                            v-model="formTopupCredit.tlotto"
+                            clearable
+                            type="number"
+                            hide-details="auto"
+                          ></v-text-field
+                        ></v-col>
+                        <v-col cols="12">
+                          <v-text-field
+                            dense
+                            v-model="formTopupCredit.twidthdraw"
+                            label="อั้นถอน(กรอกเป็นจำนวนเงิน)"
                             outlined
                             clearable
                             type="number"
@@ -255,10 +277,10 @@
                   </div>
                 </v-expansion-panel-content></v-expansion-panel
               >
-            </v-expansion-panels>
-          </v-card>
-        </v-col>
-      </v-row>
+            </v-card>
+          </v-col>
+        </v-row></v-expansion-panels
+      >
       <v-row class="pa-3">
         <h2 class="mb-2">ค้นหารายการแก้ไข</h2>
         <search-filter
@@ -267,8 +289,8 @@
           @search="searchdata"
         ></search-filter>
       </v-row>
-      <v-card width="100%" class="elevation-4 mt-5 rounded-lg pa-2">
-        <v-row class="ma-1">
+      <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
+        <v-row class="ma-1 my-2">
           <v-btn color="black" dark class="ma-1 font-weight-bold">ทั้งหมด</v-btn
           ><v-btn color="grey" dark class="ma-1 font-weight-bold"
             >รายการไม่เข้าระบบ</v-btn
@@ -277,7 +299,7 @@
           ><v-btn color="primary" outlined class="ma-1 font-weight-bold"
             >เติมเครดิต</v-btn
           ><v-spacer></v-spacer>
-          <span class="font-weight-bold">
+          <span class="font-weight-bold my-2">
             จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate }} ถึงวันที่
             {{ dateFilter.endDate }} ทั้งหมดจำนวน
             {{ itemcredit.length }} รายการ</span
@@ -344,6 +366,29 @@ export default {
   components: { SearchFilter },
   data() {
     return {
+      formnoneSystem: {
+        username: "",
+        amount: "",
+        time: "",
+        remark: ""
+      },
+      formCutcredit: {
+        username: "",
+        amount: "",
+        remark: ""
+      },
+      formTopupCredit: {
+        username: "",
+        bonusCredit: "",
+        remark: "",
+        tslot: "20",
+        tsportbook: "",
+        tesport: "",
+        thorse: "",
+        tcasino: "",
+        tlotto: "",
+        twidthdraw: ""
+      },
       header: [
         {
           text: "ลำดับ",
@@ -470,6 +515,11 @@ export default {
   },
   computed: {},
   methods: {
+    refreshform() {
+      this.formnoneSystem = {};
+      this.formCutcredit = {};
+      this.formTopupCredit = {};
+    },
     searchdata(textSearch) {
       console.log(this.dateFilter, "text :" + textSearch);
     },

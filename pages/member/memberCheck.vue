@@ -82,11 +82,13 @@
           ></card-report>
         </v-col>
       </v-row>
-      <v-card class="mt-5  pa-3">
+      <v-card class="elevation-4 mt-5 rounded-lg">
         <v-card class="elevation-3">
           <v-data-table :headers="header" hide-default-footer :items="response">
             <template #[`item.type`]="{item}">
-              <span class="font-weight-bold primary--text">{{ item.type }}</span>
+              <span class="font-weight-bold primary--text">{{
+                item.type
+              }}</span>
             </template>
           </v-data-table></v-card
         >

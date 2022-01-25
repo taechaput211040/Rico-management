@@ -152,33 +152,32 @@ export default {
         },
         {
           title: "รายงานฝาก/ถอน",
-          to: "/reportTransection",
           icon: "mdi-credit-card-check",
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากสมาชิก",
-              to: "/member/register"
+              to: "/reportTransaction/deposite"
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิก",
-              to: "/account/reportmember"
+              to: "/reportTransaction/withdraw"
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิกล่าสุด",
-              to: "/account/info"
+              to: "/reportTransaction/lastWithdrawal"
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากแรก",
-              to: "/account/playinfo"
+              to: "/reportTransaction/firstDeposit"
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการที่ถูกซ่อน",
-              to: "/account/witdrawcredit"
+              to: "/reportTransaction/hiddenReport"
             }
           ]
         },
