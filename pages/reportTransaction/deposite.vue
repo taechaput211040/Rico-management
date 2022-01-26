@@ -26,8 +26,8 @@
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class=" pa-5 font-weight-bold">
           จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
-          {{ dateFilter.startDate }} ถึงวันที่
-          {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemdeposit.length }} คน
+          {{ date_start }} ถึงวันที่ {{ date_end }} จำนวนทั้งหมด
+          {{ itemdeposit.length }} คน
         </div>
         <v-card width="100%" class="elevation-4 rounded-lg">
           <v-data-table
@@ -66,6 +66,16 @@
                   >ปิด</v-btn
                 >
               </div>
+            </template>
+            <template #[`item.smsdatetime`]="{item}">
+              <span>
+                {{ getthaidate(item.smsdatetime) }}
+              </span>
+            </template>
+            <template #[`item.created_at`]="{item}">
+              <span>
+                {{ getthaidate(item.created_at) }}
+              </span>
             </template>
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
@@ -203,6 +213,7 @@ export default {
       ],
       depositbalance: "1630",
       dateFilter: {
+        inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
@@ -210,9 +221,31 @@ export default {
       }
     };
   },
+  computed: {
+    date_start(val) {
+      if (val) {
+        return this.$moment(String(this.dateFilter.startDate)).format(
+          "MM/DD/YYYY"
+        );
+      }
+    },
+    date_end(val) {
+      if (val) {
+        return this.$moment(String(this.dateFilter.endDate)).format(
+          "MM/DD/YYYY"
+        );
+      }
+    }
+  },
   methods: {
-    searchdata(textSearch) {
-      console.log(this.dateFilter, "text :" + textSearch);
+    searchdata() {
+      console.log(this.dateFilter);
+    },
+    getthaidate(timethai) {
+      const time = this.$moment(timethai)
+        .add(7, "hours")
+        .format("YYYY-MM-DD เวลา HH:mm:ss");
+      return time;
     }
   }
 };

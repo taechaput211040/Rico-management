@@ -16,7 +16,7 @@
             {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemSearch.length }} คน
           </div>
 
-           <v-card class="elevation-4 mt-5 rounded-lg">
+          <v-card class="elevation-4 mt-5 rounded-lg">
             <div class="tabledata">
               <v-data-table
                 :headers="columnReport"
@@ -38,6 +38,16 @@
                 <template #[`item.no`]="{index}">
                   <span class="font-weight-bold">
                     {{ index + 1 }}
+                  </span>
+                </template>
+                <template #[`item.created_at`]="{item}">
+                  <span>
+                    {{ getthaidate(item.created_at) }}
+                  </span>
+                </template>
+                <template #[`item.updated_at`]="{item}">
+                  <span>
+                    {{ getthaidate(item.updated_at) }}
                   </span>
                 </template>
                 <template #[`item.name`]="{item}">
@@ -174,6 +184,7 @@ export default {
       dpdialog: false,
       wddialog: false,
       dateFilter: {
+        inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
@@ -224,12 +235,7 @@ export default {
           align: "center",
           sortable: false
         },
-        {
-          text: "วันที่สมัคร",
-          value: "created_at",
-          align: "center",
-          sortable: false
-        },
+
         {
           text: "วันที่แก้ไขข้อมูลล่าสุด",
           value: "updated_at",
@@ -442,8 +448,14 @@ export default {
     };
   },
   methods: {
-    searchdata(textSearch) {
-      console.log(this.dateFilter, "text :" + textSearch);
+    getthaidate(timethai) {
+      const time = this.$moment(timethai)
+        .add(7, "hours")
+        .format("YYYY-MM-DD เวลา HH:mm:ss");
+      return time;
+    },
+    searchdata() {
+      console.log(this.dateFilter);
     },
     yesterday() {
       console.log("yesterday");

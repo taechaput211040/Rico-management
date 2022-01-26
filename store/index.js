@@ -9,6 +9,5 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import moment from "moment";
 Vue.use(VueSweetalert2);
 Vue.use(Vuex);
-Vue.prototype.moment = moment;
-Vue.use(moment);
+Vue.prototype.$moment = moment;
 Vue.use(ElementUI, { locale });

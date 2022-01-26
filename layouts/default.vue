@@ -183,28 +183,27 @@ export default {
         },
         {
           title: "รายงานสรุป",
-          to: "/company",
           icon: "mdi-credit-card-plus-outline",
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน",
-              to: "/member/register"
+              to: "/profitReport/Report"
             },
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน รายบุคคล",
-              to: "/account/reportmember"
+              to: "/profitReport/ProfitByUserReport"
             },
             {
               icon: "mdi-view-dashboard",
               text: "สรุปโปรโมชัน",
-              to: "/account/info"
+              to: "/profitReport/PromotionReport"
             },
             {
               icon: "mdi-view-dashboard",
               text: "ภาพรวมสมาชิก",
-              to: "/account/info"
+              to: "/profitReport/MemberReview"
             }
           ]
         },

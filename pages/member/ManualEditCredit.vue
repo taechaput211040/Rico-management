@@ -348,7 +348,7 @@
               </span>
             </template>
             <template #[`item.created_at`]="{item}">
-              <span class="font-weight-bold">
+              <span>
                 {{ getthaidate(item.created_at) }}
               </span>
             </template>

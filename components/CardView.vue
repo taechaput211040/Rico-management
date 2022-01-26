@@ -7,18 +7,18 @@
         </div>
       </div>
       <div class="col">
-        <div class=" card-icontitle ">
-          <h1 v-if="value > 0" class="success--text">{{ value }}</h1>
+        <div class=" card-icontitle" v-if="condition == true">
+          <h1 v-if="value > 0" class="success--text">+{{ value }}</h1>
           <h1 v-if="value < 0" class="red--text">{{ value }}</h1>
+        </div>
+        <div class=" card-icontitle" v-else>
+          <h1>{{ value }}</h1>
         </div>
         <v-divider class="my-2"></v-divider>
         <div
-          class="text-start text-data text-primary d-flex align-center justify-space-between"
+          class="text-start text-data d-flex align-center justify-space-between"
         >
-          <h4>{{ title }}</h4>
-          <v-btn color="secondary" fab x-small dark>
-            <v-icon>mdi-reload</v-icon>
-          </v-btn>
+          <h4 :class="titleclass">{{ title }}</h4>
         </div>
       </div>
     </div>
@@ -28,6 +28,11 @@
 <script>
 export default {
   props: {
+    titleclass: "",
+    condition: {
+      type: Boolean,
+      default: false
+    },
     title: { type: String, default: "" },
     value: { type: [Number, String], default: "" },
     iconSrc: { type: String, default: "" }

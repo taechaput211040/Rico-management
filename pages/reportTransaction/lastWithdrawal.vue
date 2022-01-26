@@ -34,7 +34,11 @@
               {{ index + 1 }}
             </span>
           </template>
-
+          <template #[`item.requsettime`]="{item}">
+            <span>
+              {{ getthaidate(item.requsettime) }}
+            </span>
+          </template>
           <template #[`item.bankAcc`]="{item}">
             <div class="pa-2">
               <img-bank :value="item.bankName"></img-bank>
@@ -114,7 +118,6 @@
               <v-tooltip bottom color="success">
                 <template v-slot:activator="{ on, attrs }"
                   ><v-btn
-                    @click="changpass"
                     v-bind="attrs"
                     v-on="on"
                     color="success mx-1"
@@ -322,6 +325,14 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    getthaidate(timethai) {
+      const time = this.$moment(timethai)
+        .add(7, "hours")
+        .format("YYYY-MM-DD เวลา HH:mm:ss");
+      return time;
+    }
   }
 };
 </script>

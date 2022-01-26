@@ -18,6 +18,7 @@
       </v-col>
       <v-col lg="3" sm="6" cols="12" class="pa-3">
         <card-view
+          :condition="true"
           title="กำไร/ขาดทุน(วันนี้)"
           :value="datarander.profitlossDate"
           iconSrc="https://image.smart-ai-api.com/public/thongtest/laptop.gif"
@@ -25,6 +26,7 @@
       </v-col>
       <v-col lg="3" sm="6" cols="12" class="pa-3">
         <card-view
+          :condition="true"
           title="กำไร/ขาดทุน(ทั้งเดือน)"
           :value="datarander.profitlossmounth"
           iconSrc="https://image.smart-ai-api.com/public/thongtest/presentation.gif"

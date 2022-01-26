@@ -3,14 +3,17 @@
     <v-container>
       <v-row class="mb-2 pa-3"
         ><h2>รายการถอนเงินของสมาชิก</h2>
-        <search-filter :filter="dateFilter" @search="searchdata"></search-filter
-      ></v-row>
+        <search-filter
+          :filter="dateFilter"
+          @search="searchdata"
+        ></search-filter>
+      </v-row>
       <h2 class="mt-5">ยอดถอนรวม</h2>
       <v-row>
         <v-col cols="12" sm="3" md="3">
           <div class="card-child card-report elevation-5 text-center">
             <img
-              src="~/assets/image/bank/RICO.png"
+              src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
               alt=""
               class=" img-icon icon-Logo"
             />
@@ -25,8 +28,8 @@
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class=" pa-5 font-weight-bold">
           จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
-          {{ dateFilter.startDate }} ถึงวันที่
-          {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemdeposit.length }} คน
+          {{ date_start }} ถึงวันที่ {{ date_end }} จำนวนทั้งหมด
+          {{ itemdeposit.length }} คน
         </div>
 
         <v-card width="100%" class="elevation-4 rounded-lg">
@@ -71,6 +74,11 @@
                   item.username
                 }}</span>
               </div>
+            </template>
+            <template #[`item.requsettime`]="{item}">
+              <span>
+                {{ getthaidate(item.requsettime) }}
+              </span>
             </template>
             <template #[`item.bfafcredit`]="{item}">
               <div class="d-flex align-baseline justify-center">
@@ -123,7 +131,6 @@
                 <v-tooltip bottom color="success">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
-                      @click="changpass"
                       v-bind="attrs"
                       v-on="on"
                       color="success mx-1"
@@ -193,6 +200,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
@@ -332,6 +340,7 @@ export default {
       ],
       depositbalance: "1630",
       dateFilter: {
+        inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
@@ -339,9 +348,27 @@ export default {
       }
     };
   },
+  computed: {
+    date_start(val) {
+      if (val) {
+        return moment(String(this.dateFilter.startDate)).format("MM/DD/YYYY");
+      }
+    },
+    date_end(val) {
+      if (val) {
+        return moment(String(this.dateFilter.endDate)).format("MM/DD/YYYY");
+      }
+    }
+  },
   methods: {
-    searchdata(textSearch) {
-      console.log(this.dateFilter, "text :" + textSearch);
+    getthaidate(timethai) {
+      const time = this.$moment(timethai)
+        .add(7, "hours")
+        .format("YYYY-MM-DD เวลา HH:mm:ss");
+      return time;
+    },
+    searchdata() {
+      console.log(this.dateFilter);
     }
   }
 };

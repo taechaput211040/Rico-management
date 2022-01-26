@@ -59,7 +59,7 @@
               label="ค้นหา"
               placeholder="กรอกคำค้นหา"
               dense
-              v-model="inputdata"
+              v-model.trim="filter.inputfilter"
               outlined
               clearable
               hide-details="auto"
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     search() {
-      this.$emit("search", this.inputdata);
+      this.$emit("search");
     },
     toyesterday() {
       this.$emit("yesterday");
