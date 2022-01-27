@@ -199,28 +199,22 @@ export default {
               icon: "mdi-view-dashboard",
               text: "สรุปโปรโมชัน",
               to: "/profitReport/PromotionReport"
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "ภาพรวมสมาชิก",
-              to: "/profitReport/MemberReview"
             }
           ]
         },
         {
           title: "ตั้งค่าโปรโมชั่น",
-          to: "/playHistory",
           icon: "mdi-history",
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "โปรโมชันทั่วไป",
-              to: "/member/register"
+              to: "/promotion/generalPromotion"
             },
             {
               icon: "mdi-view-dashboard",
               text: "Cashback",
-              to: "/account/reportmember"
+              to: "/promotion/cashback"
             }
           ]
         },

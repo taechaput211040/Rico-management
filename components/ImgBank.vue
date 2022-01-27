@@ -127,9 +127,15 @@
       alt=""
       class="icon-bank img-icon"
     />
-     <img
+    <img
       src="~/assets/image/bank/checkin.png"
       v-if="value == 'checkin'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+    <img
+      src="~/assets/image/bank/cashback.png"
+      v-if="value == 'cashback'"
       alt=""
       class="icon-bank img-icon"
     />

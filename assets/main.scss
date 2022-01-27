@@ -56,6 +56,9 @@ span {
   margin: auto;
 }
 @media only screen and (min-width: 992px) {
+  .size-card {
+    width: 88%;
+  }
   .v-main__wrap {
     padding: 0.5rem 0.5rem 0;
     background-color: #f4f5fa;
@@ -158,4 +161,25 @@ table thead > tr > th > i {
 }
 .v-application .aligncclass {
   justify-content: end !important;
+}
+.img_promotion {
+  width: 295px;
+  height: auto;
+  margin: auto;
+}
+.card_promotion {
+  .title_card {
+    border-radius: 10px 10px 0 0;
+    background-color: #4a4a4a;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+  }
+  background-color: #efefef;
+  border-radius: 15px;
+  border: 2px solid #4a4a4a;
+  .action_card {
+    background-color: #4a4a4a;
+    padding: 10px;
+  }
 }

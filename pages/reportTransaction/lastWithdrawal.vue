@@ -186,6 +186,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -326,7 +327,12 @@ export default {
       ]
     };
   },
+  async mounted() {
+
+  },
   methods: {
+    
+   
     getthaidate(timethai) {
       const time = this.$moment(timethai)
         .add(7, "hours")
