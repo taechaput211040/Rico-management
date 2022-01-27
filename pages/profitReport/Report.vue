@@ -5,6 +5,7 @@
       <search-filter
         :searchinput="false"
         :filter="dateFilter"
+         :class="titleclass"
         @search="searchdata"
       ></search-filter>
       <h2 class="mt-5">สรุปยอด กำไร / ขาดทุน</h2>
