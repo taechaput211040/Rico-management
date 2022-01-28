@@ -1,8 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - Agent-Betkub",
-    title: "Agent-Betkub",
+    titleTemplate: "%s - RICO-Smartbet",
+    title: "RICO-Smartbet",
     htmlAttrs: {
       lang: "en"
     },
