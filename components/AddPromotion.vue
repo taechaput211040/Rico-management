@@ -12,7 +12,7 @@
       ></v-col>
       <v-col cols="12" sm="6" md="6">
         <v-file-input
-          v-model="files"
+          v-model="image"
           color="deep-purple accent-4"
           counter
           dense
@@ -33,13 +33,6 @@
             >
               {{ text }}
             </v-chip>
-
-            <span
-              v-else-if="index === 2"
-              class="text-overline grey--text text--darken-3 mx-2"
-            >
-              +{{ files.length - 2 }} File(s)
-            </span>
           </template>
         </v-file-input></v-col
       >
@@ -263,6 +256,428 @@
             </div>
           </v-expansion-panel-content> </v-expansion-panel
         ><!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
+        <!-- /*ตั้งค่าฝากครั้งเเรกของวัน*/ -->
+        <v-expansion-panel class="ma-3 elevation-2">
+          <v-expansion-panel-header
+            @click="settingform('firstdeposit')"
+            color="grey lighten-2"
+          >
+            <div primary-title class="font-weight-bold">
+              ตั้งค่าฝากครั้งเเรกของวัน :
+              <v-btn
+                small
+                color="error"
+                v-if="formfirstdeposit.statustype == false"
+                ><v-icon left>mdi-cog-outline</v-icon> ปิด</v-btn
+              >
+              <v-btn small color="success" v-else
+                ><v-icon left>mdi-cog-outline</v-icon>เปิด</v-btn
+              >
+            </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <div>
+              <v-card-text class="font-weight-bold ">
+                ตั้งค่าโบนัส
+              </v-card-text>
+              <v-row>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ฝากขั้นต่ำ"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ฝากสูงสุด"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-select
+                    hide-details="auto"
+                    outlined
+                    dense
+                    label="โบนัส(%/ค่าคงที่)"
+                  ></v-select
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="จำนวนโบนัส"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="โบนัสสูงสุด"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2"
+                  ><v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="อั้นถอน"
+                  ></v-text-field
+                ></v-col>
+              </v-row>
+            </div>
+            <div>
+              <v-card-text class="font-weight-bold ">
+                ตั้งค่าเทิร์น
+              </v-card-text>
+              <v-row class="mb-4">
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="SLOT"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="Sportbook"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ESPORT"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="HorseRacing"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="casino"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2"
+                  ><v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="lotto"
+                  ></v-text-field
+                ></v-col>
+              </v-row>
+            </div>
+
+            <div class="d-flex align-baseline my-5">
+              <v-switch
+                hide-details="auto"
+                class="mx-5"
+                true-value="on"
+                false-value="off"
+                color="success"
+                v-model="formfirstdeposit.stepbonus"
+                :label="
+                  ` ตั้งค่าโบนัสขั้นบันได :  ${formfirstdeposit.stepbonus.toString()}`
+                "
+              ></v-switch>
+            </div>
+            <div v-show="formfirstdeposit.stepbonus == 'on'">
+              <v-card>
+                <v-data-table
+                  :headers="headernewmember"
+                  :items="formfirstdeposit.multi_player"
+                  hide-default-footer
+                  class="elevation-1"
+                >
+                  <template #[`item.dpmin`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="ฝากต่ำสุด"
+                        v-model="item.dpmin"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                  <template #[`item.dpmax`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="ฝากสูงสุด"
+                        v-model="item.dpmax"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                  <template #[`item.dpbonus`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="โบนัสที่ได้(% / ค่างที่)"
+                        v-model="item.dpbonus"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                </v-data-table>
+              </v-card>
+              <v-card-actions>
+                <v-btn
+                  small
+                  @click="addField(formfirstdeposit.multi_player)"
+                  color="success"
+                  rounded
+                  ><v-icon>mdi-plus</v-icon>เพิ่ม
+                </v-btn>
+                <v-btn
+                  small
+                  v-show="formfirstdeposit.multi_player.length > 1"
+                  @click="removeField(formfirstdeposit.multi_player)"
+                  color="error"
+                  rounded
+                  ><v-icon>mdi-delete</v-icon>ลบ
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <!-- /*ตั้งค่าฝากครั้งเเรกของวัน*/ -->
+        <!-- ตั้ง่คาโบนัสฝากทั้งวัน -->
+        <v-expansion-panel class="ma-3 elevation-2">
+          <v-expansion-panel-header
+            @click="settingform('bonusoneday')"
+            color="grey lighten-2"
+          >
+            <div primary-title class="font-weight-bold">
+              ตั้ง่คาโบนัสฝากทั้งวัน :
+              <v-btn
+                small
+                color="error"
+                v-if="formbonusdponeday.statustype == false"
+                ><v-icon left>mdi-cog-outline</v-icon> ปิด</v-btn
+              >
+              <v-btn small color="success" v-else
+                ><v-icon left>mdi-cog-outline</v-icon>เปิด</v-btn
+              >
+            </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <div>
+              <v-card-text class="font-weight-bold ">
+                ตั้งค่าโบนัส
+              </v-card-text>
+              <v-row>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ฝากขั้นต่ำ"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ฝากสูงสุด"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-select
+                    hide-details="auto"
+                    outlined
+                    dense
+                    label="โบนัส(%/ค่าคงที่)"
+                  ></v-select
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="จำนวนโบนัส"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="โบนัสสูงสุด"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2"
+                  ><v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="อั้นถอน"
+                  ></v-text-field
+                ></v-col>
+              </v-row>
+            </div>
+            <div>
+              <v-card-text class="font-weight-bold ">
+                ตั้งค่าเทิร์น
+              </v-card-text>
+              <v-row class="mb-4">
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="SLOT"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="Sportbook"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ESPORT"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="HorseRacing"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="casino"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2"
+                  ><v-text-field
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="lotto"
+                  ></v-text-field
+                ></v-col>
+              </v-row>
+            </div>
+
+            <div class="d-flex align-baseline my-5">
+              <v-switch
+                hide-details="auto"
+                class="mx-5"
+                true-value="on"
+                false-value="off"
+                color="success"
+                v-model="formbonusdponeday.stepbonus"
+                :label="
+                  ` ตั้งค่าโบนัสขั้นบันได :  ${formbonusdponeday.stepbonus.toString()}`
+                "
+              ></v-switch>
+            </div>
+            <div v-show="formbonusdponeday.stepbonus == 'on'">
+              <v-card>
+                <v-data-table
+                  :headers="headernewmember"
+                  :items="formbonusdponeday.multi_player"
+                  hide-default-footer
+                  class="elevation-1"
+                >
+                  <template #[`item.dpmin`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="ฝากต่ำสุด"
+                        v-model="item.dpmin"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                  <template #[`item.dpmax`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="ฝากสูงสุด"
+                        v-model="item.dpmax"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                  <template #[`item.dpbonus`]="{item}">
+                    <div class="pa-2">
+                      <v-text-field
+                        outlined
+                        dense
+                        hide-details="auto"
+                        label="โบนัสที่ได้(% / ค่างที่)"
+                        v-model="item.dpbonus"
+                        type="number"
+                      />
+                    </div>
+                  </template>
+                </v-data-table>
+              </v-card>
+              <v-card-actions>
+                <v-btn
+                  small
+                  @click="addField(formbonusdponeday.multi_player)"
+                  color="success"
+                  rounded
+                  ><v-icon>mdi-plus</v-icon>เพิ่ม
+                </v-btn>
+                <v-btn
+                  small
+                  v-show="formbonusdponeday.multi_player.length > 1"
+                  @click="removeField(formbonusdponeday.multi_player)"
+                  color="error"
+                  rounded
+                  ><v-icon>mdi-delete</v-icon>ลบ
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <!-- ตั้ง่คาโบนัสฝากทั้งวัน -->
       </v-expansion-panels>
     </v-row>
   </v-card>
@@ -295,18 +710,28 @@ export default {
           class: "grey darken-3 white--text"
         }
       ],
+      formfirstdeposit: {
+        statustype: false,
+        stepbonus: "off",
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
+      },
       formbonusnewmember: {
         statustype: false,
         stepbonus: "off",
         multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
       },
+      formbonusdponeday: {
+        statustype: false,
+        stepbonus: "off",
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
+      },
 
-      files: []
+      image: []
     };
   },
   methods: {
-    addField(value, fieldType) {
-      this.formbonusnewmember.multi_player.push({
+    addField(form) {
+      form.push({
         dpmin: "",
         dpmax: "",
         dpbonus: ""
@@ -316,10 +741,16 @@ export default {
       fieldType.splice(-1);
     },
     settingform(promotion) {
-      if (promotion == "newmember") {
+      if (promotion === "newmember") {
         this.formbonusnewmember.statustype = !this.formbonusnewmember
           .statustype;
         console.log(this.formbonusnewmember.statustype);
+      } else if (promotion === "firstdeposit") {
+        this.formfirstdeposit.statustype = !this.formfirstdeposit.statustype;
+        console.log(this.formfirstdeposit.statustype);
+      } else if (promotion === "bonusoneday") {
+        this.formbonusdponeday.statustype = !this.formbonusdponeday.statustype;
+        console.log(this.formbonusdponeday.statustype);
       }
     }
   }
