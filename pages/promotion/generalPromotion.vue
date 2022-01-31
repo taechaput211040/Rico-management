@@ -23,14 +23,19 @@
           :key="i"
         >
           <div class="card_promotion">
-            <div class=" title_card">
-              <div class="text-right ">
+            <div
+              class="title_card"
+              :class="{ active_card: item.status == true }"
+            
+            >
+              <div class="text-right">
                 <v-tooltip bottom color="success" v-if="item.status == true">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      @click="item.status = !item.status"
                       v-bind="attrs"
                       v-on="on"
-                      color="success"
+                      color="green darken-4"
                       x-small
                       outlined
                       icon
@@ -43,6 +48,7 @@
                 <v-tooltip bottom color="red" v-else>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      @click="item.status = !item.status"
                       v-bind="attrs"
                       v-on="on"
                       color="red"
@@ -144,7 +150,7 @@
                         ><span class="font-weight-bold">ประเภท:</span>
                         {{ detail.bonustype }}</v-col
                       >
-                      <v-col class="col-6 col-md-6"
+                      <v-col class="col-6 col-md-6 col-lg-4"
                         ><span class="font-weight-bold">จำนวนโบนัส:</span>
                         {{ detail.bonusvalue }}</v-col
                       >
@@ -169,7 +175,17 @@
         </v-col>
       </v-row>
       <v-dialog v-model="addPromotion" max-width="1000px">
-        <add-promotion></add-promotion>
+        <v-card class="pa-5"
+          ><add-promotion></add-promotion
+          ><v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary">บันทึก</v-btn>
+            <v-btn color="error" dark>Reset</v-btn>
+            <v-btn color="error" outlined @click="addPromotion = false"
+              >ยกเลิก</v-btn
+            >
+          </v-card-actions></v-card
+        >
       </v-dialog>
     </v-container>
   </v-flex>
@@ -217,7 +233,7 @@ export default {
               promotiontypename: "สมัครสมาชิกใหม่",
               rulestatus: false,
               typestatus: true,
-              wdlimit: 0
+              wdlimit: 0,
             },
             {
               CASINO: 2,
@@ -244,7 +260,7 @@ export default {
               promotiontypename: "ฝากครั้งแรกของวัน",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
+              wdlimit: 0,
             },
             {
               CASINO: 2,
@@ -271,7 +287,7 @@ export default {
               promotiontypename: "ฝากทั้งวัน",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
+              wdlimit: 0,
             },
             ,
             {
@@ -299,9 +315,9 @@ export default {
               promotiontypename: "ฝากต่อเนื่อง",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
-            }
-          ]
+              wdlimit: 0,
+            },
+          ],
         },
         {
           id: 7,
@@ -337,7 +353,7 @@ export default {
               promotiontypename: "สมัครสมาชิกใหม่",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
+              wdlimit: 0,
             },
             {
               CASINO: 2,
@@ -364,7 +380,7 @@ export default {
               promotiontypename: "ฝากครั้งแรกของวัน",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
+              wdlimit: 0,
             },
             {
               CASINO: 30,
@@ -391,7 +407,7 @@ export default {
               promotiontypename: "ฝากทั้งวัน",
               rulestatus: false,
               typestatus: true,
-              wdlimit: 0
+              wdlimit: 0,
             },
             ,
             {
@@ -419,13 +435,13 @@ export default {
               promotiontypename: "ฝากต่อเนื่อง",
               rulestatus: false,
               typestatus: false,
-              wdlimit: 0
-            }
-          ]
-        }
-      ]
+              wdlimit: 0,
+            },
+          ],
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
