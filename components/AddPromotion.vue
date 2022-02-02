@@ -47,7 +47,7 @@
 
       <v-expansion-panels accordion multiple>
         <!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
-        <v-expansion-panel class="ma-3 elevation-2">
+        <v-expansion-panel class="ma-3 elevation-2" >
           <v-expansion-panel-header
             @click="settingform('newmember')"
             color="grey lighten-2"

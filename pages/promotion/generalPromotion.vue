@@ -26,7 +26,6 @@
             <div
               class="title_card"
               :class="{ active_card: item.status == true }"
-            
             >
               <div class="text-right">
                 <v-tooltip bottom color="success" v-if="item.status == true">
@@ -65,6 +64,7 @@
                 <v-tooltip bottom color="warning">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      @click="editPromotion(item)"
                       v-bind="attrs"
                       v-on="on"
                       color="warning"
@@ -77,6 +77,7 @@
                   >
                   <span>แก้ไขโปรโมชัน</span>
                 </v-tooltip>
+
                 <v-tooltip bottom color="error">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -187,6 +188,19 @@
           </v-card-actions></v-card
         >
       </v-dialog>
+      <v-dialog v-model="EditPromotion" max-width="1000px">
+        <v-card class="pa-5">
+          <edit-promotion :renderdata="itemedit"></edit-promotion>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary">บันทึก</v-btn>
+            <v-btn color="error" dark>Reset</v-btn>
+            <v-btn color="error" outlined @click="EditPromotion = false"
+              >ยกเลิก</v-btn
+            >
+          </v-card-actions></v-card
+        >
+      </v-dialog>
     </v-container>
   </v-flex>
 </template>
@@ -197,6 +211,8 @@ export default {
   components: { AddPromotion },
   data() {
     return {
+      itemedit: [],
+      EditPromotion: false,
       addPromotion: false,
       itempromotion: [
         {
@@ -231,6 +247,7 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "สมัครสมาชิกใหม่",
+              newmemberRule: [{ id: 157, mindp: 0, maxdp: 0, bonusvalue: 0 }],
               rulestatus: false,
               typestatus: true,
               wdlimit: 0,
@@ -258,6 +275,9 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "ฝากครั้งแรกของวัน",
+              firstdepositRule: [
+                { id: 158, mindp: 0, maxdp: 0, bonusvalue: 0 },
+              ],
               rulestatus: false,
               typestatus: false,
               wdlimit: 0,
@@ -285,6 +305,7 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "ฝากทั้งวัน",
+              newmemberRule: [{ id: 157, mindp: 0, maxdp: 0, bonusvalue: 0 }],
               rulestatus: false,
               typestatus: false,
               wdlimit: 0,
@@ -313,6 +334,7 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "ฝากต่อเนื่อง",
+              alldayRule: [{ id: 159, mindp: 0, maxdp: 0, bonusvalue: 0 }],
               rulestatus: false,
               typestatus: false,
               wdlimit: 0,
@@ -441,6 +463,12 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    editPromotion(promotion) {
+      this.EditPromotion = true;
+      this.itemedit = promotion;
+    },
   },
 };
 </script>
