@@ -188,18 +188,22 @@
           </v-card-actions></v-card
         >
       </v-dialog>
-      <v-dialog v-model="EditPromotion" max-width="1000px">
+      <v-dialog v-model="EditPromotion" max-width="1000px" persistent>
         <v-card class="pa-5">
-          <edit-promotion :renderdata="itemedit"></edit-promotion>
+          <EditPromotion
+            :renderdata="itemedit"
+            @close="closeEditpromotion()"
+            @save="saveEdit()"
+            :Panel="openedPanel"
+          />
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary">บันทึก</v-btn>
-            <v-btn color="error" dark>Reset</v-btn>
-            <v-btn color="error" outlined @click="EditPromotion = false"
+            <v-btn color="error" outlined @click="closeEditpromotion"
               >ยกเลิก</v-btn
             >
-          </v-card-actions></v-card
-        >
+          </v-card-actions>
+        </v-card>
       </v-dialog>
     </v-container>
   </v-flex>
@@ -214,6 +218,7 @@ export default {
       itemedit: [],
       EditPromotion: false,
       addPromotion: false,
+      openedPanel: [],
       itempromotion: [
         {
           id: 3,
@@ -305,7 +310,7 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "ฝากทั้งวัน",
-              newmemberRule: [{ id: 157, mindp: 0, maxdp: 0, bonusvalue: 0 }],
+              alldayRule: [{ id: 157, mindp: 0, maxdp: 0, bonusvalue: 0 }],
               rulestatus: false,
               typestatus: false,
               wdlimit: 0,
@@ -334,7 +339,6 @@ export default {
               maxdp: 100000,
               mindp: 0,
               promotiontypename: "ฝากต่อเนื่อง",
-              alldayRule: [{ id: 159, mindp: 0, maxdp: 0, bonusvalue: 0 }],
               rulestatus: false,
               typestatus: false,
               wdlimit: 0,
@@ -456,7 +460,7 @@ export default {
               mindp: 0,
               promotiontypename: "ฝากต่อเนื่อง",
               rulestatus: false,
-              typestatus: false,
+              typestatus: true,
               wdlimit: 0,
             },
           ],
@@ -464,11 +468,37 @@ export default {
       ],
     };
   },
+  computed: {
+    panalCheck(val) {
+      if (val) {
+        return this.openedPanel;
+      }
+    },
+  },
   methods: {
-    editPromotion(promotion) {
+    async selectionedit(data) {
+      let item = data.detail;
+      for (let i = 0; i <= item.length; i++) {
+        if (item[i] != null) {
+          if (item[i].typestatus == true) {
+            this.openedPanel.push(i);
+          } else if (item[i].typestatus == false) {
+            this.openedPanel.splice(i, 1);
+          }
+        }
+      }
+      console.log(this.openedPanel.length);
+    },
+    async editPromotion(promotion) {
       this.EditPromotion = true;
       this.itemedit = promotion;
+      await this.selectionedit(promotion);
     },
+    async closeEditpromotion() {
+      this.openedPanel = [];
+      this.EditPromotion = false;
+    },
+    async saveEdit() {},
   },
 };
 </script>
