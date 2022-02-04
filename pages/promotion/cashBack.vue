@@ -20,7 +20,7 @@
 
       <v-card
         width="100%"
-        class="elevation-4 mt-5 pa-4 rounded-lg"
+        class="elevation-4 mt-5 pa-4 rounded-lg font-weight-bold"
         v-if="cashback.status == 1"
       >
         <v-row
@@ -60,7 +60,7 @@
               </v-file-input>
             </div>
           </v-col>
-          <v-col cols="12" sm="6" > 
+          <v-col cols="12" sm="6">
             <v-row class="pa-md-3 my-auto">
               <v-col sm="4" cols="12">
                 เลือกการรับรายได้
@@ -200,23 +200,22 @@ export default {
         step: 5,
         update_by: "RICO",
         updated_at: "2022-01-16T05:18:59.000000Z",
-        wdlimit_multiply: 1000000,
+        wdlimit_multiply: 1000000
       },
       typeselect: "รับได้รายวัน",
       itemstype: [
         { value: "DAY", text: "รับได้รายวัน" },
         { value: "WEEK", text: "รับได้รายสัปดาห์" },
-        { value: "MOUNTH", text: "รับได้รายเดือน" },
-      ],
+        { value: "MOUNTH", text: "รับได้รายเดือน" }
+      ]
     };
   },
   methods: {
     switchstatus() {
       console.log("ho");
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

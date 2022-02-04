@@ -220,43 +220,42 @@ export default {
         },
         {
           title: "ตั้งค่า Feature",
-          to: "/downline/Senior",
           icon: "mdi-gamepad-variant-outline",
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "เครดิตฟรี",
-              to: "/member/register"
+              to: "/feature/creditfree"
             },
             {
               icon: "mdi-view-dashboard",
               text: "กงล้อนำโชค",
-              to: "/account/reportmember"
+              to: "/feature/wheel"
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดไพ่6ใบ",
-              to: "/account/info"
+              to: "/feature/sixcard"
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดหีบสมบัติ",
-              to: "/account/info"
+              to: "/feature/chest"
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คอินรายวัน",
-              to: "/account/info"
+              to: "/feature/checkindaily"
             },
             {
               icon: "mdi-view-dashboard",
               text: "สะสมเเต้ม",
-              to: "/account/info"
+              to: "/feature/point"
             },
             {
               icon: "mdi-view-dashboard",
               text: "ของพรีเมียม",
-              to: "/account/info"
+              to: "/feature/premiumn"
             }
           ]
         },

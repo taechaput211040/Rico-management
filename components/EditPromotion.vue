@@ -39,11 +39,7 @@
         </v-file-input></v-col
       >
       <div class="text-center">
-        <img
-          :src="renderdata.promotionpic"
-          alt=""
-          class="img_promotion"
-        />
+        <img :src="renderdata.promotionpic" alt="" class="img_promotion" />
       </div>
       <v-col cols="12">
         <v-textarea
@@ -190,7 +186,9 @@
                       class="mx-5"
                       color="success"
                       v-model="item.durationstatus"
-                      :label="` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`"
+                      :label="
+                        ` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`
+                      "
                     ></v-switch>
                     <div
                       class="col-md-5 col-12 row"
@@ -221,7 +219,6 @@
                     </div>
                   </v-col>
                 </v-row>
-
                 <div>
                   <v-card-text class="font-weight-bold">
                     ตั้งค่าเทิร์น
@@ -288,8 +285,8 @@
                   class="d-flex align-baseline my-5"
                   v-if="
                     item.newmemberRule ||
-                    item.firstdepositRule ||
-                    item.alldayRule
+                      item.firstdepositRule ||
+                      item.alldayRule
                   "
                 >
                   <v-switch
@@ -297,7 +294,9 @@
                     class="mx-5"
                     color="success"
                     v-model="item.rulestatus"
-                    :label="` ตั้งค่าโบนัสขั้นบันได :  ${item.rulestatus.toString()}`"
+                    :label="
+                      ` ตั้งค่าโบนัสขั้นบันได :  ${item.rulestatus.toString()}`
+                    "
                   ></v-switch>
                 </div>
                 <div v-show="item.rulestatus == true">
@@ -507,13 +506,13 @@ export default {
     Panel: {
       type: [Array, String],
       default: [],
-      required: true,
+      required: true
     },
     renderdata: {
       type: [Array, Object],
       default: null,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -524,47 +523,47 @@ export default {
           value: "mindp",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text",
+          class: "grey darken-3 white--text"
         },
         {
           text: "ฝากสูงสุด",
           value: "maxdp",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text",
+          class: "grey darken-3 white--text"
         },
         {
           text: "โบนัสที่ได้(%/ค่าคงที่)",
           value: "bonusvalue",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text",
-        },
+          class: "grey darken-3 white--text"
+        }
       ],
       formfirstdeposit: {
         statustype: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
       },
       formbonusnewmember: {
         statustype: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
       },
       formbonusdponeday: {
         statustype: false,
         timebonusStatus: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
       },
       formdeposit7day: {
         statustype: false,
         timebonusStatus: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
       },
 
-      image: [],
+      image: []
     };
   },
   computed: {
@@ -572,14 +571,14 @@ export default {
       if (val) {
         return this.Panel;
       }
-    },
+    }
   },
   methods: {
     addField(form) {
       form.push({
         mindp: "",
         maxdp: "",
-        bonusvalue: "",
+        bonusvalue: ""
       });
     },
     removeField(fieldType) {
@@ -587,8 +586,8 @@ export default {
     },
     settingform(item) {
       item.typestatus = !item.typestatus;
-    },
-  },
+    }
+  }
 };
 </script>
 
