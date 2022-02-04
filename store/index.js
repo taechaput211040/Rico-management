@@ -10,6 +10,7 @@ import moment from "moment";
 Vue.use(VueSweetalert2);
 
 Vue.prototype.$moment = moment;
+
 Vue.use(ElementUI, { locale });
 export default function() {
   const Store = new Vuex.Store({

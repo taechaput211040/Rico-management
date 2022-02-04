@@ -190,42 +190,42 @@
               <v-card>
                 <v-data-table
                   :headers="headernewmember"
-                  :items="formbonusnewmember.multi_player"
+                  :items="formbonusnewmember.newmemberRule"
                   hide-default-footer
                   class="elevation-1"
                 >
-                  <template #[`item.dpmin`]="{ item }">
+                  <template #[`item.mindp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากต่ำสุด"
-                        v-model="item.dpmin"
+                        v-model="item.mindp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpmax`]="{ item }">
+                  <template #[`item.maxdp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากสูงสุด"
-                        v-model="item.dpmax"
+                        v-model="item.maxdp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpbonus`]="{ item }">
+                  <template #[`item.bonusvalue`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="โบนัสที่ได้(% / ค่างที่)"
-                        v-model="item.dpbonus"
+                        v-model="item.bonusvalue"
                         type="number"
                       />
                     </div>
@@ -235,15 +235,15 @@
               <v-card-actions>
                 <v-btn
                   small
-                  @click="addField(formbonusnewmember.multi_player)"
+                  @click="addField(formbonusnewmember.newmemberRule)"
                   color="success"
                   rounded
                   ><v-icon>mdi-plus</v-icon>เพิ่ม
                 </v-btn>
                 <v-btn
                   small
-                  v-show="formbonusnewmember.multi_player.length > 1"
-                  @click="removeField(formbonusnewmember.multi_player)"
+                  v-show="formbonusnewmember.newmemberRule.length > 1"
+                  @click="removeField(formbonusnewmember.newmemberRule)"
                   color="error"
                   rounded
                   ><v-icon>mdi-delete</v-icon>ลบ
@@ -396,42 +396,42 @@
               <v-card>
                 <v-data-table
                   :headers="headernewmember"
-                  :items="formfirstdeposit.multi_player"
+                  :items="formfirstdeposit.firstdepositRule"
                   hide-default-footer
                   class="elevation-1"
                 >
-                  <template #[`item.dpmin`]="{ item }">
+                  <template #[`item.mindp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากต่ำสุด"
-                        v-model="item.dpmin"
+                        v-model="item.mindp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpmax`]="{ item }">
+                  <template #[`item.maxdp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากสูงสุด"
-                        v-model="item.dpmax"
+                        v-model="item.maxdp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpbonus`]="{ item }">
+                  <template #[`item.bonusvalue`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="โบนัสที่ได้(% / ค่างที่)"
-                        v-model="item.dpbonus"
+                        v-model="item.bonusvalue"
                         type="number"
                       />
                     </div>
@@ -441,15 +441,15 @@
               <v-card-actions>
                 <v-btn
                   small
-                  @click="addField(formfirstdeposit.multi_player)"
+                  @click="addField(formfirstdeposit.firstdepositRule)"
                   color="success"
                   rounded
                   ><v-icon>mdi-plus</v-icon>เพิ่ม
                 </v-btn>
                 <v-btn
                   small
-                  v-show="formfirstdeposit.multi_player.length > 1"
-                  @click="removeField(formfirstdeposit.multi_player)"
+                  v-show="formfirstdeposit.firstdepositRule.length > 1"
+                  @click="removeField(formfirstdeposit.firstdepositRule)"
                   color="error"
                   rounded
                   ><v-icon>mdi-delete</v-icon>ลบ
@@ -649,42 +649,42 @@
               <v-card>
                 <v-data-table
                   :headers="headernewmember"
-                  :items="formbonusdponeday.multi_player"
+                  :items="formbonusdponeday.alldayRule"
                   hide-default-footer
                   class="elevation-1"
                 >
-                  <template #[`item.dpmin`]="{ item }">
+                  <template #[`item.mindp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากต่ำสุด"
-                        v-model="item.dpmin"
+                        v-model="item.mindp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpmax`]="{ item }">
+                  <template #[`item.maxdp`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="ฝากสูงสุด"
-                        v-model="item.dpmax"
+                        v-model="item.maxdp"
                         type="number"
                       />
                     </div>
                   </template>
-                  <template #[`item.dpbonus`]="{ item }">
+                  <template #[`item.bonusvalue`]="{ item }">
                     <div class="pa-2">
                       <v-text-field
                         outlined
                         dense
                         hide-details="auto"
                         label="โบนัสที่ได้(% / ค่างที่)"
-                        v-model="item.dpbonus"
+                        v-model="item.bonusvalue"
                         type="number"
                       />
                     </div>
@@ -694,15 +694,15 @@
               <v-card-actions>
                 <v-btn
                   small
-                  @click="addField(formbonusdponeday.multi_player)"
+                  @click="addField(formbonusdponeday.alldayRule)"
                   color="success"
                   rounded
                   ><v-icon>mdi-plus</v-icon>เพิ่ม
                 </v-btn>
                 <v-btn
                   small
-                  v-show="formbonusdponeday.multi_player.length > 1"
-                  @click="removeField(formbonusdponeday.multi_player)"
+                  v-show="formbonusdponeday.alldayRule.length > 1"
+                  @click="removeField(formbonusdponeday.alldayRule)"
                   color="error"
                   rounded
                   ><v-icon>mdi-delete</v-icon>ลบ
@@ -839,21 +839,21 @@ export default {
       headernewmember: [
         {
           text: "ฝากต่ำสุด",
-          value: "dpmin",
+          value: "mindp",
           align: "center",
           sortable: false,
           class: "grey darken-3 white--text",
         },
         {
           text: "ฝากสูงสุด",
-          value: "dpmax",
+          value: "maxdp",
           align: "center",
           sortable: false,
           class: "grey darken-3 white--text",
         },
         {
           text: "โบนัสที่ได้(%/ค่าคงที่)",
-          value: "dpbonus",
+          value: "bonusvalue",
           align: "center",
           sortable: false,
           class: "grey darken-3 white--text",
@@ -862,24 +862,24 @@ export default {
       formfirstdeposit: {
         statustype: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+       firstdepositRule: [{ mindp: "", maxdp: "", bonusvalue: "" }],
       },
       formbonusnewmember: {
         statustype: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        newmemberRule: [{ mindp: "", maxdp: "", bonusvalue: "" }],
       },
       formbonusdponeday: {
         statustype: false,
         timebonusStatus: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        alldayRule: [{ mindp: "", maxdp: "", bonusvalue: "" }],
       },
       formdeposit7day: {
         statustype: false,
         timebonusStatus: false,
         stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }],
+        multi_player: [{ mindp: "", maxdp: "", bonusvalue: "" }],
       },
 
       image: [],

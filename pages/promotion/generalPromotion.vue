@@ -81,6 +81,7 @@
                 <v-tooltip bottom color="error">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      @click="deletePromotion(item)"
                       color="error"
                       v-bind="attrs"
                       v-on="on"
@@ -210,6 +211,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import AddPromotion from "../../components/AddPromotion.vue";
 export default {
   components: { AddPromotion },
@@ -476,6 +478,26 @@ export default {
     },
   },
   methods: {
+    deletePromotion() {
+      Swal.fire({
+        title: "ลบโปรโมชั่นนี้หรือไม่",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ลบ",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            icon: "success",
+            confirmButtonColor: "red",
+            title: "ลบเสร็จสิ้น",
+            confirmButtonText: "ปิด",
+          });
+        }
+      });
+    },
     async selectionedit(data) {
       let item = data.detail;
       for (let i = 0; i <= item.length; i++) {
@@ -487,7 +509,6 @@ export default {
           }
         }
       }
-      console.log(this.openedPanel.length);
     },
     async editPromotion(promotion) {
       this.EditPromotion = true;

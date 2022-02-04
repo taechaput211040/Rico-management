@@ -38,6 +38,13 @@
           </template>
         </v-file-input></v-col
       >
+      <div class="text-center">
+        <img
+          :src="renderdata.promotionpic"
+          alt=""
+          class="img_promotion"
+        />
+      </div>
       <v-col cols="12">
         <v-textarea
           outlined
@@ -80,7 +87,45 @@
                 <v-card-text class="font-weight-bold">
                   ตั้งค่าโบนัส
                 </v-card-text>
-                <v-row>
+                <v-row v-if="item.promotiontypename == 'ฝากต่อเนื่อง'">
+                  <v-col cols="6" sm="3">
+                    <v-text-field
+                      outlined
+                      dense
+                      hide-details="auto"
+                      label="ยอดฝากต่อวัน"
+                      v-model="item.deposit"
+                    ></v-text-field
+                  ></v-col>
+                  <v-col cols="6" sm="3">
+                    <v-text-field
+                      outlined
+                      v-model="item.bonuscount"
+                      dense
+                      hide-details="auto"
+                      label="โบนัสที่ได้"
+                    ></v-text-field
+                  ></v-col>
+                  <v-col cols="6" sm="3">
+                    <v-select
+                      hide-details="auto"
+                      outlined
+                      dense
+                      v-model="item.days"
+                      label="จำนวนวันที่ฝากต่อเนื่อง"
+                    ></v-select
+                  ></v-col>
+                  <v-col cols="6" sm="3">
+                    <v-text-field
+                      outlined
+                      dense
+                      v-model="item.wdlimit"
+                      hide-details="auto"
+                      label="อั้นถอน(เท่า)"
+                    ></v-text-field
+                  ></v-col>
+                </v-row>
+                <v-row v-if="item.promotiontypename !== 'ฝากต่อเนื่อง'">
                   <v-col cols="6" sm="2">
                     <v-text-field
                       outlined
@@ -136,7 +181,47 @@
                       label="อั้นถอน"
                     ></v-text-field
                   ></v-col>
+                  <v-col
+                    cols="12"
+                    v-if="item.promotiontypename == 'ฝากทั้งวัน'"
+                  >
+                    <v-switch
+                      hide-details="auto"
+                      class="mx-5"
+                      color="success"
+                      v-model="item.durationstatus"
+                      :label="` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`"
+                    ></v-switch>
+                    <div
+                      class="col-md-5 col-12 row"
+                      v-if="item.durationstatus == true"
+                    >
+                      <v-col cols="6">
+                        <el-time-picker
+                          class="full-width"
+                          format="HH:mm"
+                          arrow-control
+                          v-model="item.bonusdurationFrom"
+                          placeholder="เวลาเริ่ม"
+                          style="width: 100%"
+                        >
+                        </el-time-picker>
+                      </v-col>
+                      <v-col cols="6">
+                        <el-time-picker
+                          class="full-width"
+                          format="HH:mm"
+                          arrow-control
+                          v-model="item.bonusdurationTo"
+                          placeholder="เวลาสิ้นสุด"
+                          style="width: 100%"
+                        >
+                        </el-time-picker>
+                      </v-col>
+                    </div>
+                  </v-col>
                 </v-row>
+
                 <div>
                   <v-card-text class="font-weight-bold">
                     ตั้งค่าเทิร์น
@@ -260,6 +345,23 @@
                         </div>
                       </template>
                     </v-data-table>
+                    <v-card-actions>
+                      <v-btn
+                        small
+                        @click="addField(item.newmemberRule)"
+                        color="success"
+                        rounded
+                        ><v-icon>mdi-plus</v-icon>เพิ่ม
+                      </v-btn>
+                      <v-btn
+                        small
+                        v-show="item.newmemberRule.length > 1"
+                        @click="removeField(item.newmemberRule)"
+                        color="error"
+                        rounded
+                        ><v-icon>mdi-delete</v-icon>ลบ
+                      </v-btn>
+                    </v-card-actions>
                   </v-card>
                   <v-card v-if="item.firstdepositRule">
                     <v-data-table
@@ -305,6 +407,23 @@
                         </div>
                       </template>
                     </v-data-table>
+                    <v-card-actions>
+                      <v-btn
+                        small
+                        @click="addField(item.firstdepositRule)"
+                        color="success"
+                        rounded
+                        ><v-icon>mdi-plus</v-icon>เพิ่ม
+                      </v-btn>
+                      <v-btn
+                        small
+                        v-show="item.firstdepositRule.length > 1"
+                        @click="removeField(item.firstdepositRule)"
+                        color="error"
+                        rounded
+                        ><v-icon>mdi-delete</v-icon>ลบ
+                      </v-btn>
+                    </v-card-actions>
                   </v-card>
                   <v-card v-if="item.alldayRule">
                     <v-data-table
@@ -350,6 +469,23 @@
                         </div>
                       </template>
                     </v-data-table>
+                    <v-card-actions>
+                      <v-btn
+                        small
+                        @click="addField(item.alldayRule)"
+                        color="success"
+                        rounded
+                        ><v-icon>mdi-plus</v-icon>เพิ่ม
+                      </v-btn>
+                      <v-btn
+                        small
+                        v-show="item.alldayRule.length > 1"
+                        @click="removeField(item.alldayRule)"
+                        color="error"
+                        rounded
+                        ><v-icon>mdi-delete</v-icon>ลบ
+                      </v-btn>
+                    </v-card-actions>
                   </v-card>
                 </div>
               </v-expansion-panel-content>
@@ -441,9 +577,9 @@ export default {
   methods: {
     addField(form) {
       form.push({
-        dpmin: "",
-        dpmax: "",
-        dpbonus: "",
+        mindp: "",
+        maxdp: "",
+        bonusvalue: "",
       });
     },
     removeField(fieldType) {
