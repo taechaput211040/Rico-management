@@ -13,98 +13,116 @@
               {{ index + 1 }}
             </span>
           </template>
-          <template #[`item.action`]>
-            <v-btn color="purple darken-4" rounded dark small>ตั้งค่า</v-btn>
+          <template #[`item.action`]="{item}">
+            <v-btn
+              color="purple darken-4"
+              rounded
+              dark
+              small
+              @click="setting(item)"
+              >ตั้งค่า</v-btn
+            >
+          </template>
+          <template #[`item.status`]="{item}">
+            <v-chip color="error" outlined dark v-if="item.status == '0'">
+              <v-icon left>mdi-circle</v-icon>
+              ไม่อนุญาต
+            </v-chip>
+            <v-chip color="success" outlined dark v-if="item.status == '1'">
+              <v-icon left>mdi-circle</v-icon>
+              อนุญาต
+            </v-chip>
           </template>
         </v-data-table>
       </v-card>
 
       <div class=" mt-3">
-        <!-- setting Modal -->
-        <!-- <b-modal
-          id="setting-roulette"
-          hide-header
-          @ok="settingOk"
-          @cancel="cancel"
-          no-close-on-backdrop
-        >
-          <div class="topic m-2">
-            <h4>ตั้งค่ากงล้อเสี่ยงโชค : หมายเลข {{ no }}</h4>
-          </div>
-          <hr />
-
-          <b-row class="my-1">
-            <b-col sm="4" class="col-6 col-md-4">
-              <label for="input-small">ชื่อรางวัล:</label>
-            </b-col>
-            <b-col sm="8" class="col-6 col-md-8">
-              <b-form-input
-                required
-                v-model="settingitem.title"
-                size="sm"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-
-          <b-row class="my-1">
-            <b-col sm="4" class="col-6 col-md-4">
-              <label for="input-small">ยอดเงินรางวัล:</label>
-            </b-col>
-            <b-col sm="8" class="col-6 col-md-8">
-              <b-form-input
-                required
-                v-model="settingitem.credit"
-                type="number"
-                size="sm"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="4" class="col-6 col-md-4">
-              <label for="input-small">โอกาสถูก(%):</label>
-            </b-col>
-            <b-col sm="8" class="col-6 col-md-8">
-              <b-form-input
-                v-model="settingitem.award_percent"
-                type="number"
-                size="sm"
-                required
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="4" class="col-6 col-md-4">
-              <label for="input-small">อนุญาตออกรางวัล:</label>
-            </b-col>
-            <b-col sm="8" class="col-6 col-md-8">
-              <div>
-                <div
+        <v-dialog v-model="setting_roulette" max-width="600px" height="auto">
+          <v-card class="pa-5 font-weight-bold">
+            <v-card-title>
+              <h3 class="font-weight-bold py-3 mx-auto">
+                ตั้งค่ากงล้อเสี่ยงโชค
+              </h3>
+            </v-card-title>
+            <v-row class="my-1">
+              <v-col cols="12">
+                ชื่อรางวัล:
+                <v-text-field
+                  required
+                  v-model="settingitem.title"
+                  dense
+                  hide-details="auto"
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                ยอดเงินรางวัล:
+                <v-text-field
+                  required
+                  v-model="settingitem.credit"
+                  type="number"
+                  dense
+                  outlined
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                โอกาสถูก(%):
+                <v-text-field
+                  v-model="settingitem.award_percent"
+                  type="number"
+                  hide-details="auto"
+                  dense
+                  outlined
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                อนุญาตออกรางวัล:
+                <v-btn
+                  color="error"
+                  dark
+                  small
                   v-if="settingitem.status == '0'"
                   @click="Toggle(settingitem.status)"
-                  class="btn unactive"
                 >
                   ไม่อนุญาต
-                </div>
-                <div
+                </v-btn>
+                <v-btn
+                  color="success"
+                  dark
+                  small
                   v-if="settingitem.status == '1'"
                   @click="Toggle(settingitem.status)"
-                  class="btn active"
                 >
                   อนุญาต
-                </div>
-              </div>
-            </b-col>
-          </b-row>
-        </b-modal> -->
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-card-actions class="text-center mx-auto">
+              <v-btn @click="settingOk" color="primary" class="ml-auto"
+                >บันทึก</v-btn
+              >
+              <v-btn @click="cancel" color="grey" dark class="mr-auto"
+                >ยกเลิก</v-btn
+              >
+            </v-card-actions>
+          </v-card></v-dialog
+        >
+
+     
         <h3 class="my-4">ตั้งค่าเทิร์น & อั้นถอน</h3>
         <v-card class="pa-3">
           <div class="forum-input">
             <form @submit.prevent="submitform" autocomplete="off">
               <div class="row ">
-                <div class="col-12 col-md-4 p-md-4 p-3">
+            <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   อั้นถอน(เป็นจำนวนเท่า) :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     type="number"
                     v-model="$v.turn.wdlimit.$model"
                     required
@@ -129,10 +147,12 @@
                     **ไม่อั้นถอน**
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น SlOT :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     type="number"
                     v-model="$v.turn.SLOT.$model"
                     required
@@ -147,10 +167,12 @@
                     จำนวนเทิร์นเริ่มต้น 1 เทิร์น
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น Sportbook :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     v-model="$v.turn.FOOTBALL.$model"
                     type="number"
                     required
@@ -167,10 +189,12 @@
                     จำนวนเทิร์นเริ่มต้น 1 เทิร์น
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น Esport :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     v-model="$v.turn.ESPORT.$model"
                     type="number"
                     required
@@ -185,10 +209,12 @@
                     จำนวนเทิร์นเริ่มต้น 1 เทิร์น
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                 <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น HorseRacing :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     v-model="$v.turn.HORSERACING.$model"
                     type="number"
                     required
@@ -205,10 +231,12 @@
                     จำนวนเทิร์นเริ่มต้น 1 เทิร์น
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น Casino :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     type="number"
                     v-model="$v.turn.CASINO.$model"
                     required
@@ -223,10 +251,12 @@
                     จำนวนเทิร์นเริ่มต้น 1 เทิร์น
                   </div>
                 </div>
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   เทิร์น Lotto :<br />
                   <v-text-field
+                    dense
                     hide-details="auto"
+                    outlined
                     type="number"
                     v-model="$v.turn.LOTTO.$model"
                     required
@@ -242,12 +272,15 @@
                   </div>
                 </div>
 
-                <div class="col-12 col-md-4 p-md-4 p-3">
+                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                   สามารถรับได้ :<br />
                   <v-select
                     v-model="$v.turn.rate.$model"
                     class="style-select"
                     :items="selectRate"
+                    dense
+                    hide-details="auto"
+                    outlined
                   ></v-select>
                   <div
                     class="validate"
@@ -257,7 +290,7 @@
                   </div>
                 </div>
               </div>
-              <v-btn color="primary" type="submit" class="py-3">
+              <v-btn color="primary" type="submit" class="py-3 mt-3">
                 บันทึก
               </v-btn>
             </form>
@@ -369,6 +402,7 @@ export default {
         }
       ],
       no: 0,
+      setting_roulette: false,
       status: 0,
       roullet: [],
       settingitem: {},
@@ -392,7 +426,8 @@ export default {
         SLOT: 5,
         wdlimit: 10,
         rate: 0
-      }
+      },
+      settingitem: []
     };
   },
 
@@ -423,6 +458,10 @@ export default {
       this.settingitem = item;
       this.no = index + 1;
     },
+    setting(item) {
+      this.settingitem = item;
+      this.setting_roulette = true;
+    },
     async settingOk() {
       await this.$axios
         .$put(
@@ -447,6 +486,7 @@ export default {
         )
         .then(() => {
           this.$swal("", "ตั้งค่าเสร็จสิ้น", "success");
+          this.setting_roulette = false;
           this.$fetch();
         })
         .catch(err => {
@@ -462,6 +502,7 @@ export default {
       }
     },
     cancel() {
+      this.setting_roulette = false;
       this.$fetch();
     },
     submitform() {

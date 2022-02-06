@@ -261,7 +261,7 @@ export default {
         },
         {
           title: "ตั้งค่าระบบ",
-          to: "/downline/Agent",
+          to: "/system",
           icon: "mdi-cog-outline"
         },
         {
@@ -271,17 +271,17 @@ export default {
         },
         {
           title: "รายชื่อมิจฉาชีพ",
-          to: "/setting",
+          to: "/CriminalList",
           icon: "mdi-gamepad-square"
         },
         {
           title: "พนักงาน",
-          to: "/setting",
+          to: "/employee",
           icon: "mdi-gamepad-square"
         },
         {
           title: "ธนาคาร",
-          to: "/setting",
+          to: "/companyBank",
           icon: "mdi-gamepad-square"
         },
         {
