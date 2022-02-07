@@ -2,300 +2,321 @@
   <div>
     <div class="container">
       <h3>ตั้งค่ากงล้อเสี่ยงโชค</h3>
-      <v-card class="mt-3">
-        <v-data-table
-          hide-default-footer
-          :headers="wheelHeader"
-          :items="roullet"
-        >
-          <template #[`item.no`]="{index}">
-            <span class="font-weight-bold">
-              {{ index + 1 }}
-            </span>
-          </template>
-          <template #[`item.action`]="{item}">
-            <v-btn
-              color="purple darken-4"
-              rounded
-              dark
-              small
-              @click="setting(item)"
-              >ตั้งค่า</v-btn
-            >
-          </template>
-          <template #[`item.status`]="{item}">
-            <v-chip color="error" outlined dark v-if="item.status == '0'">
-              <v-icon left>mdi-circle</v-icon>
-              ไม่อนุญาต
-            </v-chip>
-            <v-chip color="success" outlined dark v-if="item.status == '1'">
-              <v-icon left>mdi-circle</v-icon>
-              อนุญาต
-            </v-chip>
-          </template>
-        </v-data-table>
+      <v-card
+        class="col-md-3 col-12 elevation-2 mt-5 pa-4 rounded-lg text-center"
+      >
+        <span class="font-weight-bold">สถานะการใช้งาน</span>
+        <v-switch
+          hide-details="auto"
+          class="mx-5 mt-2"
+          color="success"
+          :label="`สถานะ`"
+          v-model="status"
+          @change="switchstatus(status)"
+        ></v-switch>
       </v-card>
-
-      <div class=" mt-3">
-        <v-dialog v-model="setting_roulette" max-width="600px" height="auto">
-          <v-card class="pa-5 font-weight-bold">
-            <v-card-title>
-              <h3 class="font-weight-bold py-3 mx-auto">
-                ตั้งค่ากงล้อเสี่ยงโชค
-              </h3>
-            </v-card-title>
-            <v-row class="my-1">
-              <v-col cols="12">
-                ชื่อรางวัล:
-                <v-text-field
-                  required
-                  v-model="settingitem.title"
-                  dense
-                  hide-details="auto"
-                  outlined
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                ยอดเงินรางวัล:
-                <v-text-field
-                  required
-                  v-model="settingitem.credit"
-                  type="number"
-                  dense
-                  outlined
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                โอกาสถูก(%):
-                <v-text-field
-                  v-model="settingitem.award_percent"
-                  type="number"
-                  hide-details="auto"
-                  dense
-                  outlined
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                อนุญาตออกรางวัล:
-                <v-btn
-                  color="error"
-                  dark
-                  small
-                  v-if="settingitem.status == '0'"
-                  @click="Toggle(settingitem.status)"
-                >
-                  ไม่อนุญาต
-                </v-btn>
-                <v-btn
-                  color="success"
-                  dark
-                  small
-                  v-if="settingitem.status == '1'"
-                  @click="Toggle(settingitem.status)"
-                >
-                  อนุญาต
-                </v-btn>
-              </v-col>
-            </v-row>
-            <v-divider></v-divider>
-            <v-card-actions class="text-center mx-auto">
-              <v-btn @click="settingOk" color="primary" class="ml-auto"
-                >บันทึก</v-btn
+      <div v-if="status == true">
+        <v-card class="mt-3">
+          <v-data-table
+            hide-default-footer
+            :headers="wheelHeader"
+            :items="roullet"
+          >
+            <template #[`item.no`]="{index}">
+              <span class="font-weight-bold">
+                {{ index + 1 }}
+              </span>
+            </template>
+            <template #[`item.action`]="{item}">
+              <v-btn
+                color="purple darken-4"
+                rounded
+                class="btn_sty"
+                dark
+                small
+                @click="setting(item)"
+                >ตั้งค่า</v-btn
               >
-              <v-btn @click="cancel" color="grey" dark class="mr-auto"
-                >ยกเลิก</v-btn
-              >
-            </v-card-actions>
-          </v-card></v-dialog
-        >
-
-     
-        <h3 class="my-4">ตั้งค่าเทิร์น & อั้นถอน</h3>
-        <v-card class="pa-3">
-          <div class="forum-input">
-            <form @submit.prevent="submitform" autocomplete="off">
-              <div class="row ">
-            <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  อั้นถอน(เป็นจำนวนเท่า) :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    type="number"
-                    v-model="$v.turn.wdlimit.$model"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.wdlimit.required & $v.turn.wdlimit.$dirty"
-                  >
-                    กรุณาใส่จำนวนอั้นถอน
-                  </div>
-                  <div class="validate" v-show="!$v.turn.wdlimit.minValue">
-                    จำนวนอั้นถอนเริ่มต้น 0 เท่า
-                  </div>
-                  <div
-                    class="warning-show"
-                    v-show="
-                      ($v.turn.wdlimit.$model == 0) &
-                        $v.turn.wdlimit.minValue &
-                        $v.turn.wdlimit.required
-                    "
-                  >
-                    **ไม่อั้นถอน**
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น SlOT :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    type="number"
-                    v-model="$v.turn.SLOT.$model"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.SLOT.required & $v.turn.SLOT.$dirty"
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.SLOT.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น Sportbook :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    v-model="$v.turn.FOOTBALL.$model"
-                    type="number"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="
-                      !$v.turn.FOOTBALL.required & $v.turn.FOOTBALL.$dirty
-                    "
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.FOOTBALL.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น Esport :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    v-model="$v.turn.ESPORT.$model"
-                    type="number"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.ESPORT.required & $v.turn.ESPORT.$dirty"
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.ESPORT.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-                 <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น HorseRacing :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    v-model="$v.turn.HORSERACING.$model"
-                    type="number"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="
-                      !$v.turn.HORSERACING.required & $v.turn.HORSERACING.$dirty
-                    "
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.HORSERACING.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น Casino :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    type="number"
-                    v-model="$v.turn.CASINO.$model"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.CASINO.required & $v.turn.CASINO.$dirty"
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.CASINO.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  เทิร์น Lotto :<br />
-                  <v-text-field
-                    dense
-                    hide-details="auto"
-                    outlined
-                    type="number"
-                    v-model="$v.turn.LOTTO.$model"
-                    required
-                  />
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.LOTTO.required & $v.turn.LOTTO.$dirty"
-                  >
-                    กรุณาใส่จำนวนเทิร์น
-                  </div>
-                  <div class="validate" v-show="!$v.turn.LOTTO.minValue">
-                    จำนวนเทิร์นเริ่มต้น 1 เทิร์น
-                  </div>
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
-                  สามารถรับได้ :<br />
-                  <v-select
-                    v-model="$v.turn.rate.$model"
-                    class="style-select"
-                    :items="selectRate"
-                    dense
-                    hide-details="auto"
-                    outlined
-                  ></v-select>
-                  <div
-                    class="validate"
-                    v-show="!$v.turn.rate.required & $v.turn.rate.$dirty"
-                  >
-                    กรุณาเลือกเรท
-                  </div>
-                </div>
-              </div>
-              <v-btn color="primary" type="submit" class="py-3 mt-3">
-                บันทึก
-              </v-btn>
-            </form>
-          </div>
+            </template>
+            <template #[`item.status`]="{item}">
+              <v-chip color="error" outlined dark v-if="item.status == '0'">
+                <v-icon left>mdi-circle</v-icon>
+                ไม่อนุญาต
+              </v-chip>
+              <v-chip color="success" outlined dark v-if="item.status == '1'">
+                <v-icon left>mdi-circle</v-icon>
+                อนุญาต
+              </v-chip>
+            </template>
+          </v-data-table>
         </v-card>
+
+        <div class=" mt-3">
+          <v-dialog v-model="setting_roulette" max-width="600px" height="auto">
+            <v-card class="pa-5 font-weight-bold">
+              <v-card-title>
+                <h3 class="font-weight-bold py-3 mx-auto">
+                  ตั้งค่ากงล้อเสี่ยงโชค
+                </h3>
+              </v-card-title>
+              <v-row class="my-1">
+                <v-col cols="12">
+                  ชื่อรางวัล:
+                  <v-text-field
+                    required
+                    v-model="settingitem.title"
+                    dense
+                    hide-details="auto"
+                    outlined
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  ยอดเงินรางวัล:
+                  <v-text-field
+                    required
+                    v-model="settingitem.credit"
+                    type="number"
+                    dense
+                    outlined
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  โอกาสถูก(%):
+                  <v-text-field
+                    v-model="settingitem.award_percent"
+                    type="number"
+                    hide-details="auto"
+                    dense
+                    outlined
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  อนุญาตออกรางวัล:
+                  <v-btn
+                    color="error"
+                    dark
+                    small
+                    v-if="settingitem.status == '0'"
+                    @click="Toggle(settingitem.status)"
+                  >
+                    ไม่อนุญาต
+                  </v-btn>
+                  <v-btn
+                    color="success"
+                    dark
+                    small
+                    v-if="settingitem.status == '1'"
+                    @click="Toggle(settingitem.status)"
+                  >
+                    อนุญาต
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-card-actions class="text-center mx-auto">
+                <v-btn @click="settingOk" color="primary" class="ml-auto"
+                  >บันทึก</v-btn
+                >
+                <v-btn @click="cancel" color="grey" dark class="mr-auto"
+                  >ยกเลิก</v-btn
+                >
+              </v-card-actions>
+            </v-card></v-dialog
+          >
+
+          <h3 class="my-4">ตั้งค่าเทิร์น & อั้นถอน</h3>
+          <v-card class="pa-3">
+            <div class="forum-input">
+              <form @submit.prevent="submitform" autocomplete="off">
+                <div class="row ">
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    อั้นถอน(เป็นจำนวนเท่า) :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model="$v.turn.wdlimit.$model"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="
+                        !$v.turn.wdlimit.required & $v.turn.wdlimit.$dirty
+                      "
+                    >
+                      กรุณาใส่จำนวนอั้นถอน
+                    </div>
+                    <div class="validate" v-show="!$v.turn.wdlimit.minValue">
+                      จำนวนอั้นถอนเริ่มต้น 0 เท่า
+                    </div>
+                    <div
+                      class="warning-show"
+                      v-show="
+                        ($v.turn.wdlimit.$model == 0) &
+                          $v.turn.wdlimit.minValue &
+                          $v.turn.wdlimit.required
+                      "
+                    >
+                      **ไม่อั้นถอน**
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น SlOT :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model="$v.turn.SLOT.$model"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.SLOT.required & $v.turn.SLOT.$dirty"
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div class="validate" v-show="!$v.turn.SLOT.minValue">
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น Sportbook :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      v-model="$v.turn.FOOTBALL.$model"
+                      type="number"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="
+                        !$v.turn.FOOTBALL.required & $v.turn.FOOTBALL.$dirty
+                      "
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div class="validate" v-show="!$v.turn.FOOTBALL.minValue">
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น Esport :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      v-model="$v.turn.ESPORT.$model"
+                      type="number"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.ESPORT.required & $v.turn.ESPORT.$dirty"
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div class="validate" v-show="!$v.turn.ESPORT.minValue">
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น HorseRacing :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      v-model="$v.turn.HORSERACING.$model"
+                      type="number"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="
+                        !$v.turn.HORSERACING.required &
+                          $v.turn.HORSERACING.$dirty
+                      "
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.HORSERACING.minValue"
+                    >
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น Casino :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model="$v.turn.CASINO.$model"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.CASINO.required & $v.turn.CASINO.$dirty"
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div class="validate" v-show="!$v.turn.CASINO.minValue">
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    เทิร์น Lotto :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model="$v.turn.LOTTO.$model"
+                      required
+                    />
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.LOTTO.required & $v.turn.LOTTO.$dirty"
+                    >
+                      กรุณาใส่จำนวนเทิร์น
+                    </div>
+                    <div class="validate" v-show="!$v.turn.LOTTO.minValue">
+                      จำนวนเทิร์นเริ่มต้น 1 เทิร์น
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    สามารถรับได้ :<br />
+                    <v-select
+                      v-model="$v.turn.rate.$model"
+                      class="style-select"
+                      :items="selectRate"
+                      dense
+                      hide-details="auto"
+                      outlined
+                    ></v-select>
+                    <div
+                      class="validate"
+                      v-show="!$v.turn.rate.required & $v.turn.rate.$dirty"
+                    >
+                      กรุณาเลือกเรท
+                    </div>
+                  </div>
+                </div>
+                <v-btn color="primary" type="submit" class="py-3 mt-3 btn_sty">
+                  บันทึก
+                </v-btn>
+              </form>
+            </div>
+          </v-card>
+        </div>
       </div>
     </div>
   </div>
@@ -357,6 +378,7 @@ export default {
   watch: {},
   data() {
     return {
+      status: true,
       wheelHeader: [
         {
           text: "ช่องที่",
@@ -512,6 +534,9 @@ export default {
         this.$v.turn.$touch();
         console.log("gogo");
       }
+    },
+    switchstatus(status) {
+      status = !status;
     }
   }
 };
@@ -519,33 +544,6 @@ export default {
 <style lang="scss">
 .bgpage {
   background-size: cover;
-}
-.btn_sty {
-  background: linear-gradient(
-    to bottom right,
-    hsl(269deg 53% 33%) 0%,
-    #873fd4 100%
-  ) !important;
-  color: white;
-  border-radius: 10px;
-  width: 100%;
-  font-size: 12px;
-  /* margin: auto; */
-  /* padding: 5px; */
-  /* -webkit-box-shadow: 0px 5px 9px 0px rgb(120 116 116 / 75%); */
-  transition: none;
-
-  box-shadow: 1px 3px 4px 0px rgb(120 116 116 / 75%);
-}
-.btn_sty:hover {
-  background: linear-gradient(
-    to bottom right,
-    hsl(269deg 53% 33%) 0%,
-    #873fd4 100%
-  ) !important;
-  color: white;
-
-  box-shadow: 1px 3px 4px 0px rgb(120 116 116 / 75%);
 }
 
 #setting-roulette___BV_modal_footer_.modal-footer {
@@ -620,19 +618,5 @@ export default {
     border-color: rgb(0, 0, 0);
     width: 100%;
   }
-}
-.validate {
-  font-style: italic;
-  position: absolute;
-  color: red;
-  font-size: 15px;
-  font-weight: 100;
-}
-.warning-show {
-  font-style: italic;
-  position: absolute;
-  color: rgb(255, 174, 0);
-  font-size: 15px;
-  font-weight: 100;
 }
 </style>

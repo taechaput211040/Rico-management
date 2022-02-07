@@ -196,3 +196,81 @@ table thead > tr > th > i {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
+.validate {
+  font-style: italic;
+  position: absolute;
+  color: red;
+  font-size: 15px;
+  font-weight: 100;
+}
+.warning-show {
+  font-style: italic;
+  position: absolute;
+  color: rgb(255, 174, 0);
+  font-size: 15px;
+  font-weight: 100;
+}
+.col-style {
+  border-radius: 10px;
+  width: 14.28%;
+  text-align: center;
+  padding: 10px;
+  box-shadow: -1px 0px 4px 0px rgb(208 208 208 / 75%);
+}
+.calendar {
+  position: relative;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 0.5rem;
+  input {
+    outline: 0;
+    border-width: 0 0 1px;
+    width: 100%;
+    border-color: rgb(134, 134, 134);
+    font-style: italic;
+    text-align: center;
+  }
+}
+@media (max-width: 767.98px) {
+  .col-style {
+    width: 33.28%;
+    text-align: center;
+    padding: 5px;
+    box-shadow: -1px 0px 4px 0px rgb(208 208 208 / 75%);
+    border-radius: 10px;
+  }
+}
+.card-mod{
+  border-radius: 10px;
+  /* border: 1px solid; */
+  padding: 8px;
+  background: #c3ffd5;
+}
+.btn_sty {
+  background: linear-gradient(
+    to bottom right,
+    hsl(269deg 53% 33%) 0%,
+    #873fd4 100%
+  ) !important;
+  color: white;
+  border-radius: 10px;
+  font-size: 12px;
+  /* margin: auto; */
+  /* padding: 5px; */
+  /* -webkit-box-shadow: 0px 5px 9px 0px rgb(120 116 116 / 75%); */
+  transition: none;
+
+  box-shadow: 1px 3px 4px 0px rgb(120 116 116 / 75%);
+}
+.btn_sty:hover {
+  background: linear-gradient(
+    to bottom right,
+    hsl(269deg 53% 33%) 0%,
+    #873fd4 100%
+  ) !important;
+  color: white;
+
+  box-shadow: 1px 3px 4px 0px rgb(120 116 116 / 75%);
+}

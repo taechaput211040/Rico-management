@@ -202,6 +202,7 @@ export default {
             }
           ]
         },
+
         {
           title: "ตั้งค่าโปรโมชั่น",
           icon: "mdi-history",
@@ -215,6 +216,27 @@ export default {
               icon: "mdi-view-dashboard",
               text: "Cashback",
               to: "/promotion/cashback"
+            }
+          ]
+        },
+        {
+          title: "ตั้งค่าลิงก์รับทรัพย์",
+          icon: "mdi-history",
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานลิงก์รับทรัพย์",
+              to: "/Affiliate/report"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
+              to: "/Affiliate/infomember"
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "ตั้งค่า",
+              to: "/Affiliate/setting"
             }
           ]
         },
