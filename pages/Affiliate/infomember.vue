@@ -27,22 +27,18 @@
                 <div class="body_card pa-3">
                   <div class="row">
                     <div class="col-12 col-md-6">
-                      <div class="p-2 card-child shadow">
-                        รายได้ปัจจุบันที่ยังไม่ได้รับ
-                        <hr class="solid" />
-                        <div class="text-end">
-                          {{ userinfo.notrecieveIncome }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="รายได้ปัจจุบันที่ยังไม่ได้รับ"
+                        :value="userinfo.notrecieveIncome"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 ">
-                      <div class="p-2 card-child shadow">
-                        รายสะสมได้ที่รับไปเเล้ว
-                        <hr class="solid" />
-                        <div class="text-end">
-                          {{ userinfo.recieveIncome }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="รายสะสมได้ที่รับไปเเล้ว"
+                        :value="userinfo.recieveIncome"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                   </div>
                 </div>
@@ -57,72 +53,60 @@
                 <div class="body_card pa-3">
                   <div class="row">
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        จำนวน downline วันนี้
-                        <hr class="solid" />
-                        <div class="text-end">{{ Downline.today }}</div>
-                      </div>
+                      <card-report
+                        title="จำนวน downline วันนี้"
+                        :value="Downline.today"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        จำนวน downline ทั้งหมด
-                        <hr class="solid" />
-                        <div class="text-end">{{ Downline.allday }}</div>
-                      </div>
+                      <card-report
+                        title="จำนวน downline ทั้งหมด"
+                        :value="Downline.allday"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดฝาก downline วันนี้
-                        <hr class="solid" />
-                        <div class="text-end text-success">
-                          {{ Downline.deposit }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดฝาก downline วันนี้"
+                        :value="Downline.deposit"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดฝาก downline สะสม
-                        <hr class="solid" />
-                        <div class="text-end text-success">
-                          {{ Downline.depositbalance }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดฝาก downline สะสม"
+                        :value="Downline.depositbalance"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดเสีย downline วันนี้
-                        <hr class="solid" />
-                        <div class="text-end text-danger">
-                          {{ Downline.losstoday }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดเสีย downline วันนี้"
+                        :value="Downline.losstoday"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดเสีย downline สะสม
-                        <hr class="solid" />
-                        <div class="text-end text-danger">
-                          {{ Downline.lossbalance }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดเสีย downline สะสม"
+                        :value="Downline.lossbalance"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดคอมมิชชั่น downline วันนี้
-                        <hr class="solid" />
-                        <div class="text-end">
-                          {{ Downline.commissiontoday }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดคอมมิชชั่น downline วันนี้"
+                        :value="Downline.commissiontoday"
+                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                      ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
-                      <div class="p-2 card-child shadow">
-                        ยอดคอมมิชชั่น downline สะสม
-                        <hr class="solid" />
-                        <div class="text-end">
-                          {{ Downline.commissionbalance }}
-                        </div>
-                      </div>
+                      <card-report
+                        title="ยอดคอมมิชชั่น downline สะสม"
+                        :value="Downline.commissionbalance"
+                        
+                      ></card-report>
                     </div>
                   </div>
                 </div>
