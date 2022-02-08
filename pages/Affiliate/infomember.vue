@@ -1,20 +1,18 @@
 <template>
   <div class="bgpage">
-    <div class="container">
-      <div class="title_header pt-2 pt-md-5 pb-md-4">
-        <h2>ข้อมูลสมาชิก affiliate</h2>
-      </div>
+    <div>
+      <h2>ข้อมูลสมาชิกลิงก์รับทรัพย์</h2>
       <div class="section_search">
-        <div class="d-flex pb-3" style="align-items: baseline">
-          <div class="px-2">Username:</div>
-          <div class="px-2">
-            <b-form-input
-              v-model="username"
-              placeholder="กรอก Username"
-              style="width: 220px"
-            ></b-form-input>
-          </div>
-          <button class="btn btn-success btn-sm" @click="search">ค้นหา</button>
+        <div class="px-2 d-flex align-baseline">
+          <v-text-field
+            v-model="username"
+            outlined
+            dense
+            solo
+            hide-details="auto"
+            placeholder="กรอก Username"
+            class="col-8 col-md-3 pa-2"
+          /><v-btn color="primary" @click="search">ค้นหา</v-btn>
         </div>
       </div>
       <div class="show_information">
@@ -56,56 +54,54 @@
                       <card-report
                         title="จำนวน downline วันนี้"
                         :value="Downline.today"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="จำนวน downline ทั้งหมด"
                         :value="Downline.allday"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="ยอดฝาก downline วันนี้"
+                        titleclass="success--text"
                         :value="Downline.deposit"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="ยอดฝาก downline สะสม"
                         :value="Downline.depositbalance"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                        titleclass="success--text"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="ยอดเสีย downline วันนี้"
-                        :value="Downline.losstoday"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                        :value="`-${Downline.losstoday}`"
+                        titleclass="error--text"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="ยอดเสีย downline สะสม"
-                        :value="Downline.lossbalance"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                        titleclass="error--text"
+                        :value="`-${Downline.lossbalance}`"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
                         title="ยอดคอมมิชชั่น downline วันนี้"
+                        titleclass="primary--text"
                         :value="Downline.commissiontoday"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
                       ></card-report>
                     </div>
                     <div class="col-12 col-md-6 p-1">
                       <card-report
+                        titleclass="primary--text"
                         title="ยอดคอมมิชชั่น downline สะสม"
                         :value="Downline.commissionbalance"
-                        
                       ></card-report>
                     </div>
                   </div>
@@ -118,19 +114,19 @@
             <!-- linkcard -->
             <div class="col-12 col-md-12 ">
               <div class="card_affiliate">
-                <div class="text_card">Link Affiliate</div>
+                <div class="text_card">ลิงก์รับทรัพย์</div>
                 <div class="body_card pa-2">
                   <div class="row">
                     <div class="col-12 col-md-12">
                       <div class="p-2 card-child shadow">
-                        ชื่อ Link Affiliate
-                        <hr class="solid" />
+                        ชื่อลิงก์รับทรัพย์
+                        <hr class="solid my-2" />
                         <div
-                          class="d-flex"
-                          style="justify-content: space-between"
+                          class="d-flex "
+                          style="align-items: center;justify-content: space-between;"
                         >
                           <div
-                            class="copy-link"
+                            class="copy-link d-flex font-weight-bold"
                             @click="copylink(Affiliate.link)"
                           >
                             <img
@@ -138,7 +134,7 @@
                               alt=""
                               class="copy_icon"
                             />
-                            copy
+                            คัดลอก
                           </div>
                           <div class="text-end">{{ Affiliate.link }}</div>
                         </div>
@@ -147,14 +143,14 @@
                     <div class="col-12 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์วันนี้
-                        <hr class="solid" />
+                        <hr class="solid my-2" />
                         <div class="text-end">{{ Affiliate.todayClick }}</div>
                       </div>
                     </div>
                     <div class="col-12 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์ทั้งหมด
-                        <hr class="solid" />
+                        <hr class="solid my-2" />
                         <div class="text-end">{{ Affiliate.alldayClick }}</div>
                       </div>
                     </div>
@@ -171,12 +167,14 @@
                   style="justify-content: space-between; align-items: baseline"
                 >
                   <span>โหมดการตั้งค่าปัจจุบัน (Config)</span
-                  ><button
-                    class="btn btn-light btn-sm"
-                    @click="$bvModal.show('edit-config')"
+                  ><v-btn
+                    color="white"
+                    small
+                    class="font-weight-bold"
+                    @click="setConfig()"
                   >
-                    แก้ไขConfig
-                  </button>
+                    <v-icon small left>mdi-pencil</v-icon>แก้ไขConfig
+                  </v-btn>
                 </div>
 
                 <div class="body_card pa-2">
@@ -194,7 +192,7 @@
                     <div class="col-12 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดฝาก
-                        <hr class="solid" />
+                        <hr class="solid my-2" />
                         <div class="text-end text-success">
                           {{ config.percentDeposit }} %
                         </div>
@@ -203,7 +201,7 @@
                     <div class="col-12 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดเสีย
-                        <hr class="solid" />
+                        <hr class="solid my-2" />
                         <div class="text-end text-danger">
                           {{ config.percentLoss }} %
                         </div>
@@ -212,7 +210,7 @@
                     <div class="col-12 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นCommission
-                        <hr class="solid" />
+                        <hr class="solid my-2" />
                         <div class="text-end">
                           {{ config.percentCommission }} %
                         </div>
@@ -223,111 +221,111 @@
               </div>
             </div>
             <!-- configcard -->
-            <!-- <b-modal
-              id="edit-config"
-              centered
-              size="md"
-              hide-header-close
-              title="แก้ไขการตั้งค่า Config"
-              hide-footer
-              ><form>
-                <div class="card_config">
-                  <div class="input_form">
-                    <span class="px-2">ชื่อ : </span>
-                    <div>{{ config.name }}</div>
-                  </div>
 
-                  <div class="input_form">
-                    <span c class="px-2">เปอร์เซ็นยอดฝาก(%) : </span>
-                    <div>
-                      <b-input type="number" v-model="config.percentDeposit" />
+            <v-dialog v-model="editDialog" max-width="800px" height="auto">
+              <v-card class="pa-5">
+                <v-card-title>
+                  <h3 class="font-weight-bold mx-auto primary--text">
+                    แก้ไข Config
+                  </h3>
+                </v-card-title>
+                <form>
+                  <div class="card_config">
+                    <div class="input_form">
+                      <span class="px-2">ชื่อ : </span>
+                      <div>{{ config.name }}</div>
+                    </div>
+
+                    <div class="input_form">
+                      <span c class="px-2">เปอร์เซ็นยอดฝาก(%) : </span>
+                      <div>
+                        <v-text-field
+                          type="number"
+                          v-model="config.percentDeposit"
+                        />
+                      </div>
+                    </div>
+                    <div class="input_form">
+                      <span class="px-2">เปอร์เซ็นยอดเสีย(%) :</span>
+                      <div>
+                        <v-text-field
+                          type="number"
+                          v-model="config.percentLoss"
+                        />
+                      </div>
+                    </div>
+                    <div class="input_form">
+                      <span class="px-2">เปอร์เซ็นCommission(%) : </span>
+                      <div>
+                        <v-text-field
+                          type="number"
+                          v-model="config.percentCommission"
+                        />
+                      </div>
+                    </div>
+                    <div class="input_form">
+                      <span class="px-2">การรับรายได้ : </span>
+                      <v-select
+                        v-model="config.recieve"
+                        placeholder="เลือกการรับรายได้"
+                        :items="options"
+                        class="col-md-6 col-4"
+                      ></v-select>
                     </div>
                   </div>
-                  <div class="input_form">
-                    <span class="px-2">เปอร์เซ็นยอดเสีย(%) :</span>
-                    <div>
-                      <b-input type="number" v-model="config.percentLoss" />
-                    </div>
+                  <div class="text-center">
+                    <v-btn color="primary" @click="editconfig">
+                      เเก้ไข
+                    </v-btn>
+                    <v-btn color="error" @click="editDialog = false">
+                      ยกเลิก
+                    </v-btn>
                   </div>
-                  <div class="input_form">
-                    <span class="px-2">เปอร์เซ็นCommission(%) : </span>
-                    <div>
-                      <b-input
-                        type="number"
-                        v-model="config.percentCommission"
-                      />
-                    </div>
-                  </div>
-                  <div class="input_form">
-                    <span class="px-2">การรับรายได้ : </span>
-                    <b-form-select
-                      v-model="config.recieve"
-                      :options="options"
-                    ></b-form-select>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <button class="btn btn-primary btn-md" @click="editconfig">
-                    เเก้ไข
-                  </button>
-                  <button
-                    class="btn btn-danger btn-md"
-                    @click="$bvModal.hide('edit-config')"
-                  >
-                    ยกเลิก
-                  </button>
-                </div>
-              </form>
-            </b-modal> -->
+                </form>
+              </v-card>
+            </v-dialog>
           </div>
-          <div class="col-12 col-md-12 p-3 mt-5">
-            <div class="card-child">
-              <div class="section_search">
-                <div
-                  class="d-flex pb-3 date-select"
-                  style="align-items: baseline"
+          <v-card class="ma-4 rounded-lg" width="100%">
+            <v-row class="pa-3 ">
+              <div class="col-12 col-sm-2">
+                จากวันที่
+                <el-date-picker
+                  arrow-control
+                  placeholder="วันที่"
+                  style="width: 100%"
+                  dense
+                />
+              </div>
+              <div class="col-12 col-sm-2">
+                ถึงวันที่
+                <el-date-picker
+                  arrow-control
+                  dense
+                  placeholder="วันที่"
+                  style="width: 100%"
+                />
+              </div>
+              <div class="col-12 col-sm-3">
+                <br class="d-none d-sm-block" />
+                <v-btn color="primary" @click="search"
+                  ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
                 >
-                  <div class="px-2">ค้นหาวันที่ :</div>
-                  <div class="px-2">
-                    <input type="date" v-model="startdate" />
-                  </div>
-                  <div class="px-2">ถึงวันที่ :</div>
-                  <input type="date" v-model="enddate" />
-                  <button class="btn btn-success btn-sm" @click="search">
-                    ค้นหา
-                  </button>
-                </div>
               </div>
-              <div class="card-show mb-4 p-md-3 shadow">
-                <table class="table p-3">
-                  <thead>
-                    <tr class="font-weight-bold">
-                      <th class="col-1">No.</th>
-                      <th class="col">username</th>
-                      <th class="col">ยอดฝาก</th>
-                      <th class="col">ยอดเสีย</th>
-                      <th class="col">โบนัสยอดฝาก</th>
-                      <th class="col">โบนัสยอดเสีย</th>
-                      <th class="col">โบนัสค่าCommission</th>
-                      <th class="col text-center">สายงาน</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in dataRender" :key="index">
-                      <td>{{ index + 1 }}</td>
-                      <td>{{ item.username }}</td>
-                      <td>{{ item.deposit }}</td>
-                      <td>{{ item.loss }}</td>
-                      <td>{{ item.bonusDeposit }}</td>
-                      <td>{{ item.bonusLoss }}</td>
-                      <td>{{ item.bonusCommission }}</td>
-                      <td class="text-center">{{ item.line }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+            </v-row>
+            <v-card class=" mt-2">
+              <v-data-table
+                :headers="headerReport"
+                :items="dataRender"
+                hide-default-footer
+              >
+                <template #[`item.no`]="{index}">
+                  <span class="font-weight-bold">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+              </v-data-table>
+            </v-card></v-card
+          >
         </div>
       </div>
     </div>
@@ -350,6 +348,70 @@ export default {
   },
   data() {
     return {
+      dataRender: [],
+      headerReport: [
+        {
+          text: "รายการที่",
+          value: "no",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "username",
+          value: "username",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "font-weight-bold"
+        },
+        {
+          text: "ยอดฝาก",
+          value: "deposit",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "success--text font-weight-bold"
+        },
+        {
+          text: "ยอดเสีย",
+          value: "loss",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "error--text font-weight-bold"
+        },
+        {
+          text: "โบนัสยอดฝาก",
+          value: "bonusDeposit",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "โบนัสยอดเสีย",
+          value: "bonusLoss",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "โบนัสค่าCommission",
+          value: "bonusCommission",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "primary--text font-weight-bold"
+        },
+        {
+          text: "สายงาน",
+          value: "line",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        }
+      ],
+      editDialog: false,
       options: ["รายวัน", "รายสัปดาห์", "รายเดือน"],
       username: "",
       hash: "membertest",
@@ -409,6 +471,10 @@ export default {
     await this.getddl();
   },
   methods: {
+    setConfig() {
+      this.editDialog = true;
+      this.getSetting();
+    },
     copylink(link) {
       var textArea = document.createElement("textarea");
       textArea.value = link;
@@ -540,27 +606,7 @@ export default {
   }
   cursor: pointer;
 }
-.card_config {
-  padding: 10px;
-  input,
-  select {
-    padding: 0;
-    margin: 0px 0px;
-    border: none;
-    border-bottom: 1px solid #aeaeae;
-    text-align: center;
-    border-radius: 0;
-    width: 120px;
-  }
-  .form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    /* border-color: #80bdff; */
-    text-align: center;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgb(255 255 255 / 25%);
-  }
-}
+
 .section_search {
   .date-select {
     font-weight: bold;

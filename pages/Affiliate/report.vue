@@ -1,111 +1,123 @@
 <template>
-  <div class="container">
+  <div>
     <div class="title_header pt-2 pt-md-5 pb-md-4">
       <h2>รายงาน affiliate</h2>
     </div>
     <div class="section_search">
       <div class="d-flex pb-3" style="align-items: baseline">
-        <div class="px-2">Username:</div>
-        <div class="px-2">
-          <b-form-input
+        <div>
+          <v-text-field
             v-model="username"
             placeholder="กรอก Username"
             style="width: 220px"
-          ></b-form-input>
+            outlined
+            dense
+            solo
+            class="mr-2"
+            hide-details="auto"
+          />
         </div>
-        <button class="btn btn-success btn-sm" @click="search">ค้นหา</button>
+        <v-btn color="success" @click="search">ค้นหา</v-btn>
       </div>
     </div>
     <div class="section_card">
       <div class="show_reportcard">
-        <div class="card_affiliate p-2">
-          <div class="row  p-2">
-            <div class="col-12 col-md-6 p-1 body_card">
-              <div class="p-2 card-child shadow">
-                ชื่อ Link Affiliate
+        <div>
+          <div class="row">
+            <div class="col-12 col-md-6 body_card">
+              <div class="card-child card-report elevation-5">
+                ชื่อลิงก์รับทรัพย์
                 <hr class="solid" />
-                <div class="d-flex" style="justify-content: space-between;">
-                  <div class="copy-link" @click="copylink(Affiliate.link)">
+                <div
+                  class="d-flex pt-3"
+                  style="align-items: center;justify-content: space-between;"
+                >
+                  <div
+                    class="copy-link d-flex font-weight-bold"
+                    @click="copylink(Affiliate.link)"
+                  >
                     <img
                       src="https://image.smart-ai-api.com/public/thongtest/coppybtn.png"
                       alt=""
                       class="copy_icon"
                     />
-                    copy
+                    คัดลอก
                   </div>
-                  <div class="text-end">{{ Affiliate.link }}</div>
+                  <div class="text-end font-weight-bold ">
+                    {{ Affiliate.link }}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-3 p-1 body_card">
-              <div class="p-2 card-child shadow">
+              <div class="card-child card-report elevation-5">
                 ของสมาชิกที่มีการกด
-                <hr class="solid" />
+                <hr class="solid my-2" />
 
-                <div class="text-end text-primary">
+                <div class="text-end font-weight-bold primary--text">
                   {{ Affiliate.activeMember }}
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-3 p-1 body_card">
-              <div class="p-2 card-child shadow">
+              <div class="card-child card-report elevation-5">
                 สมาชิกใหม่ผ่านลิก์วันนี้
-                <hr class="solid" />
-                <div class="text-end text-warning">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold purple--text">
                   {{ Affiliate.newMember }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child card-report text-center elevation-5">
                 สมาชิกใหม่ที่มีการฝาก
-                <hr class="solid" />
-                <div class="text-end text-success">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold green--text">
                   {{ Affiliate.depositMember }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child card-report text-center elevation-5">
                 สมาชิกที่กดรับรายได้
-                <hr class="solid" />
-                <div class="text-end text-success">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold primary--text">
                   {{ Affiliate.recieveMember }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child text-center card-report elevation-5">
                 รายได้สมาชิกทั้งหมดของวันนี้
-                <hr class="solid" />
-                <div class="text-end text-success">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold purple--text">
                   {{ Affiliate.incomeBalance }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดฝากทั้งหมด
-                <hr class="solid" />
-                <div class="text-end text-success">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold success--text">
                   {{ Affiliate.bonusDeposit }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดเสียทั้งหมด
-                <hr class="solid" />
-                <div class="text-end text-success">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold success--text">
                   {{ Affiliate.bonusLoss }}
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4 p-1 body_card">
-              <div class="p-2 card-child shadow">
+            <div class="col-12 col-md-2 p-1 body_card">
+              <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดคอมมิชชั่นทั้งหมด
-                <hr class="solid" />
-                <div class="text-end text-muted">
+                <hr class="solid my-2" />
+                <div class="text-end font-weight-bold success--text">
                   {{ Affiliate.bonusCommission }}
                 </div>
               </div>
@@ -114,45 +126,47 @@
         </div>
       </div>
     </div>
-    <div class="section_table mt-3">
-      <div class="card-show mb-4  shadow">
-        <div class="section_search ">
-          <div class="d-flex pb-3 date-select" style="align-items: baseline;">
-            <div class="px-2">ค้นหาวันที่ :</div>
-            <div class="px-2">
-              <input type="date" v-model="startdate" />
-            </div>
-            <div class="px-2">ถึงวันที่ :</div>
-            <input type="date" v-model="enddate" />
-            <button class="btn btn-success btn-sm mx-2" @click="search()">
-              ค้นหา
-            </button>
-          </div>
+    <v-card class="mt-5 rounded-lg" width="100%">
+      <v-row class="pa-3 ">
+        <div class="col-12 col-sm-2">
+          จากวันที่
+          <el-date-picker
+            arrow-control
+            placeholder="วันที่"
+            style="width: 100%"
+            dense
+          />
         </div>
-        <table class="table p-3">
-          <thead>
-            <tr class="font-weight-bold">
-              <th>No.</th>
-              <th>สายงาน</th>
-              <th>จำนวนสมาชิก</th>
-              <th>โบนัสยอดฝาก</th>
-              <th>โบนัสยอดเสีย</th>
-              <th>โบนัสยอดคอมมิชั่น</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in datatable" :key="index">
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.line }}</td>
-              <td>{{ item.member }}</td>
-              <td>{{ item.bonusDeposit }} %</td>
-              <td>{{ item.bonusLoss }} %</td>
-              <td>{{ item.bonusCommission }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <div class="col-12 col-sm-2">
+          ถึงวันที่
+          <el-date-picker
+            arrow-control
+            dense
+            placeholder="วันที่"
+            style="width: 100%"
+          />
+        </div>
+        <div class="col-12 col-sm-3">
+          <br class="d-none d-sm-block" />
+          <v-btn color="primary" @click="search"
+            ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
+          >
+        </div>
+      </v-row>
+      <v-card class=" mt-2">
+        <v-data-table
+          :headers="headerReport"
+          :items="datatable"
+          hide-default-footer
+        >
+          <template #[`item.no`]="{index}">
+            <span class="font-weight-bold">
+              {{ index + 1 }}
+            </span>
+          </template>
+        </v-data-table>
+      </v-card></v-card
+    >
   </div>
 </template>
 
@@ -172,6 +186,52 @@ export default {
   },
   data() {
     return {
+      headerReport: [
+        {
+          text: "รายการที่",
+          value: "no",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "สายงาน",
+          value: "line",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "font-weight-bold"
+        },
+        {
+          text: "จำนวนสมาชิก",
+          value: "member",
+          align: "center",
+          sortable: false
+        },
+
+        {
+          text: "โบนัสยอดฝาก",
+          value: "bonusDeposit",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "โบนัสยอดเสีย",
+          value: "bonusLoss",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "โบนัสค่าCommission",
+          value: "bonusCommission",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold",
+          cellClass: "primary--text font-weight-bold"
+        }
+      ],
       username: "",
       startdate: "",
       enddate: "",
@@ -239,7 +299,7 @@ export default {
 .card_affiliate {
   border-radius: 10px;
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-  background: #cfcfcf;
+  background: #ffffff;
   .text_card {
     font-weight: bold;
     border-top-right-radius: 10px;

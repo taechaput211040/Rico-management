@@ -1,429 +1,434 @@
 <template>
   <div class="container">
-    <div class="title_header pt-2 pt-md-5 pb-md-4">
-      <h2>ตั้งค่าโบนัส affiliate</h2>
-    </div>
-    <div class="add">
-      <button class="btn-sm btn-primary" @click="$bvModal.show('modal-create')">
-        สร้างการตั้งค่า
-      </button>
-    </div>
+    <h2>ตั้งค่าโบนัส affiliate</h2>
 
-    <div class="col-12 col-md-12 mt-3">
-      <div class="card-child">
-        <div class="card-show mb-4 p-md-3 shadow">
-          <table class="table p-3">
-            <thead>
-              <tr class="font-weight-bold">
-                <th>No.</th>
-                <th>สายงาน</th>
-                <th>bonusจากยอดฝากของเพื่อน</th>
-                <th>ประเภท</th>
-                <th>bonusจากยอดเสียของเพื่อน</th>
-                <th>bonusจากturnoverของเพื่อน(commission)</th>
-                <th>การรับรายได้</th>
-                <th>สถานะ</th>
-                <th>วันที่สร้าง</th>
-                <th>สร้างโดย</th>
-                <th class="text-center">action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in settingList" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.configName }}</td>
-                <td>{{ item.dp_bonus }} %</td>
-                <td>{{ item.dp_bonus_type }}</td>
-                <td>{{ item.winlos_rate }} %</td>
-                <td>{{ item.commission_rate }} %</td>
-                <td>{{ item.recieve_mode }}</td>
-                <td>
-                  <span v-if="item.status == '1'"
-                    ><button class="btn btn-outline-success btn-sm" disabled>
-                      ใช้งาน
-                    </button>
-                  </span>
-                  <span v-if="item.status == '0'"
-                    ><button class="btn btn-outline-danger btn-sm" disabled>
-                      ปิดใช้งาน
-                    </button>
-                  </span>
-                </td>
-                <td>{{ new Date(item.created_at).toLocaleString() }}</td>
-                <td>{{ item.created_by }}</td>
-                <td>
-                  <button
-                    class="btn-sm btn-warning btn mx-1"
-                    @click="edit_setting(item)"
-                  >
-                    แก้ไข</button
-                  ><button
-                    class="btn-sm btn-danger btn"
-                    @click="delete_setting(item)"
-                  >
-                    ลบ
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <b-modal
-          id="modal-edit"
-          centered
-          size="md"
-          hide-header-close
-          title="แก้ไขการตั้งค่า Config"
-          hide-footer
-          ><form>
-            <div class="card_config">
-              <div class="input_form">
-                <span class="px-2 text_modal">สายงาน : </span>
-                <b-input type="text" v-model="dataModal.line" />
-                <!-- <b-form-select
+    <v-btn color="primary" rounded @click="dlcreate = true">
+      <v-icon left>mdi-plus</v-icon>
+      สร้างการตั้งค่า
+    </v-btn>
+    <v-card class=" mt-2">
+      <v-data-table
+        :headers="headerReportmain"
+        :items="settingList"
+        hide-default-footer
+      >
+        <template #[`item.no`]="{index}">
+          <span class="font-weight-bold">
+            {{ index + 1 }}
+          </span>
+        </template>
+        <template #[`item.dp_bonus`]="{item}">
+          <span> {{ item.dp_bonus }} % </span>
+        </template>
+        <template #[`item.dp_bonus_type`]="{item}">
+          <span> {{ item.dp_bonus_type }} % </span>
+        </template>
+        <template #[`item.winlos_rate`]="{item}">
+          <span> {{ item.winlos_rate }} % </span>
+        </template>
+        <template #[`item.commission_rate`]="{item}">
+          <span> {{ item.commission_rate }} % </span>
+        </template>
+        <template #[`item.recieve_mode`]="{item}">
+          <span> {{ item.recieve_mode_text }} </span>
+        </template>
+        <template #[`item.status`]="{item}">
+          <v-chip outlined small color="error" v-if="item.status == 0">
+            <v-icon x-small left>mdi-circle</v-icon> ปิดใช้งาน
+          </v-chip>
+          <v-chip
+            small
+            color="success"
+            class="px-2"
+            outlined
+            v-if="item.status == 1"
+          >
+            <v-icon x-small left>mdi-circle</v-icon> เปิดใช้งาน
+          </v-chip>
+        </template>
+        <template #[`item.action`]="{item}">
+          <v-btn
+            class="btn-sm btn-warning btn mx-1"
+            small
+            color="warning"
+            @click="edit_setting(item)"
+          >
+            แก้ไข</v-btn
+          ><v-btn
+            class="btn-sm btn-danger btn"
+            small
+            color="error"
+            @click="delete_setting(item)"
+          >
+            ลบ
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <v-dialog v-model="modal_edit" max-width="600px" height="auto"
+      ><v-card class="pa-5">
+        <v-card-title class="font-weight-blod primary--text ">
+          <h3 class="mx-auto">แก้ไขConfig</h3>
+        </v-card-title>
+        <form>
+          <div class="card_config">
+            <div class="sectioninput">
+              <span class="px-2 text_modal">สายงาน : </span>
+              <v-text-field
+                class="col-6 col-md-4"
+                type="text"
+                hide-details="auto"
+                dense
+                v-model="dataModal.configName"
+              />
+            </div>
+            <div class="sectioninput">
+              <span class="px-2 text_modal">
+                bonusจากยอดฝากของเพื่อน(%) :
+              </span>
+              <div>
+                <v-text-field
+                  hide-details="auto"
+                  dense
                   type="number"
-                  :options="type_line"
-                  v-model="dataModal.line"
-                /> -->
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">
-                  bonusจากยอดฝากของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.bonusFriend" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">ประเภท : </span>
-                <b-form-select
-                  type="number"
-                  :options="type_obtion"
-                  v-model="dataModal.datatype"
+                  v-model="dataModal.dp_bonus"
                 />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากยอดเสียของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.bonusloss" />
-                </div>
-              </div>
-
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากturnoverของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.bonusCommission" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">การรับรายได้ : </span>
-                <b-form-select
-                  type="number"
-                  :options="type_recieve"
-                  v-model="dataModal.type_recieve"
-                />
-              </div>
-
-              <div class="input_form">
-                <span class="px-2 text_modal">สถานะ : </span>
-                <div>
-                  <span v-if="dataModal.status == '1'"
-                    ><button class="btn btn-outline-success btn-sm" disabled>
-                      ใช้งาน
-                    </button>
-                  </span>
-                  <span v-if="dataModal.status == '0'"
-                    ><button class="btn btn-outline-danger btn-sm" disabled>
-                      ปิดใช้งาน
-                    </button>
-                  </span>
-                </div>
-              </div>
-
-              <div class="input_form">
-                <span class="px-2 text_modal">วันที่สร้าง: </span>
-                <div>
-                  {{ dataModal.datstart }}
-                </div>
               </div>
             </div>
-            <div class="text-center">
-              <button class="btn btn-primary btn-md" @click="editconfig()">
+            <div class="sectioninput">
+              <span class="px-2 ">ประเภท : </span>
+              <v-select
+                hide-details="auto"
+                dense
+                class="col-6 col-md-4"
+                :items="type_obtion"
+                v-model="dataModal.dp_bonus_type"
+              />
+            </div>
+            <div class="sectioninput">
+              <span class="px-2 ">bonusจากยอดเสียของเพื่อน(%) : </span>
+              <v-text-field
+                class="col-6 col-md-4"
+                type="number"
+                hide-details="auto"
+                dense
+                v-model="dataModal.winlos_rate"
+              />
+            </div>
+
+            <div class="sectioninput">
+              <span class="px-2 ">bonusจากturnoverของเพื่อน(%) : </span>
+              <div>
+                <v-text-field
+                  hide-details="auto"
+                  dense
+                  type="number"
+                  v-model="dataModal.commission_rate"
+                />
+              </div>
+            </div>
+            <div class="sectioninput px-2">
+              การรับรายได้ :
+              <v-select
+                hide-details="auto"
+                dense
+                class="col-6 col-md-4"
+                :items="type_recieve"
+                v-model="dataModal.recieve_mode"
+              />
+            </div>
+
+            <div class="sectioninput">
+              <span class="px-2 ">สถานะ : {{ dataModal.status }} </span>
+            </div>
+
+            <div class="sectioninput">
+              <span class="px-2 "
+                >วันที่สร้าง:
+                {{ new Date(dataModal.created_at).toLocaleString() }}</span
+              >
+            </div>
+          </div>
+          <v-card-actions>
+            <div class="mx-auto mt-5">
+              <v-btn color="primary" dark small @click="editconfig()">
                 เเก้ไข
-              </button>
-              <button
-                class="btn btn-danger btn-md"
-                @click="$bvModal.hide('modal-edit')"
-              >
+              </v-btn>
+              <v-btn color="error" dark small @click="modal_edit = false">
                 ยกเลิก
-              </button>
+              </v-btn>
             </div>
-          </form>
-        </b-modal>
-      </div>
+          </v-card-actions>
+        </form>
+      </v-card>
+    </v-dialog>
+    <div class="mt-5 d-flex align-baseline">
+      <v-text-field
+        v-model="username"
+        outlined
+        dense
+        solo
+        hide-details="auto"
+        placeholder="กรอก Username"
+        class="col-8 col-md-3 pa-2"
+      /><v-btn color="primary" @click="search"
+        ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
+      >
     </div>
 
-    <div class="section_search d-flex" style="align-items: baseline">
-      <div class="d-flex pb-3" style="align-items: baseline">
-        <div class="px-2">Username:</div>
-        <div class="px-2">
-          <b-form-input
-            v-model="username"
-            placeholder="กรอก Username"
-            style="width: 220px"
-          ></b-form-input>
-        </div>
-        <button class="btn btn-success btn-sm" @click="search">ค้นหา</button>
-      </div>
-    </div>
-    <div class="col-12 col-md-12 mt-3">
-      <div class="card-child">
-        <div class="card-show mb-4 p-md-3 shadow">
-          <table class="table p-3">
-            <thead>
-              <tr class="font-weight-bold">
-                <th>No.</th>
-                <th>สายงาน</th>
-                <th>bonusจากยอดฝากของเพื่อน</th>
-                <th>ประเภท</th>
-                <th>bonusจากยอดเสียของเพื่อน</th>
-                <th>bonusจากturnoverของเพื่อน(commission)</th>
-                <th>การรับรายได้</th>
-                <th>สถานะ</th>
-                <th>วันที่สร้าง</th>
-                <th>สร้างโดย</th>
-                <th class="text-center">action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in dataRender" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.configName }}</td>
-                <td>{{ item.dp_bonus }} %</td>
-                <td>{{ item.dp_bonus_type }}</td>
-                <td>{{ item.winlos_rate }} %</td>
-                <td>{{ item.commission_rate }} %</td>
-                <td>{{ item.recieve_mode_text }}</td>
-                <td>
-                  <span v-if="item.status == '1'"
-                    ><button class="btn btn-outline-success btn-sm" disabled>
-                      ใช้งาน
-                    </button>
-                  </span>
-                  <span v-if="item.status == '0'"
-                    ><button class="btn btn-outline-danger btn-sm" disabled>
-                      ปิดใช้งาน
-                    </button>
-                  </span>
-                </td>
-                <td>{{ new Date(item.created_at).toLocaleString() }}</td>
-                <td>{{ item.created_by }}</td>
-                <td>
-                  <button
-                    class="btn-sm btn-warning btn mx-1"
-                    @click="edit_setting(item)"
-                  >
-                    แก้ไข</button
-                  ><button
-                    class="btn-sm btn-danger btn"
-                    @click="delete_setting(item)"
-                  >
-                    ลบ
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- edit  -->
-        <b-modal
-          id="modal-edit"
-          centered
-          size="md"
-          hide-header-close
-          title="แก้ไขการตั้งค่า Config"
-          hide-footer
-          ><form>
-            <div class="card_config">
-              <div class="input_form">
-                <span class="px-2 text_modal">สายงาน : </span>
-                <b-input type="text" v-model="dataModal.configName" />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">
-                  bonusจากยอดฝากของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.dp_bonus" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">ประเภท : </span>
-                <b-form-select
-                  type="number"
-                  :options="type_obtion"
-                  v-model="dataModal.dp_bonus_type"
-                />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากยอดเสียของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.winlos_rate" />
-                </div>
-              </div>
+    <v-card class=" mt-2">
+      <v-data-table
+        :headers="headerReportmain"
+        :items="dataRender"
+        hide-default-footer
+      >
+        <template #[`item.no`]="{index}">
+          <span class="font-weight-bold">
+            {{ index + 1 }}
+          </span>
+        </template>
 
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากturnoverของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataModal.commission_rate" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">การรับรายได้ : </span>
-                <b-form-select
+        <template #[`item.dp_bonus`]="{item}">
+          <span> {{ item.dp_bonus }} % </span>
+        </template>
+        <template #[`item.dp_bonus_type`]="{item}">
+          <span> {{ item.dp_bonus_type }} % </span>
+        </template>
+        <template #[`item.winlos_rate`]="{item}">
+          <span> {{ item.winlos_rate }} % </span>
+        </template>
+        <template #[`item.commission_rate`]="{item}">
+          <span> {{ item.commission_rate }} % </span>
+        </template>
+        <template #[`item.recieve_mode`]="{item}">
+          <span> {{ item.recieve_mode_text }} </span>
+        </template>
+        <template #[`item.status`]="{item}">
+          <v-chip outlined small color="error" v-if="item.status == 0">
+            <v-icon x-small left>mdi-circle</v-icon> ปิดใช้งาน
+          </v-chip>
+          <v-chip
+            small
+            color="success"
+            class="px-2"
+            outlined
+            v-if="item.status == 1"
+          >
+            <v-icon x-small left>mdi-circle</v-icon> เปิดใช้งาน
+          </v-chip>
+        </template>
+        <template #[`item.action`]="{item}">
+          <v-btn
+            class="btn-sm btn-warning btn mx-1"
+            small
+            color="warning"
+            @click="edit_setting(item)"
+          >
+            แก้ไข</v-btn
+          ><v-btn
+            class="btn-sm btn-danger btn"
+            small
+            color="error"
+            @click="delete_setting(item)"
+          >
+            ลบ
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <v-dialog v-model="dlcreate" max-width="600px" height="auto">
+      <v-card class="pa-5">
+        <v-card-title class="font-weight-blod primary--text ">
+          <h3 class="mx-auto">สร้างการตั้งค่า</h3>
+        </v-card-title>
+        <form>
+          <div class="card_config">
+            <div class="input_form">
+              <span class="px-2 text_modal">สายงาน : </span>
+              <v-text-field
+                type="text"
+                class="col-6 col-md-4"
+                hide-details="auto"
+                dense
+                v-model="dataCreate.line"
+              />
+            </div>
+            <div class="input_form">
+              <span class="px-2 text_modal">
+                bonusจากยอดฝากของเพื่อน(%) :
+              </span>
+              <div>
+                <v-text-field
+                  hide-details="auto"
+                  dense
                   type="number"
-                  :options="type_recieve"
-                  v-model="dataModal.recieve_mode"
+                  v-model="dataCreate.bonusFriend"
                 />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">สถานะ : </span>
-                <div>
-                  <span v-if="dataModal.status == '1'"
-                    ><button class="btn btn-outline-success btn-sm" disabled>
-                      ใช้งาน
-                    </button>
-                  </span>
-                  <span v-if="dataModal.status == '0'"
-                    ><button class="btn btn-outline-danger btn-sm" disabled>
-                      ปิดใช้งาน
-                    </button>
-                  </span>
-                </div>
-              </div>
-
-              <div class="input_form">
-                <span class="px-2 text_modal">วันที่สร้าง: </span>
-                <div>
-                  {{ dataModal.updated_at }}
-                </div>
               </div>
             </div>
-            <div class="text-center">
-              <button
-                class="btn btn-primary btn-md"
-                @click="editconfig(dataModal)"
-              >
+            <div class="input_form">
+              <span class="px-2 text_modal">ประเภท : </span>
+              <v-select
+                hide-details="auto"
+                dense
+                class="col-6 col-md-4"
+                :items="type_obtion"
+                v-model="dataCreate.datatype"
+              />
+            </div>
+            <div class="input_form">
+              <span class="px-2 text_modal"
+                >bonusจากยอดเสียของเพื่อน(%) :
+              </span>
+              <div>
+                <v-text-field
+                  class="col-6 col-md-4"
+                  type="number"
+                  hide-details="auto"
+                  v-model="dataCreate.bonusloss"
+                />
+              </div>
+            </div>
+
+            <div class="input_form">
+              <span class="px-2 text_modal"
+                >bonusจากturnoverของเพื่อน(%) :
+              </span>
+              <div>
+                <v-text-field
+                  hide-details="auto"
+                  dense
+                  type="number"
+                  v-model="dataCreate.bonusCommission"
+                />
+              </div>
+            </div>
+            <div class="input_form">
+              <span class="px-2 text_modal">การรับรายได้ : </span>
+              <v-select
+                hide-details="auto"
+                dense
+                class="col-6 col-md-4"
+                :items="type_recieve"
+                v-model="dataCreate.type_recieve"
+              />
+            </div>
+          </div>
+          <v-card-actions>
+            <div class="mx-auto mt-5">
+              <v-btn color="primary" dark small @click="createconfig()">
                 เเก้ไข
-              </button>
-              <button
-                class="btn btn-danger btn-md"
-                @click="$bvModal.hide('modal-edit')"
-              >
+              </v-btn>
+              <v-btn color="error" dark small @click="dlcreate = false">
                 ยกเลิก
-              </button>
+              </v-btn>
             </div>
-          </form>
-        </b-modal>
-        <!-- edit  -->
-        <!-- create  -->
-        <b-modal
-          id="modal-create"
-          centered
-          size="md"
-          hide-header-close
-          title="สร้างการตั้งค่า Config"
-          hide-footer
-          ><form>
-            <div class="card_config">
-              <div class="input_form">
-                <span class="px-2 text_modal">สายงาน : </span>
-                <!-- <b-form-select
-                  type="text"
-                  :options="type_line"
-                  v-model="dataCreate.line"
-                /> -->
-                <b-input type="text" v-model="dataCreate.line" />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">
-                  bonusจากยอดฝากของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataCreate.bonusFriend" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">ประเภท : </span>
-                <b-form-select
-                  type="number"
-                  :options="type_obtion"
-                  v-model="dataCreate.datatype"
-                />
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากยอดเสียของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataCreate.bonusloss" />
-                </div>
-              </div>
-
-              <div class="input_form">
-                <span class="px-2 text_modal"
-                  >bonusจากturnoverของเพื่อน(%) :
-                </span>
-                <div>
-                  <b-input type="number" v-model="dataCreate.bonusCommission" />
-                </div>
-              </div>
-              <div class="input_form">
-                <span class="px-2 text_modal">การรับรายได้ : </span>
-                <b-form-select
-                  type="number"
-                  :options="type_recieve"
-                  v-model="dataCreate.type_recieve"
-                />
-              </div>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary btn-md" @click="createconfig()">
-                เเก้ไข
-              </button>
-              <button
-                class="btn btn-danger btn-md"
-                @click="$bvModal.hide('modal-create')"
-              >
-                ยกเลิก
-              </button>
-            </div>
-          </form>
-        </b-modal>
-      </div>
-      <!-- create  -->
-    </div>
+          </v-card-actions>
+        </form>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      dlcreate: false,
+      headerReportmain: [
+        {
+          text: "No.",
+          value: "no",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "สายงาน",
+          value: "configName",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "	bonusจากยอดฝากของเพื่อน	",
+          value: "dp_bonus",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "	ประเภท	",
+          value: "dp_bonus_type",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "bonusจากยอดเสียของเพื่อน",
+          value: "winlos_rate",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "bonusจากturnoverของเพื่อน(commission)",
+          value: "commission_rate",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "การรับรายได้",
+          value: "recieve_mode",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "สถานะ",
+          value: "status",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "วันที่สร้าง",
+          value: "created_at",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "สร้างโดย",
+          value: "created_by",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        },
+        {
+          text: "ดำเนินการ",
+          value: "action",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold"
+        }
+      ],
+      modal_edit: false,
       companyname: "membertest",
       agent: "membertest",
       hash: "membertest",
       username: "bk2619016",
-      type_recieve: ["รายวัน", "รายเดือน", "รายสัปดาห์"],
+      type_recieve: [
+        { value: 1, text: "รายวัน" },
+        { value: 2, text: "รายเดือน" },
+        { value: 3, text: "รายสัปดาห์" }
+      ],
       type_line: ["A", "B"],
-      type_obtion: ["ครั้งแรก", "ทุกยอดฝาก"],
+      type_obtion: [
+        { value: 0, text: "ครั้งแรก" },
+        { value: 1, text: "ทุกยอดฝาก" }
+      ],
       dataRender: [
         {
           Id: "1a232401-e3c9-40c6-a129-84b362d1d231",
@@ -442,8 +447,8 @@ export default {
           recieve_mode_text: "รายวัน",
           status: "1",
           updated_at: "2021-11-24T21:49:44.805Z",
-          winlos_rate: 8,
-        },
+          winlos_rate: 8
+        }
       ],
       dataModal: [],
       dataCreate: {
@@ -455,7 +460,7 @@ export default {
         type_recieve: 1,
         status: 1,
         datstart: new Date(),
-        create_by: "",
+        create_by: ""
       },
       settingList: [
         {
@@ -463,18 +468,19 @@ export default {
           companyname: "membertest",
           agent: "membertest",
           hash: "membertest",
-          status: "string",
+          status: 0,
           configName: "config_mock_17",
           dp_bonus: 2,
           dp_bonus_type: 0,
           commission_rate: 10,
           winlos_rate: 4,
           recieve_mode: 3,
+          recieve_mode_text: "รายเดือน",
           enable: true,
           created_at: "2021-11-24T21:49:44.956Z",
-          created_by: "",
-        },
-      ],
+          created_by: "ADMIN"
+        }
+      ]
     };
   },
   methods: {
@@ -482,14 +488,14 @@ export default {
       fetch(
         `http://localhost:3001/api/aff/member/setting/${this.hash}/${this.username}`
       )
-        .then((stream) => stream.json())
-        .then((data) => (this.dataRender = [data.settings]))
-        .catch((error) => console.error(error));
+        .then(stream => stream.json())
+        .then(data => (this.dataRender = [data.settings]))
+        .catch(error => console.error(error));
     },
     edit_setting(data) {
       console.log(data);
       this.dataModal = data;
-      this.$bvModal.show("modal-edit");
+      this.modal_edit = true;
     },
     async editconfig(item) {
       item.dp_bonus = parseInt(item.dp_bonus);
@@ -499,11 +505,11 @@ export default {
       item.recieve_mode = parseInt(item.recieve_mode);
       await this.$axios
         .patch(`http://localhost:3001/api/aff/admin/setting/${item.Id}`, item)
-        .then(async (res) => {
+        .then(async res => {
           await this.getByHash(this.hash);
           this.$bvModal.hide("modal-edit");
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     }, // ปุ่ม ส่ง request
@@ -521,46 +527,46 @@ export default {
           winlos_rate: parseInt(this.dataCreate.bonusloss),
           recieve_mode: parseInt(this.dataCreate.type_recieve),
           enable: true,
-          created_by: this.username,
+          created_by: this.username
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
     async getddlDepositBonusType() {
       fetch(`http://localhost:3001/api/aff/admin/setting/depositBonus_Type`)
-        .then((stream) => stream.json())
-        .then((data) => (this.type_obtion = data))
-        .catch((error) => console.error(error));
+        .then(stream => stream.json())
+        .then(data => (this.type_obtion = data))
+        .catch(error => console.error(error));
     },
     async getddlRecieve_mode() {
       fetch(`http://localhost:3001/api/aff/admin/setting/recieve_mode`)
-        .then((stream) => stream.json())
-        .then((data) => (this.type_recieve = data))
-        .catch((error) => console.error(error));
+        .then(stream => stream.json())
+        .then(data => (this.type_recieve = data))
+        .catch(error => console.error(error));
     },
     async getByHash(hash) {
       fetch(`http://localhost:3001/api/aff/admin/setting/all/${hash}`)
-        .then((stream) => stream.json())
-        .then((data) => (this.settingList = data))
-        .catch((error) => console.error(error));
+        .then(stream => stream.json())
+        .then(data => (this.settingList = data))
+        .catch(error => console.error(error));
     },
     async delete_setting(setting) {
       await this.$axios
         .delete(`http://localhost:3001/api/aff/admin/setting/${setting.Id}`)
-        .then(async (response) => {
+        .then(async response => {
           await this.getByHash(this.hash);
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
-    },
+    }
   },
-  mounted: async function () {
+  mounted: async function() {
     await this.getddlRecieve_mode();
     await this.getddlDepositBonusType();
     await this.getByHash(this.hash);
-  },
+  }
 };
 </script>
 
@@ -579,53 +585,5 @@ export default {
   background-clip: border-box;
   font-size: small;
   box-shadow: 0px 5px 8px 0px rgb(179 176 176 / 75%);
-}
-#modal-create___BV_modal_header_.modal-header {
-  background: linear-gradient(
-    to bottom right,
-    #111111 0%,
-    #002952 100%
-  ) !important;
-  color: rgb(255, 255, 255);
-}
-#modal-___BV_modal_header_.modal-header {
-  background: linear-gradient(
-    to bottom right,
-    #111111 0%,
-    #002952 100%
-  ) !important;
-  color: rgb(255, 255, 255);
-}
-.input_form {
-  display: flex;
-  align-items: baseline;
-  padding: 5px;
-  .text_modal {
-    color: #180052;
-    font-weight: bold;
-  }
-}
-.card_config {
-  padding: 10px;
-  input,
-  select {
-    padding: 0;
-    margin: 0px 0px;
-    border: none;
-    border-bottom: 1px solid #aeaeae;
-    text-align: center;
-    border-radius: 0;
-    width: 180px;
-    font-style: oblique;
-    color: blue;
-  }
-  .form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    /* border-color: #80bdff; */
-    text-align: center;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgb(255 255 255 / 25%);
-  }
 }
 </style>
