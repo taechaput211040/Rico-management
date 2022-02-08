@@ -21,10 +21,10 @@
           <template #[`item.action`]="{item}">
             <div class="text-center d-flex justify-center">
               <v-btn color="black" class="mx-1" dark small @click="editEmployee(item)"
-                ><v-icon left>mdi-cog</v-icon>แก้ไข</v-btn
+                ><v-icon left small>mdi-cog</v-icon>แก้ไข</v-btn
               >
               <v-btn color="error" dark small
-                ><v-icon left>mdi-delete</v-icon>ลบ</v-btn
+                ><v-icon left small>mdi-delete</v-icon>ลบ</v-btn
               >
             </div>
           </template>
@@ -33,12 +33,12 @@
             <span v-else>STAFF</span>
           </template>
           <template #[`item.status`]="{item}">
-            <v-chip color="success" outlined dark v-if="item.status == true">
-              <v-icon left>mdi-circle</v-icon>
+            <v-chip color="success" small outlined dark v-if="item.status == true">
+              <v-icon left small>mdi-circle</v-icon>
               เปิดใช้งาน
             </v-chip>
-            <v-chip color="error" outlined dark v-else>
-              <v-icon left>mdi-circle</v-icon>
+            <v-chip color="error" small outlined dark v-else>
+              <v-icon left small>mdi-circle</v-icon>
               ปิดใช้งาน
             </v-chip>
           </template>

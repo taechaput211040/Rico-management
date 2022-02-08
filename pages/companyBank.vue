@@ -19,13 +19,14 @@
               label
               outlined
               dark
+              small
               v-if="item.status == true"
             >
-              <v-icon left>mdi-circle</v-icon>
+              <v-icon left small>mdi-circle</v-icon>
               เปิดใช้งาน
             </v-chip>
-            <v-chip color="error" label outlined dark v-else>
-              <v-icon left>mdi-circle</v-icon>
+            <v-chip color="error" small label outlined dark v-else>
+              <v-icon left small>mdi-circle</v-icon>
               ปิดใช้งาน
             </v-chip>
           </template>
@@ -296,7 +297,6 @@
           </v-col>
         </v-row>
         <v-card-actions class="mt-5">
-          
           <div class="mx-auto">
             <v-btn color="primary" class="mx-1">บันทึก</v-btn>
             <v-btn color="error" class="mx-1" @click="dlupdate = false"

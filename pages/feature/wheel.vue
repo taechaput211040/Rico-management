@@ -35,16 +35,28 @@
                 dark
                 small
                 @click="setting(item)"
-                >ตั้งค่า</v-btn
+                ><v-icon left small>mdi-cog</v-icon> ตั้งค่า</v-btn
               >
             </template>
             <template #[`item.status`]="{item}">
-              <v-chip color="error" outlined dark v-if="item.status == '0'">
-                <v-icon left>mdi-circle</v-icon>
+              <v-chip
+                color="error"
+                small
+                outlined
+                dark
+                v-if="item.status == '0'"
+              >
+                <v-icon left small>mdi-circle</v-icon>
                 ไม่อนุญาต
               </v-chip>
-              <v-chip color="success" outlined dark v-if="item.status == '1'">
-                <v-icon left>mdi-circle</v-icon>
+              <v-chip
+                color="success"
+                small
+                outlined
+                dark
+                v-if="item.status == '1'"
+              >
+                <v-icon left small>mdi-circle</v-icon>
                 อนุญาต
               </v-chip>
             </template>

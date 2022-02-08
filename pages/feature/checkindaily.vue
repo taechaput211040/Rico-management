@@ -339,7 +339,7 @@
         />
       </div>
       <div class="col-12 col-sm-3">
-        <v-text-field outlined dense hide-details="auto"></v-text-field>
+        <v-text-field solo outlined dense hide-details="auto"></v-text-field>
       </div>
       <div class="col-12 col-sm-3">
         <v-btn color="primary"><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn>

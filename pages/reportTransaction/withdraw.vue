@@ -60,10 +60,10 @@
                 outlined
                 color="success"
               >
-                <v-icon left>mdi-circle</v-icon> {{ item.status }}</v-chip
+                <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
               >
               <v-chip small v-else color="error" outlined
-                ><v-icon left>mdi-circle</v-icon> {{ item.status }}</v-chip
+                ><v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
               >
             </template>
             <template #[`item.name`]="{item}">
@@ -88,7 +88,7 @@
                   label
                   x-small
                   dark
-                  ><v-icon class="mr-1">mdi-credit-card</v-icon>ก่อน :</v-chip
+                  ><v-icon class="mr-1" small>mdi-credit-card</v-icon>ก่อน :</v-chip
                 >
                 {{ item.bfcredit }}
               </div>
@@ -100,7 +100,7 @@
                   label
                   x-small
                   dark
-                  ><v-icon class="mr-1">mdi-credit-card</v-icon>หลัง :</v-chip
+                  ><v-icon class="mr-1" small>mdi-credit-card</v-icon>หลัง :</v-chip
                 >
                 {{ item.afcredit }}
               </div>

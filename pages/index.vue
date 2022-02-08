@@ -211,7 +211,7 @@
                     label
                     x-small
                     dark
-                    ><v-icon class="mr-1">mdi-timer</v-icon>เติม</v-chip
+                    ><v-icon class="mr-1" small>mdi-timer</v-icon>เติม</v-chip
                   ><br />
                   {{ item.created_at }}<br />
                   <v-chip
@@ -221,7 +221,7 @@
                     label
                     x-small
                   >
-                    <v-icon class="mr-1">mdi-message-processing</v-icon
+                    <v-icon class="mr-1" small>mdi-message-processing</v-icon
                     >SMS</v-chip
                   ><br />
                   {{ item.smsdatetime }}<br />
@@ -303,7 +303,7 @@
                     label
                     x-small
                     dark
-                    ><v-icon class="mr-1">mdi-timer</v-icon>ถอน</v-chip
+                    ><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip
                   ><br />
                   {{ item.requsettime }}<br />
                   <v-chip
@@ -312,7 +312,7 @@
                     label
                     x-small
                     dark
-                    ><v-icon class="mr-1">mdi-transfer</v-icon>โอน</v-chip
+                    ><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip
                   ><br />
                   {{ item.transferTime }}<br />
                   <v-chip
@@ -321,7 +321,7 @@
                     label
                     x-small
                     dark
-                    ><v-icon class="mr-1">mdi-credit-card</v-icon
+                    ><v-icon class="mr-1" small>mdi-credit-card</v-icon
                     >เครดิตก่อน</v-chip
                   ><br />
                   {{ item.bfcredit }}<br />
@@ -332,7 +332,7 @@
                     x-small
                     dark
                   >
-                    <v-icon class="mr-1">mdi-credit-card</v-icon
+                    <v-icon class="mr-1" small>mdi-credit-card</v-icon
                     >เครดิตหลัง</v-chip
                   ><br />
                   {{ item.afcredit }}
