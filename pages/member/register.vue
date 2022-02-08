@@ -208,20 +208,20 @@ export default {
     return {
       valid: false,
       rulesFrom: {
-        nameRules: [v => !!v || "Name is required"],
-        lastnameRules: [v => !!v || "Name is required"],
-        bankRules: [v => !!v || "Name is required"],
+        nameRules: [v => !!v || "กรุณากรอกชื่อ"],
+        lastnameRules: [v => !!v || "กรุณากรอกนามสกุล"],
+        bankRules: [v => !!v || "กรุณาเลือกธนาคาร"],
         banknumRules: [
-          v => !!v || "Name is required",
+          v => !!v || "กรุณากรอกหมายเลขธนาคาร",
           v =>
             (v && v.length <= 13 && v.length >= 10) ||
-            "Name must be less than 11 characters"
+            "กรุณากรอกหมายเลขธนาคารให้ถูกต้อง 10 ถึง 13หลัก"
         ],
         phoneRules: [
-          v => !!v || "Name is required",
+          v => !!v || "กรุณากรอกหมายเลขมือถือให้ถุกต้อง",
           v =>
             (v && v.length <= 11 && v.length >= 10) ||
-            "Name must be less than 11 characters"
+            "กรณากรอกหมายเลขโทรศัพท์ 10 ถึง11หลัก"
         ]
       },
       bank: [
