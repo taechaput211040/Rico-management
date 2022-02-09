@@ -14,6 +14,7 @@
                 class="d-flex align-baseline"
                 ><v-text-field
                   name="name"
+                  v-model="username"
                   dense
                   outlined
                   clearable
@@ -22,7 +23,7 @@
                   hide-details="auto"
                 ></v-text-field> </v-col
               ><v-col cols="4" sm="4" md="4" lg="4">
-                <v-btn color="primary">
+                <v-btn color="primary" @click="searchdata()">
                   <v-icon left dark>
                     mdi-magnify
                   </v-icon>
@@ -87,9 +88,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      username: "",
       dp: {
         afcredit: "1",
         amount: "0",
@@ -141,33 +144,20 @@ export default {
           sortable: false
         }
       ],
-      stats: [
-        {
-          bet: 1842.1,
-          commission: 0,
-          currencyname: "TH",
-          grouped: "JL",
-          p_share: 0,
-          p_win: 0,
-          payout: 1617.87,
-          turnover: 1842.1,
-          wagers: 0,
-          winlose: 224.23
-        },
-        {
-          bet: 0,
-          commission: 0,
-          currencyname: "TH",
-          grouped: "UF",
-          p_share: 0,
-          p_win: 0,
-          payout: 0,
-          turnover: 0,
-          wagers: 0,
-          winlose: 0
-        }
-      ]
+      stats: []
     };
+  },
+  methods: {
+    ...mapActions("member", ["getTransactionid"]),
+    async searchdata() {
+      try {
+        let response = await this.getTransactionid(this.username);
+        this.stats = response.data.stats;
+        this.dp = response.data.dp;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 };
 </script>

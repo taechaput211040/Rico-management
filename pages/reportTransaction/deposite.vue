@@ -6,23 +6,21 @@
         <search-filter :filter="dateFilter" @search="searchdata"></search-filter
       ></v-row>
       <h2 class="mt-5">ยอดฝากรวม แยก ธนาคาร</h2>
+
       <v-row>
-        <v-col cols="12" sm="3" md="3">
+        <v-col cols="12" sm="3" md="3" v-for="(item, i) in itembank" :key="i">
           <div class="card-child card-report elevation-5 text-center">
-            <img
-              src="~/assets/image/bank/RICO.png"
-              alt=""
-              class=" img-icon icon-Logo"
-            />
+            <img-bank :value="item.companyBank"></img-bank>
             <div class="mb-3 ">เติมมือ</div>
             <div>
               ยอดฝากรวม :<span class="primary--text font-weight-bold"
-                >{{ depositbalance }}
+                >{{ item.total_sum }}
               </span>
             </div>
           </div>
         </v-col>
       </v-row>
+
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class=" pa-5 font-weight-bold">
           จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
@@ -92,9 +90,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      itembank: [],
       headerCell: [
         {
           text: "ลำดับ",
@@ -177,40 +177,7 @@ export default {
           class: "font-weight-bold "
         }
       ],
-      itemdeposit: [
-        {
-          afcredit: 75,
-          amount: 75,
-          bfcredit: "0",
-          bonusamount: "0",
-          companyBank: "RICO",
-          created_at: "2022-01-25 14:58:55",
-          dpref: "95c91cb9-6ccc-49dc-b56a-0c74c65d462f",
-          id: 1253,
-          member_id: "BE9453735759",
-          remark: "เติม75 บาท โบนัส 0บาท  สำเร็จ โดยphoe mu kyi ไม่มีโปรโมชั่น",
-          smsdatetime: "2022-01-25T14:28:45",
-          sum: null,
-          topupby: "phoe mu kyi",
-          updated_at: "2022-01-25 14:58:55"
-        },
-        {
-          afcredit: 228,
-          amount: 150,
-          bfcredit: "3",
-          bonusamount: "75",
-          companyBank: "RICO",
-          created_at: "2022-01-25 14:44:46",
-          dpref: "997696c4-56c1-4c2f-8638-966436bf124f",
-          id: 1252,
-          member_id: "BE9401631989",
-          remark: "เติม150 บาท โบนัส 75บาท  สำเร็จ โดยnan mon ฝากทั้งวัน",
-          smsdatetime: "2022-01-25T12:31:05",
-          sum: null,
-          topupby: "nan mon",
-          updated_at: "2022-01-25 14:44:46"
-        }
-      ],
+      itemdeposit: [],
       depositbalance: "1630",
       dateFilter: {
         inputfilter: "",
@@ -237,9 +204,29 @@ export default {
       }
     }
   },
+  async fetch() {
+    try {
+      let response = await this.getdpListtransaction();
+      this.itemdeposit = response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  created() {
+    this.getBank();
+  },
   methods: {
+    ...mapActions("transaction", ["getbankinfo", "getdpListtransaction"]),
     searchdata() {
       console.log(this.dateFilter);
+    },
+    async getBank() {
+      try {
+        let response = await this.getbankinfo();
+        this.itembank = response.data.bankSummary;
+      } catch (error) {
+        console.log(error);
+      }
     },
     getthaidate(timethai) {
       const time = this.$moment(timethai)

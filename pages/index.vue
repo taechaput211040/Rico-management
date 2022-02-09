@@ -1,11 +1,12 @@
 <template>
   <v-flex>
     <!-- sectioncard -->
+
     <v-row>
       <v-col lg="3" sm="6" md="6" cols="12" class="pa-3">
         <card-view
-          title="รวมยอดฝากทั้งวัน"
           :value="datarander.depositbalance"
+          title="รวมยอดฝากทั้งวัน"
           iconSrc="https://image.smart-ai-api.com/public/thongtest/save-money.gif"
         ></card-view>
       </v-col>
@@ -18,9 +19,9 @@
       </v-col>
       <v-col lg="3" sm="6" cols="12" class="pa-3">
         <card-view
+          :value="datarander.profitlossDate"
           :condition="true"
           title="กำไร/ขาดทุน(วันนี้)"
-          :value="datarander.profitlossDate"
           iconSrc="https://image.smart-ai-api.com/public/thongtest/laptop.gif"
         ></card-view>
       </v-col>
@@ -46,18 +47,33 @@
             <h3>เปิด-ปิด การฝากออโต้</h3>
           </v-card-subtitle>
           <div class="d-flex">
-            <div
-              v-for="(item, i) in actionBank"
-              :key="i"
-              class="col text-center tougle-system"
-            >
-              <img-bank :value="item.name"></img-bank>
+            <div class="col text-center tougle-system">
+              <img-bank value="KBANK"></img-bank>
               <v-switch
                 class="mx-auto text-center"
-                v-model="item.status"
-                true-value="on"
-                false-value="off"
-                :label="`${item.status.toString()}`"
+                true-value="start"
+                false-value="end"
+                v-model="actionBank.kbank"
+              >
+              </v-switch>
+            </div>
+            <div class="col text-center tougle-system">
+              <img-bank value="TRUEWALLET"></img-bank>
+              <v-switch
+                class="mx-auto text-center"
+                true-value="start"
+                false-value="end"
+                v-model="actionBank.true"
+              >
+              </v-switch>
+            </div>
+            <div class="col text-center tougle-system">
+              <img-bank value="SCB"></img-bank>
+              <v-switch
+                class="mx-auto text-center"
+                true-value="start"
+                false-value="end"
+                v-model="actionBank.scb"
               >
               </v-switch>
             </div>
@@ -66,7 +82,7 @@
           <v-card>
             <v-data-table
               :headers="bankDepositColumn"
-              :items="itemBank"
+              :items="dpbank"
               hide-default-footer
             >
               <template #[`item.Companybank`]="{item}">
@@ -96,7 +112,7 @@
           <v-card>
             <v-data-table
               :headers="bankWithdrawColumn"
-              :items="itemBank"
+              :items="wdbank"
               hide-default-footer
             >
               <template #[`item.Companybank`]="{item}">
@@ -128,7 +144,11 @@
           </v-card-title>
 
           <v-card>
-            <v-data-table :headers="logFailedColumn" hide-default-footer>
+            <v-data-table
+              :headers="logFailedColumn"
+              :items="incomingSMS"
+              hide-default-footer
+            >
               <template #[`item.actions`]>
                 <v-btn small rounded color="primary">ตรวจสอบ</v-btn>
               </template>
@@ -401,18 +421,34 @@
   </v-flex>
 </template>
 <script>
+import { mapActions } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 export default {
   components: { ImgBank },
+  async fetch() {
+    try {
+      const response = await this.GetInfomation();
+      this.datainformation = response.data;
+      this.setCardshow(this.datainformation);
+      this.getsatatusBank();
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  mounted() {},
   data() {
     return {
+      datainformation: [],
       isLoading: false,
       datarander: {
-        depositbalance: 60,
-        withdrawbalance: 600,
-        profitlossDate: 4000,
-        profitlossmounth: -600
+        depositbalance: null,
+        withdrawbalance: null,
+        profitlossDate: null,
+        profitlossmounth: null
       },
+      incomingSMS: [],
+      dpbank: [],
+      wdbank: [],
       bankDepositColumn: [
         {
           text: "ธนาคาร",
@@ -567,110 +603,38 @@ export default {
           status: "off"
         }
       ],
-      itemBank: [
-        {
-          Companybank: "SCB",
-          Companybankacountnumber: "1111111111",
-          Companybankname: "test",
-          balanceupdatetime: "2022-01-14 17:17:26",
-          balance: 0
-        },
-        {
-          Companybank: "KBANK",
-          Companybankacountnumber: "1111111111",
-          Companybankname: "test",
-          balanceupdatetime: "2022-01-14 17:17:26",
-          balance: 0
-        },
-        {
-          Companybank: "TRUEWALLET",
-          Companybankacountnumber: "1111111111",
-          Companybankname: "test",
-          balanceupdatetime: "2022-01-14 17:17:26",
-          balance: 0
-        }
-      ],
-      dplist: [
-        {
-          afcredit: 337,
-          amount: 225,
-          bfcredit: "0",
-          bonusamount: "112.5",
-          companyBank: "RICO",
-          created_at: "2022-01-19 09:58:55",
-          dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-          id: 354,
-          member_id: "BE8778856",
-          remark:
-            "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-          smsdatetime: "2022-01-19T09:27:00",
-          sum: null,
-          topupby: "phoe mu kyi",
-          updated_at: "2022-01-19 09:58:55"
-        },
-        {
-          afcredit: 337,
-          amount: 225,
-          bfcredit: "0",
-          bonusamount: "112.5",
-          companyBank: "checkin",
-          created_at: "2022-01-19 09:58:55",
-          dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-          id: 355,
-          member_id: "BE8778856",
-          remark:
-            "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-          smsdatetime: "2022-01-19T09:27:00",
-          sum: null,
-          topupby: "AUTO",
-          updated_at: "2022-01-19 09:58:55"
-        }
-      ],
-      wdlist: [
-        {
-          afAmount: null,
-          afcredit: 0,
-          amount: 49,
-          bankAcc: "09970678690",
-          bankName: "WAVEPAY",
-          bfAmount: null,
-          bfcredit: 49,
-          created_at: "2022-01-19 01:30:22",
-          id: 86,
-          name: "htetzaw myo",
-          operator: "Ah Lar Hmwe",
-          remark: "กรุณาทำการโอนด้วยตนเอง",
-          requsettime: "2022-01-19 01:30:18",
-          status: "Success",
-          transferTime: "โอนมือ",
-          type: "common",
-          username: "BE9970678690"
-        },
-        {
-          afAmount: null,
-          afcredit: 0,
-          amount: 50,
-          bankAcc: "09970678690",
-          bankName: "SCB",
-          bfAmount: null,
-          bfcredit: 50,
-          created_at: "2022-01-19 01:30:22",
-          id: 87,
-          name: "htetzaw myo",
-          operator: "Ah Lar Hmwe",
-          remark: "กรุณาทำการโอนด้วยตนเอง",
-          requsettime: "2022-01-19 01:30:18",
-          status: "Error",
-          transferTime: "โอนมือ",
-          type: "common",
-          username: "BE9970678690"
-        }
-      ]
+
+      dplist: [],
+      wdlist: []
     };
   },
+
   methods: {
-    testtodo(item) {
-      console.log(item);
+    ...mapActions("auth", ["GetInfomation", "Autostatus"]),
+    setCardshow(data) {
+      if (data) {
+        this.datarander = {
+          depositbalance: data.dpamountoneday.amount,
+          withdrawbalance: data.wdamountoneday.amount,
+          profitlossDate:
+            data.dpamountoneday.amount - data.wdamountoneday.amount,
+          profitlossmounth: data.OneMonthProfit
+        };
+        this.dpbank = data.dpbank;
+        this.wdbank = data.wdbank;
+        this.dplist = data.dplist;
+        this.wdlist = data.wdlist;
+        this.incomingSMS = data.incomingSMS;
+      }
+    },
+    async getsatatusBank() {
+      try {
+        let status = await this.Autostatus();
+        this.actionBank = status.data;
+        console.log(this.actionBank);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

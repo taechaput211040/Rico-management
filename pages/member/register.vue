@@ -250,9 +250,9 @@ export default {
     };
   },
   methods: {
-    submitform() {
+    async submitform() {
       if (this.$refs.form.validate()) {
-        console.log("submit");
+        // await api.post(`/api/register`, this.formRegister);
       }
     },
     rangeInput(self, length, itemmodel) {

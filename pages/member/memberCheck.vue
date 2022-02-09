@@ -17,12 +17,13 @@
                   dense
                   outlined
                   clearable
+                  v-model="username"
                   label="กรอก username เพื่อค้นหา"
                   placeholder="เช่น xx1234567"
                   hide-details="auto"
                 ></v-text-field> </v-col
               ><v-col cols="12" sm="12" md="12" lg="4" class="text-center">
-                <v-btn color="primary">
+                <v-btn color="primary" @click="searchdata">
                   <v-icon left dark>
                     mdi-magnify
                   </v-icon>
@@ -38,21 +39,35 @@
             </v-row>
           </div>
         </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12">
+        <v-col lg="3" sm="4" md="4" cols="12" v-if="serchsuccess == true">
           <card-report
             title="USERNAME"
             :value="result.user"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
+        <v-col
+          lg="3"
+          sm="4"
+          md="4"
+          cols="12"
+          class="pa-3"
+          v-if="serchsuccess == true"
+        >
           <card-report
             title="CREDIT"
             :value="result.credit"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/credit-card.png"
           ></card-report>
         </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
+        <v-col
+          lg="3"
+          sm="4"
+          md="4"
+          cols="12"
+          class="pa-3"
+          v-if="serchsuccess == true"
+        >
           <card-report
             title="เวลาที่เข้าใช้งานล่าสุด (อัพเดททุก 30 นาที)"
             :value="ip_data.updated_at"
@@ -60,21 +75,42 @@
           ></card-report>
         </v-col>
 
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
+        <v-col
+          lg="3"
+          sm="4"
+          md="4"
+          cols="12"
+          class="pa-3"
+          v-if="serchsuccess == true"
+        >
           <card-report
             title="ค่ายเกมที่เข้าเล่นล่าสุด"
             :value="result.provider_active"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/game-control.png"
           ></card-report>
         </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
+        <v-col
+          lg="3"
+          sm="4"
+          md="4"
+          cols="12"
+          class="pa-3"
+          v-if="serchsuccess == true"
+        >
           <card-report
             title="REF."
             :value="data.lastest_dpref"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/book.png"
           ></card-report>
         </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
+        <v-col
+          lg="3"
+          sm="4"
+          md="4"
+          cols="12"
+          class="pa-3"
+          v-if="serchsuccess == true"
+        >
           <card-report
             title="IP address ที่เข้าใช้งานล่าสุด"
             :value="ip_data.ip"
@@ -82,7 +118,7 @@
           ></card-report>
         </v-col>
       </v-row>
-      <v-card class="elevation-4 mt-5 rounded-lg">
+      <v-card class="elevation-4 mt-5 rounded-lg" v-if="serchsuccess == true">
         <v-card class="elevation-3">
           <v-data-table :headers="header" hide-default-footer :items="response">
             <template #[`item.type`]="{item}">
@@ -98,31 +134,33 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      serchsuccess: false,
+      username: "",
       data: { lastest_dpref: "58579427-a2b0-41e5-9501-b9350f7804ba" },
       ip_data: {
-        code: "JL",
-        created_at: "2022-01-20T19:22:08.844Z",
-        device:
-          "Mozilla/5.0 (Linux; Android 11; vivo 1907) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.87 Mobile Safari/537.36",
-        game_name: "147baab6-e3eb-42e2-81bb-80419a52cd19",
-        id: "96ec3375-8887-4b03-a1dd-987b0e793fea",
-        ip: "103.83.188.31",
-        provider_name: "JL",
-        updated_at: "2022-01-20T23:53:58.442Z",
-        username: "BE9459897545"
+        code: "",
+        created_at: "",
+        device: "",
+        game_name: "",
+        id: "",
+        ip: "ip",
+        provider_name: "",
+        updated_at: "เวลาล่าสุด",
+        username: "username"
       },
       result: {
         credit: 0,
-        id: "c1959051-a44a-424b-b2c0-338616c0e780",
-        name: "aye win",
-        phone: "09459897545",
-        provider_active: "JL",
-        role: "e82ca544-9954-4eb4-baa2-a8e55c18f8b1",
+        id: "",
+        name: "",
+        phone: "",
+        provider_active: "ค่ายเกม",
+        role: "",
         status: 1,
-        user: "BE9459897545"
+        user: "username"
       },
       header: [
         {
@@ -244,6 +282,19 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    ...mapActions("member", ["getTurnByid"]),
+    async searchdata() {
+      try {
+        this.serchsuccess = true;
+        let response = await this.getTurnByid(this.username);
+        this.ip_data = response.data.ip_data;
+        this.result = response.data.result;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 };
 </script>

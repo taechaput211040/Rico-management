@@ -5,7 +5,7 @@
         <h2 class="mb-2">รายการสมาชิก</h2>
         <search-filter
           :filter="dateFilter"
-          @search="searchdata"
+          @search="searchdata()"
         ></search-filter>
       </v-row>
       <v-row>
@@ -176,6 +176,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import ImgBank from "../../components/ImgBank.vue";
 export default {
   components: { ImgBank },
@@ -395,67 +396,31 @@ export default {
           sortable: false
         }
       ],
-      itemSearch: [
-        {
-          bankAcc: "09772778704",
-          bankAccRef: "X2778704",
-          bankName: "WAVEPAY",
-          birthdate: null,
-          bonusid: 3,
-          created_at: "2022-01-20 12:47:38",
-          dpAuto: true,
-          gender: "male",
-          knowFrom: "สมัครจากหน้าเว็บ",
-          lastname: "aayt",
-          lastnameEng: null,
-          lineID: "ไม่มีข้อมูล",
-          name: "aayt",
-          nameEng: null,
-          operator: "RICO",
-          phone: "09778772704",
-          recommender: null,
-          remark: null,
-          status: true,
-          updated_at: "2022-01-20 12:51:23",
-          username: "BE9778772704",
-          wdAuto: false
-        },
-        {
-          bankAcc: "09687983424",
-          bankAccRef: "X7983424",
-          bankName: "KBZpay",
-          birthdate: null,
-          bonusid: 3,
-          created_at: "2022-01-21 02:08:52",
-          dpAuto: true,
-          gender: "male",
-          knowFrom: "สมัครจากหน้าเว็บ",
-          lastname: "win",
-          lastnameEng: null,
-          lineID: "ไม่มีข้อมูล",
-          name: "aye",
-          nameEng: null,
-          operator: "RICO",
-          phone: "09459897545",
-          recommender: "aye win",
-          remark: null,
-          status: true,
-          updated_at: "2022-01-21 06:53:46",
-          username: "BE9459897545",
-          wdAuto: false
-        }
-      ]
+      itemSearch: []
     };
   },
+  async fetch() {
+    try {
+      let resrponse = await this.getReportmember(this.dateFilter);
+      this.itemSearch = resrponse.data;
+    } catch (error) {}
+  },
   methods: {
+    ...mapActions("member", ["getReportmember", "getReportmemberbyid"]),
     getthaidate(timethai) {
       const time = this.$moment(timethai)
         .add(7, "hours")
         .format("YYYY-MM-DD เวลา HH:mm:ss");
       return time;
     },
-    searchdata() {
-      console.log(this.dateFilter);
+    async searchdata() {
+      try {
+        console.log(this.dateFilter)
+        const data = await this.getReportmemberbyid(this.dateFilter);
+        this.itemSearch = data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     yesterday() {
       console.log("yesterday");

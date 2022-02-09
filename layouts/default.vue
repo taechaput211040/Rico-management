@@ -18,7 +18,7 @@
         <v-btn fab dark small color="orange">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red">
+        <v-btn fab dark small color="red" @click="logout">
           <v-icon>mdi-logout</v-icon>
         </v-btn>
       </v-speed-dial>
@@ -97,8 +97,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  // middleware: "auth",
+  middleware: "auth",
   data() {
     return {
       fab: false,
@@ -319,22 +320,26 @@ export default {
     };
   },
   async created() {
-    // await this.checkauthen();
+    try {
+      await this.getUser();
+      await this.getFeature();
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
-    // ...mapMutations("auth", ["set_logout"]),
-    // async logout() {
-    //   try {
-    //     let token = localStorage.getItem("key");
-    //     if (token) {
-    //       localStorage.clear();
-    //       this.set_logout();
-    //       this.$router.push("/login");
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
+    ...mapActions("auth", ["getUser", "getFeature"]),
+    async logout() {
+      try {
+        let token = localStorage.getItem("key");
+        if (token) {
+          localStorage.clear();
+          this.$router.push("/login");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 };
 </script>

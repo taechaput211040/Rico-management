@@ -86,6 +86,7 @@ export default {
   },
   async fetch() {
     this.result;
+    //get API By id ตรงนี้//
   },
   methods: {
     async showmore(item) {

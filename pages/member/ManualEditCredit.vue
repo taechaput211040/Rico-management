@@ -361,6 +361,7 @@
 
 <script>
 import moment from "moment";
+import { mapActions } from "vuex";
 import SearchFilter from "../../components/SearchFilter.vue";
 export default {
   components: { SearchFilter },
@@ -472,36 +473,7 @@ export default {
           cellClass: "font-weight-bold"
         }
       ],
-      itemcredit: [
-        {
-          afcredit: 0,
-          bfcredit: 0,
-          bonus: 0,
-          created_at: "2022-01-24T14:41:51.000000Z",
-          credit: 75,
-          id: 903,
-          operator: "nan mon",
-          remark:
-            "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-          topupcredit: 0,
-          type: "SYSTEMNODATA",
-          username: "BE9794691646"
-        },
-        {
-          afcredit: 0,
-          bfcredit: 0,
-          bonus: 0,
-          created_at: "2022-01-24T14:41:51.000000Z",
-          credit: 75,
-          id: 904,
-          operator: "nan mon",
-          remark:
-            "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-          topupcredit: 0,
-          type: "SYSTEMNODATA",
-          username: "BE9794691646"
-        }
-      ],
+      itemcredit: [],
       tab: null,
       time: "",
       opento: false,
@@ -515,13 +487,20 @@ export default {
   },
   computed: {},
   methods: {
+    ...mapActions("member", ["getManualEditCredit"]),
+    async serchdata() {},
     refreshform() {
       this.formnoneSystem = {};
       this.formCutcredit = {};
       this.formTopupCredit = {};
     },
-    searchdata(textSearch) {
-      console.log(this.dateFilter, "text :" + textSearch);
+    async searchdata() {
+      try {
+        let response = await this.getManualEditCredit(this.dateFilter);
+        this.itemcredit = response.data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
     getthaidate(timethai) {
       const time = moment(timethai)
