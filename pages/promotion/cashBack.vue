@@ -177,31 +177,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      cashback: {
-        casino: 5,
-        collect_type: "DAY",
-        created_at: "2021-04-26T11:29:02.000000Z",
-        esport: 2,
-        football: 5,
-        game: 5,
-        id: 1,
-        lotto: 5,
-        m2: 2,
-        max_amount: 0,
-        multi_player: 2,
-        parlay: 5,
-        pictureUrl:
-          "https://image-storage-betkub.s3.ap-southeast-1.amazonaws.com/images/0BOIpDTgDtjz3sLMFjqEzy6BUnJV9fFgASRZT1MM.jpg",
-        rate: 5,
-        status: 1,
-        step: 5,
-        update_by: "RICO",
-        updated_at: "2022-01-16T05:18:59.000000Z",
-        wdlimit_multiply: 1000000
-      },
+      cashback: {},
       typeselect: "รับได้รายวัน",
       itemstype: [
         { value: "DAY", text: "รับได้รายวัน" },
@@ -210,7 +190,15 @@ export default {
       ]
     };
   },
+  async fetch() {
+    try {
+      let response = await this.getCashback();
+      this.cashback = response.data;
+    } catch (error) {}
+  },
   methods: {
+    ...mapActions("promotion", ["getCashback"]),
+
     switchstatus() {
       console.log("ho");
     }

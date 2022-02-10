@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 export default {
   components: { ImgBank },
@@ -157,18 +158,15 @@ export default {
           sortable: false
         }
       ],
-      criminalList: [
-        {
-          bankAcc: "6222803450",
-          bankName: "SCB",
-          created_at: "2022-02-05 17:13:59",
-          lastname: "สมานทอง",
-          name: "นายธีรภัทร",
-          operator: "DD",
-          phone: "0968649689"
-        }
-      ]
+      criminalList: []
     };
+  },
+  async fetch() {
+    let response = await this.getCriminallist();
+    this.criminalList = response.data;
+  },
+  methods: {
+    ...mapActions("setting", ["getCriminallist"])
   }
 };
 </script>

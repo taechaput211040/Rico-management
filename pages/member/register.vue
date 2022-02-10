@@ -4,7 +4,7 @@
     <v-card class="mt-2 pa-3 elevation-4 mt-5 rounded-lg">
       <v-form ref="form" v-model="valid" lazy-validation
         ><v-row class="pa-3">
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic">ชื่อ</span>
             <v-text-field
               placeholder="กรอกชื่อ"
@@ -16,7 +16,7 @@
               required
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >นามสกุล</span
             >
@@ -30,7 +30,7 @@
               required
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >ชื่อ (ภาษาอังกฤษ)*ไม่บังคับ</span
             >
@@ -43,7 +43,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >นามสกุล (ภาษาอังกฤษ)*ไม่บังคับ</span
             >
@@ -56,7 +56,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >ธนาคาร</span
             >
@@ -66,10 +66,10 @@
               hide-details="auto"
               dense
               outlined
-              :items="bank"
+              :items="$store.state.bank"
             ></v-select>
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >หมายเลขบัญชี / หมายเลข TRUEWALLET</span
             >
@@ -85,7 +85,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >เบอร์โทรศัพท์</span
             >
@@ -101,7 +101,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >ไลน์ ID</span
             >
@@ -114,7 +114,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >ผู้แนะนำ</span
             >
@@ -127,7 +127,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >รู้จักจาก</span
             >
@@ -138,7 +138,7 @@
               outlined
             ></v-select
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >หมายเหตุ</span
             >
@@ -150,7 +150,7 @@
               required
             ></v-text-field
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >วันเกิด</span
             >
@@ -162,14 +162,14 @@
               style="width: 100%"
             />
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic">เพศ</span>
             <v-radio-group mandatory v-model="formRegister.gender">
               <v-radio label="ชาย" value="ชาย"></v-radio>
               <v-radio label="หญิง" value="หญิง"></v-radio>
             </v-radio-group>
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="12" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >โบนัส</span
             >
@@ -181,13 +181,13 @@
               required
             ></v-select
           ></v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="6" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >อนุมัติฝากออโต้</span
             >
             <v-switch v-model="formRegister.dpauto"></v-switch>
           </v-col>
-          <v-col cols="12" sm="3"
+          <v-col cols="6" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >อนุมัติถอนออโต้</span
             >

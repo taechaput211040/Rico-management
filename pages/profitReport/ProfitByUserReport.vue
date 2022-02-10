@@ -54,7 +54,7 @@
         <v-data-table
           class="elevation-1"
           :headers="headerCell"
-          :items="itemreport"
+          :items="response.data"
           hide-default-footer
         >
           <template #[`item.no`]="{index}">
@@ -91,17 +91,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      response: {
-        total: 49,
-        deposit_count: 69,
-        deposit_total: 1500,
-        withdraw_count: "1",
-        withdraw_total: "239",
-        transaction_total: 1261
-      },
+      response: {},
       headerCell: [
         {
           text: "ลำดับ",
@@ -157,26 +151,7 @@ export default {
           cellClass: "font-weight-bold "
         }
       ],
-
-      itemreport: [
-        {
-          deposit_count: 4,
-          deposit_total: 225,
-          total: 225,
-          username: "BE9670812088",
-          withdraw_count: null,
-          withdraw_total: null
-        },
-        {
-          deposit_count: 3,
-          deposit_total: 180,
-          total: -59,
-          username: "BE0668535",
-          withdraw_count: 1,
-          withdraw_total: 239
-        }
-      ],
-
+      itemreport: [],
       dateFilter: {
         inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
@@ -186,10 +161,22 @@ export default {
       }
     };
   },
+  async fetch() {
+    this.getReport();
+  },
   methods: {
+    ...mapActions("profit", ["getProfitByUserReport"]),
     getamount() {},
     searchdata() {
       console.log(this.dateFilter);
+    },
+    async getReport() {
+      try {
+        let response = await this.getProfitByUserReport(this.dateFilter);
+        this.response = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

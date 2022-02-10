@@ -20,7 +20,12 @@
           </template>
           <template #[`item.action`]="{item}">
             <div class="text-center d-flex justify-center">
-              <v-btn color="black" class="mx-1" dark small @click="editEmployee(item)"
+              <v-btn
+                color="black"
+                class="mx-1"
+                dark
+                small
+                @click="editEmployee(item)"
                 ><v-icon left small>mdi-cog</v-icon>แก้ไข</v-btn
               >
               <v-btn color="error" dark small
@@ -33,7 +38,13 @@
             <span v-else>STAFF</span>
           </template>
           <template #[`item.status`]="{item}">
-            <v-chip color="success" small outlined dark v-if="item.status == true">
+            <v-chip
+              color="success"
+              small
+              outlined
+              dark
+              v-if="item.status == true"
+            >
               <v-icon left small>mdi-circle</v-icon>
               เปิดใช้งาน
             </v-chip>
@@ -256,6 +267,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   watch: {
     dlemployee(newVal) {
@@ -373,23 +385,19 @@ export default {
           class: "font-weight-bold "
         }
       ],
-      employee: [
-        {
-          created_at: "2021-11-29 13:33:41",
-          creditperday: 20000,
-          id: 24,
-          is_admin: true,
-          limittopup: false,
-          name: "admin",
-          operator: "Super Admin",
-          phone: "0881999969",
-          status: true,
-          username: "adnp"
-        }
-      ]
+      employee: []
     };
   },
+  async fetch() {
+    try {
+      let response = await this.getEmployee();
+      this.employee = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    ...mapActions("setting", ["getEmployee"]),
     editEmployee(item) {
       this.dledit = true;
       this.editAccount = item;

@@ -100,6 +100,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -178,41 +179,7 @@ export default {
           class: "font-weight-bold "
         }
       ],
-      itemdeposit: [
-        {
-          afcredit: 150,
-          amount: 75,
-          bfcredit: "0",
-          bonusamount: "75",
-          companyBank: "RICO",
-          created_at: "2022-01-26 03:30:01",
-          dpref: "1824150c-01c0-4f67-884e-b214509f88fe",
-          id: 1319,
-          member_id: "BE9983616528",
-          remark: "เติม75 บาท โบนัส 75บาท  สำเร็จ โดยphue phue สมัครสมาชิกใหม่",
-          smsdatetime: "2022-01-25T02:57:24",
-          sum: null,
-          topupby: "phue phue",
-          updated_at: "2022-01-26 03:30:01"
-        },
-        {
-          afcredit: 360,
-          amount: 180,
-          bfcredit: "0",
-          bonusamount: "180",
-          companyBank: "RICO",
-          created_at: "2022-01-26 03:18:42",
-          dpref: "ba4a3b1e-4cad-4aca-953f-a4d3b1f385c2",
-          id: 1318,
-          member_id: "BE9670812088",
-          remark:
-            "เติม180 บาท โบนัส 180บาท  สำเร็จ โดยphue phue สมัครสมาชิกใหม่",
-          smsdatetime: "2022-01-25T02:48:15",
-          sum: null,
-          topupby: "phue phue",
-          updated_at: "2022-01-26 03:18:42"
-        }
-      ],
+      itemdeposit: [],
       depositbalance: "1630",
       dateFilter: {
         inputfilter: "",
@@ -239,7 +206,16 @@ export default {
       }
     }
   },
+  async fetch() {
+    try {
+      let response = await this.getFirstdeposit();
+      this.itemdeposit = response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    ...mapActions("transaction", ["getFirstdeposit"]),
     searchdata() {
       console.log(this.dateFilter);
     },

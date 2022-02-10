@@ -115,8 +115,10 @@
           </v-col>
           <v-col cols="12" sm="4"
             >เลือกธนาคาร
+            {{ createBank.Companybank }}
             <v-select
               required
+              :items="$store.state.bank"
               v-model="createBank.Companybank"
               dense
               hide-details="auto"
@@ -227,6 +229,7 @@
               required
               v-model="updateitem.Companybank"
               dense
+              :items="$store.state.bank"
               hide-details="auto"
               placeholder="กรุณาเลือกธนาคาร"
               outlined
@@ -311,6 +314,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -332,26 +336,7 @@ export default {
       },
       dlupdate: false,
       dlcreate: false,
-      dataBank: [
-        {
-          Companybank: "KBANK",
-          Companybankacountnumber: "1171622669",
-          Companybankname: "วัชรากร ดิสคุ้ม",
-          agentPrefixCode: "BE",
-          balance: 720,
-          balanceupdatetime: "2022-02-06 18:59:00",
-          bankAccRef: "X162266X",
-          companyName: "Smartbet",
-          createBy: "adnp",
-          id: "81857d6c-c8d0-4d75-8b5a-dc7729974124",
-          loginname: null,
-          phone: "0997839913",
-          status: true,
-          type: false,
-          updateBy: "_RICO_QUEUE",
-          visibletomember: true
-        }
-      ],
+      dataBank: [],
       bankHeader: [
         {
           text: "สถานะ",
@@ -404,7 +389,16 @@ export default {
       ]
     };
   },
+  async fetch() {
+    try {
+      let response = await this.getCompanybank();
+      this.dataBank = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    ...mapActions("setting", ["getCompanybank"]),
     async touglestatus(status) {
       status.visibletomember = !status.visibletomember;
     },

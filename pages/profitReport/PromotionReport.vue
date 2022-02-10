@@ -13,7 +13,7 @@
           <card-report
             title="ฝาก"
             titleclass="primary--text"
-            :value="response.amount"
+            :value="itemPromotion.amount"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
@@ -21,7 +21,7 @@
           <card-report
             title="ถอน"
             titleclass="red--text"
-            :value="response.withdraw"
+            :value="itemPromotion.withdraw"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
@@ -29,7 +29,7 @@
           <card-report
             title="โบนัส"
             titleclass="purple--text"
-            :value="response.totalbonus"
+            :value="itemPromotion.totalbonus"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin.png"
           ></card-report>
         </v-col>
@@ -37,7 +37,7 @@
           <card-report
             titleclass="purple--text"
             title="ฝาก+โบนัส"
-            :value="response.amount + response.totalbonus"
+            :value="itemPromotion.amount + itemPromotion.totalbonus"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin-stack.png"
           ></card-report>
         </v-col>
@@ -46,7 +46,7 @@
             titleclass="teal--text"
             title="กำไรขาดทุน"
             :condition="true"
-            :value="response.amount - response.withdraw"
+            :value="itemPromotion.amount - itemPromotion.withdraw"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report>
         </v-col> </v-row
@@ -268,6 +268,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import CardReport from "../../components/CardReport.vue";
 import ImgBank from "../../components/ImgBank.vue";
 export default {
@@ -363,22 +364,7 @@ export default {
           updated_at: "2022-01-27 00:41:15"
         }
       ],
-      response: {
-        amount: 1050,
-        bonus: 812.5,
-        bonusAllDay: 187.5,
-        bonusCheckin: 178,
-        bonusCreditfree: 0,
-        bonusDp7Days: 0,
-        bonusFirstDp: 0,
-        totalbonuspromotion: 1177,
-        bonusManualTopup: 150,
-        bonusNewMember: 255,
-        bonusWheel: 0,
-        totalCashback: 42,
-        totalbonus: 812.5,
-        withdraw: 239
-      },
+
       dateFilter: {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
@@ -408,24 +394,20 @@ export default {
           class: "font-weight-bold col-4"
         }
       ],
-      itemPromotion: {
-        amount: 1875,
-        bonus: 40,
-        bonusAllDay: 0,
-        bonusCheckin: 10,
-        bonusCreditfree: 0,
-        bonusDp7Days: 0,
-        bonusFirstDp: 0,
-        bonusManualTopup: 0,
-        bonusNewMember: 0,
-        bonusWheel: 0,
-        totalCashback: 30,
-        totalbonus: 40,
-        withdraw: 1100
-      }
+      itemPromotion: {}
     };
   },
+  async fetch() {
+    try {
+      let response = await this.getPromotionReport(this.dateFilter);
+      this.itemPromotion = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    ...mapActions("profit", ["getPromotionReport"]),
+
     getamount() {},
     async opendetail() {
       this.detailDialog = true;

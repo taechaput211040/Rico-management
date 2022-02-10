@@ -183,8 +183,8 @@
           </v-col>
           <v-col cols="12" sm="6" class="text-center pa-5">
             <div class="font-weight-bold ">
-              รูปภาพ ขนาดไม่เกิน 1 MB 500x500 px(ถ้ามี)</div
-            >
+              รูปภาพ ขนาดไม่เกิน 1 MB 500x500 px(ถ้ามี)
+            </div>
             <img
               class="img_promotion"
               :src="message.img"
@@ -228,52 +228,23 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      datasetting: {
-        agent_username: "BE",
-        company: "Smartbet",
-        companykey: "BEGXT",
-        companyname: "BE",
-        companynlineurl: "https://lin.ee/uyiM0Xz",
-        companyurl: "https://beggar119.com",
-        hash: "4fe56b880271a98c20495111f7b70e9b",
-        id: "0729c9b7-5b9e-4adc-915e-9789d95d31fd",
-        least_wd_credits: 0,
-        line_name: "@beggar119",
-        login_link: "https://member.beggar119.com/login",
-        member_logo_url:
-          "https://image.smart-ai-api.com/public/image-storage/e376348e-6007-4f50-a43c-d2cfd2853019-WinWay_Logo_300x300.png",
-        member_site_name: "member.beggar119.com",
-        register_link: "https://member.beggar119.com/register",
-        rico_id: 1,
-        system_status: true,
-        turnNobonus: 0,
-        wd_auto_amount: 0,
-        wdautoAll: false,
-        wdlimit: true,
-        wdlimitTime: 0,
-        wdlimitcredit: 500000,
-        wdwhenoutstanding: false
-      },
-      message: {
-        agent: null,
-        company: null,
-        created_at: "2021-03-09T02:59:08.000000Z",
-        description: "ပင်မဝဘ်ဆိုဒ်၊ တည်ငြိမ်ပြီး 100% လုံခြုံသည်\n@beggar119",
-        header:
-          "BEGGAR119 မှ ကြိုဆိုပါ၏ ဒီနေ့ တွေ့ကြုံခံစားဖို့ အဆင်သင့်ဖြစ်နေပါပြီ",
-        id: 1,
-        img:
-          "https://image-storage-betkub.s3.ap-southeast-1.amazonaws.com/images/UC6s4GOB1hNpZleYcYom7LPhcIL5ZUY96bjAM8ps.jpg",
-        operator: "admin",
-        status: 1,
-        topic:
-          "Beggar119 ဖြင့် အတည်ငြိမ်ဆုံးစနစ်၊ အမြန်ငွေသွင်းငွေထုတ်ဝန်ဆောင်မှု၊ ရွေးချယ်ရန်ကမ္ဘာတစ်ဝှမ်းမှဂိမ်းများစွာရှိသည်။",
-        updated_at: "2022-02-06T08:28:41.000000Z"
-      }
+      datasetting: {},
+      message: {}
     };
+  },
+  async fetch() {
+    try {
+      let response = await this.getSetting();
+      this.datasetting = response.data.datasetting;
+      this.message = response.data.message;
+    } catch (error) {}
+  },
+  methods: {
+    ...mapActions("setting", ["getSetting"])
   }
 };
 </script>

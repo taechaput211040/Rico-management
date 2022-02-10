@@ -288,11 +288,6 @@ export default {
           icon: "mdi-cog-outline"
         },
         {
-          title: "LineNotify",
-          to: "/downline/Member",
-          icon: "mdi-account-circle-outline"
-        },
-        {
           title: "รายชื่อมิจฉาชีพ",
           to: "/CriminalList",
           icon: "mdi-gamepad-square"
@@ -305,11 +300,6 @@ export default {
         {
           title: "ธนาคาร",
           to: "/companyBank",
-          icon: "mdi-gamepad-square"
-        },
-        {
-          title: "Version",
-          to: "/setting",
           icon: "mdi-gamepad-square"
         }
       ],

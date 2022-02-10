@@ -540,28 +540,6 @@ export default {
           class: "grey darken-3 white--text"
         }
       ],
-      formfirstdeposit: {
-        statustype: false,
-        stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
-      },
-      formbonusnewmember: {
-        statustype: false,
-        stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
-      },
-      formbonusdponeday: {
-        statustype: false,
-        timebonusStatus: false,
-        stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
-      },
-      formdeposit7day: {
-        statustype: false,
-        timebonusStatus: false,
-        stepbonus: "off",
-        multi_player: [{ dpmin: "", dpmax: "", dpbonus: "" }]
-      },
 
       image: []
     };

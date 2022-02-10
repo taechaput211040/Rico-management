@@ -75,7 +75,8 @@
                 label
                 x-small
                 dark
-                ><v-icon class="mr-1"  small>mdi-credit-card</v-icon>ก่อน :</v-chip
+                ><v-icon class="mr-1" small>mdi-credit-card</v-icon>ก่อน
+                :</v-chip
               >
               {{ item.bfcredit }}
             </div>
@@ -87,7 +88,8 @@
                 label
                 x-small
                 dark
-                ><v-icon class="mr-1" small>mdi-credit-card</v-icon>หลัง :</v-chip
+                ><v-icon class="mr-1" small>mdi-credit-card</v-icon>หลัง
+                :</v-chip
               >
               {{ item.afcredit }}
             </div>
@@ -186,7 +188,7 @@
 </template>
 
 <script>
-
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -287,52 +289,20 @@ export default {
           class: "font-weight-bold "
         }
       ],
-      itemdeposit: [
-        {
-          afAmount: null,
-          afcredit: 100,
-          amount: 1600,
-          bankAcc: "09401631989",
-          bankName: "KBZpay",
-          bfAmount: null,
-          bfcredit: 1700,
-          id: 209,
-          name: "Tint Wai Phyo",
-          operator: "phoe mu kyi",
-          remark: "กรุณาทำการโอนด้วยตนเอง",
-          requsettime: "2022-01-25 11:38:42",
-          status: "Success",
-          transferTime: "โอนมือ",
-          type: "common",
-          username: "BE9401631989"
-        },
-        {
-          afAmount: null,
-          afcredit: 0,
-          amount: 552,
-          bankAcc: "9693319559",
-          bankName: "WAVEPAY",
-          bfAmount: null,
-          bfcredit: 552,
-          id: 208,
-          name: "Ko Thu",
-          operator: "phoe mu kyi",
-          remark: "กรุณาทำการโอนด้วยตนเอง",
-          requsettime: "2022-01-25 10:15:04",
-          status: "Error",
-          transferTime: "โอนมือ",
-          type: "common",
-          username: "BE9693319559"
-        }
-      ]
+      itemdeposit: []
     };
   },
-  async mounted() {
-
+  async mounted() {},
+  async fetch() {
+    try {
+      let response = await this.getLastwithdraw();
+      this.itemdeposit = response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
-    
-   
+    ...mapActions("transaction", ["getLastwithdraw"]),
     getthaidate(timethai) {
       const time = this.$moment(timethai)
         .add(7, "hours")

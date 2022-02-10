@@ -57,26 +57,13 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import CardView from "../../components/CardView.vue";
 export default {
   components: { CardView },
   data() {
     return {
-      response: {
-        amount: 1050,
-        bonus: 812.5,
-        bonusAllDay: 187.5,
-        bonusCheckin: 178,
-        bonusCreditfree: 0,
-        bonusDp7Days: 0,
-        bonusFirstDp: 0,
-        bonusManualTopup: 150,
-        bonusNewMember: 255,
-        bonusWheel: 0,
-        totalCashback: 42,
-        totalbonus: 812.5,
-        withdraw: 239
-      },
+      response: {},
       dateFilter: {
         inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
@@ -86,7 +73,16 @@ export default {
       }
     };
   },
+  async fetch() {
+    try {
+      let response = await this.getProfitReport(this.dateFilter);
+      this.response = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
+    ...mapActions("profit", ["getProfitReport"]),
     getamount() {},
     searchdata() {
       console.log(this.dateFilter);
