@@ -24,18 +24,18 @@
                 <div class="text_card">Username : {{ userinfo.username }}</div>
                 <div class="body_card pa-3">
                   <div class="row">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-sm-6 col-md-6">
                       <card-report
                         title="รายได้ปัจจุบันที่ยังไม่ได้รับ"
                         :value="userinfo.notrecieveIncome"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                        iconSrc="https://image.smart-ai-api.com/public/Rico-main-resite/profit.png"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 ">
+                    <div class="col-12 col-sm-6 col-md-6 ">
                       <card-report
                         title="รายสะสมได้ที่รับไปเเล้ว"
                         :value="userinfo.recieveIncome"
-                        iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
+                        iconSrc="https://image.smart-ai-api.com/public/Rico-main-resite/hand.png"
                       ></card-report>
                     </div>
                   </div>
@@ -50,55 +50,63 @@
                 <div class="text_card_child">Downline</div>
                 <div class="body_card pa-3">
                   <div class="row">
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12  col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="จำนวน downline วันนี้"
                         :value="Downline.today"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="จำนวน downline ทั้งหมด"
                         :value="Downline.allday"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="ยอดฝาก downline วันนี้"
                         titleclass="success--text"
                         :value="Downline.deposit"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="ยอดฝาก downline สะสม"
                         :value="Downline.depositbalance"
                         titleclass="success--text"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="ยอดเสีย downline วันนี้"
                         :value="`-${Downline.losstoday}`"
                         titleclass="error--text"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="ยอดเสีย downline สะสม"
                         titleclass="error--text"
                         :value="`-${Downline.lossbalance}`"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                      :iconshow="false"
                         title="ยอดคอมมิชชั่น downline วันนี้"
                         titleclass="primary--text"
                         :value="Downline.commissiontoday"
                       ></card-report>
                     </div>
-                    <div class="col-12 col-md-6 p-1">
+                    <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
+                        :iconshow="false"
                         titleclass="primary--text"
                         title="ยอดคอมมิชชั่น downline สะสม"
                         :value="Downline.commissionbalance"
@@ -117,7 +125,7 @@
                 <div class="text_card">ลิงก์รับทรัพย์</div>
                 <div class="body_card pa-2">
                   <div class="row">
-                    <div class="col-12 col-md-12">
+                    <div class="col-12 col-sm-6 col-md-12">
                       <div class="p-2 card-child shadow">
                         ชื่อลิงก์รับทรัพย์
                         <hr class="solid my-2" />
@@ -140,14 +148,14 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-sm-3 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์วันนี้
                         <hr class="solid my-2" />
                         <div class="text-end">{{ Affiliate.todayClick }}</div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-sm-3 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์ทั้งหมด
                         <hr class="solid my-2" />
@@ -179,17 +187,17 @@
 
                 <div class="body_card pa-2">
                   <div class="row">
-                    <div class="col-12 col-md-6 ">
+                    <div class="col-12 col-sm-6 col-md-6 ">
                       <div class="card-child shadow">
                         ชื่อ : {{ config.name }}
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 ">
+                    <div class="col-12 col-sm-6 col-md-6 ">
                       <div class="card-child shadow">
                         การรับรายได้ : {{ config.recieve_text }}
                       </div>
                     </div>
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดฝาก
                         <hr class="solid my-2" />
@@ -198,7 +206,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดเสีย
                         <hr class="solid my-2" />
@@ -207,7 +215,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นCommission
                         <hr class="solid my-2" />

@@ -4,7 +4,7 @@
       <div
         class=" text-data text-primary d-flex align-center justify-space-between"
       >
-        <img :src="iconSrc" class="img-icon icon-report mx-4" />
+        <img :src="iconSrc" class="img-icon icon-report mx-4" v-if="iconshow" />
         <h4>{{ title }}</h4>
       </div>
       <v-spacer></v-spacer>
@@ -28,6 +28,10 @@
 export default {
   props: {
     titleclass: "",
+    iconshow: {
+      type: Boolean,
+      default: true
+    },
     condition: {
       type: Boolean,
       default: false

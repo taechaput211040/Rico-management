@@ -1,10 +1,6 @@
 <template>
-  <div class="loginpage">
-    <div class="background">
-      <div class="shape"></div>
-      <div class="shape"></div>
-    </div>
-    <form>
+  <div class="bg-page">
+    <form class="login">
       <h3>Login Here</h3>
 
       <label>Username</label>
@@ -59,124 +55,233 @@ export default {
 </script>
 
 <style lang="scss">
-body {
-  background-size: cover !important ;
-  background: url("https://image.smart-ai-api.com/public/thongtest/loginbg.png");
-}
-.loginpage {
-  *,
-  *:before,
-  *:after {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
+$greenSeaweed: rgba(2, 128, 144, 1);
+$blueQueen: rgba(69, 105, 144, 1);
+$redFire: rgba(244, 91, 105, 1);
 
-  .background {
-    width: 430px;
-    height: 520px;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
+// Fonts
+$fontAsap: "Kanit", sans-serif;
+
+@media only screen and (max-width: 600px) {
+  .login {
+    width: 90%;
+    transform: translate(0, 0);
   }
-  .background .shape {
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    border-radius: 50%;
+}
+@media only screen and (min-width: 600px) {
+  .login {
+    width: 95%;
+    transform: translate(0, 0);
   }
-  .shape:first-child {
-    background: linear-gradient(#1845ad, #23a2f6);
-    left: -80px;
-    top: -80px;
-  }
-  .shape:last-child {
-    background: linear-gradient(to right, #ff512f, #f09819);
-    right: -30px;
-    bottom: -80px;
-  }
-  form {
-    height: 520px;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.13);
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    padding: 50px 35px;
-  }
-  form * {
-    font-family: "Poppins", sans-serif;
-    color: #000000;
-    letter-spacing: 0.5px;
-    outline: none;
+}
+
+.login {
+  background-color: white;
+  padding: 30px 30px 30px 30px;
+  border-radius: 25px;
+  position: relative;
+  /* top: 50%; */
+  /* left: 50%; */
+  margin: auto;
+  max-width: 800px;
+  transform: translate(0, 75%);
+  transition: transform 300ms, box-shadow 300ms;
+
+  box-shadow: 0px 4px 17px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 11%);
+}
+::placeholder {
+  color: rgb(75, 75, 75);
+  opacity: 1; /* Firefox */
+}
+
+input {
+  font-family: "Kanit", sans-serif;
+  display: block;
+  width: 100%;
+  margin: 10px 0px;
+  height: 38px;
+  background: rgb(185 185 185 / 41%);
+  border: none;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding-right: 10px;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  &:focus-visible {
     border: none;
   }
-  form h3 {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
-  }
+}
 
-  label {
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
+@keyframes wawes {
+  from {
+    transform: rotate(0);
   }
-  input {
-    display: block;
-    height: 50px;
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: rgba(white, 0.6);
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 12px;
+}
+
+.feedback {
+  position: absolute;
+  margin-top: -25px;
+
+  color: #ff4242;
+}
+@media (min-width: 767.98px) {
+  .bg-page {
+    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgdy.jpg");
+    min-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+  }
+  .section_logo {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.07);
-    border-radius: 11px;
-    padding: 0 10px;
-    margin-top: 8px;
-    font-size: 14px;
-    border: 1px solid black;
-    font-weight: 300;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    bottom: -120px;
+    text-align: center;
+    .logo {
+      margin: 0 auto;
+      // position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      letter-spacing: 1.2px;
+      font-size: 28px;
+      /* top: -200px; */
+      // top: 100px;
+      display: flex;
+      // right: 43%;
+      overflow: initial;
+      margin: 0 auto 30px;
+      z-index: 100;
+      cursor: pointer;
+      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5));
+      align-items: center;
+      justify-content: center;
+
+      .img-logo {
+        height: auto;
+        max-height: 187px;
+      }
+    }
   }
-  ::placeholder {
-    color: #000000;
+}
+@media (max-width: 320.98px) {
+  .bg-page {
+    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgmb.jpg");
+    min-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
   }
-  button {
-    margin-top: 50px;
+  .section_logo {
     width: 100%;
-    background-color: #000000;
-    color: #080710;
-    padding: 15px 0;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .social {
-    margin-top: 30px;
-    display: flex;
-  }
-  .social div {
-    background: red;
-    width: 150px;
-    border-radius: 3px;
-    padding: 5px 10px 10px 5px;
-    background-color: rgba(255, 255, 255, 0.27);
-    color: #eaf0fb;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    bottom: -6px;
     text-align: center;
   }
-  .social div:hover {
-    background-color: rgba(255, 255, 255, 0.47);
+  .login {
+    margin-top: 30px;
+    width: 95%;
+    padding: 30px 30px 30px 30px !important;
   }
-  .social .fb {
-    margin-left: 25px;
+}
+@media (max-width: 767.98px) and (min-width: 321px) {
+  .bg-page {
+    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgmb.jpg");
+    min-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
   }
-  .social i {
-    margin-right: 4px;
+  .section_logo {
+    width: 100%;
+    text-align: center;
+    z-index: 15;
+    position: relative;
+    bottom: -15px;
   }
+  .login {
+    margin-top: 30px;
+    transform: translate(0, 30%);
+  }
+}
+button:hover {
+  background-color: #ffffff;
+}
+.btn-register {
+  z-index: 20;
+  color: #000000;
+  width: 100px;
+  background: white;
+  font-size: medium;
+  border-radius: 40px;
+  border: 3px solid #76650c;
+  box-shadow: 0px 4px 7px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  &:hover {
+    opacity: 0.7;
+  }
+}
+.vue-form-wizard .wizard-nav-pills {
+  display: none !important;
+}
+.wizard-progress-with-circle {
+  display: none !important;
+}
+.wizard-header {
+  display: none !important;
+}
+.card-bonus {
+  background: hsla(0, 0%, 100%, 0.25098);
+  padding: 10px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.3s;
+  box-shadow: 0 0 0 #ffffff !important;
+}
+.card-bonus:hover {
+  transform: translateY(-1rem);
+  box-shadow: 0 0.5rem 2rem #ffffff !important;
+  transition: transform 0.3s;
+}
+.btn_promotion {
+  width: 100px;
+}
+.lighten1 {
+  position: absolute;
+  left: -182px;
+  z-index: -1;
+  top: 0px;
+}
+.lighten2 {
+  position: absolute;
+  right: -183px;
+  z-index: -1;
+  top: 0px;
 }
 </style>

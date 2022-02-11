@@ -111,7 +111,7 @@
         style="position: relative;
     height: 200px;"
       >
-        <v-tooltip top color="red">
+        <v-tooltip bottom color="red">
           <template v-slot:activator="{ on, attrs }">
             <v-img
               @click="logdownweb()"

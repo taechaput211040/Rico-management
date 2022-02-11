@@ -24,7 +24,7 @@
       <div class="show_reportcard">
         <div>
           <div class="row">
-            <div class="col-12 col-md-6 body_card">
+            <div class="col-12 col-md-6  col-sm-6 body_card">
               <div class="card-child card-report elevation-5">
                 ชื่อลิงก์รับทรัพย์
                 <hr class="solid" />
@@ -49,7 +49,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3 p-1 body_card">
+            <div class="col-12 col-md-3  col-sm-3 p-1 body_card">
               <div class="card-child card-report elevation-5">
                 ของสมาชิกที่มีการกด
                 <hr class="solid my-2" />
@@ -59,7 +59,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3 p-1 body_card">
+            <div class="col-12 col-md-3 col-sm-3 p-1 body_card">
               <div class="card-child card-report elevation-5">
                 สมาชิกใหม่ผ่านลิก์วันนี้
                 <hr class="solid my-2" />
@@ -68,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1 col-sm-4 body_card">
               <div class="card-child card-report text-center elevation-5">
                 สมาชิกใหม่ที่มีการฝาก
                 <hr class="solid my-2" />
@@ -77,7 +77,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1   col-sm-4  body_card">
               <div class="card-child card-report text-center elevation-5">
                 สมาชิกที่กดรับรายได้
                 <hr class="solid my-2" />
@@ -86,7 +86,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 รายได้สมาชิกทั้งหมดของวันนี้
                 <hr class="solid my-2" />
@@ -95,7 +95,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดฝากทั้งหมด
                 <hr class="solid my-2" />
@@ -104,7 +104,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดเสียทั้งหมด
                 <hr class="solid my-2" />
@@ -113,7 +113,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-2 p-1 body_card">
+            <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดคอมมิชชั่นทั้งหมด
                 <hr class="solid my-2" />
