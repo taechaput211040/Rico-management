@@ -200,56 +200,60 @@
         </v-card>
       </v-card>
       <v-dialog v-model="detailDialog" max-width="1500px">
-        <v-card class="pa-5">
+        <v-card class="pa-5 ">
           <v-card-text>
             <h3>รายการรับโบนัส</h3>
           </v-card-text>
+
           <v-card class="elevetion-3">
-            <v-data-table
-              show-expand
-              single-expand
-              :headers="headerDetail"
-              :items="dataDetail"
-              hide-default-footer
-            >
-              <template #[`item.no`]="{index}">
-                <span class="font-weight-bold">
-                  {{ index + 1 }}
-                </span>
-              </template>
-              <template #[`item.companyBank`]="{item}">
-                <img-bank :value="item.companyBank"></img-bank>
-              </template>
-              <template #[`item.data-table-expand`]="{isExpanded, expand }">
-                <div class="px-3">
-                  <v-btn
-                    @click="expand(true)"
-                    v-if="!isExpanded"
-                    color="black"
-                    dark
-                    small
-                  >
-                    ดูเพิ่มเติม <v-icon right>mdi-menu-down</v-icon></v-btn
-                  >
-                  <v-btn
-                    @click="expand(false)"
-                    v-if="isExpanded"
-                    color="black"
-                    dark
-                    small
-                    >ปิด<v-icon right>mdi-menu-up</v-icon></v-btn
-                  >
-                </div>
-              </template>
-              <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <div class="text-center font-weight-bold purple--text">
-                    {{ item.remark }}
+            <div class="table-data">
+              <v-data-table
+                show-expand
+                single-expand
+                :headers="headerDetail"
+                :items="dataDetail"
+                hide-default-footer
+              >
+                <template #[`item.no`]="{index}">
+                  <span class="font-weight-bold">
+                    {{ index + 1 }}
+                  </span>
+                </template>
+                <template #[`item.companyBank`]="{item}">
+                  <img-bank :value="item.companyBank"></img-bank>
+                </template>
+                <template #[`item.data-table-expand`]="{isExpanded, expand }">
+                  <div class="px-3">
+                    <v-btn
+                      @click="expand(true)"
+                      v-if="!isExpanded"
+                      color="black"
+                      dark
+                      small
+                    >
+                      ดูเพิ่มเติม <v-icon right>mdi-menu-down</v-icon></v-btn
+                    >
+                    <v-btn
+                      @click="expand(false)"
+                      v-if="isExpanded"
+                      color="black"
+                      dark
+                      small
+                      >ปิด<v-icon right>mdi-menu-up</v-icon></v-btn
+                    >
                   </div>
-                </td>
-              </template>
-            </v-data-table>
+                </template>
+                <template v-slot:expanded-item="{ headers, item }">
+                  <td :colspan="headers.length">
+                    <div class="text-center font-weight-bold purple--text">
+                      {{ item.remark }}
+                    </div>
+                  </td>
+                </template>
+              </v-data-table>
+            </div>
           </v-card>
+
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn

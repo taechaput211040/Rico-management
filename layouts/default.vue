@@ -4,23 +4,46 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="font-weight-bold" v-text="title" />
       <v-spacer />
-      <v-speed-dial
-        absolute
-        right
-        direction="bottom"
-        transition="slide-y-transition"
-      >
+      <v-tooltip left color="orange">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            @click="dialogsound = true"
+            fab
+            dark
+            v-bind="attrs"
+            v-on="on"
+            small
+            class="mx-3"
+            color="orange"
+          >
+            <v-icon>mdi-volume-high</v-icon>
+          </v-btn>
+        </template>
+        <span>ตั้งค่าเสียง</span>
+      </v-tooltip>
+      <v-speed-dial direction="bottom" transition="slide-y-transition">
         <template v-slot:activator>
           <v-btn v-model="fab" color="blue darken-2" dark fab>
             <v-icon> mdi-account-circle </v-icon>
           </v-btn>
         </template>
-        <v-btn fab dark small color="orange">
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="red" @click="logout">
-          <v-icon>mdi-logout</v-icon>
-        </v-btn>
+
+        <v-tooltip left color="red">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              fab
+              dark
+              v-bind="attrs"
+              v-on="on"
+              small
+              color="red"
+              @click="logout"
+            >
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </template>
+          <span>ออกจากระบบ</span>
+        </v-tooltip>
       </v-speed-dial>
     </v-app-bar>
     <v-navigation-drawer
@@ -42,6 +65,7 @@
         <div v-for="(link, i) in items" :key="i">
           <v-list-item
             active-class="white--text active_list deep-purple"
+            style="margin-right: 5px;margin-left: 5px;"
             v-if="!link.subLinks"
             :to="link.to"
             class="v-list-item font-weight-bold "
@@ -68,7 +92,7 @@
 
             <v-list-item
               active-class="white--text active_list deep-purple active_list "
-              style="padding-left:40px !important "
+              style="padding-left: 30px !important;margin-right: 5px;margin-left: 5px;"
               v-for="sublink in link.subLinks"
               :to="sublink.to"
               :key="sublink.text"
@@ -81,6 +105,28 @@
           </v-list-group>
         </div>
       </v-list>
+
+      <v-toolbar-title
+        class="font-weight-bold mt-5 text-center"
+        style="position: relative;
+    height: 200px;"
+      >
+        <v-tooltip top color="red">
+          <template v-slot:activator="{ on, attrs }">
+            <v-img
+              @click="logdownweb()"
+              max-height="100"
+              max-width="100"
+              contain
+              v-bind="attrs"
+              v-on="on"
+              class="ma-auto mt-5 emergency"
+              src="https://image.smart-ai-api.com/public/thongtest/emergency.png"
+            ></v-img
+          ></template>
+          <span>ปิดระบบด่วน!!!!</span>
+        </v-tooltip>
+      </v-toolbar-title>
     </v-navigation-drawer>
 
     <!-- Sizes your content based upon application components -->
@@ -89,6 +135,78 @@
         <v-slide-x-transition>
           <Nuxt />
         </v-slide-x-transition>
+        <v-dialog v-model="dialogsound" max-width="290">
+          <v-card>
+            <v-card-title>
+              <h4>ตั้งค่าการแจ้งเตือน</h4>
+            </v-card-title>
+
+            <v-card-text class="font-weight-bold">
+              <div class="my-2">
+                ฝากเงิน (ออโต้) :
+                <v-btn
+                  color="primary"
+                  small
+                  v-if="soundsetting.auto == true"
+                  rounded
+                  @click="setsound('auto')"
+                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+                >
+                <v-btn
+                  color="grey"
+                  small
+                  v-if="soundsetting.auto == false"
+                  rounded
+                  @click="setsound('auto')"
+                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+                >
+              </div>
+              <div class="my-2">
+                ฝากเงิน :
+                <v-btn
+                  color="primary"
+                  v-if="soundsetting.dp == true"
+                  small
+                  rounded
+                  @click="setsound('dp')"
+                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+                ><v-btn
+                  color="grey"
+                  v-if="soundsetting.dp == false"
+                  small
+                  rounded
+                  @click="setsound('dp')"
+                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+                >
+              </div>
+              <div class="my-2">
+                ถอนเงิน :
+                <v-btn
+                  color="primary"
+                  v-if="soundsetting.wd == true"
+                  small
+                  rounded
+                  @click="setsound('wd')"
+                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+                >
+                <v-btn
+                  color="grey"
+                  v-if="soundsetting.wd == false"
+                  small
+                  rounded
+                  @click="setsound('wd')"
+                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+                >
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="dialogsound = false">
+                ปิด
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-container>
     </v-main>
 
@@ -102,6 +220,12 @@ export default {
   middleware: "auth",
   data() {
     return {
+      soundsetting: {
+        auto: true,
+        dp: true,
+        wd: true
+      },
+      dialogsound: false,
       fab: false,
       dialogOutside: false,
       dialogInside: false,
@@ -113,93 +237,111 @@ export default {
         {
           title: "Dashboard",
           to: "/",
-          icon: "mdi-view-dashboard"
+          icon: "mdi-view-dashboard",
+          status: true
         },
         {
           title: "จัดการสมาชิก",
           icon: "mdi-account",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "สมัครสมาชิก",
-              to: "/member/register"
+              to: "/member/register",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานสมาชิก",
-              to: "/member/reportMember"
+              to: "/member/reportMember",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
-              to: "/member/memberCheck"
+              to: "/member/memberCheck",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลการเล่น",
-              to: "/member/memberReportTransaction"
+              to: "/member/memberReportTransaction",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "ถอนเครดิตสมาชิก(Manual)",
-              to: "/member/withdrawManual"
+              to: "/member/withdrawManual",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "แก้ไขเครดิต/รายการผิดพลาด",
-              to: "/member/ManualEditCredit"
+              to: "/member/ManualEditCredit",
+              status: true
             }
           ]
         },
         {
           title: "รายงานฝาก/ถอน",
           icon: "mdi-credit-card-check",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากสมาชิก",
-              to: "/reportTransaction/deposite"
+              to: "/reportTransaction/deposite",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิก",
-              to: "/reportTransaction/withdraw"
+              to: "/reportTransaction/withdraw",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิกล่าสุด",
-              to: "/reportTransaction/lastWithdrawal"
+              to: "/reportTransaction/lastWithdrawal",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากแรก",
-              to: "/reportTransaction/firstDeposit"
+              to: "/reportTransaction/firstDeposit",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการที่ถูกซ่อน",
-              to: "/reportTransaction/hiddenReport"
+              to: "/reportTransaction/hiddenReport",
+              status: true
             }
           ]
         },
         {
           title: "รายงานสรุป",
           icon: "mdi-credit-card-plus-outline",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน",
-              to: "/profitReport/Report"
+              to: "/profitReport/Report",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน รายบุคคล",
-              to: "/profitReport/ProfitByUserReport"
+              to: "/profitReport/ProfitByUserReport",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "สรุปโปรโมชัน",
-              to: "/profitReport/PromotionReport"
+              to: "/profitReport/PromotionReport",
+              status: true
             }
           ]
         },
@@ -207,37 +349,44 @@ export default {
         {
           title: "ตั้งค่าโปรโมชั่น",
           icon: "mdi-history",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "โปรโมชันทั่วไป",
-              to: "/promotion/generalPromotion"
+              to: "/promotion/generalPromotion",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "Cashback",
-              to: "/promotion/cashback"
+              to: "/promotion/cashback",
+              status: true
             }
           ]
         },
         {
           title: "ตั้งค่าลิงก์รับทรัพย์",
           icon: "mdi-history",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลิงก์รับทรัพย์",
-              to: "/Affiliate/report"
+              to: "/Affiliate/report",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
-              to: "/Affiliate/infomember"
+              to: "/Affiliate/infomember",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "ตั้งค่า",
-              to: "/Affiliate/setting"
+              to: "/Affiliate/setting",
+              status: true
             }
           ]
         },
@@ -248,59 +397,70 @@ export default {
             {
               icon: "mdi-view-dashboard",
               text: "เครดิตฟรี",
-              to: "/feature/creditfree"
+              to: "/feature/creditfree",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "กงล้อนำโชค",
-              to: "/feature/wheel"
+              to: "/feature/wheel",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดไพ่6ใบ",
-              to: "/feature/sixcard"
+              to: "/feature/sixcard",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดหีบสมบัติ",
-              to: "/feature/chest"
+              to: "/feature/chest",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คอินรายวัน",
-              to: "/feature/checkindaily"
+              to: "/feature/checkindaily",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "สะสมเเต้ม",
-              to: "/feature/point"
+              to: "/feature/point",
+              status: true
             },
             {
               icon: "mdi-view-dashboard",
               text: "ของพรีเมียม",
-              to: "/feature/premiumn"
+              to: "/feature/premiumn",
+              status: true
             }
           ]
         },
         {
           title: "ตั้งค่าระบบ",
           to: "/system",
-          icon: "mdi-cog-outline"
+          icon: "mdi-cog-outline",
+          status: true
         },
         {
           title: "รายชื่อมิจฉาชีพ",
           to: "/CriminalList",
-          icon: "mdi-gamepad-square"
+          icon: "mdi-gamepad-square",
+          status: true
         },
         {
           title: "พนักงาน",
           to: "/employee",
-          icon: "mdi-gamepad-square"
+          icon: "mdi-gamepad-square",
+          status: true
         },
         {
           title: "ธนาคาร",
           to: "/companyBank",
-          icon: "mdi-gamepad-square"
+          icon: "mdi-gamepad-square",
+          status: true
         }
       ],
       miniVariant: false,
@@ -313,12 +473,42 @@ export default {
     try {
       await this.getUser();
       await this.getFeature();
+      let menuitem = await this.$store.state.auth.group.filter(x => {
+        return x.status == true;
+      });
+
+      let item = await new Promise((resolve, reject) => {
+        menuitem.map(x => {
+          if (x.subLinks) {
+            x.subLinks = x.subLinks.filter(y => {
+              return y.status == true;
+            });
+          }
+          return x;
+        });
+        resolve(menuitem);
+      });
+      this.items = item;
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
     ...mapActions("auth", ["getUser", "getFeature"]),
+    logdownweb() {
+      console.log("lockdown");
+      // window.location = "http://www.google.com";
+      window.location = "https://www.youtube.com/watch?v=RE_pN8ZUoNE";
+    },
+    async setsound(type) {
+      if (type === "auto") {
+        this.soundsetting.auto = !this.soundsetting.auto;
+      } else if (type === "dp") {
+        this.soundsetting.dp = !this.soundsetting.dp;
+      } else if (type === "wd") {
+        this.soundsetting.wd = !this.soundsetting.wd;
+      }
+    },
     async logout() {
       try {
         let token = localStorage.getItem("key");
@@ -333,3 +523,9 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.v-btn--fab.v-size--default {
+  height: 50px;
+  width: 50px;
+}
+</style>

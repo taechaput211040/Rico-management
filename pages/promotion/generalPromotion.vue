@@ -181,7 +181,7 @@
           ><add-promotion></add-promotion
           ><v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary">บันทึก</v-btn>
+            <v-btn color="primary" class="btn_sty">บันทึก</v-btn>
             <v-btn color="error" dark>Reset</v-btn>
             <v-btn color="error" outlined @click="addPromotion = false"
               >ยกเลิก</v-btn
@@ -199,7 +199,7 @@
           />
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary">บันทึก</v-btn>
+            <v-btn color="primary" class="btn_sty">บันทึก</v-btn>
             <v-btn color="error" outlined @click="closeEditpromotion"
               >ยกเลิก</v-btn
             >

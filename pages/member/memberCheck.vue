@@ -1,7 +1,7 @@
 <template>
   <v-flex>
     <v-container>
-      <h2 class="mb-2">เช็คข้อมูลการเล่นของลูกค้า / จำนวนเทิร์น</h2>
+      <h3 class="mb-2">เช็คข้อมูลการเล่นของลูกค้า / จำนวนเทิร์น</h3>
       <v-row>
         <v-col lg="6" sm="12" md="12" cols="12">
           <div class=" card-child elevation-5">
@@ -22,7 +22,7 @@
                   placeholder="เช่น xx1234567"
                   hide-details="auto"
                 ></v-text-field> </v-col
-              ><v-col cols="12" sm="12" md="12" lg="4" class="text-center">
+              ><v-col cols="12" sm="12" md="12" lg="6" class="text-center">
                 <v-btn color="primary" @click="searchdata">
                   <v-icon left dark>
                     mdi-magnify

@@ -11,7 +11,6 @@
         <v-col cols="12" sm="3" md="3" v-for="(item, i) in itembank" :key="i">
           <div class="card-child card-report elevation-5 text-center">
             <img-bank :value="item.companyBank"></img-bank>
-            <div class="mb-3 ">เติมมือ</div>
             <div>
               ยอดฝากรวม :<span class="primary--text font-weight-bold"
                 >{{ item.total_sum }}

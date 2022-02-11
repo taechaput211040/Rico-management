@@ -139,7 +139,7 @@
     <v-row>
       <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-2 mb-5">
-          <v-card-title primary-title class="font-weight-bold">
+          <v-card-title primary-title class="font-weight-bold primary--text">
             รายการฝากเงินคงค้าง (ออโต้ไม่ผ่าน)
           </v-card-title>
 
@@ -158,7 +158,7 @@
       </v-col>
       <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-2">
-          <v-card-title primary-title class="font-weight-bold">
+          <v-card-title primary-title class="font-weight-bold success--text">
             รายการฝากเงินล่าสุด 20 รายการ
           </v-card-title>
 
@@ -271,7 +271,7 @@
       >
       <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-2">
-          <v-card-title primary-title class="font-weight-bold">
+          <v-card-title primary-title class="font-weight-bold error--text">
             รายการถอนเงินล่าสุด 20 รายการ
           </v-card-title>
 

@@ -196,7 +196,7 @@
       ></v-form>
 
       <v-card-actions class="justify-center mt-3">
-        <v-btn color="success" @click="submitform">สมัครสมาชิกใหม่</v-btn>
+        <v-btn color="success" class="btn_sty" @click="submitform">สมัครสมาชิกใหม่</v-btn>
       </v-card-actions>
     </v-card>
   </v-flex>

@@ -128,7 +128,7 @@
           <v-card-text>
             <h3>รายการฝากล่าสุด 50 รายการ</h3>
           </v-card-text>
-          <v-card class="">
+          <v-card class="table-data">
             <v-data-table
               :headers="headerDeposit"
               hide-default-footer
@@ -152,7 +152,7 @@
           <v-card-text>
             <h3>รายการถอนล่าสุด 50 รายการ</h3>
           </v-card-text>
-          <v-card class="">
+          <v-card class="table-data">
             <v-data-table
               :headers="headerWithdraw"
               hide-default-footer

@@ -54,7 +54,7 @@
         <v-btn color="warning" class="mx-2" dark @click="useDefaultImage()">
           ใช่รูปเริ่มต้น</v-btn
         >
-        <v-btn color="success" class="mx-2" dark @click="saveImage()">
+        <v-btn color="success" class="mx-2 " dark @click="saveImage()">
           บันทึก</v-btn
         >
       </div>

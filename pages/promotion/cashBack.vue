@@ -166,7 +166,7 @@
                   ></v-text-field
                 ></v-col> </v-row
               ><v-card-actions>
-                <v-btn class="mx-auto" color="success">บันทึก</v-btn>
+                <v-btn class="mx-auto btn_sty" color="success">บันทึก</v-btn>
               </v-card-actions>
             </div></v-col
           >

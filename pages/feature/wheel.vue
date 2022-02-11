@@ -128,7 +128,7 @@
               </v-row>
               <v-divider></v-divider>
               <v-card-actions class="text-center mx-auto">
-                <v-btn @click="settingOk" color="primary" class="ml-auto"
+                <v-btn @click="settingOk" color="primary" class="ml-auto " 
                   >บันทึก</v-btn
                 >
                 <v-btn @click="cancel" color="grey" dark class="mr-auto"

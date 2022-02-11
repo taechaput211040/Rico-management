@@ -138,7 +138,7 @@
       </v-row>
       <v-divider class="my-4"></v-divider>
       <v-card-actions>
-        <v-btn color="primary" class="mx-auto">บันทึก</v-btn>
+        <v-btn color="primary" class="mx-auto btn_sty">บันทึก</v-btn>
       </v-card-actions>
     </v-card>
     <h3 class="my-4">ตั้งค่าข้อความต้อนรับ</h3>
@@ -220,7 +220,7 @@
           </v-col>
         </v-row>
         <v-card-actions>
-          <v-btn color="primary" class="mx-auto">บันทึก</v-btn>
+          <v-btn color="primary" class="mx-auto btn_sty">บันทึก</v-btn>
         </v-card-actions>
       </div>
     </v-card>

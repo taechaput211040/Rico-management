@@ -168,8 +168,8 @@ table thead > tr > th > i {
   margin: auto;
 }
 .card_promotion {
-  .active_card{
-    background-color: #479f35 !important;
+  .active_card {
+    background: linear-gradient(66deg, #3a742a, #6dc557);
   }
   .title_card {
     border-radius: 10px 10px 0 0;
@@ -242,7 +242,7 @@ table thead > tr > th > i {
     border-radius: 10px;
   }
 }
-.card-mod{
+.card-mod {
   border-radius: 10px;
   /* border: 1px solid; */
   padding: 8px;
@@ -274,7 +274,115 @@ table thead > tr > th > i {
 
   box-shadow: 1px 3px 4px 0px rgb(120 116 116 / 75%);
 }
-.sectioninput{
+.sectioninput {
   display: flex;
   align-items: baseline;
+}
+
+table thead > tr > th,
+table thead > tr > th > i {
+  color: whitesmoke !important;
+}
+
+table thead > tr > th:nth-child(even),
+table thead > tr > th:nth-child(even).active {
+  background: linear-gradient(#722bbb 0%, #9c64d7 100%) !important;
+}
+
+table thead > tr > th:nth-child(odd),
+table thead > tr > th:nth-child(odd).active {
+  background: linear-gradient(#722bbb 0%, #9c64d7 100%) !important;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #efefef;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+table.v-table tbody td:first-child,
+table.v-table tbody td:not(:first-child),
+table.v-table tbody th:first-child,
+table.v-table tbody th:not(:first-child),
+table.v-table thead td:first-child,
+table.v-table thead td:not(:first-child),
+table.v-table thead th:first-child,
+table.v-table thead th:not(:first-child) {
+  padding: 0 10px;
+}
+.v-application .deep-purple {
+  /* background-color: #673ab7 !important; */
+  /* border-color: #673ab7 !important; */
+  background: linear-gradient(
+    to bottom right,
+    #3a165e 0%,
+    #873fd4 100%
+  ) !important;
+  border-radius: 11px;
+}
+
+.table-data {
+  table thead > tr > th,
+  table thead > tr > th > i {
+    color: whitesmoke !important;
+  }
+
+  table thead > tr > th:nth-child(even),
+  table thead > tr > th:nth-child(even).active {
+    background: #3e3e3e !important;
+  }
+
+  table thead > tr > th:nth-child(odd),
+  table thead > tr > th:nth-child(odd).active {
+    background: #303030 !important;
+  }
+
+  table tbody tr:nth-child(even) {
+    background-color: #efefef;
+  }
+
+  table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  table.v-table tbody td:first-child,
+  table.v-table tbody td:not(:first-child),
+  table.v-table tbody th:first-child,
+  table.v-table tbody th:not(:first-child),
+  table.v-table thead td:first-child,
+  table.v-table thead td:not(:first-child),
+  table.v-table thead th:first-child,
+  table.v-table thead th:not(:first-child) {
+    padding: 0 10px;
+  }
+}
+.emergency {
+  max-height: 100px;
+  max-width: 100px;
+  position: relative;
+  opacity: 0.7;
+  cursor: pointer;
+  bottom: -50px;
+  filter: drop-shadow(black 1px 1px 4px);
+  transition: 0.3s;
+}
+.emergency:hover {
+  opacity: 1;
+  transition: 0.3s;
+  transform: scale(1.25);
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
