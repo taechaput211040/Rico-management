@@ -1,16 +1,49 @@
 <template>
   <div class="bg-page">
-    <form class="login">
-      <h3>Login Here</h3>
-
+    <form class="login font-weight-bold">
+      <img
+        src="https://image.smart-ai-api.com/public/Rico-main-resite/mockup_rico.png"
+        class="img-mockup"
+      />
+      <div class="my-3 text-center  header-login">
+        <img
+          src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
+        />
+        <h2>WELCOME TO RICO</h2>
+        <h4>กรอกข้อมูลเพื่อเข้าสู่ระบบ</h4>
+      </div>
       <label>Username</label>
-      <input type="text" placeholder="Email or Phone" v-model="username" />
+      <input
+        type="text"
+        class="username"
+        placeholder="Username"
+        v-model="username"
+      />
 
       <label>Password</label>
-      <input type="password" placeholder="Password" v-model="password" />
-      <label>AGENT</label>
-      <input placeholder="AGENT KEY" v-model="agentkey" id="KEY" />
-      <v-btn class="btn_sty" @click="login">Log In</v-btn>
+      <input
+        class="password"
+        type="password"
+        placeholder="Password"
+        v-model="password"
+      />
+      <span class="font-weight-bold">AGENT</span>
+      <input
+        class="agentkey"
+        placeholder="AGENT KEY"
+        v-model="agentkey"
+        id="KEY"
+      />
+      <div class="action_login">
+        <v-btn
+          class="btn_login mx-auto"
+          width="230px"
+          rounded
+          dark
+          @click="login"
+          >Log In</v-btn
+        >
+      </div>
     </form>
   </div>
 </template>
@@ -55,12 +88,41 @@ export default {
 </script>
 
 <style lang="scss">
+.username {
+  background: url("https://image.smart-ai-api.com/public/Rico-main-resite/round-account-button-with-user-inside.png")
+    no-repeat left;
+  background-position: 8px 3px;
+  background-size: 32px;
+}
+.password {
+  background: url("https://image.smart-ai-api.com/public/Rico-main-resite/padlock.png")
+    no-repeat left;
+  background-position: 8px 3px;
+  background-size: 32px;
+}
+.agentkey {
+  background: url("https://image.smart-ai-api.com/public/Rico-main-resite/key.png")
+    no-repeat left;
+  background-position: 8px 3px;
+  background-size: 30px;
+}
+.header-login {
+  img {
+    width: 211px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  margin-bottom: 29px;
+  text-align: center !important;
+  h4 {
+    color: gray !important;
+  }
+}
 $greenSeaweed: rgba(2, 128, 144, 1);
 $blueQueen: rgba(69, 105, 144, 1);
 $redFire: rgba(244, 91, 105, 1);
 
 // Fonts
-$fontAsap: "Kanit", sans-serif;
 
 @media only screen and (max-width: 600px) {
   .login {
@@ -74,20 +136,36 @@ $fontAsap: "Kanit", sans-serif;
     transform: translate(0, 0);
   }
 }
-
+@media only screen and (min-width: 1023px) {
+  .login {
+    width: 95%;
+    padding: 30px 140px 43px 140px !important;
+    transform: translate(0, 0);
+  }
+  .img-mockup {
+    display: inherit !important;
+    position: absolute;
+    left: -256px;
+    top: 0;
+    width: 400px;
+  }
+}
+.img-mockup {
+  display: none;
+}
 .login {
   background-color: white;
-  padding: 30px 30px 30px 30px;
+  padding: 30px 100px 26px 101px;
   border-radius: 25px;
   position: relative;
   /* top: 50%; */
   /* left: 50%; */
   margin: auto;
   max-width: 800px;
-  transform: translate(0, 75%);
+  transform: translate(0, 250px);
   transition: transform 300ms, box-shadow 300ms;
-
-  box-shadow: 0px 4px 17px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 11%);
+  font-weight: bold !important;
+  box-shadow: 0px 4px 20px 16px rgb(0 0 0 / 18%), 0 10px 10px rgb(0 0 0 / 11%);
 }
 ::placeholder {
   color: rgb(75, 75, 75);
@@ -95,21 +173,21 @@ $fontAsap: "Kanit", sans-serif;
 }
 
 input {
-  font-family: "Kanit", sans-serif;
+  
   display: block;
   width: 100%;
   margin: 10px 0px;
   height: 38px;
-  background: rgb(185 185 185 / 41%);
+  background-color: rgb(185 185 185 / 41%) !important;
   border: none;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 49px;
   padding-right: 10px;
-  color: white;
+  color: rgb(0, 0, 0);
   width: 100%;
   font-size: 16px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 46px;
+  padding-right: 33px;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
@@ -150,39 +228,6 @@ a {
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
-  }
-  .section_logo {
-    width: 100%;
-    text-align: center;
-    z-index: 15;
-    position: relative;
-    bottom: -120px;
-    text-align: center;
-    .logo {
-      margin: 0 auto;
-      // position: absolute;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      letter-spacing: 1.2px;
-      font-size: 28px;
-      /* top: -200px; */
-      // top: 100px;
-      display: flex;
-      // right: 43%;
-      overflow: initial;
-      margin: 0 auto 30px;
-      z-index: 100;
-      cursor: pointer;
-      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5));
-      align-items: center;
-      justify-content: center;
-
-      .img-logo {
-        height: auto;
-        max-height: 187px;
-      }
-    }
   }
 }
 @media (max-width: 320.98px) {
@@ -226,7 +271,8 @@ a {
   }
   .login {
     margin-top: 30px;
-    transform: translate(0, 30%);
+    transform: translate(0, 145px);
+    padding: 30px 30px 30px 30px !important;
   }
 }
 button:hover {
@@ -245,43 +291,19 @@ button:hover {
     opacity: 0.7;
   }
 }
-.vue-form-wizard .wizard-nav-pills {
-  display: none !important;
+
+.btn_login {
+  background: linear-gradient(
+    to bottom right,
+    #0374ff 0%,
+    #3f4fd4 100%
+  ) !important;
+  font-weight: bold !important;
+  color: rgb(255, 255, 255);
 }
-.wizard-progress-with-circle {
-  display: none !important;
-}
-.wizard-header {
-  display: none !important;
-}
-.card-bonus {
-  background: hsla(0, 0%, 100%, 0.25098);
-  padding: 10px;
-  border: 1px solid #fff;
-  border-radius: 10px;
-  height: 100%;
-  cursor: pointer;
-  transition: transform 0.3s;
-  box-shadow: 0 0 0 #ffffff !important;
-}
-.card-bonus:hover {
-  transform: translateY(-1rem);
-  box-shadow: 0 0.5rem 2rem #ffffff !important;
-  transition: transform 0.3s;
-}
-.btn_promotion {
-  width: 100px;
-}
-.lighten1 {
-  position: absolute;
-  left: -182px;
-  z-index: -1;
-  top: 0px;
-}
-.lighten2 {
-  position: absolute;
-  right: -183px;
-  z-index: -1;
-  top: 0px;
+.action_login {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 </style>

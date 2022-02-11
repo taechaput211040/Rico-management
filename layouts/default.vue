@@ -55,10 +55,10 @@
       ><v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
         <v-img
           max-height="150"
-          max-width="150"
+          max-width="200"
           contain
-          class="ma-auto"
-          src="https://image.smart-ai-api.com/public/Rico-main-resite/Logo_Ricoautocash-01.png"
+          class="ma-auto my-5"
+          src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
         ></v-img>
       </v-toolbar-title>
       <v-list dense class="red_list">

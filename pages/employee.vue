@@ -147,67 +147,69 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-card class="pa-3 mt-3">
-          <v-card-title>
-            <h4 class="purple--text">ตั้งค่าการเข้าถึง</h4>
-          </v-card-title>
-          <v-list>
-            <v-list-item-group multiple>
-              <v-list dense class="red_list">
-                <div v-for="(link, i) in group" :key="i">
-                  <v-list-item
-                    v-if="!link.subLinks"
-                    class="v-list-item font-weight-bold "
-                  >
-                    <v-list-item-action>
-                      <v-checkbox
-                        v-model="link.status"
-                        color="deep-purple accent-4"
-                      ></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-title class="" v-text="link.title" />
-                  </v-list-item>
-
-                  <v-list-group
-                    group
-                    sub-group
-                    active-class=" deep-purple--text"
-                    v-else
-                    :key="link.title"
-                    :value="false"
-                  >
-                    <template v-slot:activator>
-                      <v-list-item-action class="">
+        <div class="customlist">
+          <v-card class="pa-3 mt-3 ">
+            <v-card-title>
+              <h4 class="purple--text">ตั้งค่าการเข้าถึงเมนู</h4>
+            </v-card-title>
+            <v-list>
+              <v-list-item-group multiple>
+                <v-list dense class="red_list">
+                  <div v-for="(link, i) in group" :key="i">
+                    <v-list-item
+                      v-if="!link.subLinks"
+                      class="v-list-item font-weight-bold "
+                    >
+                      <v-list-item-action>
                         <v-checkbox
                           v-model="link.status"
                           color="deep-purple accent-4"
                         ></v-checkbox>
                       </v-list-item-action>
-                      <v-list-item-title class=" h1 d-flex"
-                        >{{ link.title }}<v-spacer></v-spacer>
-                        <v-icon>mdi-menu-down</v-icon></v-list-item-title
-                      >
-                    </template>
 
-                    <v-list-item
-                      v-for="sublink in link.subLinks"
-                      :key="sublink.text"
-                    >
-                      <v-list-item-action>
-                        <v-checkbox
-                          v-model="sublink.status"
-                          color="deep-purple accent-4"
-                        ></v-checkbox>
-                      </v-list-item-action>
-                      <v-list-item-title v-text="sublink.text" />
+                      <v-list-item-title class="" v-text="link.title" />
                     </v-list-item>
-                  </v-list-group>
-                </div>
-              </v-list>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
+
+                    <v-list-group
+                      group
+                      sub-group
+                      active-class=" deep-purple--text"
+                      v-else
+                      :key="link.title"
+                      :value="false"
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-action class="">
+                          <v-checkbox
+                            v-model="link.status"
+                            color="deep-purple accent-4"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-title class=" h1 d-flex" style="margin-left: 31px;"
+                          >{{ link.title }}<v-spacer></v-spacer>
+                          <v-icon>mdi-menu-down</v-icon></v-list-item-title
+                        >
+                      </template>
+
+                      <v-list-item
+                        v-for="sublink in link.subLinks"
+                        :key="sublink.text"
+                      >
+                        <v-list-item-action>
+                          <v-checkbox
+                            v-model="sublink.status"
+                            color="deep-purple accent-4"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-title v-text="sublink.text" />
+                      </v-list-item>
+                    </v-list-group>
+                  </div>
+                </v-list>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </div>
 
         <v-card-actions>
           <div class="mx-auto">
@@ -220,7 +222,7 @@
     <!-- createdialog -->
     <!-- editdialog -->
     <v-dialog v-model="dledit" max-width="800px" height="auto">
-      <v-card class="pa-5 ">
+      <v-card class="pa-3 pa-md-5 ">
         <v-card-title>
           <h4 class="font-weight-bold mx-auto  primary--text">
             แก้ไขพนักงาน
@@ -316,67 +318,70 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-card class="pa-3 mt-3">
-          <v-card-title>
-            <h4 class="purple--text">แก้ไขการเข้าถึง</h4>
-          </v-card-title>
-          <v-list>
-            <v-list-item-group multiple>
-              <v-list dense class="red_list">
-                <div v-for="(link, i) in group" :key="i">
-                  <v-list-item
-                    v-if="!link.subLinks"
-                    class="v-list-item font-weight-bold "
-                  >
-                    <v-list-item-action>
-                      <v-checkbox
-                        v-model="link.status"
-                        color="deep-purple accent-4"
-                      ></v-checkbox>
-                    </v-list-item-action>
 
-                    <v-list-item-title class="" v-text="link.title" />
-                  </v-list-item>
-
-                  <v-list-group
-                    group
-                    sub-group
-                    active-class=" deep-purple--text"
-                    v-else
-                    :key="link.title"
-                    :value="false"
-                  >
-                    <template v-slot:activator>
-                      <v-list-item-action class="">
+        <div class="customlist">
+          <v-card class="pa-3 mt-3 ">
+            <v-card-title>
+              <h4 class="purple--text">ตั้งค่าการเข้าถึงเมนู</h4>
+            </v-card-title>
+            <v-list>
+              <v-list-item-group multiple>
+                <v-list dense class="red_list">
+                  <div v-for="(link, i) in group" :key="i">
+                    <v-list-item
+                      v-if="!link.subLinks"
+                      class="v-list-item font-weight-bold "
+                    >
+                      <v-list-item-action>
                         <v-checkbox
                           v-model="link.status"
                           color="deep-purple accent-4"
                         ></v-checkbox>
                       </v-list-item-action>
-                      <v-list-item-title class=" h1 d-flex"
-                        >{{ link.title }}<v-spacer></v-spacer>
-                        <v-icon>mdi-menu-down</v-icon></v-list-item-title
-                      >
-                    </template>
 
-                    <v-list-item
-                      v-for="sublink in link.subLinks"
-                      :key="sublink.text"
-                    >
-                      <v-list-item-action>
-                        <v-checkbox
-                          v-model="sublink.status"
-                          color="deep-purple accent-4"
-                        ></v-checkbox>
-                      </v-list-item-action>
-                      <v-list-item-title v-text="sublink.text" />
+                      <v-list-item-title class="" v-text="link.title" />
                     </v-list-item>
-                  </v-list-group>
-                </div>
-              </v-list>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
+
+                    <v-list-group
+                      group
+                      sub-group
+                      active-class=" deep-purple--text"
+                      v-else
+                      :key="link.title"
+                      :value="false"
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-action class="">
+                          <v-checkbox
+                            v-model="link.status"
+                            color="deep-purple accent-4"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-title class=" h1 d-flex" style="margin-left: 31px;"
+                          >{{ link.title }}<v-spacer></v-spacer>
+                          <v-icon>mdi-menu-down</v-icon></v-list-item-title
+                        >
+                      </template>
+
+                      <v-list-item
+                        v-for="sublink in link.subLinks"
+                        :key="sublink.text"
+                      >
+                        <v-list-item-action>
+                          <v-checkbox
+                            v-model="sublink.status"
+                            color="deep-purple accent-4"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-title v-text="sublink.text" />
+                      </v-list-item>
+                    </v-list-group>
+                  </div>
+                </v-list>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </div>
 
         <v-card-actions>
           <div class="mx-auto">
@@ -764,20 +769,20 @@ export default {
 </script>
 
 <style lang="scss">
-.v-list-item__icon {
-  display: none !important;
+.customlist {
+  .v-list-item__icon {
+    display: none !important;
+  }
 }
-.v-application--is-ltr .v-list-item__action:first-child,
-.v-application--is-ltr .v-list-item__icon:first-child {
-  margin-right: 0px !important;
+
+
+.customlist .v-list-item__action {
+  padding-right: 0px !important ;
 }
-.v-application--is-ltr
+ .v-application--is-ltr
   .v-list--dense
   .v-list-group--sub-group
   .v-list-group__header {
-  padding-left: 15px !important;
-}
-.v-list-item__action {
-  padding-right: 20px !important ;
+  padding-left: 16px;
 }
 </style>
