@@ -121,7 +121,12 @@ export function login(context, { username, password, agentkey }) {
                 }
               ]
             },
-
+            {
+              title: "จัดการค่ายเกม",
+              to: "/groupsetting",
+              icon: "mdi-history",
+              status: true
+            },
             {
               title: "ตั้งค่าโปรโมชั่น",
               icon: "mdi-history",

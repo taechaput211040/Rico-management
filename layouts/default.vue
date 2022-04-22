@@ -4,6 +4,12 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="font-weight-bold" v-text="title" />
       <v-spacer />
+      <v-chip outlined class="font-weight-bold" color="success"
+        ><v-icon left>mdi-account</v-icon>{{ memberOnline }} Online member
+        <v-btn icon @click="showMember = true"
+          ><v-icon>mdi-chart-box</v-icon></v-btn
+        >
+      </v-chip>
       <v-tooltip left color="orange">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -65,7 +71,7 @@
         <div v-for="(link, i) in items" :key="i">
           <v-list-item
             active-class="white--text active_list deep-purple"
-            style="margin-right: 5px;margin-left: 5px;"
+            style="margin-right: 5px;"
             v-if="!link.subLinks"
             :to="link.to"
             class="v-list-item font-weight-bold "
@@ -207,6 +213,16 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="showMember" max-width="850px">
+          <v-card class="pa-3">
+            <v-card-title class="justifiy-center font-weight-bold success--text">Member Online</v-card-title>
+            <v-data-table :headers="headersMember" hide-default-footer>
+            </v-data-table>
+            <v-card-actions class="justify-end">
+              <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-container>
     </v-main>
 
@@ -220,6 +236,52 @@ export default {
   middleware: "auth",
   data() {
     return {
+      headersMember: [
+        {
+          text: "เวลาเข้าเล่นล่าสุด",
+          value: "time",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "Username",
+          value: "username",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "ค่ายเกม",
+          value: "provider",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "Game",
+          value: "game",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "Ip",
+          value: "ip_address",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "อุปกรณ์ที่ใช้เข้าเล่น",
+          value: "hardware",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        }
+      ],
+      showMember: false,
+      memberOnline: 26,
       soundsetting: {
         auto: true,
         dp: true,
@@ -344,6 +406,12 @@ export default {
               status: true
             }
           ]
+        },
+        {
+          title: "จัดการค่ายเกม",
+          to: "/groupsetting",
+          icon: "mdi-history",
+          status: true
         },
 
         {

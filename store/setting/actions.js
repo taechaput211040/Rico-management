@@ -160,3 +160,20 @@ export function getCompanybank(context) {
   });
 }
 //ธนาคารของเว็บ
+export function getGroup() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5"
+      );
+      localStorage.setItem("groups", JSON.stringify(response.data.group));
+  
+      resolve(response);
+
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+//ธนาคารของเว็บ
