@@ -72,7 +72,7 @@
                     >
                   </div>
                 </template>
-                <template #[`item.actions`]>
+                <template #[`item.actions`]="{item}">
                   <div class="d-md-flex">
                     <v-tooltip bottom color="primary">
                       <template v-slot:activator="{ on, attrs }"
@@ -92,6 +92,7 @@
                     <v-tooltip bottom color="warning">
                       <template v-slot:activator="{ on, attrs }"
                         ><v-btn
+                          @click="handleUpdateMember(item)"
                           v-bind="attrs"
                           v-on="on"
                           color="warning mx-1"
@@ -171,6 +172,112 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="updateMember" max-width="800px">
+        <v-card class="pa-3">
+          <v-card-title>ข้อมูลผู้ใช้ :{{ updateForm.username }} </v-card-title>
+          <v-divider class="my-2"></v-divider>
+          <v-form>
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                เบอร์โทรศัพท์
+                <v-text-field
+                  outlined
+                  filled
+                  v-model="updateForm.phone"
+                  dense
+                  hide-details="auto"
+                  disabled
+                ></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6 d-sm-block d-none"></div>
+              <div class="col-12 col-sm-6">
+                ชื่อ
+                <v-text-field
+                  outlined
+                  v-model="updateForm.name"
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                นามสกุล
+                <v-text-field
+                  v-model="updateForm.lastname"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                ธนาคาร
+                <v-select
+                  v-model="updateForm.bankName"
+                  outlined
+                  :items="bank"
+                  dense
+                  hide-details="auto"
+                ></v-select>
+              </div>
+              <div class="col-12 col-sm-6">
+                เลขบัญชีธนาคาร
+                <v-text-field
+                  outlined
+                  v-model="updateForm.bankAcc"
+                  hide-details="auto"
+                  dense
+                ></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                LINE
+                <v-text-field
+                  outlined
+                  filled
+                  v-model="updateForm.lineID"
+                  dense
+                  hide-details="auto"
+                  disabled
+                ></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                Lock User
+                <v-checkbox
+                  label="ห้ามเดิมพัน"
+                  hide-details="auto"
+                  value="0"
+                ></v-checkbox>
+                <v-checkbox
+                  label="ห้ามฝากถอน"
+                  hide-details="auto"
+                  value="0"
+                ></v-checkbox>
+              </div>
+            </div>
+            <div class="text-center my-2">
+              <v-btn color="success">บันทึก</v-btn>
+              <v-btn color="error" @click="updateMember = false">ปิด</v-btn>
+              <v-btn color="purple white--text">ลบโปรโมชัน</v-btn>
+            </div>
+          </v-form>
+          <v-divider class="mt-5"></v-divider>
+          <div class="row pa-3">
+            <div class="col-12 col-sm-6">
+              ผู้เเนะนำ: -
+            </div>
+            <div class="col-12 col-sm-6">
+              แหล่งที่มา: -
+            </div>
+            <div class="col-12 col-sm-6">
+              เดิมพันล่าสุด: -
+            </div>
+            <div class="col-12 col-sm-6">
+              เครดิตค้าง: 0
+            </div>
+            <div class="col-12 col-sm-6">
+              วันที่สมัคร: 0
+            </div>
+          </div>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-flex>
 </template>
@@ -182,7 +289,9 @@ export default {
   components: { ImgBank },
   data() {
     return {
+      updateForm: {},
       dpdialog: false,
+      updateMember: false,
       wddialog: false,
       dateFilter: {
         inputfilter: "",
@@ -400,12 +509,17 @@ export default {
     };
   },
   async fetch() {
+    this.bank = this.$store.state.bank;
     try {
       let resrponse = await this.getReportmember(this.dateFilter);
       this.itemSearch = resrponse.data;
     } catch (error) {}
   },
   methods: {
+    handleUpdateMember(item) {
+      this.updateForm = Object.assign({}, item);
+      this.updateMember = true;
+    },
     ...mapActions("member", ["getReportmember", "getReportmemberbyid"]),
     getthaidate(timethai) {
       const time = this.$moment(timethai)
@@ -415,7 +529,7 @@ export default {
     },
     async searchdata() {
       try {
-        console.log(this.dateFilter)
+        console.log(this.dateFilter);
         const data = await this.getReportmemberbyid(this.dateFilter);
         this.itemSearch = data.data;
       } catch (error) {

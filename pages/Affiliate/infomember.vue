@@ -52,21 +52,21 @@
                   <div class="row">
                     <div class="col-12  col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="จำนวน downline วันนี้"
                         :value="Downline.today"
                       ></card-report>
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="จำนวน downline ทั้งหมด"
                         :value="Downline.allday"
                       ></card-report>
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="ยอดฝาก downline วันนี้"
                         titleclass="success--text"
                         :value="Downline.deposit"
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="ยอดฝาก downline สะสม"
                         :value="Downline.depositbalance"
                         titleclass="success--text"
@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="ยอดเสีย downline วันนี้"
                         :value="`-${Downline.losstoday}`"
                         titleclass="error--text"
@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="ยอดเสีย downline สะสม"
                         titleclass="error--text"
                         :value="`-${Downline.lossbalance}`"
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-12 col-sm-4 col-md-6 p-1">
                       <card-report
-                      :iconshow="false"
+                        :iconshow="false"
                         title="ยอดคอมมิชชั่น downline วันนี้"
                         titleclass="primary--text"
                         :value="Downline.commissiontoday"
@@ -246,39 +246,52 @@
 
                     <div class="input_form">
                       <span c class="px-2">เปอร์เซ็นยอดฝาก(%) : </span>
-                      <div>
+                      <div class="col-md-6 col-4 pa-0">
                         <v-text-field
+                          dense
+                          outlined
                           type="number"
+                          hide-details="auto"
                           v-model="config.percentDeposit"
                         />
                       </div>
                     </div>
                     <div class="input_form">
                       <span class="px-2">เปอร์เซ็นยอดเสีย(%) :</span>
-                      <div>
+                      <div class="col-md-6 col-4 pa-0">
                         <v-text-field
+                          dense
+                          outlined
                           type="number"
+                          hide-details="auto"
                           v-model="config.percentLoss"
                         />
                       </div>
                     </div>
                     <div class="input_form">
                       <span class="px-2">เปอร์เซ็นCommission(%) : </span>
-                      <div>
+                      <div class="col-md-6 col-4 pa-0">
                         <v-text-field
+                          dense
+                          outlined
                           type="number"
+                          hide-details="auto"
                           v-model="config.percentCommission"
                         />
                       </div>
                     </div>
                     <div class="input_form">
                       <span class="px-2">การรับรายได้ : </span>
-                      <v-select
-                        v-model="config.recieve"
-                        placeholder="เลือกการรับรายได้"
-                        :items="options"
-                        class="col-md-6 col-4"
-                      ></v-select>
+                      <div class="col-md-6 col-4 pa-0">
+                        <v-select
+                          dense
+                          outlined
+                          v-model="config.recieve"
+                          placeholder="เลือกการรับรายได้"
+                          :items="options"
+                          hide-details="auto"
+                        ></v-select>
+                      </div>
                     </div>
                   </div>
                   <div class="text-center">
@@ -524,7 +537,6 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-      this.$bvModal.hide("edit-config");
     },
     async getddl() {
       fetch(`http://localhost:3001/api/aff/admin/setting/recieve_mode`)

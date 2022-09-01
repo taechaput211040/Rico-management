@@ -9,7 +9,7 @@
       ></search-filter>
       <h2 class="mt-5">สรุปยอด กำไร / ขาดทุน</h2>
       <v-row class="mt-1">
-        <v-col cols="12" sm="4" lg="3" class="pa-2">
+        <v-col >
           <card-view
             title="ฝาก"
             titleclass="primary--text"

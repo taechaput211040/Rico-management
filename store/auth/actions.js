@@ -17,6 +17,55 @@ export function login(context, { username, password, agentkey }) {
               status: true
             },
             {
+              title: "รายงานระบบ",
+              icon: "mdi-chart-bar",
+              status: true,
+              subLinks: [
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "สถิติผู้ใช้งาน",
+                  to: "/reportSystem/statistics",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "สถิติฝาก-ถอน",
+                  to: "/reportSystem/transaction",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "รายงานลูกค้าใหม่",
+                  to: "/reportSystem/newaccount",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "รายงานลูกค้าประจำ",
+                  to: "/reportSystem/regularReport",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "รายงานรับโบนัส",
+                  to: "/reportSystem/bonusReport",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "รายงานรับโบนัสชวนเพื่อน",
+                  to: "/reportSystem/affiliate",
+                  status: true
+                },
+                {
+                  icon: "mdi-view-dashboard",
+                  text: "รายงานลูกค้าเลิกเล่น",
+                  to: "quitMember",
+                  status: true
+                }
+              ]
+            },
+            {
               title: "จัดการสมาชิก",
               icon: "mdi-account",
               status: true,
@@ -37,7 +86,7 @@ export function login(context, { username, password, agentkey }) {
                   icon: "mdi-view-dashboard",
                   text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
                   to: "/member/memberCheck",
-                  status: false
+                  status: true
                 },
                 {
                   icon: "mdi-view-dashboard",
@@ -127,6 +176,7 @@ export function login(context, { username, password, agentkey }) {
               icon: "mdi-history",
               status: true
             },
+
             {
               title: "ตั้งค่าโปรโมชั่น",
               icon: "mdi-history",
@@ -174,7 +224,6 @@ export function login(context, { username, password, agentkey }) {
             {
               title: "ตั้งค่า Feature",
               icon: "mdi-gamepad-variant-outline",
-              status: true,
               subLinks: [
                 {
                   icon: "mdi-view-dashboard",

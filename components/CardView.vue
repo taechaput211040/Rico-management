@@ -1,5 +1,5 @@
 <template>
-  <div class=" card-child card-dashboard elevation-5">
+  <div class="rounded-lg elevation-2 my-1">
     <div class="row">
       <div class="col-4 text-center d-flex">
         <div class="ma-auto">

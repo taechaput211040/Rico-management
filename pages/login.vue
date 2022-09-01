@@ -171,28 +171,28 @@ $redFire: rgba(244, 91, 105, 1);
   color: rgb(75, 75, 75);
   opacity: 1; /* Firefox */
 }
-
-input {
-  
-  display: block;
-  width: 100%;
-  margin: 10px 0px;
-  height: 38px;
-  background-color: rgb(185 185 185 / 41%) !important;
-  border: none;
-  box-sizing: border-box;
-  border-radius: 49px;
-  padding-right: 10px;
-  color: rgb(0, 0, 0);
-  width: 100%;
-  font-size: 16px;
-  padding-left: 46px;
-  padding-right: 33px;
-  -webkit-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  &:focus-visible {
+.login {
+  input {
+    display: block;
+    width: 100%;
+    margin: 10px 0px;
+    height: 38px;
+    background-color: rgb(185 185 185 / 41%) !important;
     border: none;
+    box-sizing: border-box;
+    border-radius: 49px;
+    padding-right: 10px;
+    color: rgb(0, 0, 0);
+    width: 100%;
+    font-size: 16px;
+    padding-left: 46px;
+    padding-right: 33px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    &:focus-visible {
+      border: none;
+    }
   }
 }
 
@@ -203,15 +203,6 @@ input {
   to {
     transform: rotate(360deg);
   }
-}
-
-a {
-  text-decoration: none;
-  color: rgba(white, 0.6);
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 12px;
 }
 
 .feedback {
@@ -248,7 +239,7 @@ a {
     text-align: center;
   }
   .login {
-    margin-top: 30px;
+    margin-top: 0px !important;
     width: 95%;
     padding: 30px 30px 30px 30px !important;
   }

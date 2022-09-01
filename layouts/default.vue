@@ -57,8 +57,9 @@
       :clipped="clipped"
       app
       fixed
-      width="300"
-      ><v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
+      width="270"
+    >
+      <v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
         <v-img
           max-height="150"
           max-width="200"
@@ -67,48 +68,73 @@
           src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
         ></v-img>
       </v-toolbar-title>
-      <v-list dense class="red_list">
+      <v-list nav dense class="mt-5">
         <div v-for="(link, i) in items" :key="i">
           <v-list-item
-            active-class="white--text active_list deep-purple"
-            style="margin-right: 5px;"
             v-if="!link.subLinks"
+            :disabled="link.status == 2"
             :to="link.to"
-            class="v-list-item font-weight-bold "
+            class="pa-1 font-weight-bold"
+            active-class="bg-primary-grediaun"
           >
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
-
-            <v-list-item-title class="" v-text="link.title" />
+            <v-list-item-title v-text="link.title" />
+            <v-badge
+              color="error"
+              right
+              style="z-index: -1"
+              v-if="link.status == 2"
+              :disabled="link.status == 2"
+              icon="mdi-tools"
+              inline
+              overlap
+            ></v-badge>
           </v-list-item>
-
           <v-list-group
-            active-class=" deep-purple--text"
+            color="deep-purple lighten-2 "
             v-else
             :key="link.title"
+            no-action
             :prepend-icon="link.icon"
             :value="false"
           >
             <template v-slot:activator>
-              <v-list-item-title class=" h1">{{
-                link.title
-              }}</v-list-item-title>
+              <v-list-item-title>{{ link.title }}</v-list-item-title>
             </template>
-
             <v-list-item
-              active-class="white--text active_list deep-purple active_list "
-              style="padding-left: 30px !important;margin-right: 5px;margin-left: 5px;"
+              class="pa-1"
               v-for="sublink in link.subLinks"
               :to="sublink.to"
               :key="sublink.text"
+              :disabled="sublink.status == 2"
+              active-class="bg-primary-grediaun"
             >
               <v-list-item-icon>
                 <v-icon>{{ sublink.icon }}</v-icon>
               </v-list-item-icon>
               <v-list-item-title v-text="sublink.text" />
+              <v-badge
+                color="error"
+                right
+                style="z-index: -1"
+                v-if="sublink.status == 2"
+                :disabled="sublink.status == 2"
+                icon="mdi-tools"
+                inline
+                overlap
+              ></v-badge>
             </v-list-item>
           </v-list-group>
+        </div>
+        <div>
+          <v-list-item @click="logout()" class="pa-1">
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Logout </v-list-item-title>
+          </v-list-item>
         </div>
       </v-list>
 
@@ -137,96 +163,96 @@
 
     <!-- Sizes your content based upon application components -->
     <v-main>
-      <v-container>
-        <v-slide-x-transition>
-          <Nuxt />
-        </v-slide-x-transition>
-        <v-dialog v-model="dialogsound" max-width="290">
-          <v-card>
-            <v-card-title>
-              <h4>ตั้งค่าการแจ้งเตือน</h4>
-            </v-card-title>
+      <v-slide-x-transition>
+        <v-container>
+          <div class="mainshow py-sm-4 px-2 rounded-xl"><Nuxt /></div
+        ></v-container>
+      </v-slide-x-transition>
+      <v-dialog v-model="dialogsound" max-width="290">
+        <v-card>
+          <v-card-title>
+            <h4>ตั้งค่าการแจ้งเตือน</h4>
+          </v-card-title>
 
-            <v-card-text class="font-weight-bold">
-              <div class="my-2">
-                ฝากเงิน (ออโต้) :
-                <v-btn
-                  color="primary"
-                  small
-                  v-if="soundsetting.auto == true"
-                  rounded
-                  @click="setsound('auto')"
-                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-                >
-                <v-btn
-                  color="grey"
-                  small
-                  v-if="soundsetting.auto == false"
-                  rounded
-                  @click="setsound('auto')"
-                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-                >
-              </div>
-              <div class="my-2">
-                ฝากเงิน :
-                <v-btn
-                  color="primary"
-                  v-if="soundsetting.dp == true"
-                  small
-                  rounded
-                  @click="setsound('dp')"
-                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-                ><v-btn
-                  color="grey"
-                  v-if="soundsetting.dp == false"
-                  small
-                  rounded
-                  @click="setsound('dp')"
-                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-                >
-              </div>
-              <div class="my-2">
-                ถอนเงิน :
-                <v-btn
-                  color="primary"
-                  v-if="soundsetting.wd == true"
-                  small
-                  rounded
-                  @click="setsound('wd')"
-                  ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-                >
-                <v-btn
-                  color="grey"
-                  v-if="soundsetting.wd == false"
-                  small
-                  rounded
-                  @click="setsound('wd')"
-                  ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-                >
-              </div>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="dialogsound = false">
-                ปิด
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="showMember" max-width="850px">
-          <v-card class="pa-3">
-            <v-card-title class="justifiy-center font-weight-bold success--text">Member Online</v-card-title>
-            <v-data-table :headers="headersMember" hide-default-footer>
-            </v-data-table>
-            <v-card-actions class="justify-end">
-              <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-container>
+          <v-card-text class="font-weight-bold">
+            <div class="my-2">
+              ฝากเงิน (ออโต้) :
+              <v-btn
+                color="primary"
+                small
+                v-if="soundsetting.auto == true"
+                rounded
+                @click="setsound('auto')"
+                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+              >
+              <v-btn
+                color="grey"
+                small
+                v-if="soundsetting.auto == false"
+                rounded
+                @click="setsound('auto')"
+                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+              >
+            </div>
+            <div class="my-2">
+              ฝากเงิน :
+              <v-btn
+                color="primary"
+                v-if="soundsetting.dp == true"
+                small
+                rounded
+                @click="setsound('dp')"
+                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+              ><v-btn
+                color="grey"
+                v-if="soundsetting.dp == false"
+                small
+                rounded
+                @click="setsound('dp')"
+                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+              >
+            </div>
+            <div class="my-2">
+              ถอนเงิน :
+              <v-btn
+                color="primary"
+                v-if="soundsetting.wd == true"
+                small
+                rounded
+                @click="setsound('wd')"
+                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
+              >
+              <v-btn
+                color="grey"
+                v-if="soundsetting.wd == false"
+                small
+                rounded
+                @click="setsound('wd')"
+                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
+              >
+            </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialogsound = false">
+              ปิด
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="showMember" max-width="850px">
+        <v-card class="pa-3">
+          <v-card-title class="justifiy-center font-weight-bold success--text"
+            >Member Online</v-card-title
+          >
+          <v-data-table :headers="headersMember" hide-default-footer>
+          </v-data-table>
+          <v-card-actions class="justify-end">
+            <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-main>
-
-    <v-footer> </v-footer>
   </v-app>
 </template>
 
@@ -301,6 +327,55 @@ export default {
           to: "/",
           icon: "mdi-view-dashboard",
           status: true
+        },
+        {
+          title: "รายงานระบบ",
+          icon: "mdi-chart-bar",
+          status: true,
+          subLinks: [
+            {
+              icon: "mdi-view-dashboard",
+              text: "สถิติผู้ใช้งาน",
+              to: "/reportSystem/statistics",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "สถิติฝาก-ถอน",
+              to: "/reportSystem/transaction",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานลูกค้าใหม่",
+              to: "/reportSystem/newaccount",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานลูกค้าประจำ",
+              to: "/reportSystem/regularReport",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานรับโบนัส",
+              to: "/reportSystem/bonusReport",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานรับโบนัสชวนเพื่อน",
+              to: "/reportSystem/affiliate",
+              status: true
+            },
+            {
+              icon: "mdi-view-dashboard",
+              text: "รายงานลูกค้าเลิกเล่น",
+              to: "quitMember",
+              status: true
+            }
+          ]
         },
         {
           title: "จัดการสมาชิก",
@@ -591,9 +666,4 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.v-btn--fab.v-size--default {
-  height: 50px;
-  width: 50px;
-}
-</style>
+<style lang="scss"></style>

@@ -3,41 +3,44 @@
     <!-- sectioncard -->
 
     <v-row>
-      <v-col lg="3" sm="6" md="6" cols="12" class="pa-3">
-        <card-view
-          :value="datarander.depositbalance"
-          title="รวมยอดฝากทั้งวัน"
-          iconSrc="https://image.smart-ai-api.com/public/thongtest/save-money.gif"
-        ></card-view>
-      </v-col>
-      <v-col lg="3" sm="6" cols="12" class="pa-3">
-        <card-view
-          title="รวมยอดถอนทั้งวัน"
-          :value="datarander.withdrawbalance"
-          iconSrc="https://image.smart-ai-api.com/public/thongtest/24-hours.gif"
-        ></card-view>
-      </v-col>
-      <v-col lg="3" sm="6" cols="12" class="pa-3">
-        <card-view
-          :value="datarander.profitlossDate"
-          :condition="true"
-          title="กำไร/ขาดทุน(วันนี้)"
-          iconSrc="https://image.smart-ai-api.com/public/thongtest/laptop.gif"
-        ></card-view>
-      </v-col>
-      <v-col lg="3" sm="6" cols="12" class="pa-3">
-        <card-view
-          :condition="true"
-          title="กำไร/ขาดทุน(ทั้งเดือน)"
-          :value="datarander.profitlossmounth"
-          iconSrc="https://image.smart-ai-api.com/public/thongtest/presentation.gif"
-        ></card-view>
-      </v-col>
+      <div class="col-12 col-lg-4">
+        <h2 class="pa-2">ยอดรวมทั้งหมด</h2>
+        <div class="row ">
+          <div class="col-12 col-md-6 col-sm-6">
+            <card-view
+              :value="datarander.depositbalance"
+              title="รวมยอดฝากทั้งวัน"
+              iconSrc="https://image.smart-ai-api.com/public/thongtest/save-money.gif"
+            ></card-view>
+          </div>
+          <div class="col-12 col-md-6 col-sm-6">
+            <card-view
+              title="รวมยอดถอนทั้งวัน"
+              :value="datarander.withdrawbalance"
+              iconSrc="https://image.smart-ai-api.com/public/thongtest/24-hours.gif"
+            ></card-view>
+          </div>
+          <div class="col-12 col-md-6 col-sm-6">
+            <card-view
+              :value="datarander.profitlossDate"
+              :condition="true"
+              title="กำไร/ขาดทุน(วันนี้)"
+              iconSrc="https://image.smart-ai-api.com/public/thongtest/laptop.gif"
+            ></card-view>
+          </div>
+          <div class="col-12 col-md-6 col-sm-6">
+            <card-view
+              :condition="true"
+              title="กำไร/ขาดทุน(ทั้งเดือน)"
+              :value="datarander.profitlossmounth"
+              iconSrc="https://image.smart-ai-api.com/public/thongtest/presentation.gif"
+            ></card-view>
+          </div>
+        </div>
+      </div>
+
       <!-- sectioncard -->
-    </v-row>
-    <!-- sectiontable -->
-    <v-row>
-      <v-col cols="12" lg="6"
+      <v-col cols="12" lg="4"
         ><v-card width="100%" class="elevation-5 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             บัญชีฝากทั้งหมด
@@ -103,7 +106,7 @@
           </v-card></v-card
         ></v-col
       >
-      <v-col cols="12" lg="6"
+      <v-col cols="12" lg="4"
         ><v-card width="100%" height="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
             บัญชีถอนทั้งหมด
@@ -134,6 +137,8 @@
         ></v-col
       >
     </v-row>
+    <!-- sectiontable -->
+
     <!-- sectiontable -->
     <!-- secttiondeposit -->
     <v-row>

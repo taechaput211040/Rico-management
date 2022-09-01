@@ -185,7 +185,9 @@
                             color="deep-purple accent-4"
                           ></v-checkbox>
                         </v-list-item-action>
-                        <v-list-item-title class=" h1 d-flex" style="margin-left: 31px;"
+                        <v-list-item-title
+                          class=" h1 d-flex"
+                          style="margin-left: 31px;"
                           >{{ link.title }}<v-spacer></v-spacer>
                           <v-icon>mdi-menu-down</v-icon></v-list-item-title
                         >
@@ -357,7 +359,9 @@
                             color="deep-purple accent-4"
                           ></v-checkbox>
                         </v-list-item-action>
-                        <v-list-item-title class=" h1 d-flex" style="margin-left: 31px;"
+                        <v-list-item-title
+                          class=" h1 d-flex"
+                          style="margin-left: 31px;"
                           >{{ link.title }}<v-spacer></v-spacer>
                           <v-icon>mdi-menu-down</v-icon></v-list-item-title
                         >
@@ -775,14 +779,8 @@ export default {
   }
 }
 
-
 .customlist .v-list-item__action {
   padding-right: 0px !important ;
 }
- .v-application--is-ltr
-  .v-list--dense
-  .v-list-group--sub-group
-  .v-list-group__header {
-  padding-left: 16px;
-}
+
 </style>

@@ -84,7 +84,6 @@ export default {
     try {
       let { data: group } = await this.getGroup();
       this.grouplist = group;
-
       console.log(group);
     } catch (error) {}
   },
