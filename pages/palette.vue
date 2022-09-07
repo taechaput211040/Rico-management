@@ -63,9 +63,9 @@ export default {
       if (value) this.image = URL.createObjectURL(value);
       let formData = new FormData();
       formData.append("file", value);
-      console.log(formData.get("file"), "formData");
       this.imageUpload = formData;
     },
+
     // async handleUploadImage(image) {
     //   try {
     //     let { data } = await this.$axios.post(
@@ -79,11 +79,6 @@ export default {
     //     this.isLoading = false;
     //   }
     // },
-    async getPresetByOrganize() {},
-    async selectData(index) {},
-    handleEmiteData(value, index) {
-      console.log(this.selectData());
-    },
 
     async savePallette() {},
     refresh() {},

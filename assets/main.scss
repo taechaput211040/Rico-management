@@ -674,3 +674,11 @@ button:hover {
     max-width: 1020px !important;
   }
 }
+
+.v-list-group__items{
+  background: #9c64d7 !important;
+
+  .v-list-item__title{
+    color: white !important;
+  }
+}
