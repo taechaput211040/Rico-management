@@ -9,119 +9,117 @@
         ></search-filter>
       </v-row>
       <v-row>
-        <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
+        <v-card class="elevation-4 mt-5 rounded-lg pb-5" width="100%">
           <div class="ma-5 font-weight-bold">
             จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
             {{ dateFilter.startDate }} ถึงวันที่
             {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemSearch.length }} คน
           </div>
 
-          <v-card class="elevation-4 mt-5 rounded-lg">
-            <div class="tabledata">
-              <v-data-table
-                :headers="columnReport"
-                :items="itemSearch"
-                hide-default-footer
-              >
-                <template #[`item.bankAcc`]="{item}">
-                  <div class="row py-2 detailbank justify-center">
-                    <div class="ma-auto">
-                      <img-bank :value="item.bankName"></img-bank>
-                    </div>
-                    <div class="font-weight-bold">
-                      <span class="primary--text ">{{ item.bankName }}</span
-                      ><br />
-                      {{ item.bankAcc }}
-                    </div>
+          <div class="tabledata">
+            <v-data-table
+              :headers="columnReport"
+              :items="itemSearch"
+              hide-default-footer
+            >
+              <template #[`item.bankAcc`]="{item}">
+                <div class="row py-2 detailbank justify-center">
+                  <div class="ma-auto">
+                    <img-bank :value="item.bankName"></img-bank>
                   </div>
-                </template>
-                <template #[`item.no`]="{index}">
-                  <span class="font-weight-bold">
-                    {{ index + 1 }}
-                  </span>
-                </template>
-                <template #[`item.created_at`]="{item}">
-                  <span>
-                    {{ getthaidate(item.created_at) }}
-                  </span>
-                </template>
-                <template #[`item.updated_at`]="{item}">
-                  <span>
-                    {{ getthaidate(item.updated_at) }}
-                  </span>
-                </template>
-                <template #[`item.name`]="{item}">
-                  <span> {{ item.name }} {{ item.lastname }} </span>
-                </template>
-                <template #[`item.log`]>
-                  <div class="d-md-flex justify-end">
-                    <v-btn
-                      class="mx-1"
-                      color="success"
-                      dark
-                      small
-                      @click.stop="dpdialog = true"
-                      >ฝาก</v-btn
-                    ><v-btn
-                      class="mx-1"
-                      color="error"
-                      dark
-                      small
-                      @click.stop="wddialog = true"
-                      >ถอน</v-btn
+                  <div class="font-weight-bold">
+                    <span class="primary--text ">{{ item.bankName }}</span
+                    ><br />
+                    {{ item.bankAcc }}
+                  </div>
+                </div>
+              </template>
+              <template #[`item.no`]="{index}">
+                <span class="font-weight-bold">
+                  {{ index + 1 }}
+                </span>
+              </template>
+              <template #[`item.created_at`]="{item}">
+                <span>
+                  {{ getthaidate(item.created_at) }}
+                </span>
+              </template>
+              <template #[`item.updated_at`]="{item}">
+                <span>
+                  {{ getthaidate(item.updated_at) }}
+                </span>
+              </template>
+              <template #[`item.name`]="{item}">
+                <span> {{ item.name }} {{ item.lastname }} </span>
+              </template>
+              <template #[`item.log`]>
+                <div class="d-md-flex justify-end">
+                  <v-btn
+                    class="mx-1"
+                    color="success"
+                    dark
+                    small
+                    @click.stop="dpdialog = true"
+                    >ฝาก</v-btn
+                  ><v-btn
+                    class="mx-1"
+                    color="error"
+                    dark
+                    small
+                    @click.stop="wddialog = true"
+                    >ถอน</v-btn
+                  >
+                </div>
+              </template>
+              <template #[`item.actions`]="{item}">
+                <div class="d-md-flex">
+                  <v-tooltip bottom color="primary">
+                    <template v-slot:activator="{ on, attrs }"
+                      ><v-btn
+                        @click="changpass"
+                        v-bind="attrs"
+                        v-on="on"
+                        color="primary mx-1"
+                        x-small
+                        fab
+                        ><v-icon>mdi-lastpass</v-icon></v-btn
+                      ></template
                     >
-                  </div>
-                </template>
-                <template #[`item.actions`]="{item}">
-                  <div class="d-md-flex">
-                    <v-tooltip bottom color="primary">
-                      <template v-slot:activator="{ on, attrs }"
-                        ><v-btn
-                          @click="changpass"
-                          v-bind="attrs"
-                          v-on="on"
-                          color="primary mx-1"
-                          x-small
-                          fab
-                          ><v-icon>mdi-lastpass</v-icon></v-btn
-                        ></template
-                      >
-                      <span>เปลี่ยนรหัสผ่าน</span>
-                    </v-tooltip>
+                    <span>เปลี่ยนรหัสผ่าน</span>
+                  </v-tooltip>
 
-                    <v-tooltip bottom color="warning">
-                      <template v-slot:activator="{ on, attrs }"
-                        ><v-btn
-                          @click="handleUpdateMember(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                          color="warning mx-1"
-                          x-small
-                          fab
-                          ><v-icon>mdi-pencil</v-icon></v-btn
-                        ></template
-                      >
-                      <span>แก้ไขข้อมูล</span>
-                    </v-tooltip>
-                    <v-tooltip bottom color="black">
-                      <template v-slot:activator="{ on, attrs }"
-                        ><v-btn
-                          v-bind="attrs"
-                          v-on="on"
-                          color="black mx-1"
-                          x-small
-                          dark
-                          fab
-                          ><v-icon>mdi-lock</v-icon></v-btn
-                        ></template
-                      >
-                      <span>LOCK USER!</span>
-                    </v-tooltip>
-                  </div>
-                </template>
-              </v-data-table>
-            </div>
-          </v-card>
+                  <v-tooltip bottom color="warning">
+                    <template v-slot:activator="{ on, attrs }"
+                      ><v-btn
+                        @click="handleUpdateMember(item)"
+                        v-bind="attrs"
+                        v-on="on"
+                        color="warning mx-1"
+                        x-small
+                        fab
+                        ><v-icon>mdi-pencil</v-icon></v-btn
+                      ></template
+                    >
+                    <span>แก้ไขข้อมูล</span>
+                  </v-tooltip>
+                  <v-tooltip bottom color="black">
+                    <template v-slot:activator="{ on, attrs }"
+                      ><v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        color="black mx-1"
+                        x-small
+                        dark
+                        fab
+                        ><v-icon>mdi-lock</v-icon></v-btn
+                      ></template
+                    >
+                    <span>LOCK USER!</span>
+                  </v-tooltip>
+                </div>
+              </template>
+            </v-data-table>
+          </div>
         </v-card>
       </v-row>
       <v-dialog v-model="dpdialog" max-width="1200px">

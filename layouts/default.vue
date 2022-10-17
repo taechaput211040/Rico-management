@@ -5,10 +5,8 @@
       <v-toolbar-title class="font-weight-bold" v-text="title" />
       <v-spacer />
       <v-chip outlined class="font-weight-bold" color="success"
-        ><v-icon left>mdi-account</v-icon>{{ memberOnline }} Online member
-        <v-btn icon @click="showMember = true"
-          ><v-icon>mdi-chart-box</v-icon></v-btn
-        >
+        ><v-icon left c>mdi-account</v-icon>{{ memberOnline }} Online member
+        <v-icon class="mx-2" @click="showMember = true">mdi-chart-box</v-icon>
       </v-chip>
       <v-tooltip left color="orange">
         <template v-slot:activator="{ on, attrs }">
@@ -33,7 +31,22 @@
             <v-icon> mdi-account-circle </v-icon>
           </v-btn>
         </template>
-
+        <v-tooltip left color="black">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              fab
+              dark
+              v-bind="attrs"
+              v-on="on"
+              small
+              color="black"
+              @click="$router.push('/palette')"
+            >
+              <v-icon>mdi-cog</v-icon>
+            </v-btn>
+          </template>
+          <span>ต้งค่าเว็ป</span>
+        </v-tooltip>
         <v-tooltip left color="red">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -258,7 +271,9 @@
 
 <script>
 import { mapActions } from "vuex";
+import GradientInput from "../components/palette/GradientInput.vue";
 export default {
+  components: { GradientInput },
   middleware: "auth",
   data() {
     return {
@@ -636,8 +651,20 @@ export default {
       console.log(error);
     }
   },
+  async beforeMount() {
+    await this.CheckOrganize();
+  },
   methods: {
-    ...mapActions("auth", ["getUser", "getFeature"]),
+    ...mapActions("auth", ["getUser", "getFeature", "logout"]),
+    ...mapActions("account", ["getPalletePreset"]),
+    async CheckOrganize() {
+      try {
+        await this.getPalletePreset();
+      } catch (error) {
+        console.log("norest");
+        console.log(error);
+      }
+    },
     logdownweb() {
       console.log("lockdown");
       // window.location = "http://www.google.com";
@@ -656,8 +683,9 @@ export default {
       try {
         let token = localStorage.getItem("key");
         if (token) {
-          localStorage.clear();
-          this.$router.push("/login");
+          await this.logout();
+          await localStorage.clear();
+          await this.$router.push("/login");
         }
       } catch (err) {
         console.log(err);

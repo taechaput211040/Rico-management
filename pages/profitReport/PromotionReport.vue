@@ -425,4 +425,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+thead {
+  background: black !important;
+}
+</style>

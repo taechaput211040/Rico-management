@@ -1,24 +1,24 @@
 <template>
   <div class="rounded-lg elevation-2 my-1">
     <div class="row">
-      <div class="col-4 text-center d-flex">
+      <div class="col-4 text-center d-flex ">
         <div class="ma-auto">
           <img :src="iconSrc" class="img-icon icon-show" />
         </div>
       </div>
-      <div class="col">
-        <div class=" card-icontitle" v-if="condition == true">
+      <div class="col pa-0 ma-auto">
+        <div class="card-icontitle" v-if="condition == true">
           <h1 v-if="value > 0" class="success--text">+{{ value }}</h1>
           <h1 v-if="value < 0" class="red--text">{{ value }}</h1>
         </div>
         <div class=" card-icontitle" v-else>
           <h1>{{ value }}</h1>
         </div>
-        <v-divider class="my-2"></v-divider>
+
         <div
           class="text-start text-data d-flex align-center justify-space-between"
         >
-          <h4 :class="titleclass">{{ title }}</h4>
+          <h5 :class="titleclass">{{ title }}</h5>
         </div>
       </div>
     </div>

@@ -1,310 +1,310 @@
 //login//
 export function login(context, { username, password, agentkey }) {
   return new Promise(async (resolve, reject) => {
+    console.log(process.env,'env')
     try {
-      const mockResponse = {
-        data: {
-          success: true,
-          key: "12345644566455",
+      // console.log(process.env.VUE_APP_PATH_MICROSERVICE,'process.env.ALL_RICO_USER')
+      let { data } = await this.$axios.post(
+        `https://all-rico-user-ehhif4jpyq-as.a.run.app/api/Auth/Login
+      `,
+        {
           username: username,
-          agent: agentkey,
-          isLoggedIn: true,
-          group: [
-            {
-              title: "Dashboard",
-              to: "/",
-              icon: "mdi-view-dashboard",
-              status: true
-            },
-            {
-              title: "รายงานระบบ",
-              icon: "mdi-chart-bar",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "สถิติผู้ใช้งาน",
-                  to: "/reportSystem/statistics",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "สถิติฝาก-ถอน",
-                  to: "/reportSystem/transaction",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานลูกค้าใหม่",
-                  to: "/reportSystem/newaccount",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานลูกค้าประจำ",
-                  to: "/reportSystem/regularReport",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานรับโบนัส",
-                  to: "/reportSystem/bonusReport",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานรับโบนัสชวนเพื่อน",
-                  to: "/reportSystem/affiliate",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานลูกค้าเลิกเล่น",
-                  to: "quitMember",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "จัดการสมาชิก",
-              icon: "mdi-account",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "สมัครสมาชิก",
-                  to: "/member/register",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานสมาชิก",
-                  to: "/member/reportMember",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
-                  to: "/member/memberCheck",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เช็คข้อมูลการเล่น",
-                  to: "/member/memberReportTransaction",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "ถอนเครดิตสมาชิก(Manual)",
-                  to: "/member/withdrawManual",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "แก้ไขเครดิต/รายการผิดพลาด",
-                  to: "/member/ManualEditCredit",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "รายงานฝาก/ถอน",
-              icon: "mdi-credit-card-check",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายการฝากสมาชิก",
-                  to: "/reportTransaction/deposite",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายการถอนสมาชิก",
-                  to: "/reportTransaction/withdraw",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายการถอนสมาชิกล่าสุด",
-                  to: "/reportTransaction/lastWithdrawal",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายการฝากแรก",
-                  to: "/reportTransaction/firstDeposit",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายการที่ถูกซ่อน",
-                  to: "/reportTransaction/hiddenReport",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "รายงานสรุป",
-              icon: "mdi-credit-card-plus-outline",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "กำไร/ขาดทุน",
-                  to: "/profitReport/Report",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "กำไร/ขาดทุน รายบุคคล",
-                  to: "/profitReport/ProfitByUserReport",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "สรุปโปรโมชัน",
-                  to: "/profitReport/PromotionReport",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "จัดการค่ายเกม",
-              to: "/groupsetting",
-              icon: "mdi-history",
-              status: true
-            },
-
-            {
-              title: "ตั้งค่าโปรโมชั่น",
-              icon: "mdi-history",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "โปรโมชันทั่วไป",
-                  to: "/promotion/generalPromotion",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "Cashback",
-                  to: "/promotion/cashback",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "ตั้งค่าลิงก์รับทรัพย์",
-              icon: "mdi-history",
-              status: true,
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "รายงานลิงก์รับทรัพย์",
-                  to: "/Affiliate/report",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
-                  to: "/Affiliate/infomember",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "ตั้งค่า",
-                  to: "/Affiliate/setting",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "ตั้งค่า Feature",
-              icon: "mdi-gamepad-variant-outline",
-              subLinks: [
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เครดิตฟรี",
-                  to: "/feature/creditfree",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "กงล้อนำโชค",
-                  to: "/feature/wheel",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เปิดไพ่6ใบ",
-                  to: "/feature/sixcard",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เปิดหีบสมบัติ",
-                  to: "/feature/chest",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "เช็คอินรายวัน",
-                  to: "/feature/checkindaily",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "สะสมเเต้ม",
-                  to: "/feature/point",
-                  status: true
-                },
-                {
-                  icon: "mdi-view-dashboard",
-                  text: "ของพรีเมียม",
-                  to: "/feature/premiumn",
-                  status: true
-                }
-              ]
-            },
-            {
-              title: "ตั้งค่าระบบ",
-              to: "/system",
-              icon: "mdi-cog-outline",
-              status: true
-            },
-            {
-              title: "รายชื่อมิจฉาชีพ",
-              to: "/CriminalList",
-              icon: "mdi-gamepad-square",
-              status: true
-            },
-            {
-              title: "พนักงาน",
-              to: "/employee",
-              icon: "mdi-gamepad-square",
-              status: true
-            },
-            {
-              title: "ธนาคาร",
-              to: "/companyBank",
-              icon: "mdi-gamepad-square",
-              status: true
-            }
-          ]
+          password: password,
+          agent: agentkey
         }
-      };
-      context.commit("set_login", mockResponse.data);
-      resolve(mockResponse);
-      return;
-      // let response = await this.$axios.post("api", {
-      //   username,
-      //   password
-      // });
-      // context.commit("set_login", response.data);
-      // resolve(response);
+      );
+      // const mockResponse = {
+      //   group: [
+      //     {
+      //       title: "Dashboard",
+      //       to: "/",
+      //       icon: "mdi-view-dashboard",
+      //       status: true
+      //     },
+      //     {
+      //       title: "รายงานระบบ",
+      //       icon: "mdi-chart-bar",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "สถิติผู้ใช้งาน",
+      //           to: "/reportSystem/statistics",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "สถิติฝาก-ถอน",
+      //           to: "/reportSystem/transaction",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานลูกค้าใหม่",
+      //           to: "/reportSystem/newaccount",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานลูกค้าประจำ",
+      //           to: "/reportSystem/regularReport",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานรับโบนัส",
+      //           to: "/reportSystem/bonusReport",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานรับโบนัสชวนเพื่อน",
+      //           to: "/reportSystem/affiliate",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานลูกค้าเลิกเล่น",
+      //           to: "quitMember",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "จัดการสมาชิก",
+      //       icon: "mdi-account",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "สมัครสมาชิก",
+      //           to: "/member/register",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานสมาชิก",
+      //           to: "/member/reportMember",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
+      //           to: "/member/memberCheck",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เช็คข้อมูลการเล่น",
+      //           to: "/member/memberReportTransaction",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "ถอนเครดิตสมาชิก(Manual)",
+      //           to: "/member/withdrawManual",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "แก้ไขเครดิต/รายการผิดพลาด",
+      //           to: "/member/ManualEditCredit",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "รายงานฝาก/ถอน",
+      //       icon: "mdi-credit-card-check",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายการฝากสมาชิก",
+      //           to: "/reportTransaction/deposite",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายการถอนสมาชิก",
+      //           to: "/reportTransaction/withdraw",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายการถอนสมาชิกล่าสุด",
+      //           to: "/reportTransaction/lastWithdrawal",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายการฝากแรก",
+      //           to: "/reportTransaction/firstDeposit",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายการที่ถูกซ่อน",
+      //           to: "/reportTransaction/hiddenReport",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "รายงานสรุป",
+      //       icon: "mdi-credit-card-plus-outline",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "กำไร/ขาดทุน",
+      //           to: "/profitReport/Report",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "กำไร/ขาดทุน รายบุคคล",
+      //           to: "/profitReport/ProfitByUserReport",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "สรุปโปรโมชัน",
+      //           to: "/profitReport/PromotionReport",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "จัดการค่ายเกม",
+      //       to: "/groupsetting",
+      //       icon: "mdi-history",
+      //       status: true
+      //     },
+
+      //     {
+      //       title: "ตั้งค่าโปรโมชั่น",
+      //       icon: "mdi-history",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "โปรโมชันทั่วไป",
+      //           to: "/promotion/generalPromotion",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "Cashback",
+      //           to: "/promotion/cashback",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "ตั้งค่าลิงก์รับทรัพย์",
+      //       icon: "mdi-history",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "รายงานลิงก์รับทรัพย์",
+      //           to: "/Affiliate/report",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
+      //           to: "/Affiliate/infomember",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "ตั้งค่า",
+      //           to: "/Affiliate/setting",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "ตั้งค่า Feature",
+      //       icon: "mdi-gamepad-variant-outline",
+      //       status: true,
+      //       subLinks: [
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เครดิตฟรี",
+      //           to: "/feature/creditfree",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "กงล้อนำโชค",
+      //           to: "/feature/wheel",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เปิดไพ่6ใบ",
+      //           to: "/feature/sixcard",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เปิดหีบสมบัติ",
+      //           to: "/feature/chest",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "เช็คอินรายวัน",
+      //           to: "/feature/checkindaily",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "สะสมเเต้ม",
+      //           to: "/feature/point",
+      //           status: true
+      //         },
+      //         {
+      //           icon: "mdi-view-dashboard",
+      //           text: "ของพรีเมียม",
+      //           to: "/feature/premiumn",
+      //           status: true
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       title: "ตั้งค่าระบบ",
+      //       to: "/system",
+      //       icon: "mdi-cog-outline",
+      //       status: true
+      //     },
+      //     {
+      //       title: "รายชื่อมิจฉาชีพ",
+      //       to: "/CriminalList",
+      //       icon: "mdi-gamepad-square",
+      //       status: true
+      //     },
+      //     {
+      //       title: "พนักงาน",
+      //       to: "/employee",
+      //       icon: "mdi-gamepad-square",
+      //       status: true
+      //     },
+      //     {
+      //       title: "ธนาคาร",
+      //       to: "/companyBank",
+      //       icon: "mdi-gamepad-square",
+      //       status: true
+      //     }
+      //   ]
+      // };
+      console.log(data, "data");
+      context.commit("set_login", data);
+      resolve(data);
+      // return;
     } catch (error) {
       reject(error);
     }
@@ -333,7 +333,7 @@ export function getUser(context, payload) {
           username: "superadmin2"
         }
       };
-      // let response = await this.$axios.get("apigetuser")
+      // let response = await this.$axios.get(`/api/Auth/user`)
       // });
       // resolve(response);
       resolve(mockuser);
@@ -572,4 +572,20 @@ export function Autostatus(context) {
     }
   });
 }
+
 //getautostatus
+
+//logout
+export function logout(context) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(`/api/Auth/logout`);
+      resolve(response);
+      context.commit("set_logout");
+      // resolve(response);
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

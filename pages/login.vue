@@ -40,7 +40,7 @@
           width="230px"
           rounded
           dark
-          @click="login"
+          @click="auth"
           >Log In</v-btn
         >
       </div>
@@ -65,19 +65,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions("auth", {
-      auth: "login"
-    }),
-    async login() {
+    ...mapActions("auth", ["login"]),
+    async auth() {
       try {
-        const response = await this.auth({
+        const response = await this.login({
           username: this.username,
           password: this.password,
           agentkey: this.agentkey
         });
-        console.log(response.data);
-        if (response.data.key) {
-          this.$router.push("/");
+        // console.log(response.data);
+        if (response.token) {
+          this.$router.push("/redirect");
         }
       } catch (err) {
         console.log(err);

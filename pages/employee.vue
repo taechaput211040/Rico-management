@@ -766,7 +766,7 @@ export default {
     ...mapActions("setting", ["getEmployee"]),
     editEmployee(item) {
       this.dledit = true;
-      this.editAccount = item;
+      this.editAccount = Object.assign({}, item);
     }
   }
 };
@@ -782,5 +782,4 @@ export default {
 .customlist .v-list-item__action {
   padding-right: 0px !important ;
 }
-
 </style>

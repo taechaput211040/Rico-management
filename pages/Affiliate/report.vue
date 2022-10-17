@@ -27,7 +27,6 @@
             <div class="col-12 col-md-6  col-sm-6 body_card">
               <div class="card-child card-report elevation-5">
                 ชื่อลิงก์รับทรัพย์
-                <hr class="solid" />
                 <div
                   class="d-flex pt-3"
                   style="align-items: center;justify-content: space-between;"
@@ -52,18 +51,15 @@
             <div class="col-12 col-md-3  col-sm-3 p-1 body_card">
               <div class="card-child card-report elevation-5">
                 ของสมาชิกที่มีการกด
-                <hr class="solid my-2" />
-
-                <div class="text-end font-weight-bold primary--text">
+                <div class="text-end mt-2 font-weight-bold primary--text">
                   {{ Affiliate.activeMember }}
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-3 col-sm-3 p-1 body_card">
               <div class="card-child card-report elevation-5">
-                สมาชิกใหม่ผ่านลิก์วันนี้
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold purple--text">
+                สมาชิกใหม่ผ่านลิงก์วันนี้
+                <div class="text-end mt-2 font-weight-bold purple--text">
                   {{ Affiliate.newMember }}
                 </div>
               </div>
@@ -71,55 +67,49 @@
             <div class="col-12 col-md-2 p-1 col-sm-4 body_card">
               <div class="card-child card-report text-center elevation-5">
                 สมาชิกใหม่ที่มีการฝาก
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold green--text">
+                <h3 class="text-end mt-2 font-weight-bold green--text">
                   {{ Affiliate.depositMember }}
-                </div>
+                </h3>
               </div>
             </div>
             <div class="col-12 col-md-2 p-1   col-sm-4  body_card">
               <div class="card-child card-report text-center elevation-5">
                 สมาชิกที่กดรับรายได้
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold primary--text">
+                <h3 class="text-end mt-2 font-weight-bold primary--text">
                   {{ Affiliate.recieveMember }}
-                </div>
+                </h3>
               </div>
             </div>
             <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 รายได้สมาชิกทั้งหมดของวันนี้
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold purple--text">
+                <h3 class="text-end  mt-2  font-weight-bold purple--text">
                   {{ Affiliate.incomeBalance }}
-                </div>
+                </h3>
               </div>
             </div>
             <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดฝากทั้งหมด
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold success--text">
+                <h3 class="text-end mt-2  font-weight-bold success--text">
                   {{ Affiliate.bonusDeposit }}
-                </div>
+                </h3>
               </div>
             </div>
             <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดเสียทั้งหมด
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold success--text">
+                <h3 class="text-end mt-2  font-weight-bold success--text">
                   {{ Affiliate.bonusLoss }}
-                </div>
+                </h3>
               </div>
             </div>
             <div class="col-12 col-md-2 p-1  col-sm-4  body_card">
               <div class="card-child text-center card-report elevation-5">
                 โบนัสยอดคอมมิชชั่นทั้งหมด
-                <hr class="solid my-2" />
-                <div class="text-end font-weight-bold success--text">
+                <h3 class="text-end mt-2  font-weight-bold success--text">
                   {{ Affiliate.bonusCommission }}
-                </div>
+                </h3>
               </div>
             </div>
           </div>

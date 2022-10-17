@@ -128,9 +128,8 @@
                     <div class="col-12 col-sm-6 col-md-12">
                       <div class="p-2 card-child shadow">
                         ชื่อลิงก์รับทรัพย์
-                        <hr class="solid my-2" />
                         <div
-                          class="d-flex "
+                          class="d-flex mt-2"
                           style="align-items: center;justify-content: space-between;"
                         >
                           <div
@@ -151,15 +150,18 @@
                     <div class="col-12 col-sm-3 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์วันนี้
-                        <hr class="solid my-2" />
-                        <div class="text-end">{{ Affiliate.todayClick }}</div>
+
+                        <div class="text-end  mt-2">
+                          {{ Affiliate.todayClick }}
+                        </div>
                       </div>
                     </div>
                     <div class="col-12 col-sm-3 col-md-6">
                       <div class="p-2 card-child shadow">
                         จำนวนคนเปิดลิงค์ทั้งหมด
-                        <hr class="solid my-2" />
-                        <div class="text-end">{{ Affiliate.alldayClick }}</div>
+                        <div class="text-end  mt-2">
+                          {{ Affiliate.alldayClick }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -200,8 +202,7 @@
                     <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดฝาก
-                        <hr class="solid my-2" />
-                        <div class="text-end text-success">
+                        <div class="text-end mt-2 text-success">
                           {{ config.percentDeposit }} %
                         </div>
                       </div>
@@ -209,8 +210,8 @@
                     <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นยอดเสีย
-                        <hr class="solid my-2" />
-                        <div class="text-end text-danger">
+
+                        <div class="text-end  mt-2 text-danger">
                           {{ config.percentLoss }} %
                         </div>
                       </div>
@@ -218,8 +219,8 @@
                     <div class="col-12 col-sm-4 col-md-4 ">
                       <div class="card-child shadow">
                         เปอร์เซ็นCommission
-                        <hr class="solid my-2" />
-                        <div class="text-end">
+
+                        <div class="text-end  mt-2">
                           {{ config.percentCommission }} %
                         </div>
                       </div>

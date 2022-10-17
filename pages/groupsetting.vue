@@ -80,12 +80,12 @@ export default {
     };
   },
   async fetch() {
-    this.groupcard = JSON.parse(localStorage.getItem("groups"));
     try {
       let { data: group } = await this.getGroup();
       this.grouplist = group;
       console.log(group);
     } catch (error) {}
+    this.groupcard = JSON.parse(localStorage.getItem("groups"));
   },
   computed: {
     dragOptions() {

@@ -14,20 +14,14 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
-  proxy: {
-    "/api/": {
-      // target: "http://192.168.1.123:5000",
-      // target: "http://localhost:5000",
-      target: "https://agent.bet-kub.com",
-      changeOrigin: true
-    },
-    "/static/": {
-      // target: "http://localhost:5000",
-      // target: "http://192.168.1.123:5000",
-      target: "https://agent.bet-kub.com",
-      changeOrigin: true
-    }
-  },
+  // proxy: {
+  //   "/api/": {
+  //     // target: "http://192.168.1.123:5000",
+  //     // target: "http://localhost:5000",
+  //     target: "https://agent.bet-kub.com",
+  //     changeOrigin: true
+  //   }
+  // },
   server: {
     port: 8000 // default: 3000
   },
@@ -75,6 +69,6 @@ export default {
   router: {
     mode: "history",
     // base: "/storage/dev-backoffice/"
-    base: "/storage/testRico/"
+    // base: "/storage/testRico/"
   }
 };

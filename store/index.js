@@ -13,11 +13,16 @@ import transaction from "./transaction";
 import profit from "./profit";
 import promotion from "./promotion";
 import setting from "./setting";
+import account from "./account";
+import GradientColorPicker from "vue-gradient-color-picker";
+
 Vue.use(VueSweetalert2);
 
 Vue.prototype.$moment = moment;
 
 Vue.use(ElementUI, { locale });
+
+Vue.use(GradientColorPicker);
 export default function() {
   const Store = new Vuex.Store({
     state: {
@@ -192,7 +197,8 @@ export default function() {
       promotion,
       transaction,
       profit,
-      setting
+      setting,
+      account
     }
   });
   return Store;

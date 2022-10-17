@@ -75,68 +75,78 @@
           <div class="card_config">
             <div class="sectioninput">
               <span class="px-2 text_modal">สายงาน : </span>
-              <v-text-field
-                class="col-6 col-md-4"
-                type="text"
-                hide-details="auto"
-                dense
-                v-model="dataModal.configName"
-              />
+              <div class="col-6 col-md-4">
+                <v-text-field
+                  type="text"
+                  outlined
+                  hide-details="auto"
+                  dense
+                  v-model="dataModal.configName"
+                />
+              </div>
             </div>
             <div class="sectioninput">
               <span class="px-2 text_modal">
                 bonusจากยอดฝากของเพื่อน(%) :
               </span>
-              <div>
+              <div class="col-6 col-md-4">
                 <v-text-field
                   hide-details="auto"
                   dense
                   type="number"
+                  outlined
                   v-model="dataModal.dp_bonus"
                 />
               </div>
             </div>
             <div class="sectioninput">
               <span class="px-2 ">ประเภท : </span>
-              <v-select
-                hide-details="auto"
-                dense
-                class="col-6 col-md-4"
-                :items="type_obtion"
-                v-model="dataModal.dp_bonus_type"
-              />
+              <div class="col-6 col-md-4">
+                <v-select
+                  hide-details="auto"
+                  dense
+                  outlined
+                  :items="type_obtion"
+                  v-model="dataModal.dp_bonus_type"
+                />
+              </div>
             </div>
             <div class="sectioninput">
               <span class="px-2 ">bonusจากยอดเสียของเพื่อน(%) : </span>
-              <v-text-field
-                class="col-6 col-md-4"
-                type="number"
-                hide-details="auto"
-                dense
-                v-model="dataModal.winlos_rate"
-              />
+              <div class="col-6 col-md-4">
+                <v-text-field
+                  type="number"
+                  outlined
+                  hide-details="auto"
+                  dense
+                  v-model="dataModal.winlos_rate"
+                />
+              </div>
             </div>
 
             <div class="sectioninput">
               <span class="px-2 ">bonusจากturnoverของเพื่อน(%) : </span>
-              <div>
+              <div class="col-6 col-md-4">
                 <v-text-field
                   hide-details="auto"
                   dense
                   type="number"
+                  outlined
                   v-model="dataModal.commission_rate"
                 />
               </div>
             </div>
             <div class="sectioninput px-2">
               การรับรายได้ :
-              <v-select
-                hide-details="auto"
-                dense
-                class="col-6 col-md-4"
-                :items="type_recieve"
-                v-model="dataModal.recieve_mode"
-              />
+              <div class="col-6 col-md-4">
+                <v-select
+                  hide-details="auto"
+                  dense
+                  outlined
+                  :items="type_recieve"
+                  v-model="dataModal.recieve_mode"
+                />
+              </div>
             </div>
 
             <div class="sectioninput">
@@ -246,22 +256,25 @@
           <div class="card_config">
             <div class="input_form">
               <span class="px-2 text_modal">สายงาน : </span>
-              <v-text-field
-                type="text"
-                class="col-6 col-md-4"
-                hide-details="auto"
-                dense
-                v-model="dataCreate.line"
-              />
+              <div class="col-6 col-md-4">
+                <v-text-field
+                  type="text"
+                  hide-details="auto"
+                  dense
+                  outlined
+                  v-model="dataCreate.line"
+                />
+              </div>
             </div>
             <div class="input_form">
               <span class="px-2 text_modal">
                 bonusจากยอดฝากของเพื่อน(%) :
               </span>
-              <div>
+              <div class="col-6 col-md-4">
                 <v-text-field
                   hide-details="auto"
                   dense
+                  outlined
                   type="number"
                   v-model="dataCreate.bonusFriend"
                 />
@@ -269,21 +282,24 @@
             </div>
             <div class="input_form">
               <span class="px-2 text_modal">ประเภท : </span>
-              <v-select
-                hide-details="auto"
-                dense
-                class="col-6 col-md-4"
-                :items="type_obtion"
-                v-model="dataCreate.datatype"
-              />
+              <div class="col-6 col-md-4">
+                <v-select
+                  hide-details="auto"
+                  dense
+                  outlined
+                  :items="type_obtion"
+                  v-model="dataCreate.datatype"
+                />
+              </div>
             </div>
             <div class="input_form">
               <span class="px-2 text_modal"
                 >bonusจากยอดเสียของเพื่อน(%) :
               </span>
-              <div>
+              <div class="col-6 col-md-4">
                 <v-text-field
-                  class="col-6 col-md-4"
+                  outlined
+                  dense
                   type="number"
                   hide-details="auto"
                   v-model="dataCreate.bonusloss"
@@ -295,10 +311,11 @@
               <span class="px-2 text_modal"
                 >bonusจากturnoverของเพื่อน(%) :
               </span>
-              <div>
+              <div class="col-6 col-md-4">
                 <v-text-field
                   hide-details="auto"
                   dense
+                  outlined
                   type="number"
                   v-model="dataCreate.bonusCommission"
                 />
@@ -306,13 +323,15 @@
             </div>
             <div class="input_form">
               <span class="px-2 text_modal">การรับรายได้ : </span>
-              <v-select
-                hide-details="auto"
-                dense
-                class="col-6 col-md-4"
-                :items="type_recieve"
-                v-model="dataCreate.type_recieve"
-              />
+              <div class="col-6 col-md-4">
+                <v-select
+                  hide-details="auto"
+                  outlined
+                  dense
+                  :items="type_recieve"
+                  v-model="dataCreate.type_recieve"
+                />
+              </div>
             </div>
           </div>
           <v-card-actions>
@@ -494,7 +513,7 @@ export default {
     },
     edit_setting(data) {
       console.log(data);
-      this.dataModal = data;
+      this.dataModal = Object.assign({}, data);
       this.modal_edit = true;
     },
     async editconfig(item) {

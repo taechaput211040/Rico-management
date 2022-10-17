@@ -8,7 +8,6 @@ export function setPallete(state, payload) {
             `--${key}_${k}`,
             val.value
           );
-          console.log(`--${key}_${k}`);
         }
       }
     }

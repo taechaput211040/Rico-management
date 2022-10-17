@@ -404,7 +404,7 @@ export default {
     },
     updateBank(item) {
       this.dlupdate = true;
-      this.updateitem = item;
+      this.updateitem = Object.assign({}, item);
     }
   }
 };
