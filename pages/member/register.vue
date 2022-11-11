@@ -23,7 +23,7 @@
             <v-text-field
               placeholder="กรอกนามสกุล"
               hide-details="auto"
-              v-model="formRegister.lastnameRules"
+              v-model="formRegister.lastname"
               :rules="rulesFrom.nameRules"
               dense
               outlined
@@ -37,7 +37,7 @@
             <v-text-field
               placeholder="กรอกชื่อ (ภาษาอังกฤษ)"
               hide-details="auto"
-              v-model="formRegister.engName"
+              v-model="formRegister.nameEng"
               dense
               outlined
               required
@@ -51,7 +51,7 @@
               placeholder="กรอกนามสกุล (ภาษาอังกฤษ)"
               hide-details="auto"
               dense
-              v-model="formRegister.engLastname"
+              v-model="formRegister.lastnameEng"
               outlined
               required
             ></v-text-field
@@ -61,7 +61,7 @@
               >ธนาคาร</span
             >
             <v-select
-              v-model="formRegister.bank"
+              v-model="formRegister.bankName"
               :rules="rulesFrom.bankRules"
               hide-details="auto"
               dense
@@ -73,14 +73,15 @@
             ><span class="purple--text font-weight-bold font-italic"
               >หมายเลขบัญชี / หมายเลข TRUEWALLET</span
             >
+
             <v-text-field
               placeholder="หมายเลขบัญชี / หมายเลข TRUEWALLET"
               hide-details="auto"
               dense
               type="number"
-              @keydown="e => rangeInput(e, 13, formRegister.bankNumber)"
+              @keydown="e => rangeInput(e, 13, formRegister.bankAcc)"
               :rules="rulesFrom.banknumRules"
-              v-model="formRegister.bankNumber"
+              v-model="formRegister.bankAcc"
               outlined
               required
             ></v-text-field
@@ -110,7 +111,7 @@
               hide-details="auto"
               dense
               outlined
-              v-model="formRegister.lindId"
+              v-model="formRegister.lineID"
               required
             ></v-text-field
           ></v-col>
@@ -123,7 +124,7 @@
               hide-details="auto"
               dense
               outlined
-              v-model="formRegister.recomander"
+              v-model="formRegister.recommender"
               required
             ></v-text-field
           ></v-col>
@@ -133,7 +134,7 @@
             >
             <v-select
               hide-details="auto"
-              v-model="formRegister.knowfrom"
+              v-model="formRegister.knowFrom"
               dense
               outlined
             ></v-select
@@ -174,7 +175,7 @@
               >โบนัส</span
             >
             <v-select
-              v-model="formRegister.gender"
+              v-model="formRegister.bonusid"
               hide-details="auto"
               dense
               outlined
@@ -185,24 +186,27 @@
             ><span class="purple--text font-weight-bold font-italic"
               >อนุมัติฝากออโต้</span
             >
-            <v-switch v-model="formRegister.dpauto"></v-switch>
+            <v-switch v-model="formRegister.dpAuto"></v-switch>
           </v-col>
           <v-col cols="6" sm="4" md="3"
             ><span class="purple--text font-weight-bold font-italic"
               >อนุมัติถอนออโต้</span
             >
-            <v-switch v-model="formRegister.wdauto"></v-switch
+            <v-switch v-model="formRegister.wdAuto"></v-switch
           ></v-col> </v-row
       ></v-form>
 
       <v-card-actions class="justify-center mt-3">
-        <v-btn color="success" class="btn_sty" @click="submitform">สมัครสมาชิกใหม่</v-btn>
+        <v-btn color="success" class="btn_sty" @click="submitform"
+          >สมัครสมาชิกใหม่</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-flex>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -230,34 +234,96 @@ export default {
         { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" }
       ],
       formRegister: {
-        name: "",
-        lastname: "",
-        engName: "",
-        engLastname: "",
-        bank: "SCB",
-        bankNumber: "",
+        name: null,
+        lastname: null,
+        nameEng: null,
+        lastnameEng: null,
+        gender: "male",
+        bankName: "SCB",
+        bankAcc: "",
+        bankAccRef: null,
         phone: "",
-        lindId: "",
-        recomander: "",
-        knowfrom: "",
-        remark: "",
-        birthdate: "",
-        gender: "ชาย",
-        bonus: 0,
-        dpauto: false,
-        wdauto: false
+        lineID: null,
+        recommender: null,
+        remark: null,
+        birthdate: null,
+        dpAuto: true,
+        wdAuto: true,
+        bonusid: 0,
+        knowFrom: "สมัครผ่านแอดมิน",
+        username: null,
+        password: null,
+        operator: this.$store.state.auth.user
       }
     };
   },
   methods: {
+    ...mapActions("member", ["createMember"]),
+    createUsername() {
+      this.formRegister.username =
+        this.$store.state.auth.company + this.$store.state.auth.agent 
+        this.generatepassnum() +
+        this.generatepassnum() +
+        this.generatepassnum() +
+        this.generatepassnum();
+    },
+    generatepassnum() {
+      return Math.floor(Math.random(100) * 10);
+    },
     async submitform() {
       if (this.$refs.form.validate()) {
-        // await api.post(`/api/register`, this.formRegister);
+        await this.checkbank();
+        await this.createUsername();
+        this.formRegister.birthdate = this.$moment(
+          this.formRegister.birthdate
+        ).format(`YYYY-MM-DD`);
+        this.$swal({
+          title: "ต้องการบันทึกการตั้งค่าหรือไม่ ?",
+          icon: "question",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel"
+        }).then(async result => {
+          if (result.isConfirmed) {
+            // console.log(this.formCreate)
+            await this.createMember(this.formRegister);
+            this.$swal({
+              icon: "success",
+              title: "บันทึกสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              if (result) {
+                this.$refs.form.reset();
+              }
+            });
+          }
+        });
       }
     },
     rangeInput(self, length, itemmodel) {
       if (/[0-9]/g.test(self.key) && itemmodel.length >= length) {
         self.preventDefault();
+      }
+    },
+    async checkbank() {
+      if (this.formRegister.bankName == "SCB") {
+        this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(4);
+      } else if (this.formRegister.bankName == "KBANK") {
+        this.formRegister.bankAccRef =
+          "X" + this.formRegister.bankAcc.slice(3, 9) + "X";
+      } else if (this.formRegister.bankName == "TRUEWALLET") {
+        this.formRegister.bankAccRef = this.formRegister.phone;
+      } else if (this.formRegister.bankName == "GSB") {
+        this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(6);
+      } else if (this.formRegister.bankName == "BAAC") {
+        this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(6);
+      } else {
+        this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(4);
       }
     }
   }

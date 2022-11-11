@@ -6,7 +6,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   middleware: "auth",
   async beforeMount() {
-    await this.getUser();
+    // await this.getUser();
     await this.$router.push("/");
   },
   mounted() {},

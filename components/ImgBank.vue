@@ -13,6 +13,12 @@
       class="icon-bank img-icon"
     />
     <img
+      src="~/assets/image/bank/BAY.png"
+      v-if="value == 'BAY'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+    <img
       src="~/assets/image/bank/CIMB.png"
       v-if="value == 'CIMB'"
       alt=""
@@ -117,7 +123,7 @@
     />
     <img
       src="~/assets/image/bank/RICO.png"
-      v-if="value == 'RICO'"
+      v-if="value == 'RICO' || value == 'Logo_Ricoautocash-01'"
       alt=""
       class=" img-icon icon-Logo"
     />

@@ -1,98 +1,59 @@
 <template>
-  <v-flex>
-    <v-container>
-      <h2 class="mb-2">รายการเล่นของสมาฃิก จากการฝากเงินล่าสุด</h2>
-      <v-row>
-        <v-col lg="6" sm="12" md="12" cols="12">
-          <div class=" card-child elevation-5">
-            <v-row class="d-flex align-baseline ma-auto"
-              ><v-col
-                cols="8"
-                sm="8"
-                md="8"
-                lg="6"
-                class="d-flex align-baseline"
-                ><v-text-field
-                  name="name"
-                  v-model="username"
-                  dense
-                  outlined
-                  clearable
-                  label="กรอก username เพื่อค้นหา"
-                  placeholder="เช่น xx1234567"
-                  hide-details="auto"
-                ></v-text-field> </v-col
-              ><v-col cols="4" sm="4" md="4" lg="4">
-                <v-btn color="primary" @click="searchdata()">
-                  <v-icon left dark>
-                    mdi-magnify
-                  </v-icon>
-                  ค้นหา</v-btn
-                >
-              </v-col>
-            </v-row>
-          </div>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="รายการฝากล่าสุด จำนวนเงิน"
-            :value="dp.amount"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
-          ></card-report>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="โบนัส"
-            :value="dp.bonusamount"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/bonus.png"
-          ></card-report>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="วันเวลาที่เติมเงิน"
-            :value="dp.created_at"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/time-left.png"
-          ></card-report>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="เติมโดย"
-            :value="dp.topupby"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/topupby.png"
-          ></card-report>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="ค่ายเกมที่เข้าล่าสุด"
-            :value="dp.provider_active"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/game-control.png"
-          ></card-report>
-        </v-col>
-        <v-col lg="3" sm="4" md="4" cols="12" class="pa-3">
-          <card-report
-            title="IP address ที่เข้าใช้งานล่าสุด"
-            :value="dp.ip"
-            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/placeholder.png"
-          ></card-report>
-        </v-col>
-      </v-row>
-      <v-card class="elevation-4 mt-5 rounded-lg">
-        <report-transection
-          :dbresult="stats"
-          v-if="!this.$route.query.group"
-        ></report-transection>
-        <detail-transection v-else></detail-transection>
-      </v-card>
-    </v-container>
-  </v-flex>
+  <div>
+    <!-- <loading-page v-if="isloading"></loading-page> -->
+    <loading-page v-if="isloading"></loading-page>
+    <h2 class="mb-2">รายการเล่นของสมาฃิก</h2>
+    <v-row class=" d-flex align-baseline ma-auto"
+      ><v-col cols="12" sm="3" class="d-flex  align-baseline"
+        ><v-text-field
+          name="name"
+          v-model="username"
+          dense
+          outlined
+          clearable
+          label="กรอก username เพื่อค้นหา"
+          placeholder="เช่น xx1234567"
+          hide-details="auto"
+        ></v-text-field> </v-col
+      ><v-col cols="12" sm="9" class="d-flex   align-baseline">
+        <date-filter :filter="dateFilter"></date-filter>
+      </v-col>
+    </v-row>
+    <div class="pa-3">
+      <v-btn color="primary" @click="searchdata()">
+        <v-icon left dark> mdi-magnify </v-icon>
+        ค้นหา</v-btn
+      >
+    </div>
+
+    <v-card class="elevation-4 mt-5 rounded-lg">
+      <report-transection
+        :dbresult="itemResult"
+        v-if="!this.$route.query.group"
+      ></report-transection>
+      <detail-transection :dbresult="itemResult" v-else></detail-transection>
+    </v-card>
+  </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import DateFilter from "../../components/DateFilter.vue";
+import DetailTransection from "../../components/DetailTransection.vue";
+import LoadingPage from "../../components/LoadingPage.vue";
+import ReportTransection from "../../components/ReportTransection.vue";
 export default {
+  components: { ReportTransection, DetailTransection, DateFilter, LoadingPage },
   data() {
     return {
-      username: "",
+      dateFilter: {
+        startDate: new Date(),
+        startTime: new Date(new Date().setHours(0, 0, 0, 0)),
+        endDate: new Date(),
+        endTime: new Date(new Date().setHours(23, 59, 59, 999))
+      },
+      isloading: false,
+      username: null,
       dp: {
         afcredit: "1",
         amount: "0",
@@ -144,19 +105,99 @@ export default {
           sortable: false
         }
       ],
-      stats: []
+      stats: [],
+      itemResult: []
     };
   },
+  async beforeMount() {
+    this.renderData();
+  },
+  watch: {
+    "$route.query.group"() {
+      this.renderData();
+    }
+  },
   methods: {
-    ...mapActions("member", ["getTransactionid"]),
-    async searchdata() {
-      try {
-        let response = await this.getTransactionid(this.username);
-        this.stats = response.data.stats;
-        this.dp = response.data.dp;
-      } catch (error) {
-        console.log(error);
+    ...mapActions("member", ["getTransactionid", "getTransactionMember"]),
+    searchdata() {
+      this.$router.replace(`${this.$route.path}`);
+      this.renderData();
+    },
+    getParameter() {
+      let dateFill = this.getDateFilter();
+      let parameter = {
+        username: this.username,
+        provider: undefined ? undefined : this.$route.query.group,
+        roundid: undefined,
+        starttime: dateFill.start,
+        endtime: dateFill.end
+      };
+      return parameter;
+    },
+    //getdate
+    getDateTime(date, time) {
+      let dateFormat = "YYYY-MM-DD";
+      let timeFormat = "HH:mm:ss";
+      return this.$moment(
+        `${this.$moment(date).format(dateFormat)} ${this.$moment(time).format(
+          timeFormat
+        )}`,
+        "YYYY-MM-DD HH:mm:ss"
+      )
+        .utc()
+        .format(`${dateFormat} ${timeFormat}`);
+    },
+    //getdate
+    getDateFilter() {
+      let start = undefined;
+      let end = undefined;
+      if (this.dateFilter.startDate) {
+        if (this.dateFilter.startTime) {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            this.dateFilter.startTime
+          );
+        } else {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            new Date().setHours(0, 0, 0, 0)
+          );
+        }
       }
+      if (this.dateFilter.endDate) {
+        if (this.dateFilter.endTime) {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            this.dateFilter.endTime
+          );
+        } else {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            new Date().setHours(23, 59, 59, 999)
+          );
+        }
+      }
+      return {
+        end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z"
+      };
+    },
+    //getdate
+    async renderData() {
+      this.isloading = true;
+      if (this.username) {
+        try {
+          let params = this.getParameter();
+          let response = await this.getTransactionMember(params);
+          this.itemResult = response.data.filter(x => x.bet != 0);
+          console.log(this.itemResult, "res");
+          // this.itemResult = response.data.stats;
+          // this.dp = response.data.dp;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      this.isloading = false;
     }
   }
 };

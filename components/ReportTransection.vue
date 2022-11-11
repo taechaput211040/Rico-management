@@ -1,11 +1,37 @@
 <template>
   <v-card class="elevation-3">
-    <v-data-table :headers="header" hide-default-footer :items="dbresult">
+    <v-data-table
+      disable-pagination
+      :headers="header"
+      hide-default-footer
+      :items="dbresult"
+    >
       <template #[`item.grouped`]="{item}"
         ><div class="font-weight-bold text-group" @click="showmore(item)">
           {{ item.grouped }}
-          <v-btn class="mx-2" dark color="black" x-small>คลิกเพื่อดูรายละเอียด</v-btn>
+          <v-btn class="mx-2" dark color="black" x-small
+            >คลิกเพื่อดูรายละเอียด</v-btn
+          >
         </div>
+      </template>
+
+      <template #[`item.payout`]="{item}"
+        ><span>{{ item.payout.toFixed(2) }}</span>
+      </template>
+      <template #[`item.turnover`]="{item}"
+        ><span>{{ item.turnover.toFixed(2) }}</span>
+      </template>
+      <template #[`item.bet`]="{item}"
+        ><span>{{ item.bet.toFixed(2) }}</span>
+      </template>
+      <template #[`item.winlose`]="{item}"
+        ><span
+          :class="[
+            { 'error--text': item.winlose < 0 },
+            { 'success--text': item.winlose > 0 }
+          ]"
+          >{{ item.winlose.toFixed(2) }}</span
+        >
       </template>
     </v-data-table></v-card
   >

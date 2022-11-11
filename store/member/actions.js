@@ -2,64 +2,52 @@
 export async function getReportmember({ commit }, fillter = {}) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = {
-        data: [
-          {
-            bankAcc: "09772778704",
-            bankAccRef: "X2778704",
-            bankName: "WAVEPAY",
-            birthdate: null,
-            bonusid: 3,
-            created_at: "2022-01-20 12:47:38",
-            dpAuto: true,
-            gender: "male",
-            knowFrom: "สมัครจากหน้าเว็บ",
-            lastname: "aayt",
-            lastnameEng: null,
-            lineID: "ไม่มีข้อมูล",
-            name: "aayt",
-            nameEng: null,
-            operator: "RICO",
-            phone: "09778772704",
-            recommender: null,
-            remark: null,
-            status: true,
-            updated_at: "2022-01-20 12:51:23",
-            username: "BE9778772704",
-            wdAuto: false
-          },
-          {
-            bankAcc: "09687983424",
-            bankAccRef: "X7983424",
-            bankName: "KBZpay",
-            birthdate: null,
-            bonusid: 3,
-            created_at: "2022-01-21 02:08:52",
-            dpAuto: true,
-            gender: "male",
-            knowFrom: "สมัครจากหน้าเว็บ",
-            lastname: "win",
-            lastnameEng: null,
-            lineID: "ไม่มีข้อมูล",
-            name: "aye",
-            nameEng: null,
-            operator: "RICO",
-            phone: "09459897545",
-            recommender: "aye win",
-            remark: null,
-            status: true,
-            updated_at: "2022-01-21 06:53:46",
-            username: "BE9459897545",
-            wdAuto: false
+      let { data } = await this.$axios.get(
+        `${
+          process.env.ALL_MEMBER
+        }/api/Member/Agent/SubScribe/${localStorage.getItem(
+          "company"
+        )}/${localStorage.getItem("agent")}`,
+        {
+          params: {
+            ...fillter
           }
-        ]
-      };
-      // let response = await api.get("/api/progress/", {
-      //   params: {
-      //     ...fillter
-      //   }
-      // });
-      resolve(response);
+        }
+      );
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export async function changePasswordMember({ commit }, payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.patch(
+        `${process.env.ALL_MEMBER}/api/Member/Agent/Password`,
+        {
+          id: payload.id,
+          password: payload.password
+        }
+      );
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export async function changeStatus({ commit }, payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.patch(
+        `${process.env.ALL_MEMBER}/api/Member/Agent/Status`,
+        {
+          id: payload.id,
+          stats: payload.stats
+        }
+      );
+      resolve(data);
     } catch (error) {
       reject(error);
     }
@@ -268,3 +256,68 @@ export async function getManualEditCredit({ commit, fillter }) {
   });
 }
 //เเก้ไขเครดิต/รายการผิดพลาด
+
+export function getTransactionMember(context, params) {
+  // console.log(context.state)
+  // return
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
+        { params }
+      );
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function createMember({}, body) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_MEMBER}/api/Member/Agent`,
+        body
+      );
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function getMemberDeposit(context, username) {
+  // console.log(context.state)
+  // return
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_SUPPORT}/api/Website/Rico/Member/DepositV2?username=${username}`
+      );
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function getMemberWithdraw(context, username) {
+  // console.log(context.state)
+  // return
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_SUPPORT}/api/Website/Rico/Member/WithdrawV2?username=${username}`
+      );
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

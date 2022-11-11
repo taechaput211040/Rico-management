@@ -1,11 +1,10 @@
 //login//
 export function login(context, { username, password, agentkey }) {
   return new Promise(async (resolve, reject) => {
-    console.log(process.env,'env')
+    console.log(process.env.VUE_APP_PATH_MICROSERVICE, "env");
     try {
-      // console.log(process.env.VUE_APP_PATH_MICROSERVICE,'process.env.ALL_RICO_USER')
       let { data } = await this.$axios.post(
-        `https://all-rico-user-ehhif4jpyq-as.a.run.app/api/Auth/Login
+        `${process.env.ALL_RICO_USER}/api/Auth/Login
       `,
         {
           username: username,
@@ -302,7 +301,8 @@ export function login(context, { username, password, agentkey }) {
       //   ]
       // };
       console.log(data, "data");
-      context.commit("set_login", data);
+      await context.commit("set_login", data);
+      // await context.dispatch("getUser");
       resolve(data);
       // return;
     } catch (error) {
@@ -315,30 +315,13 @@ export function login(context, { username, password, agentkey }) {
 export function getUser(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {
-      const mockuser = {
-        data: {
-          created_at: "2021-03-19T20:24:12.000000Z",
-          creditperday: 0,
-          email: null,
-          email_verified_at: null,
-          id: 36,
-          is_admin: 1,
-          limittopup: 0,
-          name: "Super Admin2",
-          operator: "RICOSYSTEM",
-          phone: "0942427528",
-          s_admin: 1,
-          status: 1,
-          updated_at: "2021-03-19T20:24:12.000000Z",
-          username: "superadmin2"
-        }
-      };
-      // let response = await this.$axios.get(`/api/Auth/user`)
-      // });
-      // resolve(response);
-      resolve(mockuser);
-      console.log(mockuser);
-      return;
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_RICO_USER}/api/Auth/user`
+      );
+      console.log("getdispatch");
+      context.commit("set_user", data);
+      resolve(data);
+      // return;
     } catch (error) {
       reject(error);
     }
@@ -579,7 +562,9 @@ export function Autostatus(context) {
 export function logout(context) {
   return new Promise(async (resolve, reject) => {
     try {
-      let response = await this.$axios.post(`/api/Auth/logout`);
+      let response = await this.$axios.post(
+        `${process.env.ALL_RICO_USER}/api/Auth/logout`
+      );
       resolve(response);
       context.commit("set_logout");
       // resolve(response);

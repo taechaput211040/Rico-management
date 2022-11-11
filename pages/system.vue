@@ -69,7 +69,7 @@
             dense
             hide-details="auto"
             placeholder="BEGXT"
-            v-model="datasetting.turnNobonus"
+            v-model.number="datasetting.turnNobonus"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -78,7 +78,7 @@
             outlined
             dense
             hide-details="auto"
-            v-model="datasetting.wdlimitTime"
+            v-model.number="datasetting.least_wd_credits"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -96,7 +96,7 @@
             :outlined="datasetting.wdautoAll"
             dense
             hide-details="auto"
-            v-model="datasetting.wd_auto_amount"
+            v-model.number="datasetting.wd_auto_amount"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -114,7 +114,7 @@
             :outlined="datasetting.wdlimit"
             dense
             hide-details="auto"
-            v-model="datasetting.wdlimitcredit"
+            v-model.number="datasetting.wdlimitcredit"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -130,7 +130,7 @@
             :disabled="datasetting.wdwhenoutstanding == false"
             :filled="datasetting.wdwhenoutstanding == false"
             :outlined="datasetting.wdwhenoutstanding"
-            v-model="datasetting.least_wd_credits"
+            v-model.number="datasetting.wdlimitTime"
             dense
             hide-details="auto"
           ></v-text-field>
@@ -138,7 +138,9 @@
       </v-row>
       <v-divider class="my-4"></v-divider>
       <v-card-actions>
-        <v-btn color="primary" class="mx-auto btn_sty">บันทึก</v-btn>
+        <v-btn color="primary" @click="update" class="mx-auto btn_sty"
+          >บันทึก</v-btn
+        >
       </v-card-actions>
     </v-card>
     <h3 class="my-4">ตั้งค่าข้อความต้อนรับ</h3>
@@ -220,7 +222,9 @@
           </v-col>
         </v-row>
         <v-card-actions>
-          <v-btn color="primary" class="mx-auto btn_sty">บันทึก</v-btn>
+          <v-btn color="primary" @click="createduser" class="mx-auto btn_sty"
+            >บันทึก</v-btn
+          >
         </v-card-actions>
       </div>
     </v-card>
@@ -237,14 +241,51 @@ export default {
     };
   },
   async fetch() {
-    try {
-      let response = await this.getSetting();
-      this.datasetting = response.data.datasetting;
-      this.message = response.data.message;
-    } catch (error) {}
+    let response = await this.getSetting();
+    this.datasetting = response;
+    // this.message = response.message;
   },
   methods: {
-    ...mapActions("setting", ["getSetting"])
+    ...mapActions("setting", ["getSetting", "createUser", "updateSetting"]),
+    async update() {
+      try {
+        this.$swal({
+          title: "ต้องการบันทึกการตั้งค่าหรือไม่ ?",
+          icon: "question",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel"
+        }).then(async result => {
+          if (result.isConfirmed) {
+            // console.log(this.formCreate)
+            await this.updateSetting(this.datasetting);
+            this.$swal({
+              icon: "success",
+              title: "บันทึกสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async createduser() {
+      try {
+        await this.datasetting(this.datasetting);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 };
 </script>

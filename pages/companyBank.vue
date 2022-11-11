@@ -391,8 +391,8 @@ export default {
   },
   async fetch() {
     try {
-      let response = await this.getCompanybank();
-      this.dataBank = response.data;
+      let { data } = await this.getCompanybank();
+      this.dataBank = data;
     } catch (error) {
       console.log(error);
     }

@@ -1,6 +1,7 @@
 <template>
   <v-flex>
     <h3>ตั้งค่าเช็คอินรายวัน</h3>
+    <v-btn color="success" @click="getConfig">text</v-btn>
     <v-card class=" pa-4 rounded-lg ">
       <h4 class="mb-3 text-center">
         รูปภาพพื้นหลัง ขนาดไม่เกิน 500 KB 650x650 px(PNG หรือ JPG เท่านั้น)
@@ -725,49 +726,42 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    try {
-      var res = this.CheckinConfig;
-      //    await axios.get(`/api/Checkin/Config`);
-      //  console.log(response.data)
-
-      let response = res;
-      this.image.url = response.image;
-
-      console.log(response);
-      this.Renderdate = response.checkin.config.map(e => {
-        if (!e.bonus) {
-          e.bonus_credit = 0;
-          e.min_deposit = 0;
-        }
-        if (e.bonus == "1") e.bonus = true;
-        if (e.bonus == "0") e.bonus = false;
-        return e;
-      });
-      this.checkinActive = response.checkin.active;
-      this.selectedate = response.checkin.type;
-      this.turn = response.turn;
-      this.datedata = this.Renderdate;
-      this.getSelectedItem();
-      this.loading = false;
-    } catch (error) {
-      this.feature_status = false;
-      // this.showErrorAlert(error.response.message);
-      this.loading = false;
-      this.Renderdate = [];
-    }
   },
-  //   async fetch() {
-  //     try {
-  //       var res = await axios.get(`/api/Checkin/Config`);
-  //       console.log(res.data);
-  //     } catch (error) {
-  //       this.showErrorAlert(error.response.message);
-  //       this.Renderdate = [];
-  //       this.loading = false;
-  //     }
-  //     return;
-  //   },
+  async fetch() {
+    await this.getConfig();
+  },
   methods: {
+    async getConfig() {
+      try {
+        let res = await this.$axios.get(`${process.env.ALL_CHECKIN}/api/config`);
+        //  console.log(response.data)
+
+        let response = res;
+        this.image.url = response.image;
+
+        this.Renderdate = response.checkin.config.map(e => {
+          if (!e.bonus) {
+            e.bonus_credit = 0;
+            e.min_deposit = 0;
+          }
+          if (e.bonus == "1") e.bonus = true;
+          if (e.bonus == "0") e.bonus = false;
+          return e;
+        });
+        this.checkinActive = response.checkin.active;
+        this.selectedate = response.checkin.type;
+        this.turn = response.turn;
+        this.datedata = this.Renderdate;
+        this.getSelectedItem();
+        this.loading = false;
+      } catch (error) {
+        console.log(error);
+        this.feature_status = false;
+        // this.showErrorAlert(error.response.message);
+        this.loading = false;
+        this.Renderdate = [];
+      }
+    },
     useDefaultImage() {
       this.changepicIsClick = false;
       let im = this.image.default_img;

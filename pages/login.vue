@@ -1,5 +1,6 @@
 <template>
   <div class="bg-page">
+    <loading-page v-if="isLoading"></loading-page>
     <form class="login font-weight-bold">
       <img
         src="https://image.smart-ai-api.com/public/Rico-main-resite/mockup_rico.png"
@@ -50,10 +51,13 @@
 
 <script>
 import { mapActions } from "vuex";
+import LoadingPage from "../components/LoadingPage.vue";
 export default {
+  components: { LoadingPage },
   layout: "blank",
   data() {
     return {
+      isLoading: false,
       username: "",
       password: "",
       agentkey: ""
@@ -67,6 +71,7 @@ export default {
   methods: {
     ...mapActions("auth", ["login"]),
     async auth() {
+      this.isLoading = true;
       try {
         const response = await this.login({
           username: this.username,
@@ -80,6 +85,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
+      this.isLoading = false;
     }
   }
 };

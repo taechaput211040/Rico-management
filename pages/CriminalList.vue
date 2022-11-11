@@ -162,8 +162,8 @@ export default {
     };
   },
   async fetch() {
-    let response = await this.getCriminallist();
-    this.criminalList = response.data;
+    let { data } = await this.getCriminallist();
+    this.criminalList = data.data;
   },
   methods: {
     ...mapActions("setting", ["getCriminallist"])

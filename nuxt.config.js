@@ -30,7 +30,7 @@ export default {
   css: ["@/assets/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios"],
+  plugins: ["~/plugins/axios", "~/plugins/formatter"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -42,7 +42,12 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios", "nuxt-element-ui", "@nuxtjs/dayjs"],
+  modules: [
+    "@nuxtjs/axios",
+    "nuxt-element-ui",
+    "@nuxtjs/dayjs",
+    "vue-sweetalert2/nuxt"
+  ],
   dayjs: {
     locales: ["en", "ja"],
     defaultLocale: "en",
@@ -67,8 +72,24 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
   router: {
-    mode: "history",
+    mode: "history"
     // base: "/storage/dev-backoffice/"
     // base: "/storage/testRico/"
+  },
+  env: {
+    ALL_RICO_USER: process.env.ALL_RICO_USER,
+    MICROSERVICE_KEY: process.env.MICROSERVICE_KEY,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    ALL_SETTING: process.env.ALL_SETTING,
+    AFF_MEMBER: process.env.AFF_MEMBER,
+    ALL_DEPOSIT: process.env.ALL_DEPOSIT,
+    REAL_TIME_REPORT_URL_SEAMLESS: process.env.REAL_TIME_REPORT_URL_SEAMLESS,
+    ALL_MEMBER: process.env.ALL_MEMBER,
+    ALL_SUPPORT: process.env.ALL_SUPPORT,
+    AFF_SETTING: process.env.AFF_SETTING,
+    AGENT_DOMAIN: process.env.AGENT_DOMAIN,
+    ALL_CHECKIN: process.env.ALL_CHECKIN,
+    ALL_COMPANY_BANK: process.env.ALL_COMPANY_BANK,
+    ALL_CRIMINAL: process.env.ALL_CRIMINAL
   }
 };

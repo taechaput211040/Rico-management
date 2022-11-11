@@ -103,11 +103,58 @@ export default {
     searchinput: {
       type: Boolean,
       default: true
-    }
+    },
+    keyword: ""
   },
   methods: {
+    getDateTime(date, time) {
+      let dateFormat = "YYYY-MM-DD";
+      let timeFormat = "HH:mm:ss";
+      return this.$moment(
+        `${this.$moment(date).format(dateFormat)} ${this.$moment(time).format(
+          timeFormat
+        )}`,
+        "YYYY-MM-DD HH:mm:ss"
+      )
+        .utc()
+        .format(`${dateFormat} ${timeFormat}`);
+    },
+    getFilterParameter() {
+      let start = undefined;
+      let end = undefined;
+      if (this.filter.startDate) {
+        if (this.filter.startTime) {
+          start = this.getDateTime(
+            this.filter.startDate,
+            this.filter.startTime
+          );
+        } else {
+          start = this.getDateTime(
+            this.filter.startDate,
+            new Date().setHours(0, 0, 0, 0)
+          );
+        }
+      }
+      if (this.filter.endDate) {
+        if (this.filter.endTime) {
+          end = this.getDateTime(this.filter.endDate, this.filter.endTime);
+        } else {
+          end = this.getDateTime(
+            this.filter.endDate,
+            new Date().setHours(23, 59, 59, 999)
+          );
+        }
+      }
+      return {
+        startDate: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        endDate: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        search: this.filter.inputfilter
+      };
+    },
     search() {
-      this.$emit("search");
+      let response = this.getFilterParameter();
+
+      this.$emit("search", response);
     },
     toyesterday() {
       this.$emit("yesterday");

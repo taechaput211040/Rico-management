@@ -25,7 +25,7 @@
     "vue-gpickr": "^1.0.0",
     "vue-gradient-color-picker": "^0.1.2",
     "vue-moment": "^4.1.0",
-    "vue-sweetalert2": "^5.0.2",
+    "vue-sweetalert2": "^5.0.5",
     "vuedraggable": "^2.24.3",
     "vuelidate": "^0.7.7",
     "vuetify": "2.6.2"

@@ -1,33 +1,45 @@
 <template>
   <v-flex>
+    <loading-page v-if="isLoading"></loading-page>
     <v-container>
       <v-row>
         <h2 class="mb-2">รายการสมาชิก</h2>
+
         <search-filter
           :filter="dateFilter"
-          @search="searchdata()"
+          @search="getData()"
+          :searchinput="false"
         ></search-filter>
       </v-row>
       <v-row>
         <v-card class="elevation-4 mt-5 rounded-lg pb-5" width="100%">
           <div class="ma-5 font-weight-bold">
             จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
-            {{ dateFilter.startDate }} ถึงวันที่
-            {{ dateFilter.endDate }} จำนวนทั้งหมด {{ itemSearch.length }} คน
+            {{ getthaidate(dateFilter.startDate) }} ถึงวันที่
+            {{ getthaidate(dateFilter.endDate) }} จำนวนทั้งหมด
+            {{ itemSearch.meta ? itemSearch.meta.itemCount : 0 }} คน
           </div>
 
           <div class="tabledata">
+            <!-- {{ options }} -->
             <v-data-table
               :headers="columnReport"
-              :items="itemSearch"
-              hide-default-footer
+              :items="itemSearch.data"
+              :options.sync="options"
+              :footer-props="{
+                showFirstLastPage: true,
+                'items-per-page-text': ''
+              }"
+              :server-items-length="
+                itemSearch.meta ? itemSearch.meta.itemCount : 0
+              "
             >
               <template #[`item.bankAcc`]="{item}">
-                <div class="row py-2 detailbank justify-center">
-                  <div class="ma-auto">
+                <div class="row px-6 detailbank justify-center">
+                  <div class="ma-auto col-3 pa-0">
                     <img-bank :value="item.bankName"></img-bank>
                   </div>
-                  <div class="font-weight-bold">
+                  <div class="font-weight-bold  col-9 pa-0">
                     <span class="primary--text ">{{ item.bankName }}</span
                     ><br />
                     {{ item.bankAcc }}
@@ -35,11 +47,9 @@
                 </div>
               </template>
               <template #[`item.no`]="{index}">
-                <span class="font-weight-bold">
-                  {{ index + 1 }}
-                </span>
+                {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
               </template>
-              <template #[`item.created_at`]="{item}">
+              <!-- <template #[`item.created_at`]="{item}">
                 <span>
                   {{ getthaidate(item.created_at) }}
                 </span>
@@ -48,35 +58,35 @@
                 <span>
                   {{ getthaidate(item.updated_at) }}
                 </span>
-              </template>
+              </template> -->
               <template #[`item.name`]="{item}">
                 <span> {{ item.name }} {{ item.lastname }} </span>
               </template>
-              <template #[`item.log`]>
-                <div class="d-md-flex justify-end">
+              <template #[`item.log`]="{item}">
+                <div class="">
                   <v-btn
                     class="mx-1"
                     color="success"
                     dark
                     small
-                    @click.stop="dpdialog = true"
+                    @click.stop="CheckDeposit(item.username)"
                     >ฝาก</v-btn
                   ><v-btn
                     class="mx-1"
                     color="error"
                     dark
                     small
-                    @click.stop="wddialog = true"
+                    @click.stop="CheckWithdraw(item.username)"
                     >ถอน</v-btn
                   >
                 </div>
               </template>
               <template #[`item.actions`]="{item}">
-                <div class="d-md-flex">
+                <div class="d-sm-flex justify-center">
                   <v-tooltip bottom color="primary">
                     <template v-slot:activator="{ on, attrs }"
                       ><v-btn
-                        @click="changpass"
+                        @click="openchangePass(item)"
                         v-bind="attrs"
                         v-on="on"
                         color="primary mx-1"
@@ -111,6 +121,7 @@
                         x-small
                         dark
                         fab
+                        @click="handleLockUser(item)"
                         ><v-icon>mdi-lock</v-icon></v-btn
                       ></template
                     >
@@ -122,52 +133,58 @@
           </div>
         </v-card>
       </v-row>
-      <v-dialog v-model="dpdialog" max-width="1200px">
-        <v-card class="pa-5">
-          <v-card-text>
-            <h3>รายการฝากล่าสุด 50 รายการ</h3>
-          </v-card-text>
-          <v-card class="table-data">
-            <v-data-table
-              :headers="headerDeposit"
-              hide-default-footer
-            ></v-data-table>
-          </v-card>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="red darken-1 mt-2"
-              dark
-              small
-              @click="dpdialog = false"
-            >
-              ปิด
-            </v-btn>
-          </v-card-actions>
+      <v-dialog
+        v-model="dlDeposit"
+        :overlay="false"
+        transition="dialog-transition"
+      >
+        <v-card class="pa-3">
+          <h3 class="pa-3">
+            รายการฝากเงินล่าสุด : {{ items_deposit.length }} รายการ
+          </h3>
+          <v-data-table
+            :options.sync="options_deposit"
+            :headers="headers_deposit"
+            :items="items_deposit"
+            pagination.sync="pagination"
+          >
+            <template #[`item.no`]="{index}">
+              <span class="font-weight-bold">{{
+                options_deposit.itemsPerPage * (options_deposit.page - 1) +
+                  (index + 1)
+              }}</span>
+            </template>
+            <template #[`item.companyBank`]="{item}"
+              ><img-bank :value="item.companyBank"></img-bank
+            ></template>
+          </v-data-table>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="wddialog" max-width="1200px">
-        <v-card class="pa-5">
-          <v-card-text>
-            <h3>รายการถอนล่าสุด 50 รายการ</h3>
-          </v-card-text>
-          <v-card class="table-data">
-            <v-data-table
-              :headers="headerWithdraw"
-              hide-default-footer
-            ></v-data-table>
-          </v-card>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="red darken-1 mt-2"
-              dark
-              small
-              @click="wddialog = false"
-            >
-              ปิด
-            </v-btn>
-          </v-card-actions>
+      <v-dialog
+        v-model="dlWithdraw"
+        :overlay="false"
+        transition="dialog-transition"
+      >
+        <v-card class="pa-3">
+          <h3 class="pa-3">
+            รายการถอนเงินล่าสุด : {{ items_withdraw.length }} รายการ
+          </h3>
+          <v-data-table
+            :options.sync="options_withdraw"
+            :headers="headers_withdraw"
+            :items="items_withdraw"
+            pagination.sync="pagination"
+          >
+            <template #[`item.no`]="{index}">
+              <span class="font-weight-bold">{{
+                options_withdraw.itemsPerPage * (options_withdraw.page - 1) +
+                  (index + 1)
+              }}</span>
+            </template>
+            <template #[`item.companyBank`]="{item}"
+              ><img-bank :value="item.companyBank"></img-bank
+            ></template>
+          </v-data-table>
         </v-card>
       </v-dialog>
       <v-dialog v-model="updateMember" max-width="800px">
@@ -277,19 +294,47 @@
         </v-card>
       </v-dialog>
     </v-container>
+    <v-dialog
+      v-model="changpassdl"
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-card class="pa-3">
+        <v-card-title class="justify-center" primary-title>
+          เปลี่ยนรหัสผ่าน
+        </v-card-title>
+        <v-form ref="changepass">
+          <v-text-field
+            v-model="newPass.password"
+            dense
+            outlined
+            hide-details="auto"
+          ></v-text-field>
+        </v-form>
+        <v-card-actions class="justify-center">
+          <v-btn color="success" @click="handlesubmitChangePass()"
+            >เปลี่ยนรหัสผ่าน</v-btn
+          ><v-btn color="error" @click="closeChangepass()">ปิด</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-flex>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ImgBank from "../../components/ImgBank.vue";
+import LoadingPage from "../../components/LoadingPage.vue";
 export default {
-  components: { ImgBank },
+  components: { ImgBank, LoadingPage },
   data() {
     return {
+      options: {},
+      isLoading: false,
       updateForm: {},
       dpdialog: false,
       updateMember: false,
+      changpassdl: false,
       wddialog: false,
       dateFilter: {
         inputfilter: "",
@@ -316,13 +361,13 @@ export default {
           text: "ชื่อ-นามสกุล",
           value: "name",
           align: "center",
-          sortable: false,
-          class: "col-1"
+          sortable: false
         },
         {
           text: "username",
           value: "username",
           align: "center",
+          width: "100px",
           sortable: false
         },
         {
@@ -337,19 +382,7 @@ export default {
           align: "center",
           sortable: false
         },
-        {
-          text: "วันที่สมัคร",
-          value: "created_at",
-          align: "center",
-          sortable: false
-        },
 
-        {
-          text: "วันที่แก้ไขข้อมูลล่าสุด",
-          value: "updated_at",
-          align: "center",
-          sortable: false
-        },
         {
           text: "ผู้แก้ไขล่าสุด",
           value: "operator",
@@ -360,179 +393,167 @@ export default {
           text: "ประวัติการฝาก/ถอน",
           value: "log",
           align: "center",
-          sortable: false,
-          class: "col-1"
+          sortable: false
         },
 
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
-          sortable: false,
-          class: "col-1"
-        }
-      ],
-      headerWithdraw: [
-        {
-          text: "ลำดับ",
-          value: "no",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "ธนาคารลูกค้า",
-          value: "bankname",
-          align: "center",
-          sortable: false
-        },
-
-        {
-          text: "USERNAME",
-          value: "username",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "ประเภท",
-          value: "type",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "ยอดโอน",
-          value: "amount",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เวลากดถอน",
-          value: "no",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เวลาโอนสำเร็จ",
-          value: "timesuccess",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "สถานะ",
-          value: "status",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "กดถอนโดย",
-          value: "withdrawby",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "หมายเหตุ",
-          value: "remark",
-          align: "center",
           sortable: false
         }
       ],
-      headerDeposit: [
-        {
-          text: "ลำดับ",
-          value: "no",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "ธนาคารเว็ป",
-          value: "bankname",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เวลาใน SMS",
-          value: "smsTransection",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เวลาเติม",
-          value: "timeTransection",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "USERNAME",
-          value: "username",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "จำนวนเงิน",
-          value: "amount",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "จำนวนโบนัส",
-          value: "Bonus",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เครดิตก่อนเเติม",
-          value: "bfcredit",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เครดิตหลังเเติม",
-          value: "afcredit",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "เติมโดย",
-          value: "topupby",
-          align: "center",
-          sortable: false
-        },
-        {
-          text: "หมายเหตุ",
-          value: "remark",
-          align: "center",
-          sortable: false
-        }
+      options_deposit: {},
+      itemSearch: [],
+      headers_deposit: [
+        { text: "ลำดับ", align: "center", value: "no" },
+        { text: "ธนาคารเว็ป", align: "center", value: "companyBank" },
+        { text: "เวลาใน SMS", align: "center", value: "smsdatetime" },
+        { text: "เวลาเติม", align: "center", value: "created_at" },
+        { text: "username", align: "center", value: "member_id" },
+        { text: "จำนวนเงิน", align: "center", value: "amount" },
+        { text: "จำนวนโบนัส", align: "center", value: "bonusamount" },
+        { text: "เครดิตก่อนเติม", align: "center", value: "bfcredit" },
+        { text: "เครดิตหลังเติม", align: "center", value: "afcredit" },
+        { text: "เติมโดย", align: "center", value: "topupby" },
+        { text: "หมายเหตุ", align: "center", value: "remark" }
       ],
-      itemSearch: []
+      options_withdraw: {},
+      headers_withdraw: [
+        { text: "ลำดับ", align: "center", value: "no" },
+        { text: "ธนาคารลูกค้า", align: "center", value: "bankName" },
+        { text: "username", align: "center", value: "username" },
+        { text: "ประเภท", align: "center", value: "type" },
+        { text: "ยอดโอน", align: "center", value: "amount" },
+        { text: "เวลากดถอน", align: "center", value: "requsettime" },
+        { text: "เวลาโอนสำเร็จ", align: "center", value: "transferTime" },
+        { text: "สถานะ", align: "center", value: "status" },
+        { text: "กดถอนโดย", align: "center", value: "operator" },
+        { text: "หมายเหตุ", align: "center", value: "remark" }
+      ],
+      items_deposit: [],
+      items_withdraw: [],
+      dlDeposit: false,
+      dlWithdraw: false,
+      newPass: {
+        id: "",
+        password: ""
+      }
     };
+  },
+  watch: {
+    options: {
+      async handler() {
+        await this.getData();
+      }
+    }
   },
   async fetch() {
     this.bank = this.$store.state.bank;
-    try {
-      let resrponse = await this.getReportmember(this.dateFilter);
-      this.itemSearch = resrponse.data;
-    } catch (error) {}
   },
   methods: {
     handleUpdateMember(item) {
       this.updateForm = Object.assign({}, item);
       this.updateMember = true;
     },
-    ...mapActions("member", ["getReportmember", "getReportmemberbyid"]),
+    ...mapActions("member", [
+      "getReportmember",
+      "getReportmemberbyid",
+      "getMemberDeposit",
+      "getMemberWithdraw",
+      "changePasswordMember"
+    ]),
     getthaidate(timethai) {
-      const time = this.$moment(timethai)
-        .add(7, "hours")
-        .format("YYYY-MM-DD เวลา HH:mm:ss");
+      const time = this.$moment(timethai).format("YYYY-MM-DD เวลา HH:mm:ss");
+
       return time;
     },
-    async searchdata() {
+    getDateTime(date, time) {
+      let dateFormat = "YYYY-MM-DD";
+      let timeFormat = "HH:mm:ss";
+      return this.$moment(
+        `${this.$moment(date).format(dateFormat)} ${this.$moment(time).format(
+          timeFormat
+        )}`,
+        "YYYY-MM-DD HH:mm:ss"
+      )
+        .utc()
+        .format(`${dateFormat} ${timeFormat}`);
+    },
+    getDateFilter() {
+      let start = undefined;
+      let end = undefined;
+      if (this.dateFilter.startDate) {
+        if (this.dateFilter.startTime) {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            this.dateFilter.startTime
+          );
+        } else {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            new Date().setHours(0, 0, 0, 0)
+          );
+        }
+      }
+      if (this.dateFilter.endDate) {
+        if (this.dateFilter.endTime) {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            this.dateFilter.endTime
+          );
+        } else {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            new Date().setHours(23, 59, 59, 999)
+          );
+        }
+      }
+      return {
+        end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z"
+      };
+    },
+    getParameter() {
+      let dateFill = this.getDateFilter();
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+        start: dateFill.start,
+        end: dateFill.end
+      };
+      return parameter;
+    },
+    async getData() {
+      this.isLoading = true;
+      let params = this.getParameter();
       try {
-        console.log(this.dateFilter);
-        const data = await this.getReportmemberbyid(this.dateFilter);
-        this.itemSearch = data.data;
+        console.log(params);
+        const data = await this.getReportmember(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
       } catch (error) {
         console.log(error);
+        this.isLoading = false;
       }
+      this.isLoading = false;
+    },
+    async CheckDeposit(username) {
+      this.isLoading = true;
+      let { data } = await this.getMemberDeposit(username);
+      console.log(data);
+      this.items_deposit = data.info;
+      this.isLoading = false;
+      this.dlDeposit = true;
+    },
+    async CheckWithdraw(username) {
+      this.isLoading = true;
+      let { data } = await this.getMemberWithdraw(username);
+      console.log(data);
+      this.items_withdraw = data.info;
+      this.isLoading = false;
+
+      this.dlWithdraw = true;
     },
     yesterday() {
       console.log("yesterday");
@@ -540,8 +561,86 @@ export default {
     today() {
       console.log("today");
     },
-    changpass() {
-      console.log(this.changpass);
+    openchangePass(item) {
+      this.newPass.id = item.id;
+      this.changpassdl = true;
+    },
+    async handleLockUser(item) {
+      const payload = {
+        id: item.id,
+        status: false
+      };
+      try {
+        this.$swal({
+          title: `แน่ใจหรือว่าไม่ต้องการ Lock User : ${item.username} นี้ ?`,
+          icon: "question",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel"
+        }).then(async result => {
+          if (result.isConfirmed) {
+            await this.changeStatus(payload);
+            this.$swal({
+              icon: "success",
+              title: "Lock เรียบร้อย",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              if (result) {
+                this.changpassdl = false;
+                await this.getData();
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async handlesubmitChangePass() {
+      try {
+        this.$swal({
+          title: "ต้องการเปลี่ยนรหัสผ่านหรือไม่ ?",
+          icon: "question",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel"
+        }).then(async result => {
+          if (result.isConfirmed) {
+            let body = {
+              id: this.newPass.id,
+              password: this.newPass.password
+            };
+            console.log(body, "body");
+            await this.changePasswordMember(body);
+            this.$swal({
+              icon: "success",
+              title: "เปลี่ยนรหัสผ่านสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              if (result) {
+                this.changpassdl = false;
+                await this.getData();
+              }
+            });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    closeChangepass() {
+      this.$refs.changepass.reset();
+      this.changpassdl = false;
     }
   }
 };

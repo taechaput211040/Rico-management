@@ -693,6 +693,118 @@ button:hover {
 .card-show-section {
   box-shadow: 0px 4px 14px rgb(0 0 0 / 14%);
 }
-.v-list--nav.v-list--dense .v-list-item:not(:last-child):not(:only-child){
+.v-list--nav.v-list--dense .v-list-item:not(:last-child):not(:only-child) {
   margin-bottom: 0px !important;
+}
+
+.text-input {
+  color: wheat;
+}
+.card-show {
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  font-size: 18px;
+  box-shadow: 0px 5px 8px 0px rgb(179 176 176 / 75%);
+}
+.title_header {
+  text-align: center;
+  font-weight: bold;
+}
+
+.copy-link {
+  .copy_icon {
+    height: 25px;
+  }
+  cursor: pointer;
+}
+.card_config {
+  padding: 10px;
+  input,
+  select {
+    padding: 0;
+    margin: 0px 0px;
+    border: none;
+    text-align: center;
+    border-radius: 0;
+    width: 120px;
+  }
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    /* border-color: #80bdff; */
+    text-align: center;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(255 255 255 / 25%);
+  }
+}
+.section_search {
+  .date-select {
+    font-weight: bold;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(
+      to bottom right,
+      #111111 0%,
+      #343a40 100%
+    ) !important;
+    padding: 15px;
+    color: white;
+  }
+}
+#edit-config___BV_modal_header_.modal-header {
+  background: linear-gradient(
+    to bottom right,
+    #111111 0%,
+    #002952 100%
+  ) !important;
+  color: rgb(255, 255, 255);
+}
+.input_form {
+  display: flex;
+  align-items: baseline;
+  padding: 5px;
+}
+.card_affiliate {
+  border-radius: 10px;
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+
+  .text_card {
+    font-weight: bold;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(
+      to bottom right,
+      #111111 0%,
+      #343a40 100%
+    ) !important;
+    padding: 15px;
+    color: white;
+  }
+  .text_card_child {
+    font-weight: bold;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(
+      to bottom right,
+      rgba(126, 186, 133, 0.81) 0%,
+      #0e5c20 100%
+    ) !important;
+    padding: 15px;
+    color: white;
+  }
+  .body_card {
+    .card-child {
+      border-radius: 10px;
+      background: white;
+      .text-end {
+        font-weight: bold;
+        font-size: large;
+      }
+    }
+  }
 }

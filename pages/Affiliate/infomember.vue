@@ -1,361 +1,510 @@
 <template>
   <div class="bgpage">
-    <div>
-      <h2>ข้อมูลสมาชิกลิงก์รับทรัพย์</h2>
-      <div class="section_search">
-        <div class="px-2 d-flex align-baseline">
-          <v-text-field
-            v-model="username"
-            outlined
-            dense
-            solo
-            hide-details="auto"
-            placeholder="กรอก Username"
-            class="col-8 col-md-3 pa-2"
-          /><v-btn color="primary" @click="search">ค้นหา</v-btn>
-        </div>
-      </div>
-      <div class="show_information">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <!-- useritemcard -->
-            <div class="col-12 col-12">
-              <div class="card_affiliate">
-                <div class="text_card">Username : {{ userinfo.username }}</div>
-                <div class="body_card pa-3">
-                  <div class="row">
-                    <div class="col-12 col-sm-6 col-md-6">
-                      <card-report
-                        title="รายได้ปัจจุบันที่ยังไม่ได้รับ"
-                        :value="userinfo.notrecieveIncome"
-                        iconSrc="https://image.smart-ai-api.com/public/Rico-main-resite/profit.png"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 ">
-                      <card-report
-                        title="รายสะสมได้ที่รับไปเเล้ว"
-                        :value="userinfo.recieveIncome"
-                        iconSrc="https://image.smart-ai-api.com/public/Rico-main-resite/hand.png"
-                      ></card-report>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- useritemcard -->
-
-            <!-- downlinecard -->
-            <div class="col-12 col-md-12 ">
-              <div class="card_affiliate">
-                <div class="text_card_child">Downline</div>
-                <div class="body_card pa-3">
-                  <div class="row">
-                    <div class="col-12  col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="จำนวน downline วันนี้"
-                        :value="Downline.today"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="จำนวน downline ทั้งหมด"
-                        :value="Downline.allday"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="ยอดฝาก downline วันนี้"
-                        titleclass="success--text"
-                        :value="Downline.deposit"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="ยอดฝาก downline สะสม"
-                        :value="Downline.depositbalance"
-                        titleclass="success--text"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="ยอดเสีย downline วันนี้"
-                        :value="`-${Downline.losstoday}`"
-                        titleclass="error--text"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="ยอดเสีย downline สะสม"
-                        titleclass="error--text"
-                        :value="`-${Downline.lossbalance}`"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        title="ยอดคอมมิชชั่น downline วันนี้"
-                        titleclass="primary--text"
-                        :value="Downline.commissiontoday"
-                      ></card-report>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-6 p-1">
-                      <card-report
-                        :iconshow="false"
-                        titleclass="primary--text"
-                        title="ยอดคอมมิชชั่น downline สะสม"
-                        :value="Downline.commissionbalance"
-                      ></card-report>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- downlinecard -->
+    <loading-page v-if="isLoading"></loading-page>
+    <!-- v-if="feature_status" -->
+    <div v-if="feature_status">
+      <div>
+        <div class="container">
+          <div class="title_header pt-2 pt-md-5 pb-md-4">
+            <h2>ข้อมูลสมาชิก affiliate</h2>
           </div>
-          <div class="col-12 col-md-6">
-            <!-- linkcard -->
-            <div class="col-12 col-md-12 ">
-              <div class="card_affiliate">
-                <div class="text_card">ลิงก์รับทรัพย์</div>
-                <div class="body_card pa-2">
-                  <div class="row">
-                    <div class="col-12 col-sm-6 col-md-12">
-                      <div class="p-2 card-child shadow">
-                        ชื่อลิงก์รับทรัพย์
-                        <div
-                          class="d-flex mt-2"
-                          style="align-items: center;justify-content: space-between;"
-                        >
-                          <div
-                            class="copy-link d-flex font-weight-bold"
-                            @click="copylink(Affiliate.link)"
-                          >
-                            <img
-                              src="https://image.smart-ai-api.com/public/thongtest/coppybtn.png"
-                              alt=""
-                              class="copy_icon"
-                            />
-                            คัดลอก
+          <div class="section_search">
+            <div class="d-flex pb-3" style="align-items: baseline">
+              <div class="px-2 d-flex align-baseline">
+                <v-text-field
+                  v-model.trim="username"
+                  outlined
+                  dense
+                  solo
+                  hide-details="auto"
+                  placeholder="กรอก Username"
+                /><v-btn class="mx-2" color="primary" @click="search"
+                  >ค้นหา</v-btn
+                >
+              </div>
+              <div class="px-2">upline:</div>
+              <div class="px-2" v-if="userinfo.parent_username">
+                <v-text-field
+                  v-model="userinfo.parent_username"
+                  placeholder="กรอก Username"
+                  style="width: 220px"
+                  disabled
+                  outlined
+                ></v-text-field>
+              </div>
+              <div v-else>
+                ไม่มี
+              </div>
+            </div>
+          </div>
+          <div class="show_information">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <!-- useritemcard -->
+                <div class="col-12 col-12 p-2">
+                  <div class="card_affiliate">
+                    <div class="text_card">
+                      Username : {{ userinfo.username }}
+                    </div>
+                    <div class="body_card pa-3 pa-md-3">
+                      <div class="row pa-2">
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายได้วันนี้
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.profit_today.toFixed(2) }}
+                            </div>
                           </div>
-                          <div class="text-end">{{ Affiliate.link }}</div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-6">
-                      <div class="p-2 card-child shadow">
-                        จำนวนคนเปิดลิงค์วันนี้
-
-                        <div class="text-end  mt-2">
-                          {{ Affiliate.todayClick }}
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายได้ปัจจุบันที่ยังไม่ได้รับ
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.profit_balance.toFixed(2) }}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-3 col-md-6">
-                      <div class="p-2 card-child shadow">
-                        จำนวนคนเปิดลิงค์ทั้งหมด
-                        <div class="text-end  mt-2">
-                          {{ Affiliate.alldayClick }}
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายสะสมได้ที่รับไปเเล้ว
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.recieved_profit.toFixed(2) }}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- useritemcard -->
+
+                <!-- downlinecard -->
+                <div class="col-12 col-md-12 pa-2">
+                  <div class="card_affiliate">
+                    <div class="text_card_child">Downline</div>
+                    <div class="body_card pa-3 pa-md-3">
+                      <div class="row pa-2">
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวน downline ทั้งหมด
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.current_downline }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวน downline ติดตัว ทั้งหมด
+                            <hr class="solid my-2" />
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                              "
+                            >
+                              <div class="text-end  font-weight-bold">
+                                {{ userinfo.current_downline_lv1 }}
+                              </div>
+                              <div>
+                                <v-btn
+                                  icon
+                                  v-if="userinfo.current_downline > 0"
+                                  color="primary"
+                                  small
+                                  style="color: white"
+                                  @click="getDownline(1, 0)"
+                                >
+                                  <v-icon>mdi-magnify</v-icon></v-btn
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวน ชั้น ของสายลึกที่มีทั้งหมด
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.current_level }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            ยอดฝาก downline วันนี้
+                            <hr class="solid my-2" />
+                            <div
+                              class="text-end success--text font-weight-bold"
+                            >
+                              {{ userinfo.profit_today }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            ยอดฝาก downline สะสม
+                            <hr class="solid my-2" />
+                            <div
+                              class="text-end success--text font-weight-bold"
+                            >
+                              {{ userinfo.all_deposit_downline.toFixed(2) }}
+                              <span style="color: black"
+                                ><b
+                                  ><small
+                                    >(ฝากแรก
+                                    {{
+                                      userinfo.all_deposit_downline_firsttime.toFixed(
+                                        2
+                                      )
+                                    }})</small
+                                  ></b
+                                ></span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายได้ ยอดฝาก downline สะสม
+                            <hr class="solid my-2" />
+                            <div
+                              class="text-end success--text font-weight-bold"
+                            >
+                              {{ userinfo.all_bonus.aff_deposit.toFixed(2) }}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายได้ ยอดเสีย downline สะสม
+                            <hr class="solid my-2" />
+                            <div class="text-end error--text font-weight-bold">
+                              {{ userinfo.all_bonus.aff_winlose.toFixed(2) }}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            รายได้ ยอดคอมมิชชั่น downline สะสม
+                            <hr class="solid my-2" />
+                            <div class="text-end  font-weight-bold">
+                              {{ userinfo.all_bonus.aff_commission.toFixed(2) }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- downlinecard -->
               </div>
-            </div>
-            <!-- linkcard -->
-            <!-- configcard -->
-            <div class="col-12 col-md-12 p-2">
-              <div class="card_affiliate">
-                <div
-                  class="d-flex text_card"
-                  style="justify-content: space-between; align-items: baseline"
+              <div class="col-12 col-sm-6">
+                <!-- linkcard -->
+                <div class="col-12 col-md-12 pa-2">
+                  <div class="card_affiliate">
+                    <div class="text_card">Link Affiliate</div>
+                    <div class="body_card pa-3 pa-md-3">
+                      <div class="row pa-2">
+                        <div class="col-12 col-md-12 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            Link Affiliate
+                            <hr class="solid my-2" />
+                            <div
+                              class="d-flex"
+                              style="justify-content: space-between"
+                            >
+                              <div
+                                class="copy-link d-flex align-baselined"
+                                @click="copylink(userinfo.aff_link)"
+                              >
+                                <img
+                                  src="https://image.smart-ai-api.com/public/thongtest/coppybtn.png"
+                                  alt=""
+                                  class="copy_icon"
+                                />
+                                copy
+                              </div>
+                              <div class="text-end font-weight-bold">
+                                {{ userinfo.aff_link }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวนคนเปิดลิงก์ทั้งหมด
+                            <hr class="solid my-2" />
+                            <div class="text-end font-weight-bold">
+                              {{ userinfo.link_click }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวน downline ทั้งหมด ทุกขั้น
+                            <hr class="solid my-2" />
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                              "
+                            >
+                              <div class="text-end font-weight-bold primary--text">
+                                {{ userinfo.current_downline }}
+                              </div>
+                              <div>
+                                <!-- v-if="userinfo.current_downline > 0" -->
+
+                                <v-btn
+                                  v-if="userinfo.current_downline > 0"
+                                  icon
+                                  color="primary"
+                                  style="color: white"
+                                  small
+                                  @click="getDownline(1, 1)"
+                                >
+                                  <v-icon>mdi-magnify</v-icon></v-btn
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            จำนวนคนสมัคร และมีการฝาก
+                            <hr class="solid my-2" />
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                              "
+                            >
+                              <div class="text-end primary--text font-weight-bold">
+                                {{ userinfo.player || 0 }}
+                              </div>
+                              <div>
+                                <!-- v-if="userinfo.current_downline > 0" -->
+                                <v-btn
+                                  icon
+                                  v-if="userinfo.current_downline > 0"
+                                  color="primary"
+                                  small
+                                  style="color: white"
+                                  @click="getDownlineDeposit(1, 1)"
+                                >
+                                  <v-icon>mdi-magnify</v-icon></v-btn
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- linkcard -->
+                <!-- configcard -->
+                <div class="col-12 col-md-12 pa-2">
+                  <div class="card_affiliate">
+                    <div
+                      class="d-flex text_card"
+                      style="
+                        justify-content: space-between;
+                        align-items: baseline;
+                      "
+                    >
+                      <span>โหมดการตั้งค่าสายงานปัจจุบัน (Config)</span>
+                    </div>
+
+                    <div class="body_card pa-3 p-md-3">
+                      <div class="row pa-2">
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            ชื่อ : {{ config.name }}
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            การรับรายได้ : {{ config.recieve_text }}
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            เปอร์เซ็นยอดฝาก
+                            <hr class="solid my-2" />
+                            <div
+                              class="text-end success--text font-weight-bold"
+                            >
+                              {{ config.percentDeposit }} %
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            เปอร์เซ็นยอดเสีย
+                            <hr class="solid my-2" />
+                            <div class="text-end error--text font-weight-bold">
+                              {{ config.percentLoss }} %
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-4 pa-1">
+                          <div class="pa-2 elevation-2 rounded-lg pa-2">
+                            เปอร์เซ็นCommission
+                            <hr class="solid my-2" />
+                            <div class="text-end">
+                              {{ config.percentCommission }} %
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- configcard -->
+                <v-dialog
+                  v-model="memberShow"
+                  centered
+                  max-width="800px"
+                  hide-header-close
+                  hide-footer
                 >
-                  <span>โหมดการตั้งค่าปัจจุบัน (Config)</span
-                  ><v-btn
-                    color="white"
-                    small
-                    class="font-weight-bold"
-                    @click="setConfig()"
+                  <v-card class="pa-3">
+                    <h2 class="text-center">
+                      รายชื่อสมาชิกผ่านลิ้งแนะนำเพื่อน
+                    </h2>
+                    <v-data-table
+                      class="elevation-2"
+                      :headers="aff_member_field"
+                      :items="aff_member"
+                      :items-per-page="perPage"
+                      :page="currentPage"
+                    >
+                    </v-data-table>
+                  </v-card>
+                </v-dialog>
+                <v-dialog v-model="depositShow" centered max-width="800px">
+                  <v-card class="pa-3">
+                    <h2 class="text-center">
+                      รายชื่อคนสมัคร และมีการฝากแนะนำเพื่อน
+                    </h2>
+                    <v-data-table
+                      class="elevation-2"
+                      :items-per-page="rows_deposit"
+                      :page="currentPage"
+                      :headers="aff_deposit_field"
+                      :items="aff_deposit_member"
+                    >
+                      <template #[`amount`]="{item}">
+                        {{ item.amount.toFixed() }}</template
+                      >
+                    </v-data-table></v-card
                   >
-                    <v-icon small left>mdi-pencil</v-icon>แก้ไขConfig
-                  </v-btn>
-                </div>
-
-                <div class="body_card pa-2">
-                  <div class="row">
-                    <div class="col-12 col-sm-6 col-md-6 ">
-                      <div class="card-child shadow">
-                        ชื่อ : {{ config.name }}
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 ">
-                      <div class="card-child shadow">
-                        การรับรายได้ : {{ config.recieve_text }}
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 ">
-                      <div class="card-child shadow">
-                        เปอร์เซ็นยอดฝาก
-                        <div class="text-end mt-2 text-success">
-                          {{ config.percentDeposit }} %
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 ">
-                      <div class="card-child shadow">
-                        เปอร์เซ็นยอดเสีย
-
-                        <div class="text-end  mt-2 text-danger">
-                          {{ config.percentLoss }} %
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-sm-4 col-md-4 ">
-                      <div class="card-child shadow">
-                        เปอร์เซ็นCommission
-
-                        <div class="text-end  mt-2">
-                          {{ config.percentCommission }} %
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </v-dialog>
               </div>
             </div>
-            <!-- configcard -->
-
-            <v-dialog v-model="editDialog" max-width="800px" height="auto">
-              <v-card class="pa-5">
-                <v-card-title>
-                  <h3 class="font-weight-bold mx-auto primary--text">
-                    แก้ไข Config
-                  </h3>
-                </v-card-title>
-                <form>
-                  <div class="card_config">
-                    <div class="input_form">
-                      <span class="px-2">ชื่อ : </span>
-                      <div>{{ config.name }}</div>
-                    </div>
-
-                    <div class="input_form">
-                      <span c class="px-2">เปอร์เซ็นยอดฝาก(%) : </span>
-                      <div class="col-md-6 col-4 pa-0">
-                        <v-text-field
-                          dense
-                          outlined
-                          type="number"
-                          hide-details="auto"
-                          v-model="config.percentDeposit"
-                        />
-                      </div>
-                    </div>
-                    <div class="input_form">
-                      <span class="px-2">เปอร์เซ็นยอดเสีย(%) :</span>
-                      <div class="col-md-6 col-4 pa-0">
-                        <v-text-field
-                          dense
-                          outlined
-                          type="number"
-                          hide-details="auto"
-                          v-model="config.percentLoss"
-                        />
-                      </div>
-                    </div>
-                    <div class="input_form">
-                      <span class="px-2">เปอร์เซ็นCommission(%) : </span>
-                      <div class="col-md-6 col-4 pa-0">
-                        <v-text-field
-                          dense
-                          outlined
-                          type="number"
-                          hide-details="auto"
-                          v-model="config.percentCommission"
-                        />
-                      </div>
-                    </div>
-                    <div class="input_form">
-                      <span class="px-2">การรับรายได้ : </span>
-                      <div class="col-md-6 col-4 pa-0">
-                        <v-select
-                          dense
-                          outlined
-                          v-model="config.recieve"
-                          placeholder="เลือกการรับรายได้"
-                          :items="options"
-                          hide-details="auto"
-                        ></v-select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-center">
-                    <v-btn color="primary" @click="editconfig">
-                      เเก้ไข
-                    </v-btn>
-                    <v-btn color="error" @click="editDialog = false">
-                      ยกเลิก
-                    </v-btn>
-                  </div>
-                </form>
-              </v-card>
-            </v-dialog>
           </div>
-          <v-card class="ma-4 rounded-lg" width="100%">
-            <v-row class="pa-3 ">
-              <div class="col-12 col-sm-2">
-                จากวันที่
-                <el-date-picker
-                  arrow-control
-                  placeholder="วันที่"
-                  style="width: 100%"
-                  dense
-                />
-              </div>
-              <div class="col-12 col-sm-2">
-                ถึงวันที่
-                <el-date-picker
-                  arrow-control
-                  dense
-                  placeholder="วันที่"
-                  style="width: 100%"
-                />
-              </div>
-              <div class="col-12 col-sm-3">
-                <br class="d-none d-sm-block" />
-                <v-btn color="primary" @click="search"
-                  ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
-                >
-              </div>
-            </v-row>
-            <v-card class=" mt-2">
-              <v-data-table
-                :headers="headerReport"
-                :items="dataRender"
-                hide-default-footer
-              >
-                <template #[`item.no`]="{index}">
-                  <span class="font-weight-bold">
-                    {{ index + 1 }}
-                  </span>
-                </template>
-              </v-data-table>
-            </v-card></v-card
-          >
         </div>
       </div>
+      <div class=" mt-4">
+        <v-row class="pa-3 ">
+          <div class="col-12 col-sm-2">
+            จากวันที่
+            <el-date-picker
+              placeholder="วันที่"
+              style="width: 100%"
+              v-model.trim="startdate"
+            />
+          </div>
+          <div class="col-12 col-sm-2">
+            ถึงวันที่
+            <el-date-picker
+              v-model.trim="enddate"
+              placeholder="วันที่"
+              style="width: 100%"
+            />
+          </div>
+          <div class="col-12 col-sm-3">
+            <br class="d-none d-sm-block" />
+            <v-btn color="primary" @click="searchByDate()"
+              ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
+            >
+          </div>
+        </v-row>
+      </div>
+
+      <h2 class="mt-4">รายการฝาก downline ของสมาชิก {{ this.username }}</h2>
+      <div>
+        <v-data-table
+          class="elevation-2"
+          :headers="header_downline"
+          :items="dataRender"
+          disable-pagination
+          hide-default-footer
+          ><template #[`item.no`]="{index}">
+            {{ index + 1 }}
+          </template>
+          <template #[`item.cal_dp_status`]="{item}">
+            <v-chip color="success" small v-if="item.cal_dp_status"
+              >success</v-chip
+            >
+            <v-chip color="error" small v-else>failed</v-chip>
+          </template>
+        </v-data-table>
+      </div>
+
+      <h2>
+        รายการโบนัสยอดเสีย และ โบนัส Commission downline ของสมาชิก
+        {{ this.username }}
+      </h2>
+      <div>
+        <v-data-table
+          class="elevation-2"
+          :headers="header_commissions"
+          :items="dataWinloseCommission"
+          disable-pagination
+          hide-default-footer
+          ><template #[`item.no`]="{index}">
+            {{ index + 1 }}
+          </template>
+          <template #[`item.type`]="{item}">
+            <v-chip color="purple white--text" small v-if="item.type == 0"
+              >โบนัส ยอดฝาก</v-chip
+            >
+            <v-chip color="primary" small v-else-if="item.type == 1"
+              >โบนัส ยอดเสีย
+            </v-chip>
+            <v-chip color="error" small v-else-if="item.type == 2"
+              >โบนัส commission
+            </v-chip>
+          </template>
+
+          <template></template>
+        </v-data-table>
+      </div>
+    </div>
+    <div v-else>
+      <label class="custom-control-label"
+        >สถานะ FEATURE นี้ ของ AGENT
+        {{ $store.state.auth.company ? $store.state.auth.company : "" }}
+        ยังไม่เปิดใช้งาน .. ติดต่อ Up-line หรือผู้ดูแลระบบ เพื่อทำการเปิดใช้งาน
+        Feature นี้</label
+      >
     </div>
   </div>
 </template>
 
 <script>
+import LoadingPage from "../../components/LoadingPage.vue";
 export default {
+  components: { LoadingPage },
   watch: {
     startdate(newValue, Oldvalue) {
       if (newValue) {
@@ -370,132 +519,301 @@ export default {
   },
   data() {
     return {
-      dataRender: [],
-      headerReport: [
+      isLoading: false,
+      // dataRender,
+      header_downline: [
         {
-          text: "รายการที่",
+          text: "ลำดับ",
           value: "no",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold ",
+          width: "50px"
         },
+        {
+          text: "username downline",
+          value: "self_username",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "ยอดฝาก",
+          value: "amount",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+
+        {
+          text: "สถานะการคำนวน",
+          value: "cal_dp_status",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "วันที่ฝาก",
+          value: "start_cal_time",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "ครั้งที่ฝาก",
+          value: "dp_count",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "เวลาที่คำนวนโบนัสสำเร็จ",
+          value: "end_cal_time",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        }
+      ],
+      header_commissions: [
+        {
+          text: "ลำดับ",
+          value: "no",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold ",
+          width: "50px"
+        },
+        {
+          text: "username downline",
+          value: "child_username",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "โบนัสที่ได้",
+          value: "aff_bonus",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "รูปแบบโบนัส",
+          value: "type",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "turnover",
+          value: "turnover",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "คำนวนประจำวันที่",
+          value: "date",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "กำไรของเว็บ",
+          value: "web_profit",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "รับรายได้",
+          value: "recieved",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        }
+      ],
+      loading: false,
+      feature_status: false,
+      options: ["รายวัน"],
+      username: null,
+      hash: "membertest",
+      aff_member: [],
+      userinfo: {
+        username: "",
+        aff_link: "",
+        link_click: 0,
+        current_downline: 0,
+        current_downline_lv1: 0,
+        current_level: 0,
+        recieved_profit: 0,
+        profit_today: 0,
+        profit_balance: 0,
+        all_bonus: {
+          aff_deposit: 0,
+          aff_winlose: 0,
+          aff_commission: 0
+        },
+
+        all_deposit_downline: 0,
+        all_deposit_downline_firsttime: 0
+      },
+      memberShow: false,
+      depositShow: false,
+      config: {
+        name: "Config name",
+        percentDeposit: 0,
+        percentLoss: 0,
+        percentCommission: 0,
+        recieve: 0,
+        recieve_text: "รายวัน"
+      },
+      dataRender: [],
+
+      dataWinloseCommission: [],
+      startdate: new Date().toLocaleString("en-CA").slice(0, 10),
+      enddate: new Date().toLocaleString("en-CA").slice(0, 10),
+
+      table_load: false,
+      currentPage: 1,
+      rows: 0,
+      perPage: 20,
+
+      aff_member_field: [
         {
           text: "username",
           value: "username",
           align: "center",
           sortable: false,
-          class: "font-weight-bold",
-          cellClass: "font-weight-bold"
+          class: "font-weight-bold "
         },
         {
-          text: "ยอดฝาก",
-          value: "deposit",
+          text: "เวลาฝากครั้งแรก",
+          value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold",
-          cellClass: "success--text font-weight-bold"
+          class: "font-weight-bold "
         },
         {
-          text: "ยอดเสีย",
-          value: "loss",
+          text: "จำนวนเพื่อนที่สมัครต่อ",
+          value: "current_downline",
           align: "center",
           sortable: false,
-          class: "font-weight-bold",
-          cellClass: "error--text font-weight-bold"
-        },
-        {
-          text: "โบนัสยอดฝาก",
-          value: "bonusDeposit",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold"
-        },
-        {
-          text: "โบนัสยอดเสีย",
-          value: "bonusLoss",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold"
-        },
-        {
-          text: "โบนัสค่าCommission",
-          value: "bonusCommission",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold",
-          cellClass: "primary--text font-weight-bold"
-        },
-        {
-          text: "สายงาน",
-          value: "line",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold "
         }
       ],
-      editDialog: false,
-      options: ["รายวัน", "รายสัปดาห์", "รายเดือน"],
-      username: "",
-      hash: "membertest",
-      userinfo: {
-        username: "RC422111",
-        recieveIncome: 100,
-        notrecieveIncome: 200
-      },
-      Downline: {
-        today: 100,
-        allday: 7200,
-        deposit: 200,
-        depositbalance: 16000,
-        losstoday: 150,
-        lossbalance: 300,
-        commissiontoday: 1000,
-        commissionbalance: 1000
-      },
-      Affiliate: {
-        link: "linklinklinklinklinklink",
-        todayClick: 5,
-        alldayClick: 30
-      },
-      config: {
-        name: "Config name",
-        percentDeposit: 5,
-        percentLoss: 6,
-        percentCommission: 20,
-        recieve: 1,
-        recieve_text: "รายวัน"
-      },
-      dataRender: [
+      rows_deposit: 0,
+      aff_deposit_member: [],
+      aff_deposit_field: [
         {
-          username: "RC04332",
-          deposit: 3000,
-          loss: 2000,
-          bonusDeposit: 400,
-          bonusLoss: 200,
-          bonusCommission: 3000,
-          line: "A"
+          text: "username",
+          value: "self_username",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
         },
         {
-          username: "RC04471",
-          deposit: 3000,
-          loss: 2000,
-          bonusDeposit: 400,
-          bonusLoss: 200,
-          bonusCommission: 3000,
-          line: "B"
+          text: "เวลาฝากครั้งแรก",
+          value: "created_at",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
+        },
+        {
+          text: "ยอดฝากแรก",
+          value: "amount",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold "
         }
-      ],
-      startdate: "",
-      enddate: ""
+        // A virtual column made up from two fields
+      ]
     };
   },
-  mounted: async function() {
-    await this.getddl();
+  async mounted() {
+    // await this.getddl();
+    await this.getFeatureStatus();
   },
+
   methods: {
-    setConfig() {
-      this.editDialog = true;
-      this.getSetting();
+    async changepage_deposit(page) {
+      this.getDownlineDeposit(page);
+    },
+    async changpage(page) {
+      this.getDownline(page);
+    },
+    async getDownline(page, all) {
+      console.log(page);
+      try {
+        this.loading = true;
+        this.table_load = true;
+        let res = await this.$axios.get(
+          `${
+            process.env.AFF_MEMBER
+          }/api/Aff/Downline/${this.userinfo.username.toLowerCase()}?page=${page}&take=${
+            this.perPage
+          }&all=${all}`
+        );
+
+        this.aff_member = res.data.data;
+        this.aff_member = this.aff_member.map(x => {
+          x.created_at = new Date(x.created_at).toLocaleString("th-TH");
+          return x;
+        });
+        this.rows = res.data.meta.itemCount;
+        this.table_load = false;
+        this.memberShow = true;
+
+        // console.log(this.selector_option,"aafter")
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+      }
+    },
+    async getDownlineDeposit(page) {
+      try {
+        this.loading = true;
+        this.table_load = true;
+        let res = await this.$axios.get(
+          `${
+            process.env.ALL_DEPOSIT
+          }/api/Aff/Report/Deposit/${this.userinfo.username.toLowerCase()}?page=${page}&take=${
+            this.perPage
+          }`
+        );
+
+        this.aff_deposit_member = res.data.data;
+        this.aff_deposit_member = this.aff_deposit_member.map(x => {
+          x.created_at = new Date(x.created_at).toLocaleString("th-TH");
+          return x;
+        });
+        this.rows_deposit = res.data.meta.itemCount;
+        this.table_load = false;
+        this.depositShow = true;
+        // this.$bvModal.show("depositShow");
+        // console.log(this.selector_option,"aafter")
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+      }
+    },
+    async getFeatureStatus() {
+      this.isLoading = true;
+      try {
+        this.loading = true;
+        let res = await this.$axios.get(
+          `${process.env.AFF_SETTING}/api/MainSetting/${this.$store.state.auth.hash}`
+        );
+
+        this.feature_status = res.data.feature_status;
+
+        // console.log(this.selector_option,"aafter")
+        this.loading = false;
+      } catch (error) {
+        this.feature_status = false;
+        this.loading = false;
+      }
+      this.isLoading = false;
     },
     copylink(link) {
       var textArea = document.createElement("textarea");
@@ -513,66 +831,77 @@ export default {
     },
     async search() {
       this.getSetting();
-      this.getData();
-      this.getDataTable(this.startdate, this.enddate, this.hash, this.username);
+      // this.getData();
+      // this.getDataTable(this.startdate, this.enddate, this.hash, this.username);
     },
-    async editconfig() {
-      await this.$axios
-        .patch(
-          `http://localhost:3001/api/aff/admin/setting/${this.config.id}`,
-          {
-            dp_bonus: parseInt(this.config.percentDeposit),
-            commission_rate: parseInt(this.config.percentCommission),
-            winlos_rate: parseInt(this.config.percentLoss),
-            recieve_mode: parseInt(this.config.recieve)
-          }
-        )
-        .then(res => {
-          this.config.name = res.data.configName;
-          this.config.percentDeposit = res.data.dp_bonus;
-          this.config.percentLoss = res.data.winlos_rate;
-          this.config.percentCommission = res.data.commission_rate;
-          this.config.recieve_text = res.data.recieve_mode_text;
-          this.config.recieve = res.data.recieve_mode;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+
+    async searchByDate() {
+      this.getDataTable(this.startdate, this.enddate, this.username);
+      this.getDataWinlose(this.startdate, this.enddate, this.username);
     },
-    async getddl() {
-      fetch(`http://localhost:3001/api/aff/admin/setting/recieve_mode`)
-        .then(stream => stream.json())
-        .then(data => (this.options = data))
-        .catch(error => console.error(error));
-    },
+
     async getSetting() {
-      const { settings } = await this.$axios.$get(
-        `http://localhost:3001/api/aff/member/setting/membertest/${this.username}`
-      );
-      console.log(settings);
-      this.config.id = settings.Id;
-      this.config.name = settings.configName;
-      this.config.percentDeposit = settings.dp_bonus;
-      this.config.percentLoss = settings.winlos_rate;
-      this.config.percentCommission = settings.commission_rate;
-      this.config.recieve_text = settings.recieve_mode_text;
-      this.config.recieve = settings.recieve_mode;
+      if (this.username) {
+        this.isLoading = true;
+        try {
+          const { data: settings } = await this.$axios.get(
+            `${
+              process.env.AFF_SETTING
+            }/api/Aff/Member/Service/${this.username.toLowerCase()}/${
+              this.$store.state.auth.agent
+            }`
+          );
+          const { data: memberinfo } = await this.$axios.get(
+            `${
+              process.env.AFF_MEMBER
+            }/api/Aff/Member/Data/${this.username.toLowerCase()}`
+          );
+          const { data: deposit } = await this.$axios.get(
+            `${
+              process.env.ALL_DEPOSIT
+            }/api/Aff/Report/Summary/${this.username.toLowerCase()}`
+          );
+
+          this.config.id = settings.setting_id;
+          this.config.name = settings.config_name;
+          this.config.percentDeposit = settings.dp_bonus;
+          this.config.percentLoss = settings.winlose_bonus;
+          this.config.percentCommission = settings.commision_bonus;
+          this.config.recieve_text = "รายวัน";
+          this.config.recieve = settings.recieve_mode;
+
+          this.username = memberinfo.username;
+          this.userinfo = { ...this.userinfo, ...memberinfo, ...deposit };
+
+          this.userinfo.aff_link = memberinfo.aff_link + "?id=" + memberinfo.id;
+
+          this.isLoading = false;
+          this.dataRender = deposit.aff_deposit_list;
+          this.dataRender = this.dataRender.map(x => {
+            x.start_cal_time = new Date(x.start_cal_time).toLocaleString(
+              "th-TH"
+            );
+            x.end_cal_time = new Date(x.end_cal_time).toLocaleString("th-TH");
+            return x;
+          });
+          this.dataWinloseCommission = deposit.aff_bonus_list;
+          this.isLoading = false;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+      }
     },
-    async getData() {
-      const {
-        username,
-        Affiliate,
-        Downline,
-        userinfo
-      } = await this.$axios.$get(
-        `http://localhost:3000/api/dashboard/member/${this.hash}/${this.username}`
-      );
-      this.username = username;
-      this.Affiliate = Affiliate;
-      this.Downline = Downline;
-      this.userinfo = userinfo;
-    },
-    async getDataTable(dateForm, dateTo, hash, username) {
+    // async getData() {
+    //   const { username, Affiliate, Downline, userinfo } = await this.$axios.get(
+    //     `/api/Affiliate/Member/${this.username}`
+    //   );
+    //   this.username = username;
+    //   this.Affiliate = Affiliate;
+    //   this.Downline = Downline;
+    //   this.userinfo = userinfo;
+    // },
+    async getDataTable(dateForm, dateTo, username) {
       let today = new Date();
       dateForm =
         dateForm === ""
@@ -590,116 +919,62 @@ export default {
               today.getDate()
             ).toISOString()
           : dateTo;
-
-      this.dataRender = await this.$axios
-        .$get(
-          `http://localhost:3000/api/dashboard/dailychildrenbyparentdaterange/${hash}/${username}/${dateForm}/${dateTo}`
-        )
-        .catch(er => {
-          this.dataRender = [];
-          console.log(er);
+      this.isLoading = true;
+      try {
+        const res_data = await this.$axios.get(
+          `${process.env.ALL_DEPOSIT}/api/Aff/Report/Deposit/${this.$moment(
+            dateForm
+          ).format("YYYY-MM-DD")}/${this.$moment(dateTo).format(
+            "YYYY-MM-DD"
+          )}/${username}`
+        );
+        this.dataRender = res_data.data;
+        this.dataRender = this.dataRender.map(x => {
+          x.start_cal_time = new Date(x.start_cal_time).toLocaleString("th-TH");
+          x.end_cal_time = new Date(x.end_cal_time).toLocaleString("th-TH");
+          return x;
         });
+
+        this.isLoading = false;
+      } catch (error) {
+        this.dataRender = [];
+        this.isLoading = false;
+      }
+    },
+    async getDataWinlose(dateForm, dateTo, username) {
+      let today = new Date();
+      dateForm =
+        dateForm === ""
+          ? new Date(
+              today.getFullYear(),
+              today.getMonth(),
+              today.getDate()
+            ).toISOString()
+          : dateForm;
+      dateTo =
+        dateTo === ""
+          ? new Date(
+              today.getFullYear(),
+              today.getMonth(),
+              today.getDate()
+            ).toISOString()
+          : dateTo;
+      this.isLoading = true;
+      try {
+        const res_data = await this.$axios.get(
+          `${process.env.ALL_DEPOSIT}/api/Aff/Report/Bonus/${this.$moment(
+            dateForm
+          ).format("YYYY-MM-DD")}/${this.$moment(dateTo).format(
+            "YYYY-MM-DD"
+          )}/${username}`
+        );
+        this.dataWinloseCommission = res_data.data;
+        this.loading = false;
+      } catch (error) {
+        this.dataRender = [];
+        this.isLoading = false;
+      }
     }
   }
 };
 </script>
-
-<style lang="scss">
-.card-show {
-  padding: 10px;
-  border-radius: 10px;
-  position: relative;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-clip: border-box;
-  font-size: 18px;
-  box-shadow: 0px 5px 8px 0px rgb(179 176 176 / 75%);
-}
-.title_header {
-  text-align: center;
-  font-weight: bold;
-}
-
-.copy-link {
-  .copy_icon {
-    height: 25px;
-  }
-  cursor: pointer;
-}
-
-.section_search {
-  .date-select {
-    font-weight: bold;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    background: linear-gradient(
-      to bottom right,
-      #111111 0%,
-      #343a40 100%
-    ) !important;
-    padding: 15px;
-    color: white;
-  }
-}
-#edit-config___BV_modal_header_.modal-header {
-  background: linear-gradient(
-    to bottom right,
-    #111111 0%,
-    #002952 100%
-  ) !important;
-  color: rgb(255, 255, 255);
-}
-.input_form {
-  display: flex;
-  align-items: baseline;
-  padding: 5px;
-}
-.card_affiliate {
-  border-radius: 10px;
-  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-  background: #f9f9f9;
-
-  .text_card {
-    font-weight: bold;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    background: linear-gradient(
-      to bottom right,
-      #111111 0%,
-      #343a40 100%
-    ) !important;
-    padding: 15px;
-    color: white;
-  }
-  .text_card_child {
-    font-weight: bold;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    background: linear-gradient(
-      to bottom right,
-      rgba(126, 186, 133, 0.81) 0%,
-      #0e5c20 100%
-    ) !important;
-    padding: 15px;
-    color: white;
-  }
-  .body_card {
-    .card-child {
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%),
-        0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%) !important;
-      transition: 0.2s;
-      .text-end {
-        font-weight: bold;
-        font-size: large;
-      }
-    }
-    .card-child:hover {
-      transform: scale(1.05);
-      transition: 0.2s;
-    }
-  }
-}
-</style>
