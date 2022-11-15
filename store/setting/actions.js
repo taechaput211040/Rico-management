@@ -121,6 +121,26 @@ export function getCompanybank({ rootState }) {
     }
   });
 }
+
+// getBankByid
+
+export function getBankByid(context,id) {
+  return new Promise(async (resolve, reject) => {
+    console.log(id)
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_COMPANY_BANK}/api/Company/${id}`
+      );
+
+      // resolve(response);
+      resolve(response);
+
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 //ธนาคารของเว็บ
 export function getGroup() {
   return new Promise(async (resolve, reject) => {

@@ -90,6 +90,7 @@ export default {
     AGENT_DOMAIN: process.env.AGENT_DOMAIN,
     ALL_CHECKIN: process.env.ALL_CHECKIN,
     ALL_COMPANY_BANK: process.env.ALL_COMPANY_BANK,
-    ALL_CRIMINAL: process.env.ALL_CRIMINAL
+    ALL_CRIMINAL: process.env.ALL_CRIMINAL,
+    ALL_MESSAGE_WEB: process.env.ALL_MESSAGE_WEB
   }
 };

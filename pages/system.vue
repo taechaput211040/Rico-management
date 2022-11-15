@@ -149,9 +149,7 @@
         hide-details="auto"
         class="my-4 font-weight-bold"
         label="สถานะ"
-        :true-value="1"
-        :false-value="0"
-        v-model="message.status"
+        v-model.number="message.status"
       ></v-switch>
       <div v-if="message.status == 1">
         <v-row>
@@ -243,7 +241,19 @@ export default {
   async fetch() {
     let response = await this.getSetting();
     this.datasetting = response;
+
     // this.message = response.message;
+  },
+  async mounted() {
+    try {
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_MESSAGE_WEB}/agent/${this.$store.state.auth.hash}`
+      );
+      this.message = data;
+      console.log("data0", data);
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
     ...mapActions("setting", ["getSetting", "createUser", "updateSetting"]),

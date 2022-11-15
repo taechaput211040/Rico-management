@@ -12,6 +12,7 @@
           :headers="bankHeader"
           :items="dataBank"
           hide-default-footer
+          disable-pagination
         >
           <template #[`item.status`]="{item}">
             <v-chip
@@ -398,13 +399,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions("setting", ["getCompanybank"]),
+    ...mapActions("setting", ["getCompanybank", "getBankByid"]),
     async touglestatus(status) {
       status.visibletomember = !status.visibletomember;
     },
-    updateBank(item) {
+    async updateBank(item) {
+      let { data } = await this.getBankByid(item.id);
+      console.log(data, "item");
+      this.updateitem = Object.assign({}, data);
       this.dlupdate = true;
-      this.updateitem = Object.assign({}, item);
     }
   }
 };
