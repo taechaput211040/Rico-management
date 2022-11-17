@@ -36,6 +36,9 @@
             <span v-if="item.is_admin == true">ADMIN</span>
             <span v-else>STAFF</span>
           </template>
+          <template #[`item.created_at`]="{item}">
+            <div class="pa-2">{{ item.created_at | dateFormat }}</div>
+          </template>
           <template #[`item.status`]="{item}">
             <v-chip
               color="success"
@@ -72,6 +75,7 @@
                 required
                 placeholder="ชื่อ-นามสกุล"
                 dense
+                :rules="[v => !!v || 'กรุณากรอกชื่อ นามสกุล']"
                 v-model="createAccount.name"
                 hide-details="auto"
                 outlined
@@ -83,6 +87,12 @@
                 required
                 placeholder="กรอกเบอร์โทรศัพท์"
                 dense
+                :rules="[
+                  v => !!v || 'กรุณากรอกเบอร์มือถือ',
+                  v =>
+                    (v && v.length >= 10 && v.length < 16) ||
+                    'กรุณากรอก กรุณากรอกเบอร์มือถือ 10 ถึง 15 ตัว'
+                ]"
                 v-model="createAccount.phone"
                 hide-details="auto"
                 outlined
@@ -95,6 +105,7 @@
                 placeholder="กรอก Username"
                 v-model="createAccount.username"
                 dense
+                :rules="[v => !!v || 'กรุณากรอก Username']"
                 hide-details="auto"
                 outlined
               ></v-text-field>
@@ -105,12 +116,17 @@
                 required
                 placeholder="กรอก Password"
                 dense
+                :rules="[v => !!v || 'กรุณากรอก Password ']"
                 v-model="createAccount.password"
+                prepend-inner-icon="mdi-lock"
+                :type="hidden ? 'password' : 'text'"
+                @click:append="() => (hidden = !hidden)"
+                :append-icon="hidden ? 'mdi-eye' : 'mdi-eye-off'"
                 hide-details="auto"
                 outlined
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="3">
               <span class="font-weight-bold">เลือกตำแหน่ง</span>
               <v-radio-group
                 class="py-2"
@@ -121,17 +137,27 @@
                 <v-radio label="STAFF" :value="false"></v-radio>
               </v-radio-group>
             </v-col>
-            <v-col cols="6" sm="4">
+            <v-col cols="6" sm="3">
               <span class="font-weight-bold">สถานะ</span>
               <v-switch
                 hide-details="auto"
+                :label="`${createAccount.status ? 'เปิด' : 'ปิด'}`"
                 v-model="createAccount.status"
               ></v-switch>
             </v-col>
-            <v-col cols="6" sm="4">
+            <v-col cols="6" sm="3">
+              <span class="font-weight-bold">ยืนยันตัวตน 2 ชั้น</span>
+              <v-switch
+                hide-details="auto"
+                :label="`${createAccount.tfa_status ? 'เปิด' : 'ปิด'}`"
+                v-model="createAccount.tfa_status"
+              ></v-switch>
+            </v-col>
+            <v-col cols="6" sm="3">
               <span class="font-weight-bold">ลิมิตการเติมเครดิต</span>
               <v-switch
                 hide-details="auto"
+                :label="`${createAccount.limittopup ? 'เปิด' : 'ปิด'}`"
                 v-model="createAccount.limittopup"
               ></v-switch>
             </v-col>
@@ -148,69 +174,78 @@
             </v-col>
           </v-row>
           <div class="customlist">
-            <v-card class="pa-3 mt-3 ">
+            <v-card class="mt-3">
               <v-card-title>
                 <h4 class="purple--text">ตั้งค่าการเข้าถึงเมนู</h4>
               </v-card-title>
-              <v-list>
-                <v-list-item-group multiple>
-                  <v-list dense class="red_list">
-                    <div v-for="(link, i) in group" :key="i">
-                      <v-list-item
-                        v-if="!link.subLinks"
-                        class="v-list-item font-weight-bold "
-                        style="padding-left: 25px;"
-                      >
-                        <v-list-item-action>
-                          <v-checkbox
-                            v-model="link.status"
-                            color="deep-purple accent-4"
-                          ></v-checkbox>
-                        </v-list-item-action>
-
-                        <v-list-item-title class="" v-text="link.title" />
-                      </v-list-item>
-
-                      <v-list-group
-                        group
-                        sub-group
-                        active-class=" deep-purple--text"
-                        v-else
-                        :key="link.title"
-                        :value="false"
-                      >
-                        <template v-slot:activator>
-                          <v-list-item-action class="">
-                            <v-checkbox
-                              v-model="link.status"
-                              color="deep-purple accent-4"
-                            ></v-checkbox>
-                          </v-list-item-action>
-                          <v-list-item-title
-                            class=" h1 d-flex"
-                            style="margin-left: 31px;"
-                            >{{ link.title }}<v-spacer></v-spacer>
-                            <v-icon>mdi-menu-down</v-icon></v-list-item-title
-                          >
-                        </template>
-
-                        <v-list-item
-                          v-for="sublink in link.subLinks"
-                          :key="sublink.text"
-                        >
-                          <v-list-item-action>
-                            <v-checkbox
-                              v-model="sublink.status"
-                              color="deep-purple accent-4"
-                            ></v-checkbox>
-                          </v-list-item-action>
-                          <v-list-item-title v-text="sublink.text" />
-                        </v-list-item>
-                      </v-list-group>
-                    </div>
-                  </v-list>
-                </v-list-item-group>
-              </v-list>
+              <v-data-table
+                class="elevation-2"
+                :headers="List"
+                :items="item_menu"
+                hide-default-footer
+                disable-pagination
+              >
+                <template #[`item.title`]="{item}">
+                  <div class="pa-2">{{ item.title }}</div>
+                </template>
+                <template #[`header.read`]>
+                  <v-checkbox
+                    hide-details="auto"
+                    v-model="selectedReadAll"
+                    label="ดู"
+                    :value="
+                      selected.filter(x => x.endsWith('_read')).length > 0
+                    "
+                    :indeterminate="
+                      selected.filter(x => x.endsWith('_read')).length > 0 &&
+                        selected.filter(x => x.endsWith('_read')).length <
+                          item_menu.length
+                    "
+                    @change="
+                      handleReadAllPermission(selectedReadAll, item_menu)
+                    "
+                  ></v-checkbox>
+                </template>
+                <template #[`header.write`]>
+                  <v-checkbox
+                    v-model="selectedWriteAll"
+                    hide-details="auto"
+                    label="แก้ไข"
+                    :value="
+                      selected.filter(x => x.endsWith('_write')).length > 0
+                    "
+                    :indeterminate="
+                      selected.filter(x => x.endsWith('_write')).length > 0 &&
+                        selected.filter(x => x.endsWith('_write')).length <
+                          item_menu.length
+                    "
+                    @change="
+                      handleWriteAllPermission(selectedWriteAll, item_menu)
+                    "
+                  >
+                  </v-checkbox>
+                </template>
+                <template #[`item.read`]="{ item }">
+                  <div class="px-4">
+                    <v-checkbox
+                      hide-details="auto"
+                      v-model="selected"
+                      :value="`${item.menu}_read`"
+                      @change="handleReadPermission(`${item.menu}_read`)"
+                    ></v-checkbox>
+                  </div>
+                </template>
+                <template #[`item.write`]="{ item }">
+                  <div class="px-4">
+                    <v-checkbox
+                      hide-details="auto"
+                      v-model="selected"
+                      :value="`${item.menu}_write`"
+                      @change="handleWritePermission(`${item.menu}_write`)"
+                    ></v-checkbox>
+                  </div>
+                </template>
+              </v-data-table>
             </v-card>
           </div>
 
@@ -235,7 +270,31 @@ export default {
   watch: {},
   data() {
     return {
+      hidden: String,
+      List: [
+        {
+          text: "Menu",
+          value: "title",
+          sortable: false
+        },
+        {
+          text: "View",
+          value: "read",
+          sortable: false,
+          align: "center"
+        },
+        {
+          text: "Edit",
+          value: "write",
+          sortable: false,
+          align: "center"
+        }
+      ],
+      selected: [],
+      selectedReadAll: false,
+      selectedWriteAll: false,
       createEmployee: true,
+      item_menu: this.$store.state.menu,
       group: this.$store.state.menu,
       modellist: [],
       seletstatus: [],
@@ -249,7 +308,8 @@ export default {
         phone: "",
         status: false,
         username: "",
-        password: ""
+        password: "",
+        tfa_status: false
       },
       dledit: false,
       dlemployee: false,
@@ -325,6 +385,7 @@ export default {
       employee: []
     };
   },
+
   async fetch() {
     try {
       let response = await this.getEmployee();
@@ -337,14 +398,88 @@ export default {
     }
   },
   methods: {
+    handleReadPermission(value) {
+      const item = value.split("_");
+      this.selected = this.selected.filter(
+        selected => selected != `${item[0]}_write`
+      );
+    },
+    handleWritePermission(value) {
+      const item = value.split("_");
+      if (
+        this.selected.findIndex(selected => selected == `${item[0]}_read`) < 0
+      ) {
+        this.selected.push(`${item[0]}_read`);
+      }
+    },
+    handleReadAllPermission(state, items) {
+      if (state) {
+        this.selected = items.map(item => {
+          return `${item.menu}_read`;
+        });
+      } else {
+        this.selected = [];
+      }
+    },
+    handleWriteAllPermission(state, items) {
+      if (state) {
+        this.selected = items
+          .map(item => {
+            return [`${item.menu}_read`, `${item.menu}_write`];
+          })
+          .reduce((prev, curr) => [...prev, ...curr], []);
+      } else {
+        this.selected = this.selected.filter(
+          selected => !selected.endsWith("_write")
+        );
+      }
+    },
     ...mapActions("setting", ["getEmployee", "DeleteUser", "createUser"]),
     openDialog() {
       this.createEmployee = true;
       this.dlemployee = true;
     },
     async CreateEmployee() {
-      await this.createUser(this.createAccount)
-      console.log(this.createAccount, "create");
+      if (this.$refs.formCreate.validate()) {
+        let body = {
+          ...this.createAccount,
+          operator: this.$store.state.auth.user,
+          company: this.$store.state.auth.company,
+          agent: this.$store.state.auth.agent,
+          menu_permission: this.selected
+        };
+
+        this.$swal({
+          title: `ยืนยันการสร้างพนักงาน?`,
+          icon: "question",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "สร้างพนักงาน",
+          cancelButtonText: "ยกเลิก"
+        }).then(async result => {
+          if (result.isConfirmed) {
+            try {
+              await this.createUser(body);
+              this.$swal({
+                icon: "success",
+                title: "สร้างสำเร็จ",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500
+              }).then(async result => {
+                this.dlemployee = false;
+                if (result) {
+                  await this.$fetch();
+                }
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+      }
     },
     editEmployee(item) {
       this.createEmployee = false;

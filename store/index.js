@@ -30,12 +30,16 @@ export default function() {
       menu: [
         {
           title: "Dashboard",
+          menu: "dashboard",
+          permission: "dashboard_read",
           to: "/",
           icon: "mdi-view-dashboard",
           status: true
         },
         {
           title: "รายงานระบบ",
+          menu: "reportSystem",
+          permission: "reportSystem_read",
           icon: "mdi-chart-bar",
           status: true,
           subLinks: [
@@ -85,6 +89,8 @@ export default function() {
         },
         {
           title: "จัดการสมาชิก",
+          menu: "manageMember",
+          permission: "manageMember_read",
           icon: "mdi-account",
           status: true,
           subLinks: [
@@ -128,6 +134,8 @@ export default function() {
         },
         {
           title: "รายงานฝาก/ถอน",
+          menu: "reportTransaction",
+          permission: "reportTransaction_read",
           icon: "mdi-credit-card-check",
           status: true,
           subLinks: [
@@ -165,6 +173,8 @@ export default function() {
         },
         {
           title: "รายงานสรุป",
+          menu: "reportSummary",
+          permission: "reportSummary_read",
           icon: "mdi-credit-card-plus-outline",
           status: true,
           subLinks: [
@@ -190,13 +200,48 @@ export default function() {
         },
         {
           title: "จัดการค่ายเกม",
+          menu: "manageGroup",
+          permission: "manageGroup_read",
           to: "/groupsetting",
           icon: "mdi-history",
           status: true
         },
-
+        {
+          title: "จัดการเกม",
+          menu: "manageGame",
+          permission: "manageGame_read",
+          to: "/gamesetting",
+          icon: "mdi-history",
+          status: true
+        },
+        {
+          title: "Landing Page",
+          menu: "landingpage",
+          permission: "landingpage_read",
+          to: "/landingpage",
+          icon: "mdi-history",
+          status: true
+        },
+        {
+          title: "Member Page",
+          menu: "memberpage",
+          permission: "memberpage_read",
+          to: "/memberpage",
+          icon: "mdi-history",
+          status: true
+        },
+        {
+          title: "จัดการเกม",
+          menu: "manageGame",
+          permission: "manageGame_read",
+          to: "/gamesetting",
+          icon: "mdi-history",
+          status: true
+        },
         {
           title: "ตั้งค่าโปรโมชั่น",
+          menu: "promotion",
+          permission: "promotion_read",
           icon: "mdi-history",
           status: true,
           subLinks: [
@@ -216,6 +261,8 @@ export default function() {
         },
         {
           title: "ตั้งค่าลิงก์รับทรัพย์",
+          menu: "affiliate",
+          permission: "affiliate_read",
           icon: "mdi-history",
           status: true,
           subLinks: [
@@ -241,6 +288,8 @@ export default function() {
         },
         {
           title: "ตั้งค่า Feature",
+          menu: "settingFeature",
+          permission: "settingFeature_read",
           icon: "mdi-gamepad-variant-outline",
           subLinks: [
             {
@@ -289,25 +338,57 @@ export default function() {
         },
         {
           title: "ตั้งค่าระบบ",
+          menu: "settingSystem",
           to: "/system",
+          permission: "settingSystem_read",
           icon: "mdi-cog-outline",
           status: true
         },
         {
+          title: "LINE NOTIFY",
+          menu: "lineNotify",
+          to: "/lineNotify",
+          permission: "lineNotify_read",
+          icon: "mdi-history",
+          status: true
+        },
+        {
           title: "รายชื่อมิจฉาชีพ",
+          menu: "criminal",
           to: "/CriminalList",
+          permission: "criminal_read",
           icon: "mdi-gamepad-square",
           status: true
         },
         {
           title: "พนักงาน",
+          menu: "employee",
+          permission: "employee_read",
           to: "/employee",
           icon: "mdi-gamepad-square",
           status: true
         },
         {
           title: "ธนาคาร",
+          menu: "companyBank",
+          permission: "companyBank_read",
           to: "/companyBank",
+          icon: "mdi-gamepad-square",
+          status: true
+        },
+        {
+          title: "โยกเงิน",
+          menu: "transfer",
+          to: "/transaction",
+          permission: "transfer_read",
+          icon: "mdi-gamepad-square",
+          status: true
+        },
+        {
+          title: "รายการเดินบัญชี",
+          menu: "transferReport",
+          permission: "transferReport_read",
+          to: "/transactionReport",
           icon: "mdi-gamepad-square",
           status: true
         }

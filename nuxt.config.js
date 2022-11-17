@@ -46,8 +46,19 @@ export default {
     "@nuxtjs/axios",
     "nuxt-element-ui",
     "@nuxtjs/dayjs",
-    "vue-sweetalert2/nuxt"
+    "vue-sweetalert2/nuxt",
+    "nuxt-socket-io"
   ],
+  // io: {
+  //   sockets: [
+  //     {
+  //       path: "/",
+  //       transports: ["websocket"],
+  //       url: "http://35.240.216.181:4000/",
+  //       default: true
+  //     }
+  //   ]
+  // },
   dayjs: {
     locales: ["en", "ja"],
     defaultLocale: "en",

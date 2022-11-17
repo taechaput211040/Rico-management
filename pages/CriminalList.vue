@@ -77,7 +77,7 @@
     </v-card>
     <v-card class="mt-3  elevation-3 rounded-lg">
       <v-data-table
-        hide-default-footer
+      
         :items="criminalList"
         :headers="headerCriminal"
       >

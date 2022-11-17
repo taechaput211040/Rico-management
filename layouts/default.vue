@@ -347,10 +347,12 @@ export default {
     try {
       // await this.getUser();
       await this.getFeature();
-      let menuitem = await this.$store.state.auth.group.filter(x => {
+      // let menuitem = await this.$store.state.auth.group.filter(x => {
+      //   return x.status == true;
+      // });
+      let menuitem = await this.$store.state.menu.filter(x => {
         return x.status == true;
       });
-
       let item = await new Promise((resolve, reject) => {
         menuitem.map(x => {
           if (x.subLinks) {
@@ -362,63 +364,7 @@ export default {
         });
         resolve(menuitem);
       });
-      this.items = [
-        ...item,
-        {
-          title: "STAFF LOG",
-          to: "/staffLog",
-          icon: "mdi-note-multiple",
-          status: true
-        },
-        {
-          title: "ตั้งค่า Feature",
-          icon: "mdi-gamepad-variant-outline",
-          subLinks: [
-            {
-              icon: "mdi-view-dashboard",
-              text: "เครดิตฟรี",
-              to: "/feature/creditfree",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "กงล้อนำโชค",
-              to: "/feature/wheel",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "เปิดไพ่6ใบ",
-              to: "/feature/sixcard",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "เปิดหีบสมบัติ",
-              to: "/feature/chest",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "เช็คอินรายวัน",
-              to: "/feature/checkindaily",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "สะสมเเต้ม",
-              to: "/feature/point",
-              status: true
-            },
-            {
-              icon: "mdi-view-dashboard",
-              text: "ของพรีเมียม",
-              to: "/feature/premiumn",
-              status: true
-            }
-          ]
-        }
-      ];
+      this.items = [...item];
     } catch (error) {
       console.log(error);
     }
