@@ -1,12 +1,11 @@
 <template>
-  <gradient-input></gradient-input>
+  <h3 class="mt-4">
+    ติดต่อ Up-line หรือผู้ดูแลระบบ เพื่อทำการเปิดใช้งาน permission ของแต่ละเมนู
+  </h3>
 </template>
 
 <script>
-import GradientInput from "../components/palette/GradientInput.vue";
-export default {
-  components: { GradientInput }
-};
+export default {};
 </script>
 
 <style></style>

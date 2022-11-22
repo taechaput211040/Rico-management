@@ -230,14 +230,7 @@ export default function() {
           icon: "mdi-history",
           status: true
         },
-        {
-          title: "จัดการเกม",
-          menu: "manageGame",
-          permission: "manageGame_read",
-          to: "/gamesetting",
-          icon: "mdi-history",
-          status: true
-        },
+
         {
           title: "ตั้งค่าโปรโมชั่น",
           menu: "promotion",
@@ -291,6 +284,7 @@ export default function() {
           menu: "settingFeature",
           permission: "settingFeature_read",
           icon: "mdi-gamepad-variant-outline",
+          status: true,
           subLinks: [
             {
               icon: "mdi-view-dashboard",

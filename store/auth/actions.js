@@ -311,14 +311,33 @@ export function login(context, { username, password, agentkey }) {
   });
 }
 //login//
+
+//two-facter
+export function twofactor(context, input) {
+  return new Promise(async (resolve, reject) => {
+    console.log(process.env.VUE_APP_PATH_MICROSERVICE, "env");
+    try {
+      let { data } = await this.$axios.post(
+        `${process.env.ALL_RICO_USER}/api/Auth/two-factor`,
+        input
+      );
+      await context.commit("set_login", data);
+      resolve(data);
+      // return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+//two-facter
+
 //getuser//
 export function getUser(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.get(
-        `${process.env.ALL_RICO_USER}/api/Auth/user`
+        `${process.env.ALL_RICO_USER}/api/Auth/user/V2`
       );
-      console.log("getdispatch");
       context.commit("set_user", data);
       resolve(data);
       // return;

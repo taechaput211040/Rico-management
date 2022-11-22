@@ -345,11 +345,9 @@ export default {
   },
   async created() {
     try {
-      // await this.getUser();
+      await this.getUser();
       await this.getFeature();
-      // let menuitem = await this.$store.state.auth.group.filter(x => {
-      //   return x.status == true;
-      // });
+
       let menuitem = await this.$store.state.menu.filter(x => {
         return x.status == true;
       });
@@ -364,7 +362,22 @@ export default {
         });
         resolve(menuitem);
       });
+
+      // let menuitem = await this.$store.state.auth.menu.filter(x => {
+      //   return x.status == true;
+      // });
+
       this.items = [...item];
+      if (this.$store.state.auth.menu) {
+        this.items = await this.items.filter(menu =>
+          this.$store.state.auth.menu.includes(menu.permission)
+        );
+      } else if (!this.$store.state.auth.menu) {
+        this.items = [];
+        this.$router.push("/test")
+      }
+
+      console.log(this.items.length, "items");
     } catch (error) {
       console.log(error);
     }

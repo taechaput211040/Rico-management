@@ -26,6 +26,7 @@
         class="password"
         type="password"
         placeholder="Password"
+        @keyup.enter="auth"
         v-model="password"
       />
       <span class="font-weight-bold">AGENT</span>
@@ -33,6 +34,7 @@
         class="agentkey"
         placeholder="AGENT KEY"
         v-model="agentkey"
+        @keyup.enter="auth"
         id="KEY"
       />
       <div class="action_login">
@@ -50,7 +52,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import LoadingPage from "../components/LoadingPage.vue";
 export default {
   components: { LoadingPage },
@@ -69,18 +71,45 @@ export default {
     }
   },
   methods: {
+    ...mapMutations("auth", [
+      "set_login",
+      "setTFAdata",
+      "serTfa_credential",
+      "setVerify"
+    ]),
     ...mapActions("auth", ["login"]),
     async auth() {
       this.isLoading = true;
+      let formData = {
+        username: this.username,
+        password: this.password,
+        agent: this.agentkey
+      };
       try {
         const response = await this.login({
           username: this.username,
           password: this.password,
           agentkey: this.agentkey
         });
+        await this.setTFAdata(formData);
         // console.log(response.data);
-        if (response.token) {
-          this.$router.push("/redirect");
+
+        if (response.tfa_status) {
+          if (response.verify) {
+            await this.setVerify(true);
+          }
+          await this.serTfa_credential(response);
+          console.log("hohp");
+          await this.$router.push("/LoginTFA");
+        } else if (!response.tfa_status) {
+          if (response.token) {
+            await this.set_login(response);
+            if (!response.menu_permission) {
+              this.$router.push("/test");
+            } else {
+              this.$router.push("/redirect");
+            }
+          }
         }
       } catch (err) {
         console.log(err);

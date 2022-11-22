@@ -116,10 +116,10 @@
           </v-col>
           <v-col cols="12" sm="4"
             >เลือกธนาคาร
-            {{ createBank.Companybank }}
+
             <v-select
               required
-              :items="$store.state.bank"
+              :items="bank_options"
               v-model="createBank.Companybank"
               dense
               hide-details="auto"
@@ -190,10 +190,26 @@
               outlined
             ></v-text-field>
           </v-col>
+          <v-col cols="12" sm="6" v-if="createBank.Companybank == 'SCB'"
+            >โหมดการใช้งาน
+            <div class="d-flex mt-3">
+              <v-radio-group
+                v-model.number="createBank.mode"
+                hide-details="auto"
+                row
+              >
+                <v-radio label="SMS" :value="0"></v-radio>
+                <v-radio label="SCB API" :value="2"></v-radio>
+                <v-radio label="SCB web" disabled :value="1"></v-radio>
+              </v-radio-group>
+            </div>
+          </v-col>
         </v-row>
         <v-card-actions class="mt-5">
           <div class="mx-auto">
-            <v-btn color="primary" class="mx-1">บันทึก</v-btn>
+            <v-btn color="primary" @click="submitCreateBank" class="mx-1"
+              >บันทึก</v-btn
+            >
             <v-btn color="error" class="mx-1" @click="dlcreate = false"
               >ปิด</v-btn
             >
@@ -211,103 +227,120 @@
           </h3>
         </v-card-title>
         <v-divider class="py-2"></v-divider>
-        <v-row>
-          <v-col cols="12" sm="4"
-            >ประเภทธนาคาร
-            <v-select
-              v-model="updateitem.type"
-              required
-              dense
-              :items="typebank"
-              outlined
-              placeholder="เลือกประเภท"
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="4"
-            >เลือกธนาคาร
-            <v-select
-              required
-              v-model="updateitem.Companybank"
-              dense
-              :items="$store.state.bank"
-              hide-details="auto"
-              placeholder="กรุณาเลือกธนาคาร"
-              outlined
-            ></v-select>
-          </v-col>
-          <v-col cols="12" sm="4"
-            >เลขบัญชี**
-            <v-text-field
-              required
-              v-model="updateitem.Companybankacountnumber"
-              placeholder="กรุณาใส่เลขบัญชี"
-              dense
-              hide-details="auto"
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="4"
-            >ฃื่อบัญชี *
-            <v-text-field
-              required
-              v-model="updateitem.Companybankname"
-              dense
-              placeholder="กรุณาใส่ฃื่อบัญชี"
-              hide-details="auto"
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6" sm="4">
-            เปิดใช้งาน
-            <v-switch v-model="updateitem.status"></v-switch>
-          </v-col>
-          <v-col cols="6" sm="4"
-            >การมองเห็นของสมาชิก
-            <v-switch v-model="updateitem.visibletomember"></v-switch>
-          </v-col>
-          <v-col cols="12" sm="6" v-show="updateitem.Companybank == 'SCB'"
-            >LOGIN NAME
-            <v-text-field
-              required
-              dense
-              hide-details="auto"
-              placeholder="กรุณาใส่username"
-              outlined
-              v-model="updateitem.loginname"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6" v-show="updateitem.Companybank == 'SCB'"
-            >PASSWORD
-            <v-text-field
-              required
-              dense
-              placeholder="กรุณาใส่Password"
-              v-model="updateitem.password"
-              hide-details="auto"
-              outlined
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6"
-            >เบอร์โทรศัพท์ที่เชื่อมต่อกับบัญชี
-            <v-text-field
-              required
-              dense
-              placeholder="กรุณาใส่เบอร์โทรศัพท์"
-              v-model="updateitem.phone"
-              hide-details="auto"
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-card-actions class="mt-5">
-          <div class="mx-auto">
-            <v-btn color="primary" class="mx-1">บันทึก</v-btn>
-            <v-btn color="error" class="mx-1" @click="dlupdate = false"
-              >ปิด</v-btn
-            >
-          </div>
-        </v-card-actions>
+        <v-form ref="EditBank">
+          <v-row>
+            <v-col cols="12" sm="4"
+              >ประเภทธนาคาร
+              <v-select
+                v-model="createBank.type"
+                required
+                dense
+                :items="typebank"
+                outlined
+                placeholder="เลือกประเภท"
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="4"
+              >เลือกธนาคาร
+
+              <v-select
+                required
+                :items="bank_options"
+                v-model="createBank.Companybank"
+                dense
+                hide-details="auto"
+                placeholder="กรุณาเลือกธนาคาร"
+                outlined
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="4"
+              >เลขบัญชี**
+              <v-text-field
+                required
+                v-model="createBank.Companybankacountnumber"
+                placeholder="กรุณาใส่เลขบัญชี"
+                dense
+                hide-details="auto"
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4"
+              >ฃื่อบัญชี *
+              <v-text-field
+                required
+                v-model="createBank.Companybankname"
+                dense
+                placeholder="กรุณาใส่ฃื่อบัญชี"
+                hide-details="auto"
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6" sm="4">
+              เปิดใช้งาน
+              <v-switch v-model="createBank.status"></v-switch>
+            </v-col>
+            <v-col cols="6" sm="4"
+              >การมองเห็นของสมาชิก
+              <v-switch v-model="createBank.visibletomember"></v-switch>
+            </v-col>
+            <v-col cols="12" sm="6" v-show="createBank.Companybank == 'SCB'"
+              >LOGIN NAME
+              <v-text-field
+                required
+                dense
+                hide-details="auto"
+                placeholder="กรุณาใส่username"
+                outlined
+                v-model="createBank.loginname"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" v-show="createBank.Companybank == 'SCB'"
+              >PASSWORD
+              <v-text-field
+                required
+                dense
+                placeholder="กรุณาใส่Password"
+                v-model="createBank.password"
+                hide-details="auto"
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6"
+              >เบอร์โทรศัพท์ที่เชื่อมต่อกับบัญชี
+              <v-text-field
+                required
+                dense
+                placeholder="กรุณาใส่เบอร์โทรศัพท์"
+                v-model="createBank.phone"
+                hide-details="auto"
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" v-if="createBank.Companybank == 'SCB'"
+              >โหมดการใช้งาน
+              <div class="d-flex mt-3">
+                <v-radio-group
+                  v-model.number="createBank.mode"
+                  hide-details="auto"
+                  row
+                >
+                  <v-radio label="SMS" :value="0"></v-radio>
+                  <v-radio label="SCB API" :value="2"></v-radio>
+                  <v-radio label="SCB web" disabled :value="1"></v-radio>
+                </v-radio-group>
+              </div>
+            </v-col>
+          </v-row>
+          <v-card-actions class="mt-5">
+            <div class="mx-auto">
+              <v-btn color="primary" @click="SubmitEditBank" class="mx-1"
+                >บันทึก</v-btn
+              >
+              <v-btn color="error" class="mx-1" @click="closeEdit()">ปิด</v-btn>
+            </div>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- edit -->
@@ -319,21 +352,33 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      updateitem: [],
+      updateitem: {},
       typebank: [
         { value: false, text: "ฝาก" },
         { value: true, text: "ถอน" }
       ],
+      bank_options: [
+        { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
+        { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
+        { value: "TRUEWALLET", text: "TRUEMONEY - ทรูวอลเลท" }
+      ],
       createBank: {
-        type: false,
-        Companybank: "",
+        id: null,
+        Companybank: "SCB",
         Companybankacountnumber: "",
         Companybankname: "",
-        status: false,
-        visibletomember: false,
-        loginname: null,
+        visibletomember: true,
+        balance: 0,
+        balanceupdatetime: "",
+        status: true,
+        type: false,
+        loginname: "",
         password: "",
-        phone: ""
+        companyAccref: "",
+        updateBy: "",
+        createBy: "",
+        true_api_status: false,
+        mode: 0
       },
       dlupdate: false,
       dlcreate: false,
@@ -399,15 +444,119 @@ export default {
     }
   },
   methods: {
-    ...mapActions("setting", ["getCompanybank", "getBankByid"]),
+    ...mapActions("setting", [
+      "getCompanybank",
+      "getBankByid",
+      "createBankCompany",
+      "EditBankCompany"
+    ]),
     async touglestatus(status) {
       status.visibletomember = !status.visibletomember;
+    },
+    async SubmitEditBank() {
+      if (this.createBank.Companybank != "SCB") {
+        this.createBank.mode = 0;
+      }
+      this.createBank.updateBy = this.$store.state.auth.user;
+      this.createBank.createBy = this.$store.state.auth.user;
+      if (!this.createBank.secret) {
+        this.createBank.secret = "";
+      }
+      this.Accref();
+      this.$swal({
+        title: `แก้ไขรายชื่อธนาคาร ?`,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "สร้าง",
+        cancelButtonText: "ยกเลิก"
+      }).then(async result => {
+        if (result.isConfirmed) {
+          try {
+            await this.EditBankCompany(this.createBank);
+            this.$swal({
+              icon: "success",
+              title: "แก้ไขสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              this.dlemployee = false;
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+    },
+    async submitCreateBank() {
+      if (this.createBank.Companybank != "SCB") {
+        this.createBank.mode = 0;
+      }
+      this.createBank.updateBy = this.$store.state.auth.user;
+      this.createBank.createBy = this.$store.state.auth.user;
+      if (!this.createBank.secret) {
+        this.createBank.secret = "";
+      }
+      this.Accref();
+      this.$swal({
+        title: `เพิ่มรายชื่อธนาคารเว็บ ?`,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "สร้าง",
+        cancelButtonText: "ยกเลิก"
+      }).then(async result => {
+        if (result.isConfirmed) {
+          try {
+            await this.createBankCompany(this.createBank);
+            this.$swal({
+              icon: "success",
+              title: "สร้างสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              this.dlemployee = false;
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+    },
+    Accref() {
+      if (this.createBank.Companybank == "SCB") {
+        this.createBank.companyAccref =
+          "X" + this.createBank.Companybankacountnumber.slice(4);
+      }
+      if (this.createBank.Companybank == "KBANK") {
+        this.createBank.companyAccref =
+          "X" + this.createBank.Companybankacountnumber.slice(3, 9) + "X";
+      }
+      if (this.createBank.Companybank == "TRUEWALLET") {
+        this.createBank.companyAccref = this.createBank.Companybankacountnumber;
+      }
     },
     async updateBank(item) {
       let { data } = await this.getBankByid(item.id);
       console.log(data, "item");
-      this.updateitem = Object.assign({}, data);
+      this.createBank = Object.assign({}, data);
       this.dlupdate = true;
+    },
+    closeEdit() {
+      this.dlupdate = false;
+      this.$refs.EditBank.reset();
     }
   }
 };

@@ -124,9 +124,9 @@ export function getCompanybank({ rootState }) {
 
 // getBankByid
 
-export function getBankByid(context,id) {
+export function getBankByid(context, id) {
   return new Promise(async (resolve, reject) => {
-    console.log(id)
+    console.log(id);
     try {
       let response = await this.$axios.get(
         `${process.env.ALL_COMPANY_BANK}/api/Company/${id}`
@@ -195,10 +195,51 @@ export function createUser({}, body) {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.post(
-        `${process.env.ALL_RICO_USER}/api/User`,
+        `${process.env.ALL_RICO_USER}/api/User/V2`,
         body
       );
 
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function updateUser({}, body) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.patch(
+        `${process.env.ALL_RICO_USER}/api/User`,
+        body
+      );
+      console.log("work");
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function createBankCompany({}, body) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_RICO_USER}/api/User`,
+        body
+      );
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function EditBankCompany({}, body) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_RICO_USER}/api/User`,
+        body
+      );
       resolve(response);
     } catch (error) {
       reject(error);

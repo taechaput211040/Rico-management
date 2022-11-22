@@ -8,7 +8,7 @@
       height="100vh"
       style="min-height: 100vh"
       :src="
-        `https://admin-static.smart-ai-api.com/#/member/?token=${$store.state.auth.key}`
+        `https://admin-static.smart-ai-api.com/#/member/?token=${$store.state.auth.tokenMember}`
       "
     />
   </div>
