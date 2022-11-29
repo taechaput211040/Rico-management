@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["twofactor"]),
-    ...mapMutations("auth", ["set_login"]),
+    ...mapMutations("auth", ["set_login","set_data_secret"]),
     async postCodeToAllrico() {
       this.loading = true;
       try {
@@ -136,6 +136,7 @@ export default {
         this.loading = false;
         if (res.token) {
           await this.set_login(res);
+          // await this.set_data_secret(res);
           if (!res.menu_permission) {
             this.$router.push("/test");
           } else {

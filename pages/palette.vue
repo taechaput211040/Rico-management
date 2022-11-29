@@ -145,6 +145,7 @@ export default {
       let formData = new FormData();
       formData.append("file", value);
       this.imageUpload = formData;
+      
     },
 
     // async handleUploadImage(image) {

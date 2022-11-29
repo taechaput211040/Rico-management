@@ -75,7 +75,8 @@ export default {
       "set_login",
       "setTFAdata",
       "serTfa_credential",
-      "setVerify"
+      "setVerify",
+      "set_data_secret"
     ]),
     ...mapActions("auth", ["login"]),
     async auth() {
@@ -96,8 +97,12 @@ export default {
 
         if (response.tfa_status) {
           if (response.verify) {
-            await this.setVerify(true);
+            console.log(response.verify, "verify");
+            await this.setVerify(response.verify);
+          } else {
+            await this.setVerify(false);
           }
+
           await this.serTfa_credential(response);
           console.log("hohp");
           await this.$router.push("/LoginTFA");
@@ -110,6 +115,9 @@ export default {
               this.$router.push("/redirect");
             }
           }
+        }
+        if (response.setting) {
+          await this.set_data_secret(response.setting);
         }
       } catch (err) {
         console.log(err);

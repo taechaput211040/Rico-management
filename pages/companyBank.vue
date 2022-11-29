@@ -64,7 +64,7 @@
                 @click="updateBank(item)"
                 ><v-icon left>mdi-cog</v-icon>แก้ไข</v-btn
               >
-              <v-btn color="error" dark small
+              <v-btn color="error" dark small @click="deleteBank(item)"
                 ><v-icon left>mdi-delete</v-icon>ลบ</v-btn
               >
             </div>
@@ -332,9 +332,36 @@
               </div>
             </v-col>
           </v-row>
+          <div id="sectionSCB" class="mt-2" v-if="createBank.mode == 2">
+            <div class="elevation-2 rounded-lg pa-2">
+              <h3 class="mt-3">ลงทะเบียน SCB</h3>
+              <div class="row">
+                <div class="col-12 col-sm-6">
+                  หมายเลขบัตรประชาขน
+                  <v-text-field
+                    dense
+                    outlined
+                    hide-details="auto"
+                  ></v-text-field>
+                </div>
+                <div class="col-12 col-sm-6">
+                  วันเกิด ปี(ค.ศ.)-เดือน-วัน ตัวอย่าง 1996-05-23
+                  <v-text-field
+                    dense
+                    outlined
+                    hide-details="auto"
+                  ></v-text-field>
+                </div>
+              </div>
+              <v-card-actions class="justify-end">
+                <v-spacer></v-spacer
+                ><v-btn small color="black white--text">ดำเนินการ</v-btn>
+              </v-card-actions>
+            </div>
+          </div>
           <v-card-actions class="mt-5">
             <div class="mx-auto">
-              <v-btn color="primary" @click="SubmitEditBank" class="mx-1"
+              <v-btn color="primary" @click="SubmitEditBank()" class="mx-1"
                 >บันทึก</v-btn
               >
               <v-btn color="error" class="mx-1" @click="closeEdit()">ปิด</v-btn>
@@ -352,6 +379,10 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      modalOtp: false,
+      modalSelectnumber: false,
+      formScb: {},
+      allSetting: {},
       updateitem: {},
       typebank: [
         { value: false, text: "ฝาก" },
@@ -363,7 +394,6 @@ export default {
         { value: "TRUEWALLET", text: "TRUEMONEY - ทรูวอลเลท" }
       ],
       createBank: {
-        id: null,
         Companybank: "SCB",
         Companybankacountnumber: "",
         Companybankname: "",
@@ -443,15 +473,75 @@ export default {
       console.log(error);
     }
   },
+  async mounted() {
+    let setting = await this.getSetting();
+    console.log("setting", setting);
+    this.allSetting = {
+      companyName: setting.companyname,
+      companyKey: setting.companykey,
+      agentPrefixCode: setting.agent_username,
+      hash: setting.hash
+    };
+  },
   methods: {
     ...mapActions("setting", [
       "getCompanybank",
       "getBankByid",
       "createBankCompany",
-      "EditBankCompany"
+      "EditBankCompany",
+      "deleteBankCompany",
+      "getSetting"
     ]),
+    cancelFormScb() {
+      console.log("cancel");
+      this.formScb = {};
+      this.modalOtp = false;
+      this.modalSelectnumber = false;
+    },
     async touglestatus(status) {
+      this.createBank = status;
+      if (this.createBank.Companybank != "SCB") {
+        this.createBank.mode = 0;
+      }
+      this.createBank.updateBy = this.$store.state.auth.user;
+      this.createBank.createBy = this.$store.state.auth.user;
+      if (!this.createBank.secret) {
+        this.createBank.secret = "";
+      }
+      this.Accref();
       status.visibletomember = !status.visibletomember;
+      this.$swal({
+        title: `${status.visibletomember ? "เปิด" : "ปิด"}การมองเห็น ?`,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "สร้าง",
+        cancelButtonText: "ยกเลิก"
+      }).then(async result => {
+        if (result.isConfirmed) {
+          try {
+            await this.EditBankCompany(this.createBank);
+            this.$swal({
+              icon: "success",
+              title: `${status.visibletomember ? "เปิด" : "ปิด"}การมองเห็นแล้ว`,
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              this.dlupdate = false;
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+          status.visibletomember = !status.visibletomember;
+        }
+      });
     },
     async SubmitEditBank() {
       if (this.createBank.Companybank != "SCB") {
@@ -483,7 +573,7 @@ export default {
               showConfirmButton: false,
               timer: 1500
             }).then(async result => {
-              this.dlemployee = false;
+              this.dlupdate = false;
               if (result) {
                 await this.$fetch();
               }
@@ -515,8 +605,13 @@ export default {
         cancelButtonText: "ยกเลิก"
       }).then(async result => {
         if (result.isConfirmed) {
+          let payload = {
+            ...this.createBank,
+            ...this.allSetting
+          };
+          console.log(payload, "payload");
           try {
-            await this.createBankCompany(this.createBank);
+            await this.createBankCompany(payload);
             this.$swal({
               icon: "success",
               title: "สร้างสำเร็จ",
@@ -524,7 +619,7 @@ export default {
               showConfirmButton: false,
               timer: 1500
             }).then(async result => {
-              this.dlemployee = false;
+              this.dlcreate = false;
               if (result) {
                 await this.$fetch();
               }
@@ -557,6 +652,42 @@ export default {
     closeEdit() {
       this.dlupdate = false;
       this.$refs.EditBank.reset();
+    },
+    async deleteBank(item) {
+      this.$swal({
+        title: `ต้องการลบธนสคารหรือไม่ ?`,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ลบ",
+        cancelButtonText: "ยกเลิก"
+      }).then(async result => {
+        if (result.isConfirmed) {
+          try {
+            let payload = {
+              id: item.id,
+              updateBy: this.$store.state.auth.name
+            };
+
+            await this.deleteBankCompany(payload);
+            this.$swal({
+              icon: "success",
+              title: "ลบเรียบร้อย",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500
+            }).then(async result => {
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
     }
   }
 };

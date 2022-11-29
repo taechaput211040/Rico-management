@@ -1,5 +1,5 @@
 export default function({ store, redirect, route }) {
-  if (!store.state.auth.key) {
+  if (!store.state.auth.key || store.state.auth.key == "undefined") {
     localStorage.clear();
     sessionStorage.clear();
     return redirect("/login");
@@ -28,7 +28,7 @@ export default function({ store, redirect, route }) {
         );
       }
     } else if (!permission) {
-      console.log("nooooo")
+      console.log("nooooo");
     }
   }
 }

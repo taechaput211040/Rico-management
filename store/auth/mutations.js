@@ -23,17 +23,25 @@ export function set_user(state, payload) {
   localStorage.setItem("name", payload.name);
 }
 
+export function set_data_secret(state, payload) {
+  state.hash = payload.hash;
+  state.tokenMember = payload.token;
+  localStorage.setItem("hash", payload.hash);
+  localStorage.setItem("tokenMember", payload.token);
+}
+
 export function set_logout(state) {
   localStorage.clear();
-  state.key = undefined;
-  state.user = undefined;
-  state.group = undefined;
-  state.company = undefined;
-  state.agent = undefined;
-  state.name = undefined;
-  state.menu = undefined;
+  state.key = null;
+  state.user = null;
+  state.group = null;
+  state.company = null;
+  state.agent = null;
+  state.name = null;
+  state.menu = null;
   state.isAdmin = false;
-  state.hash = undefined;
+  state.hash = null;
+  state.tokenMember = null;
 }
 
 export function serTfa_credential(state, payload) {

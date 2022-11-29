@@ -1,8 +1,9 @@
 <template>
   <v-flex>
+    <loading-page v-if="loading"></loading-page>
     <h3 class="mb-4">ตั้งค่าระบบ</h3>
     <v-card class="pa-3 elevation-3 rounded-lg font-weight-bold">
-      <v-row>
+      <v-row v-if="datasetting">
         <v-col cols="12" sm="6">
           ชื่อเว็ปไซต์
           <v-text-field
@@ -121,15 +122,15 @@
           อั้นถอนจำนวนครั้งต่อวัน
           <v-switch
             hide-details="auto"
-            v-model="datasetting.wdwhenoutstanding"
+            v-model="datasetting.wd_status"
           ></v-switch>
         </v-col>
         <v-col cols="12" sm="6">
           อั้นจำนวนครั้งในการถอนต่อวัน
           <v-text-field
-            :disabled="datasetting.wdwhenoutstanding == false"
-            :filled="datasetting.wdwhenoutstanding == false"
-            :outlined="datasetting.wdwhenoutstanding"
+            :disabled="datasetting.wd_status == false"
+            :filled="datasetting.wd_status == false"
+            :outlined="datasetting.wd_status"
             v-model.number="datasetting.wdlimitTime"
             dense
             hide-details="auto"
@@ -220,7 +221,10 @@
           </v-col>
         </v-row>
         <v-card-actions>
-          <v-btn color="primary" @click="createduser" class="mx-auto btn_sty"
+          <v-btn
+            color="primary"
+            @click="handleUpdateMessage"
+            class="mx-auto btn_sty"
             >บันทึก</v-btn
           >
         </v-card-actions>
@@ -230,33 +234,69 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
+import LoadingPage from "../components/LoadingPage.vue";
 export default {
+  components: { LoadingPage },
   data() {
     return {
+      file: null,
+      filename: null,
+      filecheck: null,
       datasetting: {},
-      message: {}
+      message: {},
+      loading: false
     };
   },
   async fetch() {
+    this.loading = true;
     let response = await this.getSetting();
     this.datasetting = response;
-
+    console.log(this.datasetting, "this.datasetting");
+    let message = await this.getMessage();
+    this.message = message;
+    this.loading = false;
     // this.message = response.message;
   },
-  async mounted() {
-    try {
-      let { data } = await this.$axios.get(
-        `${process.env.ALL_MESSAGE_WEB}/agent/${this.$store.state.auth.hash}`
-      );
-      this.message = data;
-      console.log("data0", data);
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  async mounted() {},
   methods: {
-    ...mapActions("setting", ["getSetting", "createUser", "updateSetting"]),
+    ...mapActions("setting", [
+      "getSetting",
+      "getMessage",
+      "createUser",
+      "updateSetting",
+      "updateMessage"
+    ]),
+    ...mapMutations("setting", ["setAllsetting", "setAllmessage"]),
+    async handleUpdateMessage() {
+      this.message.operator = this.$store.state.auth.name;
+      this.$swal({
+        title: "บันทึกการตั้งค่า Message ?",
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel"
+      }).then(async result => {
+        if (result.isConfirmed) {
+          // console.log(this.formCreate)
+          await this.updateMessage(this.message);
+          this.$swal({
+            icon: "success",
+            title: "บันทึกสำเร็จ",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            timer: 1500
+          }).then(async result => {
+            if (result) {
+              await this.$fetch();
+            }
+          });
+        }
+      });
+    },
     async update() {
       try {
         this.$swal({

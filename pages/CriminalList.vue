@@ -77,14 +77,12 @@
     </v-card>
     <v-card class="mt-3  elevation-3 rounded-lg">
       <v-data-table
-      
+        :options.sync="options"
         :items="criminalList"
         :headers="headerCriminal"
       >
         <template #[`item.no`]="{index}">
-          <span class="font-weight-bold">
-            {{ index + 1 }}
-          </span>
+          {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
         </template>
         <template #[`item.bankName`]="{item}">
           <div class="pt-2">
@@ -103,6 +101,7 @@ export default {
   components: { ImgBank },
   data() {
     return {
+      options: {},
       headerCriminal: [
         {
           text: "ลำดับ",
