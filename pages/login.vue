@@ -78,7 +78,7 @@ export default {
       "setVerify",
       "set_data_secret"
     ]),
-    ...mapActions("auth", ["login"]),
+    ...mapActions("auth", ["login", "getLockdown"]),
     async auth() {
       this.isLoading = true;
       let formData = {
@@ -109,6 +109,7 @@ export default {
         } else if (!response.tfa_status) {
           if (response.token) {
             await this.set_login(response);
+
             if (!response.menu_permission) {
               this.$router.push("/test");
             } else {

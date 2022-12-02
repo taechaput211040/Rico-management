@@ -348,6 +348,22 @@ export function getUser(context, payload) {
 }
 //getuser//
 
+//getLockdown
+export function getLockdown({ rootState }) {
+  return new Promise(async (resolve, reject) => {
+    console.log(rootState.auth.agent, "agent");
+    console.log(rootState.auth.company, "company");
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_SUPPORT}/api/lockydowns/${rootState.auth.agent}/${rootState.auth.company}`
+      );
+      resolve(response);
+      // return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 //getfeaturestatus//
 export function getFeature(context) {
   return new Promise(async (resolve, reject) => {

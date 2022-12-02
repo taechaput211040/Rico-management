@@ -2,60 +2,70 @@
   <v-flex>
     <h3 class="mb-2">เพิ่มรายชื่อ มิจฉาชีพ</h3>
     <v-card class="pa-4 elevation-3 rounded-lg font-weight-bold">
-      <v-row>
-        <v-col cols="12" sm="6" md="3">
-          <span class="font-weight-bold"
-            >ชื่อ
+      <v-form ref="formcreate">
+        <v-row>
+          <v-col cols="12" sm="6" md="3">
+            <span class="font-weight-bold"
+              >ชื่อ
+              <v-text-field
+                outlined
+                dense
+                v-model="formCreate.name"
+                placeholder="กรอกรายชื่อ"
+                hide-details="auto"
+              ></v-text-field>
+            </span>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <span class="font-weight-bold">นามสกุล</span>
             <v-text-field
               outlined
+              v-model="formCreate.lastname"
               dense
-              placeholder="กรอกรายชื่อ"
+              placeholder="กรอกนามสกุล"
               hide-details="auto"
             ></v-text-field>
-          </span>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <span class="font-weight-bold">นามสกุล</span>
-          <v-text-field
-            outlined
-            dense
-            placeholder="กรอกนามสกุล"
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <span class="font-weight-bold">ธนาคาร</span>
-          <v-select
-            outlined
-            dense
-            placeholder="เลือกธนาคาร"
-            hide-details="auto"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <span class="font-weight-bold"
-            >เลขบัญชีธนาคาร
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <span class="font-weight-bold">ธนาคาร</span>
+            <v-select
+              outlined
+              v-model="formCreate.bankName"
+              dense
+              :items="bank_options"
+              placeholder="เลือกธนาคาร"
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <span class="font-weight-bold"
+              >เลขบัญชีธนาคาร
+              <v-text-field
+                outlined
+                dense
+                v-model="formCreate.bankAcc"
+                placeholder="กรอกหมายเลขธนาคาร"
+                hide-details="auto"
+              ></v-text-field>
+            </span>
+          </v-col>
+          <v-col cols="12" sm="6" md="3"
+            ><span class="font-weight-bold">เบอร์โทรศัพท์</span>
             <v-text-field
+              placeholder="กรอกเบอร์โทรศัพท์"
               outlined
               dense
-              placeholder="กรอกหมายเลขธนาคาร"
+              v-model="formCreate.phone"
               hide-details="auto"
-            ></v-text-field>
-          </span>
-        </v-col>
-        <v-col cols="12" sm="6" md="3"
-          ><span class="font-weight-bold">เบอร์โทรศัพท์</span>
-          <v-text-field
-            placeholder="กรอกเบอร์โทรศัพท์"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field
-        ></v-col>
-        <v-col cols="12" sm="6" md="3"
-          ><br /><v-btn color="primary" dark>บันทึกรายชื่อ</v-btn></v-col
-        >
-      </v-row>
+            ></v-text-field
+          ></v-col>
+          <v-col cols="12" sm="6" md="3"
+            ><br /><v-btn @click="createCriminal" color="primary" dark
+              >บันทึกรายชื่อ</v-btn
+            ></v-col
+          >
+        </v-row>
+      </v-form>
     </v-card>
     <h3 class="mt-4 mb-2">เพิ่มรายชื่อ มิจฉาชีพ</h3>
     <v-card class="pa-4 elevation-3 rounded-lg font-weight-bold">
@@ -101,6 +111,34 @@ export default {
   components: { ImgBank },
   data() {
     return {
+      formCreate: {
+        name: "",
+        lastname: "",
+        bankName: null,
+        bankAcc: "",
+        phoneNumber: ""
+      },
+      bank_options: [
+        { value: null, text: "โปรดเลือกธนาคาร" },
+        { value: "TRUEWALLET", text: "TRUEWALLET - ทรูมันนี่วอลเลท" },
+        { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
+        { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
+        { value: "TMB", text: "TMB - ธนาคารทหารไทย" },
+        { value: "BBL", text: "BBL - ธนาคารกรุงเทพ" },
+        { value: "KTB", text: "KTB - ธนาคารกรุงไทย" },
+        { value: "BAY", text: "BAY - ธนาคารกรุงศรีอยุธยา" },
+        { value: "KKP", text: "KKP - ธนาคารเกียรตินาคินภัทร" },
+        { value: "CIMB", text: "CIMB - ธนาคารซีไอเอ็มบีไทย" },
+        { value: "TISCO", text: "TISCO - ธนาคารทิสโก้" },
+        { value: "TBANK", text: "TBANK - ธนาคารธนชาต" },
+        { value: "UOBT", text: "UOBT - ธนาคารยูโอบี" },
+        { value: "TCD", text: "TCD - ธนาคารไทยเครดิตเพื่อรายย่อย" },
+        { value: "LHFG", text: "LHFG - ธนาคารแลนด์แอนด์ เฮ้าส์" },
+        { value: "BAAC", text: "BAAC - ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร" },
+        { value: "GSB", text: "GSB - ธนาคารออมสิน" },
+        { value: "GHB", text: "GHB - ธนาคารอาคารสงเคราะห์" },
+        { value: "ISBT", text: "ISBT - ธนาคารอิสลามแห่งประเทศไทย" }
+      ],
       options: {},
       headerCriminal: [
         {
@@ -165,7 +203,27 @@ export default {
     this.criminalList = data.data;
   },
   methods: {
-    ...mapActions("setting", ["getCriminallist"])
+    ...mapActions("setting", ["getCriminallist", "createCriminallist"]),
+    async createCriminal() {
+      let payload = {
+        ...this.formCreate,
+        operator: this.$store.state.auth.agent.toUpperCase()
+      };
+      // console.log(payload, "payload");
+      await this.createCriminallist(payload);
+      await this.$swal({
+        icon: "success",
+        title: `เพิ่มรายชื่อ มิจฉาชีพเรียบร้อย`,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 1500
+      }).then(async result => {
+        if (result) {
+          this.$refs.formcreate.reset();
+          await this.$fetch();
+        }
+      });
+    }
   }
 };
 </script>

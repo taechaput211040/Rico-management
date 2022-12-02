@@ -34,6 +34,21 @@ export function getCriminallist(context, params) {
     }
   });
 }
+export function createCriminallist(context, body) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_CRIMINAL}/AddCriminal`,
+        body
+      );
+
+      resolve(response);
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 //เพิ่มรายชื่อ มิจฉาชีพ
 //พนักงาน

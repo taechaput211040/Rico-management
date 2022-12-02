@@ -250,11 +250,16 @@ export default {
   },
   async fetch() {
     this.loading = true;
-    let response = await this.getSetting();
-    this.datasetting = response;
-    console.log(this.datasetting, "this.datasetting");
-    let message = await this.getMessage();
-    this.message = message;
+    try {
+      let response = await this.getSetting();
+      this.datasetting = response;
+      console.log(this.datasetting, "this.datasetting");
+      let message = await this.getMessage();
+      this.message = message;
+    } catch (error) {
+      console.log(error);
+    }
+
     this.loading = false;
     // this.message = response.message;
   },

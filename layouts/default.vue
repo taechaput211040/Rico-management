@@ -347,6 +347,7 @@ export default {
     try {
       await this.getUser();
       await this.getFeature();
+      await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter(x => {
         return x.status == true;
@@ -374,7 +375,7 @@ export default {
         );
       } else if (!this.$store.state.auth.menu) {
         this.items = [];
-        this.$router.push("/test")
+        this.$router.push("/test");
       }
 
       console.log(this.items.length, "items");
@@ -386,7 +387,7 @@ export default {
     await this.CheckOrganize();
   },
   methods: {
-    ...mapActions("auth", ["getUser", "getFeature", "logout"]),
+    ...mapActions("auth", ["getUser", "getFeature", "logout", "getLockdown"]),
     ...mapActions("account", ["getPalletePreset"]),
     ...mapMutations("auth", ["set_logout"]),
     async CheckOrganize() {

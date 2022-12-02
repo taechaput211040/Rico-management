@@ -58,7 +58,14 @@
           :key="index"
           v-for="(item, index) in grouplist.casino.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+             <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -72,27 +79,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -111,7 +109,14 @@
           :key="index"
           v-for="(item, index) in grouplist.slot.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+             <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -125,27 +130,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -164,7 +160,14 @@
           :key="index"
           v-for="(item, index) in grouplist.esport.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+              <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -178,27 +181,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -217,7 +211,14 @@
           :key="index"
           v-for="(item, index) in grouplist.fishing.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+              <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -231,27 +232,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -270,7 +262,14 @@
           :key="index"
           v-for="(item, index) in grouplist.horse.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+              <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -284,27 +283,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -323,7 +313,14 @@
           :key="index"
           v-for="(item, index) in grouplist.lotto.results"
         >
-          <div class="rounded-lg elevation-4 pa-2">
+             <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -333,30 +330,22 @@
                 width="250"
               />
             </div>
+
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -376,6 +365,13 @@
           v-for="(item, index) in grouplist.sportbook.results"
         >
           <div class="rounded-lg elevation-4 pa-2">
+            <v-switch
+              class="my-2 switch-center"
+              :label="`${item.status ? 'เปิด' : 'ปิด'}`"
+              v-model="item.status"
+              hide-details="auto"
+            >
+            </v-switch>
             <div class="text-center d-flex">
               <v-img
                 v-if="item.image"
@@ -389,27 +385,18 @@
             <p class="text-center frist_color pa-2">
               {{ item.name }}
             </p>
-            <v-switch
-              class="my-2"
-              v-model="item.status"
-              name="check-button"
-              hide-details="auto"
-              switch
-            >
-              <template v-slot:label>
-                <div class="text-center">
-                  <v-btn
-                    small
-                    rounded
-                    outlined
-                    class="ml-0 ml-sm-3 ml-lg-6"
-                    color="primary"
-                    @click="openDetail(item)"
-                    >images</v-btn
-                  >
-                </div>
-              </template>
-            </v-switch>
+
+            <div class="text-center">
+              <v-btn
+                small
+                rounded
+                outlined
+                class="ml-0 ml-sm-3 ml-lg-6"
+                color="primary"
+                @click="openDetail(item)"
+                >images</v-btn
+              >
+            </div>
           </div>
         </div>
       </draggable>
@@ -497,7 +484,9 @@
               </div>
 
               <div>
-                <v-btn color="black" dark small @click="uploadImage">upload</v-btn>
+                <v-btn color="black" dark small @click="uploadImage"
+                  >upload</v-btn
+                >
               </div>
             </div>
           </v-col>
@@ -586,7 +575,9 @@
               </div>
 
               <div>
-                <v-btn color="black" dark small @click="uploadImage">upload</v-btn>
+                <v-btn color="black" dark small @click="uploadImage"
+                  >upload</v-btn
+                >
               </div>
             </div>
           </v-col>

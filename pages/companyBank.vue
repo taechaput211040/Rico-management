@@ -517,7 +517,7 @@ export default {
         allowOutsideClick: false,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "สร้าง",
+        confirmButtonText: `${status.visibletomember ? "เปิด" : "ปิด"}`,
         cancelButtonText: "ยกเลิก"
       }).then(async result => {
         if (result.isConfirmed) {
