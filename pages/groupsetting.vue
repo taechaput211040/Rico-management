@@ -648,7 +648,7 @@ export default {
       data.append("file", this.file);
       data.append("filename", this.file.name);
       try {
-        let response = await axios.post("/api/Upload", data);
+        let response = await this.$axios.post("/api/Upload", data);
         //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
         console.log(response.data);

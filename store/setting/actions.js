@@ -269,7 +269,7 @@ export function getGroup({ commit, state }) {
     if (!state.provider_hash) {
       try {
         let response = await this.$axios.get(
-          `https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5`
+          `https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/a4cd92ab1f743a02f94952d8f0b2ec62`
         );
         localStorage.setItem("groups", JSON.stringify(response.data.group));
         commit("setProviderHash", response.data);
@@ -288,14 +288,16 @@ export function getGame({ commit, state }) {
   return new Promise(async (resolve, reject) => {
     if (!state.game_hash) {
       try {
-        let response = await this.$axios.get("/api/Game");
-        //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+        let response = await this.$axios.get(
+          "https://all-json-config-ehhif4jpyq-as.a.run.app/api/Provider/Game/admin/aca3656a066a8407ec390f52c297f078"
+        );
 
         localStorage.setItem("Gamelist", JSON.stringify(response.data));
         commit("setGameHash", response.data);
 
-        reject(response.data);
+        resolve(response.data);
       } catch (error) {
+        reject(error);
         console.log(error);
       }
     }
