@@ -400,6 +400,7 @@ export default {
     },
     logdownweb() {
       console.log("lockdown");
+
       // window.location = "http://www.google.com";
       window.location = "https://www.youtube.com/watch?v=RE_pN8ZUoNE";
     },
