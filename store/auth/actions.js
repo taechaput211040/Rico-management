@@ -400,161 +400,126 @@ export function GetInfomation(context) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = {
-        data: {
-          OneMonthProfit: 10016,
-          incomingSMS: [],
-          dpbank: [
-            {
-              Companybank: "KBANK",
-              Companybankacountnumber: "1171622669",
-              Companybankname: "วัชรากร ดิสคุ้ม",
-              agentPrefixCode: "BE",
-              balance: 5442,
-              balanceupdatetime: "2022-02-09 10:53:00",
-              bankAccRef: "X162266X",
-              companyName: "Smartbet",
-              createBy: "adnp",
-              id: "81857d6c-c8d0-4d75-8b5a-dc7729974124",
-              loginname: null,
-              phone: "0997839913",
-              status: true,
-              updateBy: "_RICO_QUEUE",
-              visibletomember: true
-            },
-            {
-              Companybank: "SCB",
-              Companybankacountnumber: "0272694871",
-              Companybankname: "บุญยืน โพธิสุวรรณ",
-              agentPrefixCode: "BE",
-              balance: 0,
-              balanceupdatetime: "2022-02-06 16:00:15",
-              bankAccRef: "X694871",
-              companyName: "Smartbet",
-              createBy: "adnp",
-              id: "8124f318-f804-435a-8be4-d2516e19298d",
-              loginname: "lisa118sp3",
-              phone: "0658621057",
-              status: true,
-              type: false,
-              updateBy: "adnp"
-            },
-            {
-              Companybank: "TRUEWALLET",
-              Companybankacountnumber: "0645609241",
-              Companybankname: "ปริญญา แป้นสุข",
-              agentPrefixCode: "BE",
-              balance: 0,
-              balanceupdatetime: "2022-02-06 16:02:18",
-              bankAccRef: "0645609241",
-              companyName: "Smartbet",
-              createBy: "adnp",
-              id: "34643451-dd29-4205-a4fb-ee4824bcb6b2",
-              loginname: null,
-              phone: "0645609241",
-              status: true,
-              type: false,
-              updateBy: "superadmin2"
-            }
-          ],
-          dplist: [
-            {
-              afcredit: 337,
-              amount: 225,
-              bfcredit: "0",
-              bonusamount: "112.5",
-              companyBank: "RICO",
-              created_at: "2022-01-19 09:58:55",
-              dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-              id: 354,
-              member_id: "BE8778856",
-              remark:
-                "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-              smsdatetime: "2022-01-19T09:27:00",
-              sum: null,
-              topupby: "phoe mu kyi",
-              updated_at: "2022-01-19 09:58:55"
-            },
-            {
-              afcredit: 337,
-              amount: 225,
-              bfcredit: "0",
-              bonusamount: "112.5",
-              companyBank: "checkin",
-              created_at: "2022-01-19 09:58:55",
-              dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-              id: 355,
-              member_id: "BE8778856",
-              remark:
-                "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-              smsdatetime: "2022-01-19T09:27:00",
-              sum: null,
-              topupby: "AUTO",
-              updated_at: "2022-01-19 09:58:55"
-            }
-          ],
-          wdamountoneday: { amount: 600 },
-          wdlist: [
-            {
-              afAmount: null,
-              afcredit: 0,
-              amount: 49,
-              bankAcc: "09970678690",
-              bankName: "WAVEPAY",
-              bfAmount: null,
-              bfcredit: 49,
-              created_at: "2022-01-19 01:30:22",
-              id: 86,
-              name: "htetzaw myo",
-              operator: "Ah Lar Hmwe",
-              remark: "กรุณาทำการโอนด้วยตนเอง",
-              requsettime: "2022-01-19 01:30:18",
-              status: "Success",
-              transferTime: "โอนมือ",
-              type: "common",
-              username: "BE9970678690"
-            },
-            {
-              afAmount: null,
-              afcredit: 0,
-              amount: 50,
-              bankAcc: "09970678690",
-              bankName: "SCB",
-              bfAmount: null,
-              bfcredit: 50,
-              created_at: "2022-01-19 01:30:22",
-              id: 87,
-              name: "htetzaw myo",
-              operator: "Ah Lar Hmwe",
-              remark: "กรุณาทำการโอนด้วยตนเอง",
-              requsettime: "2022-01-19 01:30:18",
-              status: "Error",
-              transferTime: "โอนมือ",
-              type: "common",
-              username: "BE9970678690"
-            }
-          ],
-          wdbank: [
-            {
-              Companybank: "SCB",
-              Companybankacountnumber: "2922448904",
-              Companybankname: "มานะ เอี่ยมสอิ้ง",
-              agentPrefixCode: "BE",
-              balance: 0,
-              balanceupdatetime: "2022-02-06 16:03:28",
-              bankAccRef: "X448904",
-              companyName: "Smartbet",
-              createBy: "adnp",
-              id: "4d9933dd-25bb-4715-a174-2a35ee4f2ab4",
-              loginname: "lisa118sp4",
-              phone: "0886148727",
-              status: true,
-              type: true,
-              updateBy: "adnp",
-              visibletomember: true
-            }
-          ],
-          dpamountoneday: { amount: 1911 }
-        }
+        // data: {
+        //   OneMonthProfit: 10016,
+        //   incomingSMS: [],
+        //   dpbank: [
+        //     {
+        //       Companybank: "KBANK",
+        //       Companybankacountnumber: "1171622669",
+        //       Companybankname: "วัชรากร ดิสคุ้ม",
+        //       agentPrefixCode: "BE",
+        //       balance: 5442,
+        //       balanceupdatetime: "2022-02-09 10:53:00",
+        //       bankAccRef: "X162266X",
+        //       companyName: "Smartbet",
+        //       createBy: "adnp",
+        //       id: "81857d6c-c8d0-4d75-8b5a-dc7729974124",
+        //       loginname: null,
+        //       phone: "0997839913",
+        //       status: true,
+        //       updateBy: "_RICO_QUEUE",
+        //       visibletomember: true
+        //     },
+        //     {
+        //       Companybank: "SCB",
+        //       Companybankacountnumber: "0272694871",
+        //       Companybankname: "บุญยืน โพธิสุวรรณ",
+        //       agentPrefixCode: "BE",
+        //       balance: 0,
+        //       balanceupdatetime: "2022-02-06 16:00:15",
+        //       bankAccRef: "X694871",
+        //       companyName: "Smartbet",
+        //       createBy: "adnp",
+        //       id: "8124f318-f804-435a-8be4-d2516e19298d",
+        //       loginname: "lisa118sp3",
+        //       phone: "0658621057",
+        //       status: true,
+        //       type: false,
+        //       updateBy: "adnp"
+        //     },
+        //     {
+        //       Companybank: "TRUEWALLET",
+        //       Companybankacountnumber: "0645609241",
+        //       Companybankname: "ปริญญา แป้นสุข",
+        //       agentPrefixCode: "BE",
+        //       balance: 0,
+        //       balanceupdatetime: "2022-02-06 16:02:18",
+        //       bankAccRef: "0645609241",
+        //       companyName: "Smartbet",
+        //       createBy: "adnp",
+        //       id: "34643451-dd29-4205-a4fb-ee4824bcb6b2",
+        //       loginname: null,
+        //       phone: "0645609241",
+        //       status: true,
+        //       type: false,
+        //       updateBy: "superadmin2"
+        //     }
+        //   ],
+        //   dplist: [],
+        //   wdamountoneday: { amount: 600 },
+        //   wdlist: [
+        //     {
+        //       afAmount: null,
+        //       afcredit: 0,
+        //       amount: 49,
+        //       bankAcc: "09970678690",
+        //       bankName: "WAVEPAY",
+        //       bfAmount: null,
+        //       bfcredit: 49,
+        //       created_at: "2022-01-19 01:30:22",
+        //       id: 86,
+        //       name: "htetzaw myo",
+        //       operator: "Ah Lar Hmwe",
+        //       remark: "กรุณาทำการโอนด้วยตนเอง",
+        //       requsettime: "2022-01-19 01:30:18",
+        //       status: "Success",
+        //       transferTime: "โอนมือ",
+        //       type: "common",
+        //       username: "BE9970678690"
+        //     },
+        //     {
+        //       afAmount: null,
+        //       afcredit: 0,
+        //       amount: 50,
+        //       bankAcc: "09970678690",
+        //       bankName: "SCB",
+        //       bfAmount: null,
+        //       bfcredit: 50,
+        //       created_at: "2022-01-19 01:30:22",
+        //       id: 87,
+        //       name: "htetzaw myo",
+        //       operator: "Ah Lar Hmwe",
+        //       remark: "กรุณาทำการโอนด้วยตนเอง",
+        //       requsettime: "2022-01-19 01:30:18",
+        //       status: "Error",
+        //       transferTime: "โอนมือ",
+        //       type: "common",
+        //       username: "BE9970678690"
+        //     }
+        //   ],
+        //   wdbank: [
+        //     {
+        //       Companybank: "SCB",
+        //       Companybankacountnumber: "2922448904",
+        //       Companybankname: "มานะ เอี่ยมสอิ้ง",
+        //       agentPrefixCode: "BE",
+        //       balance: 0,
+        //       balanceupdatetime: "2022-02-06 16:03:28",
+        //       bankAccRef: "X448904",
+        //       companyName: "Smartbet",
+        //       createBy: "adnp",
+        //       id: "4d9933dd-25bb-4715-a174-2a35ee4f2ab4",
+        //       loginname: "lisa118sp4",
+        //       phone: "0886148727",
+        //       status: true,
+        //       type: true,
+        //       updateBy: "adnp",
+        //       visibletomember: true
+        //     }
+        //   ],
+        //   dpamountoneday: { amount: 1911 }
+        // }
       };
 
       // let response = await this.$axios.get("GetInfomation")
@@ -567,6 +532,8 @@ export function GetInfomation(context) {
     }
   });
 }
+
+
 // getinformation
 //getautostatus
 export function Autostatus(context) {

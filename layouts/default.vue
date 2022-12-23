@@ -153,8 +153,7 @@
 
       <v-toolbar-title
         class="font-weight-bold mt-5 text-center"
-        style="position: relative;
-    height: 200px;"
+        style="position: relative; height: 200px"
       >
         <v-tooltip bottom color="red">
           <template v-slot:activator="{ on, attrs }">
@@ -277,56 +276,57 @@ export default {
   middleware: "auth",
   data() {
     return {
+      socket: null,
       headersMember: [
         {
           text: "เวลาเข้าเล่นล่าสุด",
           value: "time",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "Username",
           value: "username",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ค่ายเกม",
           value: "provider",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "Game",
           value: "game",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "Ip",
           value: "ip_address",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "อุปกรณ์ที่ใช้เข้าเล่น",
           value: "hardware",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
       showMember: false,
       memberOnline: 26,
       soundsetting: {
         auto: true,
         dp: true,
-        wd: true
+        wd: true,
       },
       dialogsound: false,
       fab: false,
@@ -340,22 +340,44 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "RICO "
+      title: "RICO ",
     };
+  },
+  mounted() {
+    this.socket = this.$socket();
+    if (this.socket) {
+      this.socket.on("deposit", (msg) => {
+        console.log("deposit websocket initiate", msg);
+        this.socketDP(JSON.parse(msg));
+        // this.messages.push(JSON.parse(msg));
+      });
+
+      this.socket.on("withdraw", (msg) => {
+        console.log("withdraw websocket initiate", msg);
+        this.socketWD(JSON.parse(msg));
+        // this.messages.push(JSON.parse(msg));
+      });
+    }
+  },
+  async fetch() {
+    let data = await this.$store.dispatch("report/GetDplist");
+    let wd = await this.$store.dispatch("report/GetWdlist");
+    console.log(data, "datatatadp");
+    console.log(wd, "wd");
   },
   async created() {
     try {
       await this.getUser();
       await this.getFeature();
-      await this.getLockdown();
+      // await this.getLockdown();
 
-      let menuitem = await this.$store.state.menu.filter(x => {
+      let menuitem = await this.$store.state.menu.filter((x) => {
         return x.status == true;
       });
       let item = await new Promise((resolve, reject) => {
-        menuitem.map(x => {
+        menuitem.map((x) => {
           if (x.subLinks) {
-            x.subLinks = x.subLinks.filter(y => {
+            x.subLinks = x.subLinks.filter((y) => {
               return y.status == true;
             });
           }
@@ -370,7 +392,7 @@ export default {
 
       this.items = [...item];
       if (this.$store.state.auth.menu) {
-        this.items = await this.items.filter(menu =>
+        this.items = await this.items.filter((menu) =>
           this.$store.state.auth.menu.includes(menu.permission)
         );
       } else if (!this.$store.state.auth.menu) {
@@ -387,7 +409,15 @@ export default {
     await this.CheckOrganize();
   },
   methods: {
-    ...mapActions("auth", ["getUser", "getFeature", "logout", "getLockdown"]),
+    ...mapActions("auth", [
+      "getUser",
+      "getFeature",
+      "logout",
+      "getLockdown",
+      "GetDplist",
+      "GetWdlist",
+    ]),
+    ...mapMutations("report", ["socketDP", "socketWD"]),
     ...mapActions("account", ["getPalletePreset"]),
     ...mapMutations("auth", ["set_logout"]),
     async CheckOrganize() {
@@ -422,8 +452,8 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss"></style>

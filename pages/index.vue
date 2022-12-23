@@ -1,11 +1,11 @@
 <template>
   <v-flex>
     <!-- sectioncard -->
-
+    <!-- {{ depositlist }} -->
     <v-row>
       <div class="col-12 col-lg-4">
         <h2 class="pa-2">ยอดรวมทั้งหมด</h2>
-        <div class="row ">
+        <div class="row">
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
               :value="datarander.depositbalance"
@@ -28,7 +28,7 @@
               iconSrc="https://smart-binary.cloud/storage/Rico/today.gif"
             ></card-view>
           </div>
-          <div class="col-12 col-md-6  col-lg-12 col-xl-6 col-sm-6">
+          <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
               :condition="true"
               title="กำไร/ขาดทุน(ทั้งเดือน)"
@@ -87,12 +87,12 @@
             :items="dpbank"
             hide-default-footer
           >
-            <template #[`item.Companybank`]="{item}">
+            <template #[`item.Companybank`]="{ item }">
               <div class="pa-2">
                 <img-bank :value="item.Companybank"></img-bank>
               </div>
             </template>
-            <template #[`item.Companybankname`]="{item}">
+            <template #[`item.Companybankname`]="{ item }">
               <span class="font-weight-bold">
                 {{ item.Companybankname }}<br />
                 {{ item.Companybankacountnumber }}</span
@@ -115,12 +115,12 @@
             :items="wdbank"
             hide-default-footer
           >
-            <template #[`item.Companybank`]="{item}">
+            <template #[`item.Companybank`]="{ item }">
               <div class="pa-2">
                 <img-bank :value="item.Companybank"></img-bank>
               </div>
             </template>
-            <template #[`item.Companybankname`]="{item}">
+            <template #[`item.Companybankname`]="{ item }">
               <span class="font-weight-bold">
                 {{ item.Companybankname }}<br />
                 {{ item.Companybankacountnumber }}</span
@@ -147,7 +147,7 @@
           <v-data-table
             :headers="logFailedColumn"
             :items="incomingSMS"
-            hide-default-footer
+            :items-per-page="5"
           >
             <template #[`item.actions`]>
               <v-btn small rounded color="primary">ตรวจสอบ</v-btn>
@@ -163,18 +163,18 @@
 
           <v-data-table
             :headers="depositColumn"
-            :items="dplist"
-            hide-default-footer
+            :items="depositlist"
+            :items-per-page="5"
           >
-            <template #[`item.no`]="{item}">
-              <div class="text-center my-3 my-md-2  showdetail">
+            <template #[`item.no`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <img-bank :value="item.companyBank"></img-bank>
                 <v-chip
                   class="font-weight-bold pa-2 my-1 elevation-2"
                   color="primary"
                   small
                   ><v-avatar left> <v-icon>mdi-account-circle</v-icon></v-avatar
-                  >{{ item.member_id }}</v-chip
+                  >{{ item.username }}</v-chip
                 >
                 <br />
                 <div class="text-start font-weight-bold">
@@ -186,7 +186,7 @@
                     color="success"
                     label
                   >
-                    {{ item.amount }} บาท </v-chip
+                    {{ item.deposit_amount | dateFormat }} บาท </v-chip
                   ><br />
                   โบนัส :
                   <v-chip
@@ -196,7 +196,7 @@
                     color="success"
                     label
                   >
-                    {{ item.bonusamount }} บาท</v-chip
+                    {{ item.bonusamount ?? 0 }} บาท</v-chip
                   ><br />
                   โดย :
                   <v-chip
@@ -215,13 +215,13 @@
                     color="pink"
                     label
                   >
-                    {{ item.topupby }}</v-chip
+                    {{ item.topupby ?? item.bank_name }}</v-chip
                   >
                 </div>
               </div>
             </template>
-            <template #[`item.timeTransection`]="{item}">
-              <div class="text-center my-3 my-md-2  showdetail">
+            <template #[`item.timeTransection`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <v-chip
                   class="font-weight-bold pa-2 elevation-2"
                   color="grey darken-4"
@@ -230,9 +230,9 @@
                   dark
                   ><v-icon class="mr-1" small>mdi-timer</v-icon>เติม</v-chip
                 ><br />
-                {{ item.created_at }}<br />
+                {{ item.created_at ?? item.deposit_time | dateFormat }}<br />
                 <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 "
+                  class="font-weight-bold pa-2 elevation-2 mt-2"
                   color="grey darken-4"
                   dark
                   label
@@ -241,21 +241,21 @@
                   <v-icon class="mr-1" small>mdi-message-processing</v-icon
                   >SMS</v-chip
                 ><br />
-                {{ item.smsdatetime }}<br />
+                {{ item.smsdatetime ?? item.sms_time | dateFormat }}<br />
               </div>
             </template>
-            <template #[`item.credit`]="{item}">
-              <div class="text-center my-3 my-md-2  showdetail">
+            <template #[`item.credit`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <div class="my-2">
                   <span class="font-weight-bold"> หลังเติม</span>
                   <br />
                   <v-icon color="success">mdi-menu-up</v-icon>
-                  {{ item.afcredit }}<br />
+                  {{ item.afcredit ?? item.after_balance }}<br />
                 </div>
 
                 <div class="my-2">
                   <span class="font-weight-bold"> ก่อนเติม</span><br />
-                  {{ item.bfcredit }}<br />
+                  {{ item.bfcredit ?? item.before_balance }}<br />
                 </div>
               </div>
             </template>
@@ -268,16 +268,16 @@
       <v-col cols="12" md="12" lg="4">
         <v-card width="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold error--text">
-            รายการถอนเงินล่าสุด 20 รายการ
+            รายการถอนเงินล่าสุด {{ withdrawlist.length }} รายการ
           </v-card-title>
 
           <v-data-table
             :headers="withdrawColumn"
-            :items="wdlist"
-            hide-default-footer
+            :items="withdrawlist"
+            :items-per-page="5"
           >
-            <template #[`item.no`]="{item}">
-              <div class="text-center my-3 my-md-2  showdetail">
+            <template #[`item.no`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <div class="font-weight-bold">
                   โอนไป<br />
                   <img-bank :value="item.bankName"></img-bank>
@@ -309,10 +309,10 @@
                 </div>
               </div>
             </template>
-            <template #[`item.timeTransection`]="{item}">
-              <div class="text-center my-3 my-md-2  showdetail">
+            <template #[`item.timeTransection`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2  mb-1"
+                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
                   color="grey darken-4"
                   label
                   x-small
@@ -321,7 +321,7 @@
                 ><br />
                 {{ item.requsettime }}<br />
                 <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2  mb-1"
+                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
                   color="grey darken-4"
                   label
                   x-small
@@ -330,7 +330,7 @@
                 ><br />
                 {{ item.transferTime }}<br />
                 <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2  mb-1"
+                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
                   color="grey darken-4"
                   label
                   x-small
@@ -338,9 +338,9 @@
                   ><v-icon class="mr-1" small>mdi-credit-card</v-icon
                   >เครดิตก่อน</v-chip
                 ><br />
-                {{ item.bfcredit }}<br />
+                {{ item.bfcredit | dateFormat }}<br />
                 <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2  mb-1"
+                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
                   color="grey darken-4"
                   label
                   x-small
@@ -349,18 +349,18 @@
                   <v-icon class="mr-1" small>mdi-credit-card</v-icon
                   >เครดิตหลัง</v-chip
                 ><br />
-                {{ item.afcredit }}
+                {{ item.afcredit | dateFormat }}
               </div>
             </template>
-            <template #[`item.credit`]="{item}">
-              <div class="text-center my-3 my-md-2 showdetail  ">
+            <template #[`item.credit`]="{ item }">
+              <div class="text-center my-3 my-md-2 showdetail">
                 <span class="font-weight-bold">ยอดถอน</span> <br />
                 <v-chip
                   class="ma-2 font-weight-bold"
                   color="error"
                   label
                   outlined
-                  >{{ item.amount }} บาท</v-chip
+                  >{{ item.amount | dateFormat }} บาท</v-chip
                 ><br />
                 <div class="card_status my-2">
                   <span class="font-weight-bold">status</span><br />
@@ -378,13 +378,13 @@
                   <br />
                 </div>
                 <span class="font-weight-bold">หลังเติม</span><br />
-                <span v-if="!item.afAmount" class="font-weight-bold">
-                  -
-                </span>
+                <span v-if="!item.afAmount" class="font-weight-bold"> - </span>
                 <span v-else> - </span>
                 <br />
                 <span class="font-weight-bold">ก่อนเติม</span><br />
-                <v-icon color="error">mdi-menu-down{{ item.afAmount }}</v-icon>
+                <v-icon color="error"
+                  >mdi-menu-down{{ item.afAmount | dateFormat }}</v-icon
+                >
               </div>
             </template>
             <template #[`item.actions`]>
@@ -414,6 +414,14 @@ import { mapActions } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 import GradientInput from "../components/palette/GradientInput.vue";
 export default {
+  computed: {
+    depositlist() {
+      return this.$store.state.report.dplist ?? [];
+    },
+    withdrawlist() {
+      return this.$store.state.report.wdlist ?? [];
+    },
+  },
   components: { ImgBank, GradientInput },
   async fetch() {
     try {
@@ -434,7 +442,7 @@ export default {
         depositbalance: null,
         withdrawbalance: null,
         profitlossDate: null,
-        profitlossmounth: null
+        profitlossmounth: null,
       },
       incomingSMS: [],
       dpbank: [],
@@ -444,110 +452,110 @@ export default {
           text: "ธนาคาร",
           align: "center",
           value: "Companybank",
-          sortable: true
+          sortable: true,
         },
         {
           text: "ชื่อ",
           value: "Companybankname",
           align: "center",
-          sortable: true
+          sortable: true,
         },
         {
           text: "อัพเดทยอดคงเหลือ",
           value: "balanceupdatetime",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ยอดเงินคงเหลือ",
           value: "balance",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       bankWithdrawColumn: [
         {
           text: "ธนาคาร",
           align: "center",
           value: "Companybank",
-          sortable: true
+          sortable: true,
         },
         {
           text: "ชื่อ",
           value: "Companybankname",
           align: "center",
-          sortable: true
+          sortable: true,
         },
         {
           text: "อัพเดทยอดคงเหลือ",
           value: "balanceupdatetime",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ยอดเงินคงเหลือ",
           value: "balance",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       logFailedColumn: [
         {
           text: "ธนาคาร",
           align: "center",
           value: "Companybank",
-          sortable: true
+          sortable: true,
         },
         {
           text: "เวลาจาก SMS",
           value: "smsdatetime",
           align: "center",
-          sortable: true
+          sortable: true,
         },
         {
           text: "จำนวนเงิน",
           value: "amount",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       depositColumn: [
         {
           text: "รายการ",
           align: "center",
           value: "no",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เวลาเติมเครดิต",
           value: "timeTransection",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เครดิต ก่อน/หลัง",
           value: "credit",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       withdrawColumn: [
         {
@@ -555,52 +563,57 @@ export default {
           align: "center",
           value: "no",
           sortable: false,
-          class: "col-4"
+          class: "col-4",
         },
         {
           text: "เวลา ถอน/โอน",
           value: "timeTransection",
           align: "center",
           sortable: false,
-          class: "col-3"
+          class: "col-3",
         },
         {
           text: "จำนวน",
           value: "credit",
           align: "center",
           sortable: false,
-          class: "col-3"
+          class: "col-3",
         },
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false,
-          class: "col-2"
-        }
+          class: "col-2",
+        },
       ],
       actionBank: [
         {
           name: "SCB",
-          status: "off"
+          status: "off",
         },
         {
           name: "KBANK",
-          status: "off"
+          status: "off",
         },
         {
           name: "TRUEWALLET",
-          status: "off"
-        }
+          status: "off",
+        },
       ],
 
       dplist: [],
-      wdlist: []
+      wdlist: [],
     };
   },
 
   methods: {
-    ...mapActions("auth", ["GetInfomation", "Autostatus"]),
+    ...mapActions("auth", [
+      "GetInfomation",
+      "Autostatus",
+      "GetDplist",
+      "GetWdlist",
+    ]),
     setCardshow(data) {
       if (data) {
         this.datarander = {
@@ -608,7 +621,7 @@ export default {
           withdrawbalance: data.wdamountoneday.amount,
           profitlossDate:
             data.dpamountoneday.amount - data.wdamountoneday.amount,
-          profitlossmounth: data.OneMonthProfit
+          profitlossmounth: data.OneMonthProfit,
         };
         this.dpbank = data.dpbank;
         this.wdbank = data.wdbank;
@@ -625,8 +638,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss"></style>
