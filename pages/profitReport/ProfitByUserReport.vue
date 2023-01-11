@@ -174,7 +174,11 @@ export default {
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
-      }
+      },
+      page: 1,
+      limit: 10,
+      column_order: 'deposit',
+      order: 'DESC'
     };
   },
   async fetch() {
@@ -186,10 +190,27 @@ export default {
     searchdata() {
       console.log(this.dateFilter);
     },
+    axiosParams(){
+      let params = ''
+      params += 'start=' +this.dateFilter.startDate;
+      params += '&end=' + this.dateFilter.endDate;
+      params += '&company=' + localStorage.getItem('company');
+      params += '&agent=' + localStorage.getItem('agent');
+      params += '&page=' + this.page;
+      params += '&limit=' + this.limit;
+      params += '&column_order=' + this.column_order;
+      params += '&order=' + this.order;
+      console.log(params)
+      return params
+    },
     async getReport() {
       try {
-        let response = await this.getProfitByUserReport(this.dateFilter);
-        this.response = response.data;
+        let params = this.axiosParams();
+        console.log(process.env.ALL_PROFIT_LOSS);
+        console.log(params);
+        let response = await this.getProfitByUserReport(params);
+        this.response = response;
+        console.log(this.response)
       } catch (error) {
         console.log(error);
       }
