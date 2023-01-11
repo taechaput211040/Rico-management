@@ -17,7 +17,7 @@
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="ฝากรวม"
+            title="จำนวนครั้งที่ฝาก"
             :value="response.deposit_count + ' ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
@@ -30,7 +30,7 @@
           ></card-report> </v-col
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="ถอน"
+            title="จำนวนครั้งที่ถอน"
             :value="response.withdraw_count + ' ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
@@ -115,14 +115,14 @@ export default {
         },
         {
           text: "จำนวนครั้งที่ฝาก",
-          value: "deposit_count",
+          value: "dp_count",
           align: "center",
           sortable: false,
           class: "font-weight-bold "
         },
         {
           text: "ฝากทั้งหมด",
-          value: "deposit_total",
+          value: "deposit",
           align: "center",
           sortable: false,
           class: "font-weight-bold "
@@ -144,7 +144,7 @@ export default {
         },
         {
           text: "กำไรขาดทุน",
-          value: "total",
+          value: "winlose",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -170,13 +170,13 @@ export default {
       itemreport: [],
       dateFilter: {
         inputfilter: "",
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
       },
       page: 1,
-      limit: 10,
+      limit: undefined,
       column_order: 'deposit',
       order: 'DESC'
     };
@@ -189,15 +189,30 @@ export default {
     getamount() {},
     searchdata() {
       console.log(this.dateFilter);
+      this.getReport();
+    },
+    formatDate(date) {
+      let the_day = new Date(date),
+        month = '' + (the_day.getMonth() + 1),
+        day = '' + the_day.getDate(),
+        year = the_day.getFullYear();
+
+      if (month.length < 2)
+        month = '0' + month;
+      if (day.length < 2)
+        day = '0' + day;
+      return [year, month, day].join('-');
     },
     axiosParams(){
       let params = ''
-      params += 'start=' +this.dateFilter.startDate;
-      params += '&end=' + this.dateFilter.endDate;
+      params += 'start=' + this.formatDate(this.dateFilter.startDate);
+      params += '&end=' + this.formatDate(this.dateFilter.endDate);
       params += '&company=' + localStorage.getItem('company');
       params += '&agent=' + localStorage.getItem('agent');
       params += '&page=' + this.page;
-      params += '&limit=' + this.limit;
+      if(this.limit == 'undefined'){}else{
+        params += '&limit=' + this.limit;
+      }
       params += '&column_order=' + this.column_order;
       params += '&order=' + this.order;
       console.log(params)
@@ -206,8 +221,8 @@ export default {
     async getReport() {
       try {
         let params = this.axiosParams();
-        console.log(process.env.ALL_PROFIT_LOSS);
-        console.log(params);
+        // console.log(process.env.ALL_PROFIT_LOSS);
+        // console.log(params);
         let response = await this.getProfitByUserReport(params);
         this.response = response;
         console.log(this.response)

@@ -154,12 +154,22 @@ export default {
     search() {
       let response = this.getFilterParameter();
 
-      this.$emit("search", response);
+      this.$emit("search");
     },
     toyesterday() {
+      let now = new Date();
+      this.filter.startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1)
+      this.filter.startTime = new Date().setTime(0,0,0,1);
+      this.filter.endDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
+      this.filter.endTime = new Date().setTime(23,59,59,999);
       this.$emit("yesterday");
     },
     today() {
+      let now = new Date();
+      this.filter.startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
+      this.filter.startTime = new Date().setTime(0,0,0,1);
+      this.filter.endDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
+      this.filter.endTime = new Date().setTime(23,59,59,999);
       this.$emit("today");
     }
   }

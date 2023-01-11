@@ -36,7 +36,7 @@ export async function getProfitByUserReport({ commit }, params){
   return new Promise(async (resolve, reject) => {
     try {
       let {data} = await this.$axios.get(
-        `${process.env.ALL_PROFIT_LOSS}/api/profitloss_agent/date?${params}`
+        `${process.env.ALL_PROFIT_LOSS}/api/profitloss_member/date?${params}`
       );
       console.log(data);
 
@@ -225,7 +225,7 @@ export async function getPromotionReport({ commit }) {
           withdraw: 1550
         }
       };
-      // let response = await api.get(`/api/getPromotionReport`, {
+      // let response = await api.get(`/api/bonus_member/date`, {
       //   params: {
       //     ..fillter
       //   }
