@@ -149,6 +149,22 @@ export default {
           sortable: false,
           class: "font-weight-bold ",
           cellClass: "font-weight-bold "
+        },
+        {
+          text: "อัพไลน์",
+          value: "upline",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold ",
+          cellClass: "font-weight-bold "
+        },
+        {
+          text: "เบอร์โทร",
+          value: "telephone",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold ",
+          cellClass: "font-weight-bold "
         }
       ],
       itemreport: [],

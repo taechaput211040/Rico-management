@@ -35,6 +35,19 @@ export async function getProfitReport({ commit }) {
 export async function getProfitByUserReport({ commit }) {
   return new Promise(async (resolve, reject) => {
     try {
+      // let { data } = await this.$axios.get(
+      //   `${
+      //     process.env.ALL_MEMBER
+      //   }/api/profitloss_member/date?${localStorage.getItem(
+      //     "company"
+      //   )}/${localStorage.getItem("agent")}`,
+      //   {
+      //     params: {
+      //       ...fillter
+      //     }
+      //   }
+      // );
+      // resolve(data);
       const response = {
         data: {
           current_page: 1,
@@ -45,7 +58,9 @@ export async function getProfitByUserReport({ commit }) {
               withdraw_count: null,
               deposit_total: 1000,
               withdraw_total: null,
-              total: 1000
+              total: 1000,
+              telephone: '0899999991',
+              upline: 'test',
             },
             {
               username: "BE953145403",
