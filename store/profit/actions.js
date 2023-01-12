@@ -1,30 +1,28 @@
 //กำไร / ขาดทุน//
-export async function getProfitReport({ commit }) {
+export async function getProfitReport({ commit }, params) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = {
-        data: {
-          amount: 1050,
-          bonus: 812.5,
-          bonusAllDay: 187.5,
-          bonusCheckin: 178,
-          bonusCreditfree: 0,
-          bonusDp7Days: 0,
-          bonusFirstDp: 0,
-          bonusManualTopup: 150,
-          bonusNewMember: 255,
-          bonusWheel: 0,
-          totalCashback: 42,
-          totalbonus: 812.5,
-          withdraw: 239
-        }
-      };
-      // let response = await api.get(`/api/getProfitReport`, {
-      //   params: {
-      //     ..fillter
+      // const response = {
+      //   data: {
+      //     amount: 1050,
+      //     bonus: 812.5,
+      //     bonusAllDay: 187.5,
+      //     bonusCheckin: 178,
+      //     bonusCreditfree: 0,
+      //     bonusDp7Days: 0,
+      //     bonusFirstDp: 0,
+      //     bonusManualTopup: 150,
+      //     bonusNewMember: 255,
+      //     bonusWheel: 0,
+      //     totalCashback: 42,
+      //     totalbonus: 812.5,
+      //     withdraw: 239
       //   }
-      // });
-      resolve(response);
+      // };
+      let {data} = await this.$axios.get(
+        `${process.env.ALL_PROFIT_LOSS}/api/profitloss_member/date?${params}`
+      );
+      resolve(data);
     } catch (error) {
       reject(error);
     }
