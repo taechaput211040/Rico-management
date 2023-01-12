@@ -11,34 +11,34 @@
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวน user ทั้งหมด "
-            :value="response.total + ' คน'"
+            :value="total_user + ' คน'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ฝาก"
-            :value="response.deposit_count + ' ครั้ง'"
+            :value="total_dp_count + ' ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="รวมทั้งหมด"
-            :value="response.deposit_total + ' บาท'"
+            title="ยอดฝากทั้งหมด"
+            :value="total_dp_amount + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/wallet.png"
           ></card-report> </v-col
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ถอน"
-            :value="response.withdraw_count + ' ครั้ง'"
+            :value="total_wd_amount + ' ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="รวมถอน "
-            :value="response.withdraw_total + ' บาท'"
+            title="ยอดถอนทั้งหมด "
+            :value="total_wd_amount + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/withdrawbank.png"
           ></card-report>
         </v-col>
@@ -46,7 +46,7 @@
           <card-report
             title="กำไร/ขาดทุน"
             :condition="true"
-            :value="response.transaction_total"
+            :value="profit_loss"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report> </v-col
       ></v-row>
@@ -62,27 +62,27 @@
               {{ index + 1 }}
             </span>
           </template>
-          <template #[`item.withdraw_count`]="{item}">
-            <span v-if="item.withdraw_count == null">
+          <template #[`item.wd_count`]="{item}">
+            <span v-if="item.wd_count == null">
               0
             </span>
             <span v-else>
-              {{ item.withdraw_count }}
+              {{ item.wd_count }}
             </span>
           </template>
-          <template #[`item.withdraw_total`]="{item}">
-            <span v-if="item.withdraw_total == null">
+          <template #[`item.withdraw`]="{item}">
+            <span v-if="item.withdraw == null">
               0
             </span>
             <span v-else>
-              {{ item.withdraw_total }}
+              {{ item.withdraw }}
             </span>
           </template>
-          <template #[`item.total`]="{item}">
-            <span v-if="item.total > 0" class="success--text">
-              +{{ item.total }}
+          <template #[`item.winlose`]="{item}">
+            <span v-if="item.winlose > 0" class="success--text">
+              +{{ item.winlose }}
             </span>
-            <span v-else class="error--text"> {{ item.total }} </span>
+            <span v-else class="error--text"> {{ item.winlose }} </span>
           </template>
         </v-data-table>
       </v-card>
@@ -129,14 +129,14 @@ export default {
         },
         {
           text: "จำนวนครั้งที่ถอน",
-          value: "withdraw_count",
+          value: "wd_count",
           align: "center",
           sortable: false,
           class: "font-weight-bold "
         },
         {
           text: "ถอนทั้งหมด",
-          value: "withdraw_total",
+          value: "withdraw",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -175,8 +175,14 @@ export default {
         endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
       },
+      total_user: 0,
+      total_dp_count: 0,
+      total_dp_amount: 0,
+      total_wd_count: 0,
+      total_wd_amount: 0,
+      profit_loss: 0,
       page: 1,
-      limit: undefined,
+      limit: 10,
       column_order: 'deposit',
       order: 'DESC'
     };
@@ -191,7 +197,8 @@ export default {
       console.log(this.dateFilter);
       this.getReport();
     },
-    formatDate(date) {
+    formatDate(date,date2) {
+      let result = ''
       let the_day = new Date(date),
         month = '' + (the_day.getMonth() + 1),
         day = '' + the_day.getDate(),
@@ -201,18 +208,31 @@ export default {
         month = '0' + month;
       if (day.length < 2)
         day = '0' + day;
-      return [year, month, day].join('-');
+
+      let the_time = new Date(date2),
+      hour = '' + (the_time.getHours()),
+      min = '' + (the_time.getMinutes()),
+      sec = '' + (the_time.getSeconds());
+      if (hour.length < 2)
+        hour = '0' + hour;
+      if (min.length < 2)
+        min = '0' + min;
+      if (sec.length < 2)
+        sec = '0' + sec;
+
+      result = [year, month, day].join('-');
+      result += ' ';
+      result += [hour, min, sec].join(':');
+      result += 'Z';
+      return result;
     },
     axiosParams(){
       let params = ''
-      params += 'start=' + this.formatDate(this.dateFilter.startDate);
-      params += '&end=' + this.formatDate(this.dateFilter.endDate);
+      params += 'start=' + this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
+      params += '&end=' + this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime);
       params += '&company=' + localStorage.getItem('company');
       params += '&agent=' + localStorage.getItem('agent');
       params += '&page=' + this.page;
-      if(this.limit == 'undefined'){}else{
-        params += '&limit=' + this.limit;
-      }
       params += '&column_order=' + this.column_order;
       params += '&order=' + this.order;
       console.log(params)
@@ -225,11 +245,45 @@ export default {
         // console.log(params);
         let response = await this.getProfitByUserReport(params);
         this.response = response;
+        this.total_user = response.data.length;
+        for(let i = 0; i < this.total_user;i++){
+          this.total_wd_count += response.data[i].wd_count;
+          this.total_wd_amount += response.data[i].withdraw;
+          this.total_dp_count += response.data[i].dp_count;
+          this.total_dp_amount += response.data[i].deposit;
+          this.profit_loss += response.data[i].winlose;
+        }
+        console.log(this.response)
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    axiosParamsWithbyPage(page){
+      let params = ''
+      params += 'start=' + this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
+      params += '&end=' + this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime);
+      params += '&company=' + localStorage.getItem('company');
+      params += '&agent=' + localStorage.getItem('agent');
+      params += '&page=' + this.page;
+      params += '&limit=' + this.limit;
+      params += '&column_order=' + this.column_order;
+      params += '&order=' + this.order;
+      console.log(params)
+      return params
+    },
+    async getReportByPage() {
+      try {
+        let params = this.axiosParams();
+        // console.log(process.env.ALL_PROFIT_LOSS);
+        // console.log(params);
+        let response = await this.getProfitByUserReport(params);
+        this.response = response;
         console.log(this.response)
       } catch (error) {
         console.log(error);
       }
     }
+
   }
 };
 </script>
