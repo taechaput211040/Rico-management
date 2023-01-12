@@ -55,6 +55,7 @@
           class="elevation-1"
           :headers="headerCell"
           :items="response.data"
+          :items-per-page="limit"
           hide-default-footer
         >
           <template #[`item.no`]="{index}">
@@ -84,8 +85,20 @@
             </span>
             <span v-else class="error--text"> {{ item.winlose }} </span>
           </template>
+          <template #[`item.upline`]="{item}">
+            {{item.upline == null ? 'N/a' : item.upline}}
+          </template>
+          <template #[`item.telephone`]="{item}">
+            {{item.telephone == null ? 'N/a' : item.telephone}}
+          </template>
         </v-data-table>
       </v-card>
+      <v-pagination
+        v-model="page"
+        :total-visible="7"
+        :length="total_page"
+        @input="onPageChange(page)"
+      ></v-pagination>
     </v-container>
   </v-flex>
 </template>
@@ -182,6 +195,7 @@ export default {
       total_wd_amount: 0,
       profit_loss: 0,
       page: 1,
+      total_page: 0,
       limit: 10,
       column_order: 'deposit',
       order: 'DESC'
@@ -226,6 +240,10 @@ export default {
       result += 'Z';
       return result;
     },
+    onPageChange(page_number){
+      console.log(page_number)
+      this.getReportByPage(page_number);
+    },
     axiosParams(){
       let params = ''
       params += 'start=' + this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
@@ -252,6 +270,9 @@ export default {
           this.total_dp_count += response.data[i].dp_count;
           this.total_dp_amount += response.data[i].deposit;
           this.profit_loss += response.data[i].winlose;
+          this.total_page = Math.ceil(response.data.length/this.limit);
+          console.log(response.data.length);
+          console.log( Math.ceil(response.data.length/this.limit) );
         }
         console.log(this.response)
       } catch (error) {
@@ -271,9 +292,9 @@ export default {
       console.log(params)
       return params
     },
-    async getReportByPage() {
+    async getReportByPage(page_number) {
       try {
-        let params = this.axiosParams();
+        let params = this.axiosParamsWithbyPage(page_number);
         // console.log(process.env.ALL_PROFIT_LOSS);
         // console.log(params);
         let response = await this.getProfitByUserReport(params);
