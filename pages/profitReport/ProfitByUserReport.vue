@@ -1,5 +1,8 @@
 <template>
   <v-flex>
+    <div v-if="isLoading">
+      <loading-page></loading-page>
+    </div>
     <v-container
       ><h2 class="mb-2">รายงานฝาก /ถอน ตามบุคคล</h2>
       <search-filter
@@ -11,7 +14,7 @@
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวน user ทั้งหมด "
-            :value="total_user + ' คน'"
+            :value="response.total + ' คน'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
@@ -31,7 +34,7 @@
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ถอน"
-            :value="total_wd_amount + ' ครั้ง'"
+            :value="total_wd_count + ' ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
@@ -93,12 +96,28 @@
           </template>
         </v-data-table>
       </v-card>
-      <v-pagination
-        v-model="page"
-        :total-visible="7"
-        :length="total_page"
-        @input="onPageChange(page)"
-      ></v-pagination>
+      <v-row class="mt-3">
+        <v-col class="col-12 col-md-2">
+          <v-select
+            outlined
+            dense
+            hide-details="auto"
+            v-model="limit"
+            :items="pageSizes"
+            label="รายการต่อหน้า"
+            @change="onHandlePageSizeChange"
+          ></v-select>
+        </v-col>
+        <v-col class="col-12 col-md-8">
+          <v-pagination
+            v-model="page"
+            :total-visible="7"
+            :length="total_page"
+            @input="onPageChange(page)"
+          ></v-pagination>
+        </v-col>
+        <v-col class="col-12 col-md-2"></v-col>
+      </v-row>
     </v-container>
   </v-flex>
 </template>
@@ -188,6 +207,7 @@ export default {
         endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
       },
+      isLoading: false,
       total_user: 0,
       total_dp_count: 0,
       total_dp_amount: 0,
@@ -197,8 +217,9 @@ export default {
       page: 1,
       total_page: 0,
       limit: 10,
-      column_order: 'deposit',
-      order: 'DESC'
+      pageSizes: [5,10,15,25],
+      column_order: 'date',
+      order: 'ASC'
     };
   },
   async fetch() {
@@ -208,7 +229,8 @@ export default {
     ...mapActions("profit", ["getProfitByUserReport"]),
     getamount() {},
     searchdata() {
-      console.log(this.dateFilter);
+      // console.log(this.dateFilter);
+      this.page = 1;
       this.getReport();
     },
     formatDate(date,date2) {
@@ -244,6 +266,12 @@ export default {
       console.log(page_number)
       this.getReportByPage(page_number);
     },
+    onHandlePageSizeChange(){
+      this.getReportByPage(1);
+      this.page = 1;
+      console.log('new limit', this.limit);
+      this.total_page = Math.ceil(this.total_user/this.limit);
+    },
     axiosParams(){
       let params = ''
       params += 'start=' + this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
@@ -251,31 +279,44 @@ export default {
       params += '&company=' + localStorage.getItem('company');
       params += '&agent=' + localStorage.getItem('agent');
       params += '&page=' + this.page;
+      params += '&limit=10000';
       params += '&column_order=' + this.column_order;
       params += '&order=' + this.order;
-      console.log(params)
+      // console.log(params)
       return params
     },
     async getReport() {
+      this.isLoading = true;
       try {
         let params = this.axiosParams();
         // console.log(process.env.ALL_PROFIT_LOSS);
         // console.log(params);
         let response = await this.getProfitByUserReport(params);
         this.response = response;
-        this.total_user = response.data.length;
+        this.total_user = response.total;
+        this.total_wd_count = 0;
+        this.total_wd_amount = 0;
+        this.total_dp_count = 0;
+        this.total_dp_amount = 0;
+        this.profit_loss = 0;
         for(let i = 0; i < this.total_user;i++){
           this.total_wd_count += response.data[i].wd_count;
           this.total_wd_amount += response.data[i].withdraw;
           this.total_dp_count += response.data[i].dp_count;
           this.total_dp_amount += response.data[i].deposit;
           this.profit_loss += response.data[i].winlose;
-          this.total_page = Math.ceil(response.data.length/this.limit);
-          console.log(response.data.length);
-          console.log( Math.ceil(response.data.length/this.limit) );
+          // console.log(response.data.length);
+          // console.log( Math.ceil(response.data.length/this.limit) );
+          // console.log(this.total_user,i);
         }
-        console.log(this.response)
+        this.total_page = Math.ceil(response.total/this.limit);
+        // console.log('-----------------');
+        // console.log(this.total_user, 'user');
+        // console.log( Math.ceil(response.total/this.limit) );
+        // console.log(this.response);
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
       }
     },
@@ -289,18 +330,22 @@ export default {
       params += '&limit=' + this.limit;
       params += '&column_order=' + this.column_order;
       params += '&order=' + this.order;
-      console.log(params)
+      // console.log(params)
       return params
     },
     async getReportByPage(page_number) {
+      await setTimeout(5000);
       try {
+        this.isLoading = true;
         let params = this.axiosParamsWithbyPage(page_number);
         // console.log(process.env.ALL_PROFIT_LOSS);
         // console.log(params);
         let response = await this.getProfitByUserReport(params);
         this.response = response;
-        console.log(this.response)
+        this.isLoading = false;
+        // console.log(this.response,'logs')
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
       }
     }

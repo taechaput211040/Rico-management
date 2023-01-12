@@ -38,7 +38,7 @@ export async function getProfitByUserReport({ commit }, params){
       let {data} = await this.$axios.get(
         `${process.env.ALL_PROFIT_LOSS}/api/profitloss_member/date?${params}`
       );
-      console.log(data);
+      // console.log(data);
 
 
       // const response = {
