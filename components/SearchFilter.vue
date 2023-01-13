@@ -159,17 +159,29 @@ export default {
     toyesterday() {
       let now = new Date();
       this.filter.startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1)
-      this.filter.startTime = new Date().setTime(0,0,0,1);
+      this.filter.startTime = new Date();
+      this.filter.startTime.setHours(0);
+      this.filter.startTime.setMinutes(0);
+      this.filter.startTime.setSeconds(0);
       this.filter.endDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
-      this.filter.endTime = new Date().setTime(23,59,59,999);
+      this.filter.endTime = new Date();
+      this.filter.endTime.setHours(23);
+      this.filter.endTime.setMinutes(59);
+      this.filter.endTime.setSeconds(59);
       this.$emit("yesterday");
     },
     today() {
       let now = new Date();
       this.filter.startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
-      this.filter.startTime = new Date().setTime(0,0,0,1);
+      this.filter.startTime = new Date();
+      this.filter.startTime.setHours(0);
+      this.filter.startTime.setMinutes(0);
+      this.filter.startTime.setSeconds(0);
       this.filter.endDate = new Date(now.getFullYear(),now.getMonth(),now.getDate())
-      this.filter.endTime = new Date().setTime(23,59,59,999);
+      this.filter.endTime = new Date();
+      this.filter.endTime.setHours(23);
+      this.filter.endTime.setMinutes(59);
+      this.filter.endTime.setSeconds(59);
       this.$emit("today");
     }
   }

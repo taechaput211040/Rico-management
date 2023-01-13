@@ -202,6 +202,24 @@ export async function getProfitByUserReport({ commit }, params){
 }
 
 
+export async function getProfitByUserReport2({ commit }, paramsIn){
+  return new Promise(async (resolve, reject) => {
+    try {
+      let {data} = await this.$axios.get(
+        `${process.env.ALL_PROFIT_LOSS}/api/profitloss_member/date`,{
+          params: paramsIn
+        }
+      );
+      // console.log(data);
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+
 //PromotionReport//
 export async function getPromotionReport({ commit }, paramsIn) {
   return new Promise(async (resolve, reject) => {
