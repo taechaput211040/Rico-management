@@ -18,10 +18,8 @@
         {{ value }} บาท
       </div>
     </div>
-    <div class=" card-icontitle mt-3 text-center" v-if="type == 1">
-      <div class="card-detail margin" >
-        {{ value }} บาท
-      </div>
+    <div class="card-icontitle mt-3 text-center" v-else>
+      <div class="card-detail margin " :class="titleclass">{{ value }}</div>
     </div>
   </div>
 </template>
@@ -37,10 +35,6 @@ export default {
     condition: {
       type: Boolean,
       default: false
-    },
-    type: {
-      type: String,
-      default: '0'
     },
     title: { type: String, default: "" },
     value: { type: [Number, String], default: "" },

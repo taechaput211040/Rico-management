@@ -1,5 +1,8 @@
 <template>
   <v-flex>
+    <div v-if="isLoading">
+      <loading-page></loading-page>
+    </div>
     <v-container
       ><h2 class="mb-2">กำไร / ขาดทุน</h2>
       <search-filter
