@@ -370,9 +370,9 @@ export default {
       ],
 
       dateFilter: {
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
       },
       header: [
@@ -403,20 +403,68 @@ export default {
   },
   async fetch() {
     try {
-      let response = await this.getPromotionReport(this.dateFilter);
+      let paramIn = this.axiosParams();
+      console.log(paramIn);
+      let response = await this.getPromotionReport(paramIn);
       this.itemPromotion = response.data;
     } catch (error) {
       console.log(error);
     }
   },
+
   methods: {
     ...mapActions("profit", ["getPromotionReport"]),
-
     getamount() {},
     async opendetail() {
       this.detailDialog = true;
       // let { response } = await api id
       // this.dataDetail == response.data;
+    },
+    getDateTimeStr(date, time){
+      let _date = date;
+      let _time = time;
+
+      let _str = [
+        _date.getFullYear(),
+        _date.getMonth() < 10 ? '0' + (_date.getMonth() + 1) : (_date.getMonth() + 1),
+        _date.getDate() < 10 ? '0'+_date.getDate() : _date.getDate(),
+      ].join('-') +' '+ [
+        _time.getHours() < 10 ? '0'+_time.getHours() : _time.getHours(),
+        _time.getMinutes() < 10 ? '0'+_time.getMinutes() : _time.getMinutes(),
+        _time.getSeconds() < 10 ? '0'+_time.getSeconds() : _time.getSeconds(),
+      ].join(':')+'Z';
+
+      return _str;;
+    },
+    axiosParams(){
+      // start Date()
+      let s_d = this.dateFilter.startDate;
+      let s_t = this.dateFilter.startTime;
+      // end Date()
+      let e_d = this.dateFilter.endDate;
+      let e_t = this.dateFilter.endTime;
+
+      let start_str = this.getDateTimeStr( s_d, s_t );
+      let end_str = this.getDateTimeStr( e_d, e_t );
+
+      // console.log(start_str);
+      // console.log(end_str);
+
+      let params = {
+        start: start_str,
+        end: end_str,
+        company: localStorage.getItem('company'),
+        agent: localStorage.getItem('agent'),
+        page: 1,
+        username: null,
+        limit: 10000,
+        column_order: 'no_bonus_count',
+        order: 'DESC',
+      }
+      // console.log('-----------------');
+      // console.log('this is param');
+      // console.log(params)
+      return params;
     },
     searchdata() {
       console.log(this.dateFilter);

@@ -203,32 +203,38 @@ export async function getProfitByUserReport({ commit }, params){
 
 
 //PromotionReport//
-export async function getPromotionReport({ commit }) {
+export async function getPromotionReport({ commit }, paramsIn) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = {
-        data: {
-          amount: 3979,
-          bonus: 1143.5,
-          bonusAllDay: 0,
-          bonusCheckin: 0,
-          bonusCreditfree: 0,
-          bonusDp7Days: 0,
-          bonusFirstDp: 0,
-          bonusManualTopup: 0,
-          bonusNewMember: 1000,
-          bonusWheel: 30,
-          totalCashback: 113.5,
-          totalbonus: 1143.5,
-          withdraw: 1550
+      // const response = {
+      //   data: {
+      //     amount: 3979,
+      //     bonus: 1143.5,
+      //     bonusAllDay: 0,
+      //     bonusCheckin: 0,
+      //     bonusCreditfree: 0,
+      //     bonusDp7Days: 0,
+      //     bonusFirstDp: 0,
+      //     bonusManualTopup: 0,
+      //     bonusNewMember: 1000,
+      //     bonusWheel: 30,
+      //     totalCashback: 113.5,
+      //     totalbonus: 1143.5,
+      //     withdraw: 1550
+      //   }
+      // };
+      let {data} = await this.$axios.get(
+        `${process.env.ALL_PROFIT_LOSS}/api/bonus_member/date`, {
+          params: paramsIn
         }
-      };
+      );
+      console.log(data);
       // let response = await api.get(`/api/bonus_member/date`, {
       //   params: {
       //     ..fillter
       //   }
       // });
-      resolve(response);
+      resolve(data);
     } catch (error) {
       reject(error);
     }
