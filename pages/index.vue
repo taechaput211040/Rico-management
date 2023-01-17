@@ -8,7 +8,7 @@
         <div class="row ">
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
-              :value="datarander.depositbalance"
+              :value="datarander.depositbalance.toFixed(2)"
               title="รวมยอดฝากทั้งวัน"
               iconSrc="https://smart-binary.cloud/storage/Rico/savemoney.gif"
             ></card-view>
@@ -16,13 +16,13 @@
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
               title="รวมยอดถอนทั้งวัน"
-              :value="datarander.withdrawbalance"
+              :value="datarander.withdrawbalance.toFixed(2)"
               iconSrc="https://smart-binary.cloud/storage/Rico/24hour.gif"
             ></card-view>
           </div>
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
-              :value="datarander.profitlossDate"
+              :value="datarander.profitlossDate.toFixed(2)"
               :condition="true"
               title="กำไร/ขาดทุน(วันนี้)"
               iconSrc="https://smart-binary.cloud/storage/Rico/today.gif"
@@ -32,7 +32,7 @@
             <card-view
               :condition="true"
               title="กำไร/ขาดทุน(ทั้งเดือน)"
-              :value="datarander.profitlossmounth"
+              :value="datarander.profitlossmounth.toFixed(2)"
               iconSrc="https://smart-binary.cloud/storage/Rico/chart.gif"
             ></card-view>
           </div>
@@ -55,8 +55,9 @@
               <v-switch
                 class="mx-auto text-center"
                 true-value="start"
-                false-value="end"
-                v-model="actionBank.kbank"
+                false-value="stop"
+                v-model="actionBankState.kbank"
+                @click="updateStatusBank(actionBankState)"
               >
               </v-switch>
             </div>
@@ -65,8 +66,9 @@
               <v-switch
                 class="mx-auto text-center"
                 true-value="start"
-                false-value="end"
-                v-model="actionBank.true"
+                false-value="stop"
+                v-model="actionBankState.true"
+                @click="updateStatusBank(actionBankState)"
               >
               </v-switch>
             </div>
@@ -75,8 +77,9 @@
               <v-switch
                 class="mx-auto text-center"
                 true-value="start"
-                false-value="end"
-                v-model="actionBank.scb"
+                false-value="stop"
+                v-model="actionBankState.scb"
+                @click="updateStatusBank(actionBankState)"
               >
               </v-switch>
             </div>
@@ -98,9 +101,15 @@
                 {{ item.Companybankacountnumber }}</span
               >
             </template>
-            <template #[`item.actions`]>
-              <v-btn small rounded color="primary">เช็คยอด</v-btn>
-            </template>
+            <template #[`item.actions`]="{item}">
+              <div v-if="item.Companybank == 'SCB' && item.mode == 2">
+                <v-btn  v-if="!checking" small rounded color="primary" @click="checkBalance(item)">เช็คยอด</v-btn>
+                <v-progress-circular v-if="checking"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              
+              </div>  </template>
           </v-data-table>
         </v-card></v-col
       >
@@ -126,8 +135,16 @@
                 {{ item.Companybankacountnumber }}</span
               >
             </template>
-            <template #[`item.actions`]>
-              <v-btn small rounded color="primary">เช็คยอด</v-btn>
+            <template #[`item.actions`]="{item}">
+              <div v-if="item.Companybank == 'SCB' && item.mode == 2">
+                <v-btn  v-if="!checking" small rounded color="primary" @click="checkBalance(item)">เช็คยอด</v-btn>
+                <v-progress-circular v-if="checking"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              
+              </div>
+          
             </template>
           </v-data-table>
         </v-card></v-col
@@ -149,9 +166,25 @@
             :items="incomingSMS"
             hide-default-footer
           >
-            <template #[`item.actions`]>
-              <v-btn small rounded color="primary">ตรวจสอบ</v-btn>
-            </template>
+          <template #[`item.companyBank`]="{item}">
+            <div>
+              <img-bank :value="item.companyBank"></img-bank>
+    
+            </div>
+            <div>
+              {{ item.remark }}
+        
+            </div>
+        </template>
+          <template #[`item.dateSms`]="{item}">
+{{ item.dateSms }}
+         </template>
+          <template #[`item.actions`]="{item}">
+            <span >    <v-btn small rounded color="primary" @click="topupDashboard(item)">เติม</v-btn></span>
+        <span>  <v-btn small rounded color="red" @click="hide(item)">ซ่อน</v-btn></span>
+          
+          </template>
+          
           </v-data-table>
         </v-card>
       </v-col>
@@ -174,7 +207,7 @@
                   color="primary"
                   small
                   ><v-avatar left> <v-icon>mdi-account-circle</v-icon></v-avatar
-                  >{{ item.member_id }}</v-chip
+                  >{{ item.username }}</v-chip
                 >
                 <br />
                 <div class="text-start font-weight-bold">
@@ -291,7 +324,7 @@
                   >{{ item.name }}</v-chip
                 >
                 <div class="font-weight-bold my-1">
-                  <v-icon small color="grey" class="mx-1">mdi-phone</v-icon
+                  <v-icon small color="grey" class="mx-1">mdi-card-text-outline</v-icon
                   >{{ item.bankAcc }}<br />
                   <v-icon small color="grey">mdi-account</v-icon>
                   {{ item.username }}
@@ -407,20 +440,60 @@
       >
     </v-row>
     <!-- secttiondeposit -->
+
+ <!-- secttion dialog -->
+    <v-dialog v-model="dialogTopup" max-width="290">
+      <v-card>
+        <v-card-title>
+          <h4>ยืนยันการเติมเงิน</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div class="my-2">
+            <v-text-field
+            placeholder="กรอก username : "
+            hide-details="auto"
+            v-model="incoming_dashboard.username"
+            dense
+            outlined
+            :rules="rulesFrom.usernameRules"
+            required
+          ></v-text-field>
+         
+          
+          </div>
+          <div class="my-2">
+            จำนวนเงิน : {{incoming_dashboard.amount }}
+       </div>
+         
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+         
+          <v-btn color="success"  small  @click="setsound('wd')"> ยืนยัน</v-btn>
+          <v-btn color="red"  small  @click="dialogTopup = false"> ยกเลิก</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-flex>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions,mapState,mapMutations } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 import GradientInput from "../components/palette/GradientInput.vue";
 export default {
+  computed: {
+    ...mapState("auth",["datarander","dpbank","wdbank","dplist","wdlist","incomingSMS","actionBankState"]),
+  },
   components: { ImgBank, GradientInput },
   async fetch() {
     try {
-      const response = await this.GetInfomation();
-      this.datainformation = response.data;
+      await this.getsatatusBank();
+     await this.GetInfomation();
+   
+      // this.datainformation = response.data;
       this.setCardshow(this.datainformation);
-      this.getsatatusBank();
+  
     } catch (error) {
       console.log(error);
     }
@@ -428,17 +501,21 @@ export default {
   mounted() {},
   data() {
     return {
+      
+      dialogTopup:false,
+      incoming_dashboard:{username:'',amount:0},
+      rulesFrom: {
+        usernameRule: [v => !!v || "กรุณากรอก username"]
+       
+      },
+
+
+      checking:false,
       datainformation: [],
       isLoading: false,
-      datarander: {
-        depositbalance: null,
-        withdrawbalance: null,
-        profitlossDate: null,
-        profitlossmounth: null
-      },
-      incomingSMS: [],
-      dpbank: [],
-      wdbank: [],
+   
+     
+    
       bankDepositColumn: [
         {
           text: "ธนาคาร",
@@ -507,12 +584,12 @@ export default {
         {
           text: "ธนาคาร",
           align: "center",
-          value: "Companybank",
-          sortable: true
+          value: "companyBank",
+          sortable: true,
         },
         {
           text: "เวลาจาก SMS",
-          value: "smsdatetime",
+          value: "dateSms",
           align: "center",
           sortable: true
         },
@@ -579,52 +656,65 @@ export default {
           class: "col-2"
         }
       ],
-      actionBank: [
-        {
-          name: "SCB",
-          status: "off"
-        },
-        {
-          name: "KBANK",
-          status: "off"
-        },
-        {
-          name: "TRUEWALLET",
-          status: "off"
-        }
-      ],
+   
 
-      dplist: [],
-      wdlist: []
+     
     };
   },
 
   methods: {
-    ...mapActions("auth", ["GetInfomation", "Autostatus"]),
+    ...mapActions("auth", ["GetInfomation", "Autostatus","checkBalanceBank","updateBalanceBank","updateAutoBankStatus"]),
+    ...mapMutations("auth", ["update_action_bank"]),
+    topupDashboard(item){
+      this.incoming_dashboard = item
+      this.dialogTopup = true
+    },
+    hide(item){},
     setCardshow(data) {
       if (data) {
-        this.datarander = {
-          depositbalance: data.dpamountoneday.amount,
-          withdrawbalance: data.wdamountoneday.amount,
-          profitlossDate:
-            data.dpamountoneday.amount - data.wdamountoneday.amount,
-          profitlossmounth: data.OneMonthProfit
-        };
-        this.dpbank = data.dpbank;
-        this.wdbank = data.wdbank;
-        this.dplist = data.dplist;
-        this.wdlist = data.wdlist;
-        this.incomingSMS = data.incomingSMS;
+      //   this.datarander = {
+      //     depositbalance: data.dpamountoneday.amount,
+      //     withdrawbalance: data.wdamountoneday.amount,
+      //     profitlossDate:
+      //       data.dpamountoneday.amount - data.wdamountoneday.amount,
+      //     profitlossmounth: data.OneMonthProfit
+      //   };
+      //   this.dpbank = data.dpbank;
+      //   this.wdbank = data.wdbank;
+      //   this.dplist = data.dplist;
+      //   this.wdlist = data.wdlist;
+      //   this.incomingSMS = data.incomingSMS;
       }
     },
+    async updateStatusBank(item){
+      console.log(item,"asdasdasd")
+
+      await this.updateAutoBankStatus({data:item})
+
+      
+    },
     async getsatatusBank() {
+      console.log('getsatatusBank')
       try {
-        let status = await this.Autostatus();
-        this.actionBank = status.data;
-        console.log(this.actionBank);
+         await this.Autostatus();
+    
+
       } catch (error) {
         console.log(error);
       }
+    },
+    async checkBalance(item){
+      this.checking = true
+      try {
+        await this.checkBalanceBank({bank:item})
+        this.checking = false
+      } catch (error) {
+        this.checking = false
+      }
+     
+
+      // await this.updateBalanceBank({id:item.id,balance:balance})
+      this.checking = false
     }
   }
 };

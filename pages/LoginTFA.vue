@@ -14,13 +14,11 @@
             width="200"
           />
           <h1 class="h3 mb-3 fw-normal">
-            โปรดกรอกรหัส 6 หลัก จาก google autenticator
+            โปรดกรอกรหัส 6 หลัก จาก แอพ google autenticator
           </h1>
 
           <div class="pa-3">
-            <h1 class="h3 mb-3 fw-normal">
-              เมื่อสแกนเสร็จแล้ว กรอก รหัส 6 หลัก
-            </h1>
+           
 
             <div
               style="justify-content: center; text-align: center;display:flex; align-items:baseline;"
@@ -137,7 +135,7 @@ export default {
         if (res.token) {
           await this.set_login(res);
           // await this.set_data_secret(res);
-          if (!res.menu_permission) {
+          if (!res.menu) {
             this.$router.push("/test");
           } else {
             this.$router.push("/redirect");

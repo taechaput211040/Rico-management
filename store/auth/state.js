@@ -13,6 +13,32 @@ export default function() {
     company: localStorage.getItem("company") || null,
     name: localStorage.getItem("name") || null,
     isAdmin: localStorage.getItem("isAdmin") || null,
-    tokenMember: localStorage.getItem("tokenMember") || null
+    tokenMember: localStorage.getItem("tokenMember") || null,
+
+    datarander : {
+      data:false,
+      depositbalance: 0,
+      withdrawbalance: 0,
+      profitlossDate:
+        0,
+      profitlossmounth: 0
+    },
+    dpbank : [],
+    wdbank : [],
+    dplist : [],
+    wdlist : [],
+    incomingSMS :[],
+    actionBankState: [
+      {
+        kbank:"start"
+      },
+      {
+        scb: "start"
+      },
+      {
+        true: "start"
+      }
+    ],
   };
+  
 }

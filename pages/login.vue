@@ -109,8 +109,8 @@ export default {
         } else if (!response.tfa_status) {
           if (response.token) {
             await this.set_login(response);
-
-            if (!response.menu_permission) {
+          
+            if (!response.menu) {
               this.$router.push("/test");
             } else {
               this.$router.push("/redirect");

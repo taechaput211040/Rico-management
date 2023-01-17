@@ -71,6 +71,7 @@ export function getEmployee({ rootState }) {
 
 //ธนาคารของเว็บ
 export function getCompanybank({ rootState }) {
+  console.log('get bank')
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.get(

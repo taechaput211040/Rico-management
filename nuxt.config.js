@@ -81,7 +81,25 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // loaders: {
+    //   vue: {
+    //     transformAssetUrls: {
+    //       audio: 'src'
+    //     }
+    //   }
+    // },
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+          esModule: false,
+        }
+      })
+    }
+  },
   router: {
     mode: "history"
     // base: "/storage/dev-backoffice/"
@@ -102,6 +120,8 @@ export default {
     ALL_CHECKIN: process.env.ALL_CHECKIN,
     ALL_COMPANY_BANK: process.env.ALL_COMPANY_BANK,
     ALL_CRIMINAL: process.env.ALL_CRIMINAL,
-    ALL_MESSAGE_WEB: process.env.ALL_MESSAGE_WEB
+    ALL_MESSAGE_WEB: process.env.ALL_MESSAGE_WEB,
+    ALL_RICO_REPORT:process.env.ALL_RICO_REPORT,
+
   }
 };

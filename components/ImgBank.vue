@@ -1,6 +1,24 @@
 <template>
   <div>
     <img
+    src="~/assets/image/bank/operator.png"
+    v-if="value == 'MANUALBONUS'"
+    alt=""
+    class="icon-bank img-icon"
+  />
+    <img
+    src="~/assets/image/bank/operator.png"
+    v-if="value == 'AUTO'"
+    alt=""
+    class="icon-bank img-icon"
+  />
+    <img
+    src="~/assets/image/bank/wheel.png"
+    v-if="value == 'WHEEL'"
+    alt=""
+    class="icon-bank img-icon"
+  />
+    <img
       src="~/assets/image/bank/BAAC.png"
       v-if="value == 'BAAC'"
       alt=""
@@ -135,13 +153,13 @@
     />
     <img
       src="~/assets/image/bank/checkin.png"
-      v-if="value == 'checkin'"
+      v-if="value == 'CHECKIN'"
       alt=""
       class="icon-bank img-icon"
     />
     <img
       src="~/assets/image/bank/cashback.png"
-      v-if="value == 'cashback'"
+      v-if="value == 'CASHBACK'"
       alt=""
       class="icon-bank img-icon"
     />
