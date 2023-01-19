@@ -470,7 +470,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
          
-          <v-btn color="success"  small  @click="setsound('wd')"> ยืนยัน</v-btn>
+          <v-btn color="success"  small  @click="topUp()"> ยืนยัน</v-btn>
           <v-btn color="red"  small  @click="dialogTopup = false"> ยกเลิก</v-btn>
         </v-card-actions>
       </v-card>
@@ -670,6 +670,9 @@ export default {
       this.dialogTopup = true
     },
     hide(item){},
+    async topUp(){
+      
+    },
     setCardshow(data) {
       if (data) {
       //   this.datarander = {

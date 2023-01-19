@@ -213,7 +213,7 @@ export function updateUser({}, body) {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.patch(
-        `${process.env.ALL_RICO_USER}/api/User`,
+        `${process.env.ALL_RICO_USER}/api/User/V2`,
         body
       );
       console.log("work");
