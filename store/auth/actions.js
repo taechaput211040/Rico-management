@@ -660,6 +660,8 @@ export function GetInfomation(context) {
     }
   });
 }
+
+
 // getinformation
 //getautostatus
 export function Autostatus(context) {

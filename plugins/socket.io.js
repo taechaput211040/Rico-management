@@ -23,7 +23,7 @@ export default ({ $axios, redirect, store, app }, inject) => {
     console.log('store here', store.state.auth)
     if (store.state.auth.company && store.state.auth.agent) {
 
-      const socket = io("http://localhost:4000/", {
+      const socket = io("http://35.240.216.181:4000/", {
         transports: ["websocket"],
         query: {
           company: store.state.auth.company,

@@ -12,6 +12,7 @@
                 dense
                 v-model="formCreate.name"
                 placeholder="กรอกรายชื่อ"
+                 :rules="[v => !!v || 'กรุณากรอกชื่อ']"
                 hide-details="auto"
               ></v-text-field>
             </span>
@@ -24,6 +25,7 @@
               dense
               placeholder="กรอกนามสกุล"
               hide-details="auto"
+               :rules="[v => !!v || 'กรุณากกรอกนามสกุล']"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="3">
@@ -205,6 +207,7 @@ export default {
   methods: {
     ...mapActions("setting", ["getCriminallist", "createCriminallist"]),
     async createCriminal() {
+      if(this.$refs.formcreate.validate()){
       let payload = {
         ...this.formCreate,
         operator: this.$store.state.auth.agent.toUpperCase()
@@ -223,6 +226,8 @@ export default {
           await this.$fetch();
         }
       });
+      }
+     
     }
   }
 };
