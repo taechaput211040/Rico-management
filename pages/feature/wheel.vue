@@ -22,12 +22,12 @@
             :headers="wheelHeader"
             :items="roullet"
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
               </span>
             </template>
-            <template #[`item.action`]="{item}">
+            <template #[`item.action`]="{ item }">
               <v-btn
                 color="purple darken-4"
                 rounded
@@ -38,7 +38,7 @@
                 ><v-icon left small>mdi-cog</v-icon> ตั้งค่า</v-btn
               >
             </template>
-            <template #[`item.status`]="{item}">
+            <template #[`item.status`]="{ item }">
               <v-chip
                 color="error"
                 small
@@ -63,7 +63,7 @@
           </v-data-table>
         </v-card>
 
-        <div class=" mt-3">
+        <div class="mt-3">
           <v-dialog v-model="setting_roulette" max-width="600px" height="auto">
             <v-card class="pa-5 font-weight-bold">
               <v-card-title>
@@ -128,7 +128,7 @@
               </v-row>
               <v-divider></v-divider>
               <v-card-actions class="text-center mx-auto">
-                <v-btn @click="settingOk" color="primary" class="ml-auto " 
+                <v-btn @click="settingOk" color="primary" class="ml-auto"
                   >บันทึก</v-btn
                 >
                 <v-btn @click="cancel" color="grey" dark class="mr-auto"
@@ -142,7 +142,7 @@
           <v-card class="pa-3">
             <div class="forum-input">
               <form @submit.prevent="submitform" autocomplete="off">
-                <div class="row ">
+                <div class="row">
                   <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                     อั้นถอน(เป็นจำนวนเท่า) :<br />
                     <v-text-field
@@ -168,8 +168,8 @@
                       class="warning-show"
                       v-show="
                         ($v.turn.wdlimit.$model == 0) &
-                          $v.turn.wdlimit.minValue &
-                          $v.turn.wdlimit.required
+                        $v.turn.wdlimit.minValue &
+                        $v.turn.wdlimit.required
                       "
                     >
                       **ไม่อั้นถอน**
@@ -251,7 +251,7 @@
                       class="validate"
                       v-show="
                         !$v.turn.HORSERACING.required &
-                          $v.turn.HORSERACING.$dirty
+                        $v.turn.HORSERACING.$dirty
                       "
                     >
                       กรุณาใส่จำนวนเทิร์น
@@ -341,7 +341,7 @@ import {
   minLength,
   maxLength,
   numeric,
-  minValue
+  minValue,
 } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
@@ -350,42 +350,42 @@ export default {
       CASINO: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       ESPORT: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       FOOTBALL: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       HORSERACING: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       LOTTO: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       SLOT: {
         required,
         numeric,
-        minValue: minValue(1)
+        minValue: minValue(1),
       },
       wdlimit: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       rate: {
-        required
-      }
-    }
+        required,
+      },
+    },
   },
   watch: {},
   data() {
@@ -397,58 +397,58 @@ export default {
           value: "no",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "ชื่อรางวัล",
           value: "title",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "ยอดเงินรางวัล",
           value: "credit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "โอกาสถูก(%)",
           value: "award_percent",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "อนุญาตออกรางวัล",
           value: "status",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "ตั้งค่ากงล้อ",
           value: "action",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
-        }
+          class: "font-weight-bold",
+        },
       ],
       no: 0,
       setting_roulette: false,
-      status: 0,
+  
       roullet: [],
       settingitem: {},
       dataSetting: {
         title: "",
         credit: "",
         award_percent: "",
-        status: ""
+        status: "",
       },
       selectRate: [
         { value: 0, text: "รายชั่วโมง" },
-        { value: 1, text: "รายวัน" }
+        { value: 1, text: "รายวัน" },
       ],
 
       turn: {
@@ -459,33 +459,42 @@ export default {
         LOTTO: 60,
         SLOT: 5,
         wdlimit: 10,
-        rate: 0
+        rate: 0,
       },
-      settingitem: []
+      settingitem: [],
     };
   },
 
   async fetch() {
     await this.$axios
       .$get(
-        `http://35.247.150.28/api/v1/setting_list/67f2c2ee-c9a7-4b04-bda4-8868eac7018f`,
+        `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/704bd453-4b05-4e68-a8b3-a906fe6cc74d`,
         {
           auth: {
             username: "taechaput",
-            password: "tong211040"
-          }
+            password: "tong211040",
+          },
         }
       )
-      .then(response => {
+      .then((response) => {
         this.roullet = response;
-        console.log(this.roullet);
       })
-      .catch(err => {
+      .catch((err) => {
         this.$nuxt.$emit("alert", err.response.data.ResponseStatus);
         this.roullet = [];
       });
   },
 
+  async mounted() {
+    try {
+      this.turn = await this.$axios.$get(
+        "https://all-wheel-ehhif4jpyq-as.a.run.app/api/Wheel/admin/704bd453-4b05-4e68-a8b3-a906fe6cc74d"
+      );
+      console.log(turn, "turn");
+    } catch (error) {
+      console.log(error);
+    }
+  },
   methods: {
     openSetting(item, index) {
       this.$bvModal.show("setting-roulette") == true;
@@ -493,7 +502,7 @@ export default {
       this.no = index + 1;
     },
     setting(item) {
-      this.settingitem = item;
+      this.settingitem = Object.assign({}, item);
       this.setting_roulette = true;
     },
     async settingOk() {
@@ -509,13 +518,13 @@ export default {
             status: this.settingitem.status,
             default_reward: 0,
             point: this.settingitem.point,
-            prize_id: this.settingitem.prize_id
+            prize_id: this.settingitem.prize_id,
           },
           {
             auth: {
               username: "taechaput",
-              password: "tong211040"
-            }
+              password: "tong211040",
+            },
           }
         )
         .then(() => {
@@ -523,7 +532,7 @@ export default {
           this.setting_roulette = false;
           this.$fetch();
         })
-        .catch(err => {
+        .catch((err) => {
           this.$swal("ตั้งค่าล้มเหลว", "กรุณาตั้งค่าใหม่", "error");
           console.log(err);
         });
@@ -537,20 +546,35 @@ export default {
     },
     cancel() {
       this.setting_roulette = false;
-      this.$fetch();
+      // this.$fetch();
     },
     submitform() {
       if (this.$v.turn.$invalid) {
         this.submitStatus = "ERROR";
       } else {
         this.$v.turn.$touch();
-        console.log("gogo");
+        this.submitTurn();
+      }
+    },
+    async submitTurn() {
+      this.loading = true;
+      this.turn.service_id = this.roullet[0].agent_id;
+      try {
+        await this.$axios.patch(
+          `https://all-wheel-ehhif4jpyq-as.a.run.app/api/Wheel/admin/704bd453-4b05-4e68-a8b3-a906fe6cc74d`,
+          this.turn
+        );
+        this.showSuccessAlert("บันทึกสำเร็จ");
+        this.loading = false;
+      } catch (error) {
+        this.showErrorAlert("error");
+        this.loading = false;
       }
     },
     switchstatus(status) {
       status = !status;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

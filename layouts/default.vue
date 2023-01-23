@@ -3,7 +3,7 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="font-weight-bold" v-text="title" />
-      {{ messages }} <button class="btn btn-primary btn-sm"
+       <button class="btn btn-primary btn-sm"
         @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')"><span
           class="fa fa-play-circle-o"></span></button>
 
@@ -231,7 +231,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "RICO ",
+      title: "RICO",
     };
   },
   mounted() {

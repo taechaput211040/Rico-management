@@ -1,5 +1,8 @@
 <template>
   <v-flex>
+    <div v-if="isLoading">
+      <loading-page></loading-page>
+    </div>
     <v-container
       ><h2 class="mb-2">สรุปโปรโมชั่น</h2>
       <search-filter
@@ -13,7 +16,7 @@
           <card-report
             title="ฝาก"
             titleclass="primary--text"
-            :value="itemPromotion.amount"
+            :value="deposit + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
@@ -21,7 +24,7 @@
           <card-report
             title="ถอน"
             titleclass="red--text"
-            :value="itemPromotion.withdraw"
+            :value="withdraw + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
@@ -29,7 +32,7 @@
           <card-report
             title="โบนัส"
             titleclass="purple--text"
-            :value="itemPromotion.totalbonus"
+            :value="sum_ALL_BONUS + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin.png"
           ></card-report>
         </v-col>
@@ -37,7 +40,8 @@
           <card-report
             titleclass="purple--text"
             title="ฝาก+โบนัส"
-            :value="itemPromotion.amount + itemPromotion.totalbonus"
+            :condition="false"
+            :value="deposit + sum_ALL_BONUS + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin-stack.png"
           ></card-report>
         </v-col>
@@ -46,7 +50,7 @@
             titleclass="teal--text"
             title="กำไรขาดทุน"
             :condition="true"
-            :value="itemPromotion.amount - itemPromotion.withdraw"
+            :value="profit_loss + sum_ALL_BONUS + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report>
         </v-col> </v-row
@@ -69,12 +73,13 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <!-- เครดิตเงินคืน -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">เครดิตเงินคืน</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.totalCashback }}
+                      {{ sum_cashback }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -82,12 +87,13 @@
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสจากการเติมมือ -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสจากการเติมมือ</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusManualTopup }}
+                      {{ sum_bonus_deposit }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -95,12 +101,13 @@
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสสมาชิกใหม่ -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสสมาชิกใหม่</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusNewMember }}
+                      {{ sum_new_member_bonus }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -108,12 +115,13 @@
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสฝากแรกของวัน -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสฝากแรกของวัน</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusFirstDp }}
+                      {{ sum_first_deposit_bonus }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -121,23 +129,25 @@
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสฝากทั้งวัน -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสฝากทั้งวัน</div>
                     </td>
-                    <td class="text-center">{{ itemPromotion.bonusAllDay }}</td>
+                    <td class="text-center">{{ sum_allday_bonus }}</td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสฝากต่อเนื่อง -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสฝากต่อเนื่อง</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusDp7Days }}
+                      {{ sum_continue_bonus }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -145,23 +155,39 @@
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสกงล้อ -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสกงล้อ</div>
                     </td>
-                    <td class="text-center">{{ itemPromotion.bonusWheel }}</td>
+                    <td class="text-center">{{ sum_wheel_deposit }}</td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
                   </tr>
+                  <!-- โบนัสกงล้อ -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">โบนัสเครดิตฟรี</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusCreditfree }}
+                      {{ sum_credit_free }}
+                    </td>
+                    <td class="text-center">
+                      <v-btn color="black" dark small @click="opendetail()"
+                        ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
+                      >
+                    </td>
+                  </tr>
+                  <!-- โบนัสเช็คอิน -->
+                  <tr>
+                    <td class="font-weight-bold">
+                      <div class="pl-md-2 ">โบนัสเช็คอิน</div>
+                    </td>
+                    <td class="text-center">
+                      {{ sum_checkin }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -171,10 +197,10 @@
                   </tr>
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสเช็คอิน</div>
+                      <div class="pl-md-2 ">โบนัสแนะนำเพื่อน</div>
                     </td>
                     <td class="text-center">
-                      {{ itemPromotion.bonusCheckin }}
+                      {{ sum_affiliate_deposit }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -182,6 +208,7 @@
                       >
                     </td>
                   </tr>
+                  <!-- รวมโบนัส -->
                   <tr>
                     <td class="font-weight-bold">
                       <div class="pl-md-2 ">รวมโบนัส</div>
@@ -190,7 +217,7 @@
                       colspan="1"
                       class="text-center font-weight-bold primary--text"
                     >
-                      {{ itemPromotion.bonus }}
+                      {{ sum_ALL_BONUS }}
                     </td>
                   </tr>
                 </tbody>
@@ -370,9 +397,9 @@ export default {
       ],
 
       dateFilter: {
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
         endTime: new Date(new Date().setHours(23, 59, 59, 999))
       },
       header: [
@@ -398,29 +425,192 @@ export default {
           class: "font-weight-bold col-4"
         }
       ],
-      itemPromotion: {}
+      itemPromotion: {},
+      sum_cashback: 0,
+      sum_bonus_deposit: 0,
+      sum_new_member_bonus: 0,
+      sum_first_deposit_bonus: 0,
+      sum_allday_bonus: 0,
+      sum_continue_bonus: 0,
+      sum_wheel_deposit: 0,
+      sum_credit_free: 0,
+      sum_checkin: 0,
+      sum_affiliate_deposit: 0,
+      sum_ALL_BONUS: 0,
+      deposit: 0,
+      withdraw: 0,
+      profit_loss: 0,
+      isLoading: false
     };
   },
   async fetch() {
     try {
-      let response = await this.getPromotionReport(this.dateFilter);
-      this.itemPromotion = response.data;
+      this.isLoading = true;
+      await this.getDataAPIProfirReport()
+      await this.getDataAPIPromotionReport();
+      this.isLoading = false;
     } catch (error) {
+      this.isLoading = false;
       console.log(error);
     }
   },
-  methods: {
-    ...mapActions("profit", ["getPromotionReport"]),
 
+  methods: {
+    ...mapActions("profit", ["getPromotionReport","getProfitByUserReport2"]),
+  
     getamount() {},
     async opendetail() {
       this.detailDialog = true;
       // let { response } = await api id
       // this.dataDetail == response.data;
     },
-    searchdata() {
-      console.log(this.dateFilter);
-    }
+    resetBonusData(){
+      this.sum_cashback = 0;
+      this.sum_bonus_deposit = 0;
+      this.sum_new_member_bonus = 0;
+      this.sum_first_deposit_bonus = 0;
+      this.sum_allday_bonus = 0;
+      this.sum_continue_bonus = 0;
+      this.sum_wheel_deposit = 0;
+      this.sum_credit_free = 0;
+      this.sum_checkin = 0;
+      this.sum_affiliate_deposit = 0;
+      this.sum_ALL_BONUS = 0;
+    },
+    getDateTimeStr(date, time){
+      let _date = date;
+      let _time = time;
+
+      let _str = [
+        _date.getFullYear(),
+        _date.getMonth() < 10 ? '0' + (_date.getMonth() + 1) : (_date.getMonth() + 1),
+        _date.getDate() < 10 ? '0'+_date.getDate() : _date.getDate(),
+      ].join('-') +' '+ [
+        _time.getHours() < 10 ? '0'+_time.getHours() : _time.getHours(),
+        _time.getMinutes() < 10 ? '0'+_time.getMinutes() : _time.getMinutes(),
+        _time.getSeconds() < 10 ? '0'+_time.getSeconds() : _time.getSeconds(),
+      ].join(':')+'Z';
+
+      return _str;;
+    },
+    axiosParams(){
+      // start Date()
+      let s_d = this.dateFilter.startDate;
+      let s_t = this.dateFilter.startTime;
+      // end Date()
+      let e_d = this.dateFilter.endDate;
+      let e_t = this.dateFilter.endTime;
+
+      let start_str = this.getDateTimeStr( s_d, s_t );
+      let end_str = this.getDateTimeStr( e_d, e_t );
+
+      // console.log(start_str);
+      // console.log(end_str);
+
+      let params = {
+        start: start_str,
+        end: end_str,
+        company: localStorage.getItem('company'),
+        agent: localStorage.getItem('agent'),
+        page: 1,
+        username: null,
+        limit: 10000,
+        column_order: 'no_bonus_count',
+        order: 'DESC',
+      }
+      // console.log('-----------------');
+      // console.log('this is param');
+      // console.log(params)
+      return params;
+    },
+    axiosParams2(){
+      // start Date()
+      let s_d = this.dateFilter.startDate;
+      let s_t = this.dateFilter.startTime;
+      // end Date()
+      let e_d = this.dateFilter.endDate;
+      let e_t = this.dateFilter.endTime;
+
+      let start_str = this.getDateTimeStr( s_d, s_t );
+      let end_str = this.getDateTimeStr( e_d, e_t );
+
+      let params = {
+        start: start_str,
+        end: end_str,
+        company: localStorage.getItem('company'),
+        agent: localStorage.getItem('agent'),
+        page: 1,
+        username: null,
+        limit: 10000,
+        column_order: 'date',
+        order: 'ASC',
+      }
+      // console.log('-----------------');
+      // console.log('this is param');
+      // console.log(params)
+      return params;
+    },
+    async searchdata() {
+      try{
+        this.isLoading = true;
+        await this.getDataAPIPromotionReport();
+        await this.getDataAPIProfirReport();
+        this.isLoading = false;
+      }catch(error){
+        this.isLoading = false;
+        console.log(error);
+      }
+    },
+    async getDataAPIPromotionReport(){
+      try{
+        let paramIn = this.axiosParams();
+        console.log(paramIn);
+        this.resetBonusData();
+        // api 1
+        let response = await this.getPromotionReport(paramIn);
+        console.log(response);
+        for(let i = 0; i < response.total;i++){
+          this.sum_cashback += response.data[i].cashback;
+          this.sum_bonus_deposit += response.data[i].bonus_deposit;
+          this.sum_new_member_bonus += response.data[i].new_member_bonus;
+          this.sum_first_deposit_bonus += response.data[i].first_deposit_bonus;
+          this.sum_allday_bonus += response.data[i].allday_bonus;
+          this.sum_continue_bonus += response.data[i].continue_bonus;
+          this.sum_wheel_deposit += response.data[i].wheel_deposit;
+          this.sum_credit_free += response.data[i].credit_free;
+          this.sum_affiliate_deposit += response.data[i].affiliate_deposit;
+          this.sum_checkin += response.data[i].checkin;
+        }
+        this.sum_ALL_BONUS += this.sum_cashback + this.sum_bonus_deposit + this.sum_new_member_bonus + this.sum_first_deposit_bonus + this.sum_allday_bonus + this.sum_continue_bonus + this.sum_wheel_deposit + this.sum_credit_free + this.sum_checkin;
+        this.itemPromotion = response.data;
+      }catch(error){
+        this.isLoading = false;
+        console.log(error);
+      }
+    },
+    async getDataAPIProfirReport(){
+      // api 2
+      try{
+      let paramIn2 = this.axiosParams2();
+      console.log(paramIn2)
+      this.deposit = 0;
+      this.withdraw = 0;
+      this.profit_loss = 0;
+      let responseAPI2 = await this.getProfitByUserReport2(paramIn2);
+      console.log(responseAPI2);
+      for(let i = 0; i < responseAPI2.total;i++){
+          this.withdraw += responseAPI2.data[i].withdraw;
+          this.deposit += responseAPI2.data[i].deposit;
+          this.profit_loss += responseAPI2.data[i].winlose;
+          // console.log(response.data.length) ; or // console.log(response.total);
+          // console.log(this.total_user,i);
+        }
+      }catch(error){
+        this.isLoading = false;
+        console.log(error);
+      }
+    },
+
   }
 };
 </script>
