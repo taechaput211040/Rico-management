@@ -457,6 +457,7 @@ export default {
 
   methods: {
     ...mapActions("profit", ["getPromotionReport","getProfitByUserReport2"]),
+  
     getamount() {},
     async opendetail() {
       this.detailDialog = true;

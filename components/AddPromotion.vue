@@ -47,7 +47,7 @@
 
       <v-expansion-panels accordion multiple>
         <!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
-        <v-expansion-panel class="ma-3 elevation-2" >
+        <v-expansion-panel class="ma-3 elevation-2">
           <v-expansion-panel-header
             @click="settingform('newmember')"
             color="grey lighten-2"
@@ -829,6 +829,7 @@
         <!-- ตั้งค่าโบนัสฝากต่อเนื่อง -->
       </v-expansion-panels>
     </v-row>
+       
   </div>
 </template>
 
@@ -862,7 +863,7 @@ export default {
       formfirstdeposit: {
         statustype: false,
         stepbonus: "off",
-       firstdepositRule: [{ mindp: "", maxdp: "", bonusvalue: "" }],
+        firstdepositRule: [{ mindp: "", maxdp: "", bonusvalue: "" }],
       },
       formbonusnewmember: {
         statustype: false,
@@ -883,8 +884,17 @@ export default {
       },
 
       image: [],
+      dataToSend: ''
     };
+
   },
+watch: {
+    formfirstdeposit(val) {
+      console.log('wrwr')
+      this.$emit('data-sent', 'test124');
+    }
+  },
+  props: ['closeDialogMethod'],
   methods: {
     addField(form) {
       form.push({
@@ -907,6 +917,11 @@ export default {
       } else if (promotion === "bonusdeposit7day") {
         this.formdeposit7day.statustype = !this.formdeposit7day.statustype;
       }
+    },
+    closeDialogAndEmit() {
+      console.log('test')
+   
+       this.$emit("close-dialog");
     },
   },
 };

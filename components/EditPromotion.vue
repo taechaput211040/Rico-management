@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="mb-4">สร้างโปรโมชัน</h3>
+    <h3 class="mb-4">แก้ไขโปรโมชัน</h3>
     <v-row class="pa-3">
       <v-col cols="12" sm="6" md="6">
         <v-text-field
@@ -60,7 +60,7 @@
         >
           <!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
           <v-expansion-panel
-            v-for="(item, index) in renderdata.detail"
+            v-for="(item, index) in renderdata.promotion_details"
             :key="index"
           >
             <div class="ma-2" v-if="item">
@@ -186,9 +186,7 @@
                       class="mx-5"
                       color="success"
                       v-model="item.durationstatus"
-                      :label="
-                        ` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`
-                      "
+                      :label="` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`"
                     ></v-switch>
                     <div
                       class="col-md-5 col-12 row"
@@ -285,8 +283,8 @@
                   class="d-flex align-baseline my-5"
                   v-if="
                     item.newmemberRule ||
-                      item.firstdepositRule ||
-                      item.alldayRule
+                    item.firstdepositRule ||
+                    item.alldayRule
                   "
                 >
                   <v-switch
@@ -294,9 +292,7 @@
                     class="mx-5"
                     color="success"
                     v-model="item.rulestatus"
-                    :label="
-                      ` ตั้งค่าโบนัสขั้นบันได :  ${item.rulestatus.toString()}`
-                    "
+                    :label="` ตั้งค่าโบนัสขั้นบันได :  ${item.rulestatus.toString()}`"
                   ></v-switch>
                 </div>
                 <div v-show="item.rulestatus == true">
@@ -504,15 +500,21 @@ export default {
   name: "EditPromotion",
   props: {
     Panel: {
-      type: [Array, String],
+      type: [Array, Object],
       default: [],
-      required: true
+      required: true,
     },
     renderdata: {
       type: [Array, Object],
       default: null,
-      required: true
-    }
+      required: true,
+    },
+    item: {
+      type: Object,
+      validator: function (value) {
+        return ["valid", "pending", "cancelled"].includes(value.typestatus);
+      },
+    },
   },
   data() {
     return {
@@ -523,22 +525,22 @@ export default {
           value: "mindp",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text"
+          class: "grey darken-3 white--text",
         },
         {
           text: "ฝากสูงสุด",
           value: "maxdp",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text"
+          class: "grey darken-3 white--text",
         },
         {
           text: "โบนัสที่ได้(%/ค่าคงที่)",
           value: "bonusvalue",
           align: "center",
           sortable: false,
-          class: "grey darken-3 white--text"
-        }
+          class: "grey darken-3 white--text",
+        },
       ],
 
       image: []
@@ -546,26 +548,37 @@ export default {
   },
   computed: {
     checkpanal(val) {
+      //  console.log(val,'test')
+
       if (val) {
         return this.Panel;
       }
-    }
+    },
   },
   methods: {
     addField(form) {
+      console.log("chacek 13");
       form.push({
         mindp: "",
         maxdp: "",
-        bonusvalue: ""
+        bonusvalue: "",
       });
     },
     removeField(fieldType) {
+      console.log("chacek 12");
       fieldType.splice(-1);
     },
     settingform(item) {
-      item.typestatus = !item.typestatus;
+      // 
+       console.log('chacek 11',item)
+    item.typestatus = !item.typestatus;
+    this.itemedit.push(item)
+    // this.Panel.push(item)
+    },
+    returnToParent(){
+      this.emit('childData', this.renderdata);
     }
-  }
+  },
 };
 </script>
 

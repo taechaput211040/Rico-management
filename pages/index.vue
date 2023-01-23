@@ -632,6 +632,7 @@ export default {
     },
     async getsatatusBank() {
       try {
+ 
         let status = await this.Autostatus();
         this.actionBank = status.data;
         console.log(this.actionBank);
