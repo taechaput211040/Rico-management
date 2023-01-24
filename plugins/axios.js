@@ -1,21 +1,23 @@
-export default function({ $axios, redirect, store, app }) {
+export default function ({ $axios, redirect, store, app }) {
   // export default function(config) {
-  $axios.onRequest(config => {
-    config.headers["Authorization"] = `${store.state.auth.key}`;
+
+  $axios.onRequest((config) => {
+    console.log(config, "config");
+    config.headers.common["Authorization"] = `${store.state.auth.key}`;
   });
-  $axios.onError(error => {
-    if (error.response.status === 401) {
-      localStorage.clear();
-      redirect("/login");
-    }
-  });
-  $axios.onError(error => {
+  // $axios.onError(error => {
+  //   if (error.response.status === 401) {
+  //     localStorage.clear();
+  //     redirect("/login");
+  //   }
+  // });
+  $axios.onError((error) => {
     if (error.response.status) {
       app.$swal({
         icon: "error",
         title: `${error.response.data.message}`,
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     }
   });

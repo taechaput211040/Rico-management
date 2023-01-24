@@ -2,7 +2,7 @@
   <v-flex>
     <h3>ตั้งค่าเช็คอินรายวัน</h3>
     <v-btn color="success" @click="getConfig">text</v-btn>
-    <v-card class=" pa-4 rounded-lg ">
+    <v-card class="pa-4 rounded-lg">
       <h4 class="mb-3 text-center">
         รูปภาพพื้นหลัง ขนาดไม่เกิน 500 KB 650x650 px(PNG หรือ JPG เท่านั้น)
       </h4>
@@ -10,7 +10,7 @@
         <img
           v-if="image"
           :src="image.default_img"
-          style="width: 235px;"
+          style="width: 235px"
           alt=""
         />
       </div>
@@ -42,7 +42,7 @@
           </template>
         </v-file-input>
       </div>
-      <div class="d-md-flex  justify-md-center">
+      <div class="d-md-flex justify-md-center">
         <v-btn
           class="mx-2"
           color="primary"
@@ -55,13 +55,13 @@
         <v-btn color="warning" class="mx-2" dark @click="useDefaultImage()">
           ใช่รูปเริ่มต้น</v-btn
         >
-        <v-btn color="success" class="mx-2 " dark @click="saveImage()">
+        <v-btn color="success" class="mx-2" dark @click="saveImage()">
           บันทึก</v-btn
         >
       </div>
     </v-card>
 
-    <v-card class=" py-4 px-2 ounded-lg mt-4">
+    <v-card class="py-4 px-2 ounded-lg mt-4">
       <div class="row justify-end mb-4">
         <div class="col-12 col-md-6 p-0">
           <input
@@ -169,7 +169,7 @@
     <v-card class="pa-3">
       <div class="forum-input">
         <form @submit.prevent="submitform" autocomplete="off">
-          <div class="row ">
+          <div class="row">
             <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
               อั้นถอน(เป็นจำนวนเท่า) :<br />
               <v-text-field
@@ -193,8 +193,8 @@
                 class="warning-show"
                 v-show="
                   ($v.turn.wdlimit.$model == 0) &
-                    $v.turn.wdlimit.minValue &
-                    $v.turn.wdlimit.required
+                  $v.turn.wdlimit.minValue &
+                  $v.turn.wdlimit.required
                 "
               >
                 **ไม่อั้นถอน**
@@ -337,13 +337,22 @@
           arrow-control
           placeholder="วันที่"
           style="width: 100%"
+          v-model="date"
         />
       </div>
       <div class="col-12 col-sm-3">
-        <v-text-field solo outlined dense hide-details="auto"></v-text-field>
+        <v-text-field
+          v-model="username"
+          solo
+          outlined
+          dense
+          hide-details="auto"
+        ></v-text-field>
       </div>
       <div class="col-12 col-sm-3">
-        <v-btn color="primary"><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn>
+        <v-btn color="primary" @click="searchHistory"
+          ><v-icon left>mdi-magnify</v-icon> ค้นหา</v-btn
+        >
       </div>
     </v-row>
 
@@ -362,7 +371,7 @@ import {
   minLength,
   maxLength,
   numeric,
-  minValue
+  minValue,
 } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
@@ -371,78 +380,80 @@ export default {
       CASINO: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       ESPORT: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       FOOTBALL: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       HORSERACING: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       LOTTO: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       SLOT: {
         required,
         numeric,
-        minValue: minValue(0)
+        minValue: minValue(0),
       },
       wdlimit: {
         required,
         numeric,
-        minValue: minValue(0)
-      }
-    }
+        minValue: minValue(0),
+      },
+    },
   },
   data() {
     return {
+      username: "",
+      date: new Date().toISOString().slice(0, 10),
       headerReport: [
         {
           text: "รายการที่",
           value: "no",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "วันที่ - เวลา",
           value: "date",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "วันเช็คอิน",
           value: "datecheckin",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "เงินเครดิตที่ได้",
           value: "creditbalance",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "ประเภท",
           value: "type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
-        }
+          class: "font-weight-bold",
+        },
       ],
       CheckinConfig: {
         image:
@@ -458,213 +469,213 @@ export default {
               bonus_credit: 10,
               credit: 1,
               day: 1,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 10,
               credit: 2,
               day: 2,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 10,
               credit: 3,
               day: 3,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 10,
               credit: 4,
               day: 4,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 20,
               credit: 5,
               day: 5,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 20,
               credit: 6,
               day: 6,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: true,
               bonus_credit: 20,
               credit: 7,
               day: 7,
-              min_deposit: 100
+              min_deposit: 100,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 8,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 9,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 10,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 11,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 12,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 13,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 14,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 15,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 16,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 17,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 18,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 19,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 20,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 21,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 22,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 23,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 24,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 25,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 26,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 27,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 28,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 29,
-              min_deposit: 0
+              min_deposit: 0,
             },
             {
               bonus: false,
               bonus_credit: 0,
               credit: 1,
               day: 30,
-              min_deposit: 0
-            }
+              min_deposit: 0,
+            },
           ],
-          active: true
+          active: true,
         },
         turn: {
           CASINO: 10,
@@ -673,15 +684,15 @@ export default {
           HORSERACING: 5,
           LOTTO: 5,
           SLOT: 5,
-          wdlimit: 0
-        }
+          wdlimit: 0,
+        },
       },
       test: {
         bonus: true,
         bonus_credit: 10,
         credit: 1,
         day: 1,
-        min_deposit: 100
+        min_deposit: 100,
       },
       changepic: false,
       file: null,
@@ -692,7 +703,7 @@ export default {
       image: {
         url: null,
         default_img:
-          "https://image.smart-ai-api.com/public/image-storage/Checkin-1142506d-c6bf-4c36-8033-e348779a119a-20210916080003d438600433274fba919784da7d59c960.png"
+          "https://image.smart-ai-api.com/public/image-storage/Checkin-1142506d-c6bf-4c36-8033-e348779a119a-20210916080003d438600433274fba919784da7d59c960.png",
       },
 
       feature_status: true,
@@ -707,7 +718,7 @@ export default {
       selectDay: [
         { value: "week", text: "ราย 7 วัน" },
         { value: "half", text: "ราย 15 วัน" },
-        { value: "month", text: "ราย 30 วัน" }
+        { value: "month", text: "ราย 30 วัน" },
       ],
       turn: {
         CASINO: 60,
@@ -716,30 +727,53 @@ export default {
         HORSERACING: 60,
         LOTTO: 60,
         SLOT: 5,
-        wdlimit: 0
+        wdlimit: 0,
       },
       selectRate: [
         { value: 0, text: "รายชั่วโมง" },
-        { value: 1, text: "รายวัน" }
-      ]
+        { value: 1, text: "รายวัน" },
+      ],
     };
   },
   async mounted() {
     this.loading = true;
   },
   async fetch() {
+    await this.LoginCheckindialy();
     await this.getConfig();
   },
   methods: {
+    async LoginCheckindialy() {
+      try {
+        let { data } = await this.$axios.post(
+          `${process.env.ALL_CHECKIN}/api/auth/login`,
+          {
+            hash:
+              localStorage.getItem("hash") ??
+              this.$store.state.setting?.setting?.hash,
+          }
+        );
+        console.log(data, "data");
+        this.token = data.token;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getConfig() {
       try {
-        let res = await this.$axios.get(`${process.env.ALL_CHECKIN}/api/config`);
+        console.log(`Bearer ${this.token}`);
+        let res = await this.$axios.get(
+          `${process.env.ALL_CHECKIN}/api/config`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
         //  console.log(response.data)
-
-        let response = res;
+        let response = res.data;
         this.image.url = response.image;
-
-        this.Renderdate = response.checkin.config.map(e => {
+        this.Renderdate = response.checkin.config.map((e) => {
           if (!e.bonus) {
             e.bonus_credit = 0;
             e.min_deposit = 0;
@@ -776,16 +810,18 @@ export default {
 
         try {
           this.loading = true;
-          let imageupdate = await axios.post(`/api/DynamicImage`, data);
+          let imageupdate = await this.$axios.post(
+            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            data
+          );
           this.image.url = imageupdate.data.image;
+          console.log("img", imageupdate);
           await this.saveCheckin();
-          this.showSuccessAlert("บันทึกข้อมูลสำเร็จ");
+
           this.loading = false;
         } catch (error) {
           this.loading = false;
-          this.showErrorAlert(
-            error.response.data.message + " code " + error.response.status
-          );
+          console.log(error);
         }
       } else {
         await this.saveCheckin();
@@ -827,11 +863,20 @@ export default {
         this.$v.turn.$touch();
 
         try {
-          let res = await axios.put(`/api/Checkin/Config/Turnover`, this.turn);
+          await this.$axios.put(
+            `${process.env.ALL_CHECKIN}/api/config/turnover`,
+            this.turn,
+            {
+              headers: {
+                Authorization: `Bearer ${this.token}`,
+              },
+            }
+          );
           this.loading = false;
-          this.showSuccessAlert("บันทึกข้อมูลสำเร็จ");
+          this.$swal.fire("สำเร็จ", "บันทึกข้อมูลสำเร็จ", "success", "OK");
+          // this.showSuccessAlert("บันทึกข้อมูลสำเร็จ");
         } catch (error) {
-          this.showErrorAlert(error.response.message);
+          console.log(error);
           this.loading = false;
         }
       }
@@ -840,36 +885,48 @@ export default {
       this.loading = true;
 
       try {
-        var res = await axios.put(`/api/Checkin/Config`, {
-          type: this.selectedate,
-          active: this.checkinActive,
-          reward: this.Renderdate,
-          background_image: this.image.url
-        });
+        await this.$axios.put(
+          `${process.env.ALL_CHECKIN}/api/config`,
+          {
+            type: this.selectedate,
+            active: this.checkinActive,
+            reward: this.Renderdate,
+            background_image: this.image.url,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        this.$swal.fire("สำเร็จ", "บันทึกข้อมูลสำเร็จ", "success", "OK");
         this.loading = false;
-        this.showSuccessAlert("บันทึกข้อมูลสำเร็จ");
       } catch (error) {
-        this.showErrorAlert(error.response.message);
         this.loading = false;
       }
     },
-    async searchHistory(e) {
-      console.log(e.target.date.value);
-
+    async searchHistory() {
       try {
+        let date = this.$moment(this.date).format("YYYY-MM-DD");
+
         this.loading = true;
-        let res = await axios.get(
-          `/api/Checkin/History/${e.target.username.value}/${e.target.date.value}`
+        let res = await this.$axios.get(
+          `${process.env.ALL_CHECKIN}/api/config/checkin/history/${this.username}/${date}`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
         );
         this.loading = false;
         this.checkinHistory = res.data.logs;
       } catch (error) {
-        this.showErrorAlert(error.response.data.message);
+        console.log(error);
         this.loading = false;
       }
       return;
-    }
-  }
+    },
+  },
 };
 </script>
 

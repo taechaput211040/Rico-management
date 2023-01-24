@@ -14,34 +14,34 @@
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวน user ทั้งหมด "
-            :value="response.total + ' คน'"
+            :value="`${response.total | numberFormat} คน`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ฝาก"
-            :value="total_dp_count + ' ครั้ง'"
+            :value="`${total_dp_count | numberFormat} ครั้ง`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="ยอดฝากทั้งหมด"
-            :value="total_dp_amount + ' บาท'"
+            :value="`${total_dp_amount | numberFormat} บาท`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/wallet.png"
           ></card-report> </v-col
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ถอน"
-            :value="total_wd_count + ' ครั้ง'"
+            :value="`${total_wd_count | numberFormat} ครั้ง`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="ยอดถอนทั้งหมด "
-            :value="total_wd_amount + ' บาท'"
+            :value="`${total_wd_amount | numberFormat} บาท`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/withdrawbank.png"
           ></card-report>
         </v-col>
@@ -49,7 +49,7 @@
           <card-report
             title="กำไร/ขาดทุน"
             :condition="true"
-            :value="profit_loss"
+            :value="`${profit_loss | numberFormat}`"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report> </v-col
       ></v-row>
@@ -294,7 +294,7 @@ export default {
         this.response = response;
         this.total_user = response.total;
         this.total_wd_count = 0;
-        this.total_wd_amount = 0 ;
+        this.total_wd_amount = 0;
         this.total_dp_count = 0;
         this.total_dp_amount = 0;
         this.profit_loss = 0;
@@ -308,7 +308,7 @@ export default {
           // console.log( Math.ceil(response.data.length/this.limit) );
           // console.log(this.total_user,i);
         }
-        this.total_wd_amount = this.total_wd_amount
+        this.total_wd_amount = this.total_wd_amount;
         this.total_page = Math.ceil(response.total / this.limit);
         // console.log('-----------------');
         // console.log(this.total_user, 'user');

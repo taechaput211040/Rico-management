@@ -63,33 +63,61 @@
           <p class="text-center frist_color pa-2">
             {{ item.name }}
           </p>
-          <v-form-checkbox v-model="item.status" name="check-button" switch>
-          </v-form-checkbox>
-          <div class="text-center m-auto">
-            <v-btn small rounded outlined  color="black"
-              pill
-              size="sm"
-              variant="outline-primary"
-              @click="openDetail(item)"
-              >image</v-btn
+          <v-row align="center" justify="center">
+            <v-checkbox
+              hide-details
+              v-model="item.status"
+              name="check-button"
+              switch
             >
-          </div>
+            </v-checkbox>
+            <div class="text-center m-auto">
+              <v-btn
+                small
+                rounded
+                outlined
+                color="black"
+                pill
+                size="sm"
+                variant="outline-primary"
+                @click="openDetail(item)"
+                >image</v-btn
+              >
+            </div></v-row
+          >
         </div>
       </draggable>
       <div style="display: flex; justify-content: center" class="mt-4">
-        <v-btn small rounded outlined  color="black" pill variant="success" @click="saveProvider">บันทึก</v-btn>
-        <v-btn small rounded outlined  color="black" pill variant="warning" @click="resetProvider" class="ml-4"
+        <v-btn
+          small
+          rounded
+          outlined
+          color="black"
+          pill
+          variant="success"
+          @click="saveProvider"
+          >บันทึก</v-btn
+        >
+        <v-btn
+          small
+          rounded
+          outlined
+          color="black"
+          pill
+          variant="warning"
+          @click="resetProvider"
+          class="ml-4"
           >คืนค่าเริ่มต้น และบันทึก</v-btn
         >
       </div>
     </v-card>
-    <v-modal id="showDetail" size="xl" hide-footer>
-      <template #modal-header="{}">
+    <v-dialog v-model="showDetail" size="xl" hide-footer>
+      <v-card class="pa-3">
         <!-- Emulate built in modal header close button action -->
         <v-row>
           <v-col cols="6">
             <div class="container m-auto">
-              <v-card>
+              <v-card class="pa-2">
                 <div>
                   <small
                     >preview : หากต้องการเปลี่ยนรูป
@@ -99,24 +127,30 @@
                   </small>
                 </div>
                 <div class="text-center m-4">
-                  <img :src="modal_detail.image" alt="" width="150" />
+                  <img
+                    :src="modal_detail ? modal_detail.image : null"
+                    alt=""
+                    width="150"
+                  />
                 </div>
+
                 <div class="text-center m-4">
-                  <v-input v-model="modal_detail.name"></v-input>
-                </div>
-                <div>
-                  <v-input type="text" disabled v-model="modal_detail.image">
-                  </v-input>
-                </div>
-                <div class="text-center m-4">
-                  <v-btn small rounded outlined  color="black"
+                  <v-btn
+                    small
+                    rounded
+                    outlined
+                    color="black"
                     pill
                     size="sm"
                     variant="outline-success"
                     @click="confirmImage(modal_detail)"
                     >บันทึก</v-btn
                   >
-                  <v-btn small rounded outlined  color="black"
+                  <v-btn
+                    small
+                    rounded
+                    outlined
+                    color="black"
                     v-if="!changePic"
                     pill
                     size="sm"
@@ -125,7 +159,11 @@
                   >
                     เปลี่ยนรูป
                   </v-btn>
-                  <v-btn small rounded outlined  color="black"
+                  <v-btn
+                    small
+                    rounded
+                    outlined
+                    color="black"
                     pill
                     size="sm"
                     variant="outline-danger"
@@ -140,14 +178,16 @@
           <v-col v-if="changePic" cols="6">
             <div v-if="changePic">
               <label for="">**ไม่เกิน 200KB ขนาด 220px * 140px</label>
-              <v-form-file
+              <v-file-input
                 required
                 @change="selectFile"
                 :state="Boolean(file)"
+                solo
+                hide-details
                 placeholder="อัพโหลดไฟล์รูป"
                 drop-placeholder="หรือลากรูปลงที่นี่"
-                class="mv-2 mr-sm-2 mv-sm-0 w-100"
-              ></v-form-file>
+                class="my-2 mr-sm-2 w-100"
+              ></v-file-input>
               <div class="m4-3">ไฟล์ที่เลือก : {{ file ? file.name : "" }}</div>
               <label for=""> PREVIEW</label>
               <div class="m-4">
@@ -155,13 +195,15 @@
               </div>
 
               <div>
-                <v-btn small rounded outlined  color="black" @click="uploadImage">upload</v-btn>
+                <v-btn small rounded outlined color="black" @click="uploadImage"
+                  >upload</v-btn
+                >
               </div>
             </div>
           </v-col>
         </v-row>
-      </template>
-    </v-modal>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -184,16 +226,17 @@ export default {
       listProvider: [],
       file: null,
       filecheck: false,
-      url: ""
+      url: "",
+      showDetail: false,
     };
   },
   async created() {
     let { slot } = await this.$store.dispatch("setting/getGroup");
 
     let res = await this.$store.dispatch("setting/getGame");
-    
+
     this.grouplist = res;
-    console.log(res,"res");
+    console.log(res, "res");
     this.groupKey = Object.keys(this.grouplist);
 
     console.log(this.groupKey);
@@ -210,42 +253,39 @@ export default {
       return {
         animation: 200,
         disabled: false,
-        ghostClass: "ghost"
+        ghostClass: "ghost",
       };
-    }
+    },
   },
   methods: {
-    selectFile(event) {
-      console.log(event.target.files[0].size);
+    selectFile(value) {
+      // console.log());
+      // if (
+      //   event.target.files[0].type != "image/jpeg" &&
+      //   event.target.files[0].type != "image/png" &&
+      //   event.target.files[0].type != "image/svg+xml"
+      // ) {
+      //   this.showErrorAlert("โปรดใฃ้ไฟล์รูปภาพเท่านั้น");
+      //   this.file = "";
 
-      console.log(parseInt(event.target.files[0].size));
-      if (
-        event.target.files[0].type != "image/jpeg" &&
-        event.target.files[0].type != "image/png" &&
-        event.target.files[0].type != "image/svg+xml"
-      ) {
-        this.showErrorAlert("โปรดใฃ้ไฟล์รูปภาพเท่านั้น");
-        this.file = "";
+      //   this.filecheck = false;
+      //   event.files = null;
+      //   this.url = "";
+      //   return;
+      // }
+      // if (parseInt(event.target.files[0].size) > 300000) {
+      //   this.file = "";
 
-        this.filecheck = false;
-        event.files = null;
-        this.url = "";
-        return;
-      }
-      if (parseInt(event.target.files[0].size) > 300000) {
-        this.file = "";
+      //   this.filecheck = false;
+      //   event.files = null;
+      //   this.url = "";
+      //   this.showErrorAlert("ไฟล์ขนาดไม่เกิน 200KB");
 
-        this.filecheck = false;
-        event.files = null;
-        this.url = "";
-        this.showErrorAlert("ไฟล์ขนาดไม่เกิน 200KB");
+      //   return;
+      // }
 
-        return;
-      }
-
-      this.file = event.target.files[0];
+      this.file = value;
       this.url = URL.createObjectURL(this.file);
-
       this.loading = false;
     },
     async uploadImage() {
@@ -276,22 +316,22 @@ export default {
     },
     confirmImage(item) {
       item.image = item.image.trim();
-      this.listProvider = this.listProvider.map(x => {
+      this.listProvider = this.listProvider.map((x) => {
         if (item.name == x.name) x.image = item.image;
       });
       this.temp_img = "";
-      this.$bvModal.hide("showDetail");
+      this.showDetail = true;
     },
     resetImage(item) {
       this.modal_detail.image = this.temp_img;
       this.temp_img = "";
-      this.$bvModal.hide("showDetail");
+      this.showDetail = false;
     },
     openDetail(item) {
       this.modal_detail = item;
       this.modal_detail.group = this.namegroup;
       this.temp_img = item.image;
-      this.$bvModal.show("showDetail");
+      this.showDetail = true;
     },
     checkProvider() {
       this.grouplist[this.selection] = this.listProvider;
@@ -318,7 +358,6 @@ export default {
       console.log(item, "item");
       console.log(this.grouplist, "item");
 
-
       // Object.keys(this.grouplist).map((key) => {
       //   const item = this.grouplist[key];
       //   if(Array.isArray(item) )
@@ -331,15 +370,15 @@ export default {
       //     });
       this.selection = item.code;
       this.namegroup = item.name;
-       this.listProvider = this.grouplist[item.code];
-  
+      this.listProvider = this.grouplist[item.code];
+
       // this.listProvider.forEach((x) => {
       //   x.status = true;
       // });
       const temp = this.listProvider;
       this.listProvider_backup = temp;
-    }
-  }
+    },
+  },
 };
 </script>
 

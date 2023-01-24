@@ -123,6 +123,6 @@ export default {
     ALL_MESSAGE_WEB: process.env.ALL_MESSAGE_WEB,
     ALL_RICO_REPORT:process.env.ALL_RICO_REPORT,
     ALL_PROMOTION:process.env.ALL_PROMOTION,
-
+   
   }
 };

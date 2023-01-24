@@ -1,4 +1,4 @@
-export default function({ store, redirect, route }) {
+export default function ({ store, redirect, route }) {
   if (!store.state.auth.key || store.state.auth.key == "undefined") {
     localStorage.clear();
     sessionStorage.clear();
@@ -9,13 +9,13 @@ export default function({ store, redirect, route }) {
     const mainmenu = store.state.menu;
     const currentPath = route.path;
     if (permission.length > 0 || permission) {
-      let listMenu = mainmenu.filter(menu => {
+      let listMenu = mainmenu.filter((menu) => {
         return permission.includes(menu.permission);
       });
-      let isexists = listMenu.find(mainlink => {
+      let isexists = listMenu.find((mainlink) => {
         if (mainlink.subLinks) {
           let already = mainlink.subLinks.find(
-            sublink => sublink.to == currentPath
+            (sublink) => sublink.to == currentPath
           );
           return already;
         } else {
@@ -31,4 +31,4 @@ export default function({ store, redirect, route }) {
       console.log("nooooo");
     }
   }
-}
+} 
