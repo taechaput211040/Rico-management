@@ -56,7 +56,7 @@
             :bgBody="mainitem.table.colorBodyTable.value"
             :textColor="mainitem.table.colorTextTable.value"
             :bgTable="mainitem.table.bgTable.value"
-            class="pa-0 col-lg-3 col-xl-6 col-md-8 col-sm-12 col-12"
+            class="pa-0  col-xl-6 col-md-8 col-sm-12 col-12"
             v-if="index === 'table'"
           ></table-detail>
         </div>

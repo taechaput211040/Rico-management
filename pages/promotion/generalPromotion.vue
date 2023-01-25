@@ -209,7 +209,6 @@
             @save="saveEdit()"
             :Panel="openedPanel"
           /> -->
-          {{ planalcheck }}
           <div>
             <h3 class="mb-4">แก้ไขโปรโมชัน</h3>
             <v-row class="pa-3">
@@ -835,19 +834,7 @@ export default {
         this.itemedit.promotionpic = this.imageUpdated;
       }
     },
-    async selectionedit(data) {
-      let item = data.promotion_details;
-      for (let i = 0; i <= item.length; i++) {
-        if (item[i] != null) {
-          console.log(i);
-          if (item[i].typestatus == true) {
-            this.openedPanel.push(i);
-          } else if (item[i].typestatus == false) {
-            this.openedPanel = this.openedPanel.splice(i, 1);
-          }
-        }
-      }
-    },
+
     async editPromotion(promotion) {
       console.log(promotion, "data");
       this.imageUpdated = promotion.promotionpic;

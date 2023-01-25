@@ -11,297 +11,10 @@ export function login(context, { username, password, agentkey }) {
         {
           username: username,
           password: password,
-          agent: agentkey
+          agent: agentkey,
         }
       );
-      // const mockResponse = {
-      //   group: [
-      //     {
-      //       title: "Dashboard",
-      //       to: "/",
-      //       icon: "mdi-view-dashboard",
-      //       status: true
-      //     },
-      //     {
-      //       title: "รายงานระบบ",
-      //       icon: "mdi-chart-bar",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "สถิติผู้ใช้งาน",
-      //           to: "/reportSystem/statistics",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "สถิติฝาก-ถอน",
-      //           to: "/reportSystem/transaction",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานลูกค้าใหม่",
-      //           to: "/reportSystem/newaccount",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานลูกค้าประจำ",
-      //           to: "/reportSystem/regularReport",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานรับโบนัส",
-      //           to: "/reportSystem/bonusReport",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานรับโบนัสชวนเพื่อน",
-      //           to: "/reportSystem/affiliate",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานลูกค้าเลิกเล่น",
-      //           to: "quitMember",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "จัดการสมาชิก",
-      //       icon: "mdi-account",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "สมัครสมาชิก",
-      //           to: "/member/register",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานสมาชิก",
-      //           to: "/member/reportMember",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
-      //           to: "/member/memberCheck",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เช็คข้อมูลการเล่น",
-      //           to: "/member/memberReportTransaction",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "ถอนเครดิตสมาชิก(Manual)",
-      //           to: "/member/withdrawManual",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "แก้ไขเครดิต/รายการผิดพลาด",
-      //           to: "/member/ManualEditCredit",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "รายงานฝาก/ถอน",
-      //       icon: "mdi-credit-card-check",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายการฝากสมาชิก",
-      //           to: "/reportTransaction/deposite",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายการถอนสมาชิก",
-      //           to: "/reportTransaction/withdraw",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายการถอนสมาชิกล่าสุด",
-      //           to: "/reportTransaction/lastWithdrawal",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายการฝากแรก",
-      //           to: "/reportTransaction/firstDeposit",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายการที่ถูกซ่อน",
-      //           to: "/reportTransaction/hiddenReport",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "รายงานสรุป",
-      //       icon: "mdi-credit-card-plus-outline",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "กำไร/ขาดทุน",
-      //           to: "/profitReport/Report",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "กำไร/ขาดทุน รายบุคคล",
-      //           to: "/profitReport/ProfitByUserReport",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "สรุปโปรโมชัน",
-      //           to: "/profitReport/PromotionReport",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "จัดการค่ายเกม",
-      //       to: "/groupsetting",
-      //       icon: "mdi-history",
-      //       status: true
-      //     },
 
-      //     {
-      //       title: "ตั้งค่าโปรโมชั่น",
-      //       icon: "mdi-history",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "โปรโมชันทั่วไป",
-      //           to: "/promotion/generalPromotion",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "Cashback",
-      //           to: "/promotion/cashback",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "ตั้งค่าลิงก์รับทรัพย์",
-      //       icon: "mdi-history",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "รายงานลิงก์รับทรัพย์",
-      //           to: "/Affiliate/report",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
-      //           to: "/Affiliate/infomember",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "ตั้งค่า",
-      //           to: "/Affiliate/setting",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "ตั้งค่า Feature",
-      //       icon: "mdi-gamepad-variant-outline",
-      //       status: true,
-      //       subLinks: [
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เครดิตฟรี",
-      //           to: "/feature/creditfree",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "กงล้อนำโชค",
-      //           to: "/feature/wheel",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เปิดไพ่6ใบ",
-      //           to: "/feature/sixcard",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เปิดหีบสมบัติ",
-      //           to: "/feature/chest",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "เช็คอินรายวัน",
-      //           to: "/feature/checkindaily",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "สะสมเเต้ม",
-      //           to: "/feature/point",
-      //           status: true
-      //         },
-      //         {
-      //           icon: "mdi-view-dashboard",
-      //           text: "ของพรีเมียม",
-      //           to: "/feature/premiumn",
-      //           status: true
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       title: "ตั้งค่าระบบ",
-      //       to: "/system",
-      //       icon: "mdi-cog-outline",
-      //       status: true
-      //     },
-      //     {
-      //       title: "รายชื่อมิจฉาชีพ",
-      //       to: "/CriminalList",
-      //       icon: "mdi-gamepad-square",
-      //       status: true
-      //     },
-      //     {
-      //       title: "พนักงาน",
-      //       to: "/employee",
-      //       icon: "mdi-gamepad-square",
-      //       status: true
-      //     },
-      //     {
-      //       title: "ธนาคาร",
-      //       to: "/companyBank",
-      //       icon: "mdi-gamepad-square",
-      //       status: true
-      //     }
-      //   ]
-      // };
       console.log(data, "data");
       await context.commit("set_login", data);
       // await context.dispatch("getUser");
@@ -366,10 +79,9 @@ export function getLockdown({ rootState }) {
             // `http://localhost:3200/api/Auth/logout`
           );
 
-
           // resolve(response);
-          localStorage.clear()
-          window.location.href = 'https://youtube.com';
+          localStorage.clear();
+          window.location.href = "https://youtube.com";
 
           resolve(response);
         } catch (error) {
@@ -386,19 +98,19 @@ export function getLockdown({ rootState }) {
     }
   });
 }
-export function setLockdown(context ) {
+export function setLockdown(context) {
   return new Promise(async (resolve, reject) => {
-
     console.log(context.state.company, "company");
     const body = {
-      operator:context.state.user,
-      company:context.state.company,
-      agent:context.state.agent,
-      status:true
-    }
+      operator: context.state.user,
+      company: context.state.company,
+      agent: context.state.agent,
+      status: true,
+    };
     try {
       let response = await this.$axios.post(
-        `${process.env.ALL_SUPPORT}/api/Lockdowns/lockdown`,body
+        `${process.env.ALL_SUPPORT}/api/Lockdowns/lockdown`,
+        body
       );
       if (response.data.status) {
         try {
@@ -407,9 +119,8 @@ export function setLockdown(context ) {
             // `http://localhost:3200/api/Auth/logout`
           );
 
-
           // resolve(response);
-          localStorage.clear()
+          localStorage.clear();
           context.state.key = null;
           context.state.user = null;
           context.state.group = null;
@@ -420,7 +131,7 @@ export function setLockdown(context ) {
           context.state.isAdmin = false;
           context.state.hash = null;
           context.state.tokenMember = null;
-          window.location.href = 'https://youtube.com';
+          window.location.href = "https://youtube.com";
           resolve(response);
         } catch (error) {
           reject(error);
@@ -446,13 +157,13 @@ export function getFeature(context) {
           chest: { activated: false, setting: { status: false, prize: [] } },
           creditfree: {
             activated: true,
-            setting: { status: false, prize: [] }
+            setting: { status: false, prize: [] },
           },
           point: { activated: false, setting: { status: false, prize: [] } },
           premium: { activated: false, setting: { status: false, prize: [] } },
           sixcard: { activated: false, setting: { status: false, prize: [] } },
-          wheel: { activated: true }
-        }
+          wheel: { activated: true },
+        },
       };
       console.log(response.feature);
       // let response = await this.$axios.get("apigetFeature")
@@ -469,187 +180,29 @@ export function getFeature(context) {
 
 // getinformation
 export function GetInfomation(context) {
-  console.log("GetInfomation")
+  console.log("GetInfomation");
   return new Promise(async (resolve, reject) => {
-    if(context.state.datarander.data == true) return 
+    if (context.state.datarander.data == true) return;
     try {
       const query = {
-        start:dayjs().month() + 1,
-        end:dayjs().month() + 1,
-        year:dayjs().year(),
-        company:context.state.company,
-        agent:context.state.agent
-      }
-     
+        start: dayjs().month() + 1,
+        end: dayjs().month() + 1,
+        year: dayjs().year(),
+        company: context.state.company,
+        agent: context.state.agent,
+      };
+
       let response = await this.$axios.get(
         `${process.env.ALL_RICO_REPORT}/api/profitloss_agent/Dashboard?start=${query.start}&end=${query.end}&year=${query.year}&company=${query.company}&agent=${query.agent}`
-        
       );
-      // const response = {
-      //   data: {
-      //     OneMonthProfit: 10016,
-      //     incomingSMS: [],
 
-      //     dpbank: [
-      //       {
-      //         Companybank: "KBANK",
-      //         Companybankacountnumber: "1171622669",
-      //         Companybankname: "วัชรากร ดิสคุ้ม",
-      //         agentPrefixCode: "BE",
-      //         balance: 5442,
-      //         balanceupdatetime: "2022-02-09 10:53:00",
-      //         bankAccRef: "X162266X",
-      //         companyName: "Smartbet",
-      //         createBy: "adnp",
-      //         id: "81857d6c-c8d0-4d75-8b5a-dc7729974124",
-      //         loginname: null,
-      //         phone: "0997839913",
-      //         status: true,
-      //         updateBy: "_RICO_QUEUE",
-      //         visibletomember: true
-      //       },
-      //       {
-      //         Companybank: "SCB",
-      //         Companybankacountnumber: "0272694871",
-      //         Companybankname: "บุญยืน โพธิสุวรรณ",
-      //         agentPrefixCode: "BE",
-      //         balance: 0,
-      //         balanceupdatetime: "2022-02-06 16:00:15",
-      //         bankAccRef: "X694871",
-      //         companyName: "Smartbet",
-      //         createBy: "adnp",
-      //         id: "8124f318-f804-435a-8be4-d2516e19298d",
-      //         loginname: "lisa118sp3",
-      //         phone: "0658621057",
-      //         status: true,
-      //         type: false,
-      //         updateBy: "adnp"
-      //       },
-      //       {
-      //         Companybank: "TRUEWALLET",
-      //         Companybankacountnumber: "0645609241",
-      //         Companybankname: "ปริญญา แป้นสุข",
-      //         agentPrefixCode: "BE",
-      //         balance: 0,
-      //         balanceupdatetime: "2022-02-06 16:02:18",
-      //         bankAccRef: "0645609241",
-      //         companyName: "Smartbet",
-      //         createBy: "adnp",
-      //         id: "34643451-dd29-4205-a4fb-ee4824bcb6b2",
-      //         loginname: null,
-      //         phone: "0645609241",
-      //         status: true,
-      //         type: false,
-      //         updateBy: "superadmin2"
-      //       }
-      //     ],
-      //     dplist: [
-      //       {
-      //         afcredit: 337,
-      //         amount: 225,
-      //         bfcredit: "0",
-      //         bonusamount: "112.5",
-      //         companyBank: "RICO",
-      //         created_at: "2022-01-19 09:58:55",
-      //         dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-      //         id: 354,
-      //         member_id: "BE8778856",
-      //         remark:
-      //           "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-      //         smsdatetime: "2022-01-19T09:27:00",
-      //         sum: null,
-      //         topupby: "phoe mu kyi",
-      //         updated_at: "2022-01-19 09:58:55"
-      //       },
-      //       {
-      //         afcredit: 337,
-      //         amount: 225,
-      //         bfcredit: "0",
-      //         bonusamount: "112.5",
-      //         companyBank: "checkin",
-      //         created_at: "2022-01-19 09:58:55",
-      //         dpref: "be5c3470-1af9-46b4-83fa-b017b05d5e85",
-      //         id: 355,
-      //         member_id: "BE8778856",
-      //         remark:
-      //           "เติม225 บาท โบนัส 112.5บาท  สำเร็จ โดยphoe mu kyi ฝากทั้งวัน",
-      //         smsdatetime: "2022-01-19T09:27:00",
-      //         sum: null,
-      //         topupby: "AUTO",
-      //         updated_at: "2022-01-19 09:58:55"
-      //       }
-      //     ],
-      //     wdamountoneday: { amount: 600 },
-      //     wdlist: [
-      //       {
-      //         afAmount: null,
-      //         afcredit: 0,
-      //         amount: 49,
-      //         bankAcc: "09970678690",
-      //         bankName: "WAVEPAY",
-      //         bfAmount: null,
-      //         bfcredit: 49,
-      //         created_at: "2022-01-19 01:30:22",
-      //         id: 86,
-      //         name: "htetzaw myo",
-      //         operator: "Ah Lar Hmwe",
-      //         remark: "กรุณาทำการโอนด้วยตนเอง",
-      //         requsettime: "2022-01-19 01:30:18",
-      //         status: "Success",
-      //         transferTime: "โอนมือ",
-      //         type: "common",
-      //         username: "BE9970678690"
-      //       },
-      //       {
-      //         afAmount: null,
-      //         afcredit: 0,
-      //         amount: 50,
-      //         bankAcc: "09970678690",
-      //         bankName: "SCB",
-      //         bfAmount: null,
-      //         bfcredit: 50,
-      //         created_at: "2022-01-19 01:30:22",
-      //         id: 87,
-      //         name: "htetzaw myo",
-      //         operator: "Ah Lar Hmwe",
-      //         remark: "กรุณาทำการโอนด้วยตนเอง",
-      //         requsettime: "2022-01-19 01:30:18",
-      //         status: "Error",
-      //         transferTime: "โอนมือ",
-      //         type: "common",
-      //         username: "BE9970678690"
-      //       }
-      //     ],
-      //     wdbank: [
-      //       {
-      //         Companybank: "SCB",
-      //         Companybankacountnumber: "2922448904",
-      //         Companybankname: "มานะ เอี่ยมสอิ้ง",
-      //         agentPrefixCode: "BE",
-      //         balance: 0,
-      //         balanceupdatetime: "2022-02-06 16:03:28",
-      //         bankAccRef: "X448904",
-      //         companyName: "Smartbet",
-      //         createBy: "adnp",
-      //         id: "4d9933dd-25bb-4715-a174-2a35ee4f2ab4",
-      //         loginname: "lisa118sp4",
-      //         phone: "0886148727",
-      //         status: true,
-      //         type: true,
-      //         updateBy: "adnp",
-      //         visibletomember: true
-      //       }
-      //     ],
-      //     dpamountoneday: { amount: 1911 }
-      //   }
-      // };
-       response.data.dplist.map(x=>{
-        x.created_at = dayjs(x.created_at).format("YYYY-MM-DD HH:mm:ss")
-        return x
-      })
+      response.data.dplist.map((x) => {
+        x.created_at = dayjs(x.created_at).format("YYYY-MM-DD HH:mm:ss");
+        return x;
+      });
 
-      await context.commit('set_dashboard', response.data)
-      await context.commit('set_dashboard_data_flag', true)
+      await context.commit("set_dashboard", response.data);
+      await context.commit("set_dashboard_data_flag", true);
       // let response = await this.$axios.get("GetInfomation")
       // });
       // resolve(response);
@@ -661,23 +214,17 @@ export function GetInfomation(context) {
   });
 }
 
-
 // getinformation
 //getautostatus
 export function Autostatus(context) {
   return new Promise(async (resolve, reject) => {
     try {
-   
       let response = await this.$axios.get(
-        `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}` 
-       
+        `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}`
       );
-     
-      
-  
-    
-context.commit("update_action_bank",response.data)
-  
+
+      context.commit("update_action_bank", response.data);
+
       resolve(response);
       return response;
     } catch (error) {
@@ -686,55 +233,49 @@ context.commit("update_action_bank",response.data)
   });
 }
 // update balance bank
-export function updateAutoBankStatus( context,{data} ) {
-  console.log("sss:jjj")
-  console.log("sss:",data)
-  context.commit("update_action_bank",data)
+export function updateAutoBankStatus(context, { data }) {
+  console.log("sss:jjj");
+  console.log("sss:", data);
+  context.commit("update_action_bank", data);
 
- 
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.post(
-        `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}` , data
-       
+        `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}`,
+        data
       );
-     
-      
-      resolve(response)
+
+      resolve(response);
     } catch (error) {
       reject(error);
     }
   });
-
-
-
 }
-export function updateBalanceBank( context,{id,balance} ) {
+export function updateBalanceBank(context, { id, balance }) {
   // console.log('geee')
 
   // return
   return new Promise(async (resolve, reject) => {
     const body = {
-      balance:balance,
-      balanceupdatetime:dayjs().format("YYYY-MM-DD HH:mm:ss"),
-      updateBy:context.state.user
-    }
+      balance: balance,
+      balanceupdatetime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      updateBy: context.state.user,
+    };
     try {
       let response = await this.$axios.patch(
-        `${process.env.ALL_COMPANY_BANK}/api/Company/${id}`,body,
+        `${process.env.ALL_COMPANY_BANK}/api/Company/${id}`,
+        body,
         {
           headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
-  //             "balance" => $balance,
-  //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
-  //             "updateBy" => "by " . env('AGENT')
+      //             "balance" => $balance,
+      //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+      //             "updateBy" => "by " . env('AGENT')
       // resolve(response);
       resolve(response);
-
- 
     } catch (error) {
       reject(error);
     }
@@ -742,47 +283,48 @@ export function updateBalanceBank( context,{id,balance} ) {
 }
 //check balance SCBAPI
 
-export function checkBalanceBank(context,{bank}) {
+export function checkBalanceBank(context, { bank }) {
   // console.log(bank.Companybankacountnumber)
 
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => { 
     try {
       // console.log('feeesse')
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/ScbBalance/${bank.Companybankacountnumber}`
-       
       );
-// console.log('feeee')
-// console.log(context)
-      context.dispatch("updateBalanceBank",{id:bank.id,balance:response.data.balance})
-      if(bank.type){
-        const temp_bank_list = context.state.wdbank
-        temp_bank_list.map(x=>{
-          if(x.id == bank.id){
-            x.balance = response.data.balance
-            x.balanceupdatetime = dayjs().format("YYYY-MM-DD HH:mm:ss")
-            return x
+      // console.log('feeee')
+      // console.log(context)
+      context.dispatch("updateBalanceBank", {
+        id: bank.id,
+        balance: response.data.balance,
+      });
+      if (bank.type) {
+        const temp_bank_list = context.state.wdbank;
+        temp_bank_list.map((x) => {
+          if (x.id == bank.id) {
+            x.balance = response.data.balance;
+            x.balanceupdatetime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+            return x;
           }
-          return x
-        })
-        context.commit("update_wd_bank",temp_bank_list)
+          return x;
+        });
+        context.commit("update_wd_bank", temp_bank_list);
       } else {
-        const temp_bank_list = context.state.dpbank
+        const temp_bank_list = context.state.dpbank;
         // console.log(temp_bank_list)
-        temp_bank_list.map(x=>{
-          if(x.id == bank.id){
-            x.balance = response.data.balance
-            x.balanceupdatetime = dayjs().format("YYYY-MM-DD HH:mm:ss")
-            return x
+        temp_bank_list.map((x) => {
+          if (x.id == bank.id) {
+            x.balance = response.data.balance;
+            x.balanceupdatetime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+            return x;
           }
-          return x
-        })
-        context.commit("update_dp_bank",temp_bank_list)
+          return x;
+        });
+        context.commit("update_dp_bank", temp_bank_list);
       }
-   
 
       resolve(response.data.balance);
-     
+
       // // $url = env('API_SCB_CORE') . '/api/ScbCore/Summary';
 
       // // $data = ['acc_number' => $acc_number];
@@ -792,44 +334,36 @@ export function checkBalanceBank(context,{bank}) {
       // // } else {
       // //     return 0;
       // // }
-  //     $balance = CompanybankController::getBalanceSCB($wd_bank['Companybankacountnumber'],$request);
-    
+      //     $balance = CompanybankController::getBalanceSCB($wd_bank['Companybankacountnumber'],$request);
 
-     
+      //     $response = Http::patch(
+      //         env('ALL_COMPANY_BANK') . '/api/Company/' . $id,
+      //         [
+      //             "balance" => $balance,
+      //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+      //             "updateBy" => "by " . env('AGENT')
+      //         ]
+      //     );
 
-  //     $response = Http::patch(
-  //         env('ALL_COMPANY_BANK') . '/api/Company/' . $id,
-  //         [
-  //             "balance" => $balance,
-  //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
-  //             "updateBy" => "by " . env('AGENT')
-  //         ]
-  //     );
+      //     $bank = Http::get(
+      //         env('ALL_COMPANY_BANK') . '/api/Company/' . $id
+      //     );
 
+      //     (new  UserController())->createTransaction($request->user()['username'], "CHECK", "กดตรวจสอบยอดเงินคงเหลือธนาคาร: " . $bank->json()["Companybankname"], $bank->json(), $request);
 
+      //     return response()->json([
+      //         "data" => $bank->json()
 
+      //     ], 200);
 
-  //     $bank = Http::get(
-  //         env('ALL_COMPANY_BANK') . '/api/Company/' . $id
-  //     );
-
-  //     (new  UserController())->createTransaction($request->user()['username'], "CHECK", "กดตรวจสอบยอดเงินคงเหลือธนาคาร: " . $bank->json()["Companybankname"], $bank->json(), $request);
-
-  //     return response()->json([
-  //         "data" => $bank->json()
-
-  //     ], 200);
- 
-  // } else {
-  //     return response()->json([
-  //         "message" => "ข้อมูลไม่ถูกต้อง"
-  //     ], 400);
-  // }
-
-     
+      // } else {
+      //     return response()->json([
+      //         "message" => "ข้อมูลไม่ถูกต้อง"
+      //     ], 400);
+      // }
     } catch (error) {
-      console.log('pppp')
-      console.log(error)
+      console.log("pppp");
+      console.log(error);
       reject(error);
     }
   });
@@ -844,7 +378,7 @@ export function logout(context) {
       );
       context.commit("set_logout");
       resolve(response);
-    
+
       // resolve(response);
       return;
     } catch (error) {

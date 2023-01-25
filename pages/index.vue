@@ -23,14 +23,12 @@
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
               :value="datarander.profitlossDate.toFixed(2)"
-              :condition="true"
               title="กำไร/ขาดทุน(วันนี้)"
               iconSrc="https://smart-binary.cloud/storage/Rico/today.gif"
             ></card-view>
           </div>
           <div class="col-12 col-md-6 col-lg-12 col-xl-6 col-sm-6">
             <card-view
-              :condition="true"
               title="กำไร/ขาดทุน(ทั้งเดือน)"
               :value="datarander.profitlossmounth.toFixed(2)"
               iconSrc="https://smart-binary.cloud/storage/Rico/chart.gif"
@@ -196,7 +194,7 @@
 
           <v-data-table
             :headers="depositColumn"
-            :items="depositlist"
+            :items="$store.state.report.dplist"
             :items-per-page="5"
           >
             <template #[`item.no`]="{ item }">
@@ -306,7 +304,7 @@
 
           <v-data-table
             :headers="withdrawColumn"
-            :items="withdrawlist"
+            :items="$store.state.report.wdlist"
             :items-per-page="5"
           >
             <template #[`item.no`]="{ item }">
@@ -501,7 +499,8 @@ export default {
   mounted() {},
   data() {
     return {
-      
+      depositlist:[],
+      withdrawlist:[],
       dialogTopup:false,
       incoming_dashboard:{username:'',amount:0},
       rulesFrom: {
@@ -690,7 +689,6 @@ export default {
       }
     },
     async updateStatusBank(item){
-      console.log(item,"asdasdasd")
 
       await this.updateAutoBankStatus({data:item})
 

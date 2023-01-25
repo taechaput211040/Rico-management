@@ -88,6 +88,8 @@
       <v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
         <v-img
           max-height="150"
+          
+          @click="$router.push('/')"
           max-width="200"
           contain
           class="ma-auto my-5"
@@ -386,7 +388,7 @@ export default {
     try {
       await this.getUser();
       await this.getFeature();
-      await this.getSetting()
+      await this.getSetting();
       // await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter((x) => {

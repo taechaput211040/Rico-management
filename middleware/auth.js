@@ -8,6 +8,9 @@ export default function ({ store, redirect, route }) {
     let permission = store.state.auth.menu;
     const mainmenu = store.state.menu;
     const currentPath = route.path;
+    if (route.path == "/palette") {
+      return true;
+    }
     if (permission.length > 0 || permission) {
       let listMenu = mainmenu.filter((menu) => {
         return permission.includes(menu.permission);
@@ -31,4 +34,4 @@ export default function ({ store, redirect, route }) {
       console.log("nooooo");
     }
   }
-} 
+}

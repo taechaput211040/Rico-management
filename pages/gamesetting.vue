@@ -283,10 +283,13 @@ export default {
 
       //   return;
       // }
-
-      this.file = value;
-      this.url = URL.createObjectURL(this.file);
-      this.loading = false;
+      if (value) {
+        this.file = value;
+        this.url = URL.createObjectURL(this.file);
+        this.loading = false;
+      } else {
+        this.url = "";
+      }
     },
     async uploadImage() {
       this.loading = true;
