@@ -194,7 +194,7 @@
 
           <v-data-table
             :headers="depositColumn"
-            :items="$store.state.report.dplist"
+            :items="dplist"
             :items-per-page="5"
           >
             <template #[`item.no`]="{ item }">
@@ -304,7 +304,7 @@
 
           <v-data-table
             :headers="withdrawColumn"
-            :items="$store.state.report.wdlist"
+            :items="wdlist"
             :items-per-page="5"
           >
             <template #[`item.no`]="{ item }">
@@ -488,7 +488,7 @@ export default {
     try {
       await this.getsatatusBank();
      await this.GetInfomation();
-   
+   console.log('getinfo done')
       // this.datainformation = response.data;
       this.setCardshow(this.datainformation);
   
@@ -699,7 +699,7 @@ export default {
       try {
          await this.Autostatus();
     
-
+         console.log('Autostatus done')
       } catch (error) {
         console.log(error);
       }

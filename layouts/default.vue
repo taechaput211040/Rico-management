@@ -363,20 +363,20 @@ export default {
     };
   },
   mounted() {
-    this.socket = this.$socket();
-    if (this.socket) {
-      this.socket.on("deposit", (msg) => {
-        console.log("deposit websocket initiate", msg);
-        this.socketDP(JSON.parse(msg));
-        // this.messages.push(JSON.parse(msg));
-      });
+    // this.socket = this.$socket();
+    // if (this.socket) {
+    //   this.socket.on("deposit", (msg) => {
+    //     console.log("deposit websocket initiate", msg);
+    //     this.socketDP(JSON.parse(msg));
+    //     // this.messages.push(JSON.parse(msg));
+    //   });
 
-      this.socket.on("withdraw", (msg) => {
-        console.log("withdraw websocket initiate", msg);
-        this.socketWD(JSON.parse(msg));
-        // this.messages.push(JSON.parse(msg));
-      });
-    }
+    //   this.socket.on("withdraw", (msg) => {
+    //     console.log("withdraw websocket initiate", msg);
+    //     this.socketWD(JSON.parse(msg));
+    //     // this.messages.push(JSON.parse(msg));
+    //   });
+    // }
   },
   async fetch() {
     let data = await this.$store.dispatch("report/GetDplist");

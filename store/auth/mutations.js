@@ -122,7 +122,7 @@ export function set_logout(state) {
 export function addWithdraw(state, payload) {
   state.wdlist.unshift(payload) 
   if(state.wdlist.length > 30){
-    state.wdlist.slice(0,29)
+    // state.wdlist.slice(0,29)
   }
 }
 export function addDeposit(state, payload) {
@@ -131,13 +131,13 @@ export function addDeposit(state, payload) {
  
   state.dplist.unshift(payload) 
   if(state.dplist.length > 30){
-    state.dplist.slice(0,29)
+    // state.dplist.slice(0,29)
   }
 }
 export function addIncoming(state, payload) {
   state.incomingSMS.unshift(payload) 
   if(state.incomingSMS.length > 20){
-    state.incomingSMS.slice(0,19)
+    // state.incomingSMS.slice(0,19)
   }
 }
 
