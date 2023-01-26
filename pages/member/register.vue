@@ -79,7 +79,7 @@
               hide-details="auto"
               dense
               type="number"
-              @keydown="e => rangeInput(e, 13, formRegister.bankAcc)"
+              @keydown="(e) => rangeInput(e, 13, formRegister.bankAcc)"
               :rules="rulesFrom.banknumRules"
               v-model="formRegister.bankAcc"
               outlined
@@ -97,7 +97,7 @@
               type="number"
               :rules="rulesFrom.phoneRules"
               v-model="formRegister.phone"
-              @keydown="e => rangeInput(e, 11, formRegister.phone)"
+              @keydown="(e) => rangeInput(e, 11, formRegister.phone)"
               outlined
               required
             ></v-text-field
@@ -197,7 +197,7 @@
       ></v-form>
 
       <v-card-actions class="justify-center mt-3">
-        <v-btn color="success" class="btn_sty" @click="submitform"
+        <v-btn :disabled="canwrite" color="primary" @click="submitform"
           >สมัครสมาชิกใหม่</v-btn
         >
       </v-card-actions>
@@ -206,32 +206,32 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
       valid: false,
       rulesFrom: {
-        nameRules: [v => !!v || "กรุณากรอกชื่อ"],
-        lastnameRules: [v => !!v || "กรุณากรอกนามสกุล"],
-        bankRules: [v => !!v || "กรุณาเลือกธนาคาร"],
+        nameRules: [(v) => !!v || "กรุณากรอกชื่อ"],
+        lastnameRules: [(v) => !!v || "กรุณากรอกนามสกุล"],
+        bankRules: [(v) => !!v || "กรุณาเลือกธนาคาร"],
         banknumRules: [
-          v => !!v || "กรุณากรอกหมายเลขธนาคาร",
-          v =>
+          (v) => !!v || "กรุณากรอกหมายเลขธนาคาร",
+          (v) =>
             (v && v.length <= 13 && v.length >= 10) ||
-            "กรุณากรอกหมายเลขธนาคารให้ถูกต้อง 10 ถึง 13หลัก"
+            "กรุณากรอกหมายเลขธนาคารให้ถูกต้อง 10 ถึง 13หลัก",
         ],
         phoneRules: [
-          v => !!v || "กรุณากรอกหมายเลขมือถือให้ถุกต้อง",
-          v =>
+          (v) => !!v || "กรุณากรอกหมายเลขมือถือให้ถุกต้อง",
+          (v) =>
             (v && v.length <= 11 && v.length >= 10) ||
-            "กรณากรอกหมายเลขโทรศัพท์ 10 ถึง11หลัก"
-        ]
+            "กรณากรอกหมายเลขโทรศัพท์ 10 ถึง11หลัก",
+        ],
       },
       bank: [
         { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
         { value: "TRUEWALLET", text: "TRUEWALLET - ทรูวอเล็ต" },
-        { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" }
+        { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
       ],
       formRegister: {
         name: null,
@@ -253,16 +253,25 @@ export default {
         knowFrom: "สมัครผ่านแอดมิน",
         username: null,
         password: null,
-        operator: this.$store.state.auth.user
-      }
+        operator: this.$store.state.auth.user,
+      },
     };
+  },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("manageMember_write")) return true;
+        else return false;
+      }
+    },
   },
   methods: {
     ...mapActions("member", ["createMember"]),
     createUsername() {
       this.formRegister.username =
-        this.$store.state.auth.company + this.$store.state.auth.agent 
-        this.generatepassnum() +
+        this.$store.state.auth.company + this.$store.state.auth.agent;
+      this.generatepassnum() +
         this.generatepassnum() +
         this.generatepassnum() +
         this.generatepassnum();
@@ -285,8 +294,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel"
-        }).then(async result => {
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
             await this.createMember(this.formRegister);
@@ -295,8 +304,8 @@ export default {
               title: "บันทึกสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 this.$refs.form.reset();
               }
@@ -325,8 +334,8 @@ export default {
       } else {
         this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(4);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

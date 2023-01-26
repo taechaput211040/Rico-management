@@ -7,6 +7,7 @@
       >
         <span class="font-weight-bold">สถานะการใช้งาน</span>
         <v-switch
+          :disabled="canwrite"
           hide-details="auto"
           class="mx-5 mt-2"
           color="success"
@@ -34,6 +35,7 @@
                 class="btn_sty"
                 dark
                 small
+                :disabled="canwrite"
                 @click="setting(item)"
                 ><v-icon left small>mdi-cog</v-icon> ตั้งค่า</v-btn
               >
@@ -322,7 +324,12 @@
                     </div>
                   </div>
                 </div>
-                <v-btn color="primary" type="submit" class="py-3 mt-3 btn_sty">
+                <v-btn
+                  :disabled="canwrite"
+                  color="primary"
+                  type="submit"
+                  class="py-3 mt-3 btn_sty"
+                >
                   บันทึก
                 </v-btn>
               </form>
@@ -335,6 +342,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import { validationMixin } from "vuelidate";
 import {
   required,
@@ -437,7 +445,7 @@ export default {
       ],
       no: 0,
       setting_roulette: false,
-  
+
       roullet: [],
       settingitem: {},
       dataSetting: {
@@ -464,7 +472,15 @@ export default {
       settingitem: [],
     };
   },
-
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("settingFeature_write")) return true;
+        else return false;
+      }
+    },
+  },
   async fetch() {
     await this.$axios
       .$get(

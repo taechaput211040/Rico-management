@@ -34,6 +34,7 @@
                 <v-tooltip bottom color="success" v-if="item.status == true">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="item.status = !item.status"
                       v-bind="attrs"
                       v-on="on"
@@ -50,6 +51,7 @@
                 <v-tooltip bottom color="red" v-else>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="item.status = !item.status"
                       v-bind="attrs"
                       v-on="on"
@@ -67,6 +69,7 @@
                 <v-tooltip bottom color="warning">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="editPromotion(item)"
                       v-bind="attrs"
                       v-on="on"
@@ -84,6 +87,7 @@
                 <v-tooltip bottom color="error">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="deletePromotion(item.id)"
                       color="error"
                       v-bind="attrs"
@@ -793,6 +797,13 @@ export default {
   },
   computed: {
     ...mapState("promotion", ["itempromotion"]),
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("promotion_write")) return true;
+        else return false;
+      }
+    },
     // panalCheck(val) {
     //   if (val) {
     //     return this.openedPanel;

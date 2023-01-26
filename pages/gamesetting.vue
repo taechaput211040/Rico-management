@@ -78,6 +78,7 @@
                 outlined
                 color="black"
                 pill
+                :disabled="canwrite"
                 size="sm"
                 variant="outline-primary"
                 @click="openDetail(item)"
@@ -87,13 +88,14 @@
           >
         </div>
       </draggable>
-      <div style="display: flex; justify-content: center" class="mt-4">
+      <v-card-actions class="text-center justify-center">
         <v-btn
           small
           rounded
           outlined
           color="black"
           pill
+          :disabled="canwrite"
           variant="success"
           @click="saveProvider"
           >บันทึก</v-btn
@@ -104,12 +106,13 @@
           outlined
           color="black"
           pill
+          :disabled="canwrite"
           variant="warning"
           @click="resetProvider"
           class="ml-4"
           >คืนค่าเริ่มต้น และบันทึก</v-btn
-        >
-      </div>
+        ></v-card-actions
+      >
     </v-card>
     <v-dialog v-model="showDetail" size="xl" hide-footer>
       <v-card class="pa-3">
@@ -208,6 +211,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import draggable from "vuedraggable";
 export default {
   components: { draggable },
@@ -255,6 +259,13 @@ export default {
         disabled: false,
         ghostClass: "ghost",
       };
+    },
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("manageGame_write")) return true;
+        else return true;
+      }
     },
   },
   methods: {

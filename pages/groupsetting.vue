@@ -21,6 +21,7 @@
                 rounded
                 outlined
                 color="black"
+                :disabled="canwrite"
                 @click="openDetailGroup(item)"
                 >image</v-btn
               >
@@ -30,7 +31,7 @@
       </div>
     </v-card>
     <div v-show="selection != null">
-      <div class="pa-3 text-center ">
+      <div class="pa-3 text-center">
         <h2 class="font-weight-bold">ตั้งค่า : {{ namegroup }}</h2>
         <div class="error--text font-weight-bold">
           **หมายเหตุ : คลิกที่ค่ายเกมค้างไว้แล้วลากเพื่อจัดเรียง** <br />
@@ -53,12 +54,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.casino.results"
         >
-             <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -88,6 +89,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -104,12 +106,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.slot.results"
         >
-             <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -139,6 +141,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -155,12 +158,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.esport.results"
         >
-              <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -190,6 +193,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -206,12 +210,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.fishing.results"
         >
-              <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -241,6 +245,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -257,12 +262,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.horse.results"
         >
-              <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -292,6 +297,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -308,12 +314,12 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.lotto.results"
         >
-             <div class="rounded-lg elevation-4 pa-2">
+          <div class="rounded-lg elevation-4 pa-2">
             <v-switch
               class="my-2 switch-center"
               :label="`${item.status ? 'เปิด' : 'ปิด'}`"
@@ -343,6 +349,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -359,7 +366,7 @@
         @end="drag = false"
       >
         <div
-          class="col-lg-2 col-12 col-sm-3    text-center pa-1 pa-sm-2 text-center"
+          class="col-lg-2 col-12 col-sm-3 text-center pa-1 pa-sm-2 text-center"
           @dragend="checkProvider"
           :key="index"
           v-for="(item, index) in grouplist.sportbook.results"
@@ -394,6 +401,7 @@
                 class="ml-0 ml-sm-3 ml-lg-6"
                 color="primary"
                 @click="openDetail(item)"
+                :disabled="canwrite"
                 >images</v-btn
               >
             </div>
@@ -402,8 +410,21 @@
       </draggable>
     </div>
     <div class="d-flex justify-center my-3">
-      <v-btn small pill color="success" @click="saveProvider">บันทึก</v-btn>
-      <v-btn small pill color="warning" class="mx-2" @click="resetProvider"
+      <v-btn
+        small
+        pill
+        color="success"
+        :disabled="canwrite"
+        @click="saveProvider"
+        >บันทึก</v-btn
+      >
+      <v-btn
+        small
+        pill
+        color="warning"
+        :disabled="canwrite"
+        class="mx-2"
+        @click="resetProvider"
         >คืนค่าเริ่มต้น และบันทึก</v-btn
       >
     </div>
@@ -575,7 +596,12 @@
               </div>
 
               <div>
-                <v-btn color="black" dark small @click="uploadImage"
+                <v-btn
+                  color="black"
+                  :disabled="canwrite"
+                  dark
+                  small
+                  @click="uploadImage"
                   >upload</v-btn
                 >
               </div>
@@ -589,6 +615,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import draggable from "vuedraggable";
 export default {
   components: { draggable },
@@ -608,7 +635,7 @@ export default {
       groupcard: [],
       namegroup: "",
       listProvider: [],
-      showDetail_group: false
+      showDetail_group: false,
     };
   },
   async created() {
@@ -629,9 +656,16 @@ export default {
       return {
         animation: 200,
         disabled: false,
-        ghostClass: "ghost"
+        ghostClass: "ghost",
       };
-    }
+    },
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("manageGroup_write")) return true;
+        else return false;
+      }
+    },
   },
   methods: {
     selectFile(event) {
@@ -684,7 +718,7 @@ export default {
     },
     confirmImageGroup(item) {
       const result = this.grouplist.group.results.find(
-        x => x.code == item.code
+        (x) => x.code == item.code
       );
       result.image = item.image.trim();
 
@@ -693,7 +727,7 @@ export default {
     },
     confirmImage(item) {
       const result = this.grouplist[item.group].results.find(
-        x => x.code == item.code
+        (x) => x.code == item.code
       );
       result.image = item.image.trim();
 
@@ -760,8 +794,8 @@ export default {
       // });
       const temp = this.listProvider;
       this.listProvider_backup = temp;
-    }
-  }
+    },
+  },
 };
 </script>
 

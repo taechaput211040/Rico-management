@@ -3,7 +3,10 @@ export async function getProfitReport({ commit }, params) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.get(
-        `${process.env.ALL_RICO_REPORT}/api/profitloss_member/date?${params}`
+        `${process.env.ALL_RICO_REPORT}/api/profitloss_agent/sum_date`,
+        {
+          params: params,
+        }
       );
       resolve(data);
     } catch (error) {
@@ -15,9 +18,13 @@ export async function getProfitReport({ commit }, params) {
 //รายงานฝาก /ถอน ตามบุคคล//
 export async function getProfitByUserReport({ commit }, params) {
   return new Promise(async (resolve, reject) => {
+    console.log(params, "param");
     try {
       let { data } = await this.$axios.get(
-        `${process.env.ALL_RICO_REPORT}/api/profitloss_member/date?${params}`
+        `${process.env.ALL_RICO_REPORT}/api/profitloss_member/date`,
+        {
+          params: params,
+        }
       );
 
       resolve(data);

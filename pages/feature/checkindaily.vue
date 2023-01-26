@@ -1,7 +1,7 @@
 <template>
   <v-flex>
     <h3>ตั้งค่าเช็คอินรายวัน</h3>
-    <v-btn color="success" @click="getConfig">text</v-btn>
+
     <v-card class="pa-4 rounded-lg">
       <h4 class="mb-3 text-center">
         รูปภาพพื้นหลัง ขนาดไม่เกิน 500 KB 650x650 px(PNG หรือ JPG เท่านั้น)
@@ -44,6 +44,7 @@
       </div>
       <div class="d-md-flex justify-md-center">
         <v-btn
+          :disabled="canwrite"
           class="mx-2"
           color="primary"
           @click="changepic = true"
@@ -52,10 +53,22 @@
           >เปลี่ยนรูป</v-btn
         >
 
-        <v-btn color="warning" class="mx-2" dark @click="useDefaultImage()">
+        <v-btn
+          color="warning"
+          :disabled="canwrite"
+          class="mx-2"
+          dark
+          @click="useDefaultImage()"
+        >
           ใช่รูปเริ่มต้น</v-btn
         >
-        <v-btn color="success" class="mx-2" dark @click="saveImage()">
+        <v-btn
+          :disabled="canwrite"
+          color="success"
+          class="mx-2"
+          dark
+          @click="saveImage()"
+        >
           บันทึก</v-btn
         >
       </div>
@@ -65,6 +78,7 @@
       <div class="row justify-end mb-4">
         <div class="col-12 col-md-6 p-0">
           <input
+            :disabled="canwrite"
             class="form-check-input"
             true-value="true"
             false-value="false"
@@ -157,7 +171,12 @@
 
           <div class="row justify-content-end mt-3">
             <div class="ma-2">
-              <v-btn color="success" @click="saveCheckin" class="btn btn_sty">
+              <v-btn
+                color="success"
+                :disabled="canwrite"
+                @click="saveCheckin"
+                class="btn btn_sty"
+              >
                 บันทึก
               </v-btn>
             </div>
@@ -323,7 +342,12 @@
               </div>
             </div>
           </div>
-          <v-btn color="primary" type="submit" class="py-3 mt-3 btn_sty">
+          <v-btn
+            color="primary"
+            :disabled="canwrite"
+            type="submit"
+            class="py-3 mt-3 btn_sty"
+          >
             บันทึก
           </v-btn>
         </form>
@@ -363,6 +387,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 const jwtPayload =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMWMwODQwNzk3MzU0ZjczZDc4NTExMTI2YWVhYTBhMjYifQ.hNCxVRvxU8doLMuj95aTnlV0_pIMgSNZJyqDsXGVWkA";
 import { validationMixin } from "vuelidate";
@@ -734,6 +759,15 @@ export default {
         { value: 1, text: "รายวัน" },
       ],
     };
+  },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("settingFeature_write")) return true;
+        else return false;
+      }
+    },
   },
   async mounted() {
     this.loading = true;

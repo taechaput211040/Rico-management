@@ -14,34 +14,34 @@
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวน user ทั้งหมด "
-            :value="`${response.total | numberFormat} คน`"
+            :value="response.total + 'คน'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ฝาก"
-            :value="`${total_dp_count | numberFormat} ครั้ง`"
+            :value="total_dp_count + 'ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="ยอดฝากทั้งหมด"
-            :value="`${total_dp_amount | numberFormat} บาท`"
+            :value="total_dp_amount + 'บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/wallet.png"
           ></card-report> </v-col
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="จำนวนครั้งที่ถอน"
-            :value="`${total_wd_count | numberFormat} ครั้ง`"
+            :value="total_wd_count + 'ครั้ง'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
             title="ยอดถอนทั้งหมด "
-            :value="`${total_wd_amount | numberFormat} บาท`"
+            :value="total_wd_amount + 'บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/withdrawbank.png"
           ></card-report>
         </v-col>
@@ -49,7 +49,7 @@
           <card-report
             title="กำไร/ขาดทุน"
             :condition="true"
-            :value="`${profit_loss | numberFormat}`"
+            :value="profit_loss"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report> </v-col
       ></v-row>
@@ -58,13 +58,14 @@
           class="elevation-1"
           :headers="headerCell"
           :items="response.data"
+          :server-items-length="response.total ?? 0"
           :items-per-page="limit"
-          hide-default-footer
+          :options.sync="options"
         >
           <template #[`item.no`]="{ index }">
-            <span class="font-weight-bold">
-              {{ index + 1 }}
-            </span>
+            <span class="font-weight-bold">{{
+              options.itemsPerPage * (options.page - 1) + (index + 1)
+            }}</span>
           </template>
           <template #[`item.wd_count`]="{ item }">
             <span v-if="item.wd_count == null"> 0 </span>
@@ -92,28 +93,6 @@
           </template>
         </v-data-table>
       </v-card>
-      <v-row class="mt-3">
-        <v-col class="col-12 col-md-2">
-          <v-select
-            outlined
-            dense
-            hide-details="auto"
-            v-model="limit"
-            :items="pageSizes"
-            label="รายการต่อหน้า"
-            @change="onHandlePageSizeChange"
-          ></v-select>
-        </v-col>
-        <v-col class="col-12 col-md-8">
-          <v-pagination
-            v-model="page"
-            :total-visible="7"
-            :length="total_page"
-            @input="onPageChange(page)"
-          ></v-pagination>
-        </v-col>
-        <v-col class="col-12 col-md-2"></v-col>
-      </v-row>
     </v-container>
   </v-flex>
 </template>
@@ -123,6 +102,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      options: {},
       response: {},
       headerCell: [
         {
@@ -137,7 +117,6 @@ export default {
           text: "USERNAME",
           value: "username",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
           cellClass: "font-weight-bold primary--text",
         },
@@ -145,28 +124,24 @@ export default {
           text: "จำนวนครั้งที่ฝาก",
           value: "dp_count",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "ฝากทั้งหมด",
           value: "deposit",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "จำนวนครั้งที่ถอน",
           value: "wd_count",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "ถอนทั้งหมด",
           value: "withdraw",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
           cellClass: "",
         },
@@ -174,7 +149,6 @@ export default {
           text: "กำไรขาดทุน",
           value: "winlose",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
           cellClass: "font-weight-bold ",
         },
@@ -182,7 +156,6 @@ export default {
           text: "อัพไลน์",
           value: "upline",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
           cellClass: "font-weight-bold ",
         },
@@ -190,7 +163,6 @@ export default {
           text: "เบอร์โทร",
           value: "telephone",
           align: "center",
-          sortable: false,
           class: "font-weight-bold ",
           cellClass: "font-weight-bold ",
         },
@@ -225,6 +197,13 @@ export default {
   async fetch() {
     this.getReport();
   },
+  watch: {
+    options: {
+      async handler() {
+        await this.getReport();
+      },
+    },
+  },
   methods: {
     ...mapActions("profit", ["getProfitByUserReport"]),
     getamount() {},
@@ -257,101 +236,55 @@ export default {
       result += "Z";
       return result;
     },
-    onPageChange(page_number) {
-      console.log(page_number);
-      this.getReportByPage(page_number);
-    },
-    onHandlePageSizeChange() {
-      this.getReportByPage(1);
-      this.page = 1;
-      console.log("new limit", this.limit);
-      this.total_page = Math.ceil(this.total_user / this.limit);
-    },
+
     axiosParams() {
-      let params = "";
-      params +=
-        "start=" +
-        this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
-      params +=
-        "&end=" +
-        this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime);
-      params += "&company=" + localStorage.getItem("company");
-      params += "&agent=" + localStorage.getItem("agent");
-      params += "&page=" + this.page;
-      params += "&limit=10000";
-      params += "&column_order=" + this.column_order;
-      params += "&order=" + this.order;
-      // console.log(params)
-      return params;
+      let order = this.getOptionalOrder();
+      let parameter = {
+        start: this.formatDate(
+          this.dateFilter.startDate,
+          this.dateFilter.startTime
+        ),
+        end: this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
+        limit: this.options.itemsPerPage,
+        page: this.options.page,
+        order: order == undefined ? undefined : order.sortDesc,
+        column_order: order == undefined ? undefined : order.sortBy,
+      };
+      return parameter;
+    },
+    getOptionalOrder() {
+      let order = {};
+      if (this.options.sortBy[0]) {
+        order.sortBy = this.options.sortBy[0];
+        if (this.options.sortDesc[0] === false) {
+          order.sortDesc = "ASC";
+        } else {
+          order.sortDesc = "DESC";
+        }
+      } else {
+        order = undefined;
+      }
+      return order;
     },
     async getReport() {
       this.isLoading = true;
       try {
         let params = this.axiosParams();
-        // console.log(process.env.ALL_PROFIT_LOSS);
-        // console.log(params);
         let response = await this.getProfitByUserReport(params);
         this.response = response;
         this.total_user = response.total;
-        this.total_wd_count = 0;
-        this.total_wd_amount = 0;
-        this.total_dp_count = 0;
-        this.total_dp_amount = 0;
-        this.profit_loss = 0;
-        for (let i = 0; i < this.total_user; i++) {
-          this.total_wd_count += response.data[i].wd_count;
-          this.total_wd_amount += response.data[i].withdraw;
-          this.total_dp_count += response.data[i].dp_count;
-          this.total_dp_amount += response.data[i].deposit;
-          this.profit_loss += response.data[i].winlose;
-          // console.log(response.data.length);
-          // console.log( Math.ceil(response.data.length/this.limit) );
-          // console.log(this.total_user,i);
-        }
-        this.total_wd_amount = this.total_wd_amount;
+        this.total_wd_count = response.total_sum.wd_count;
+        this.total_wd_amount = response.total_sum.withdraw;
+        this.total_dp_count = response.total_sum.dp_count;
+        this.total_dp_amount = response.total_sum.deposit;
+        this.profit_loss = response.total_sum.winlose;
         this.total_page = Math.ceil(response.total / this.limit);
-        // console.log('-----------------');
-        // console.log(this.total_user, 'user');
-        // console.log( Math.ceil(response.total/this.limit) );
-        // console.log(this.response);
-        this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
-        console.log(error);
       }
-    },
-    axiosParamsWithbyPage(page) {
-      let params = "";
-      params +=
-        "start=" +
-        this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
-      params +=
-        "&end=" +
-        this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime);
-      params += "&company=" + localStorage.getItem("company");
-      params += "&agent=" + localStorage.getItem("agent");
-      params += "&page=" + this.page;
-      params += "&limit=" + this.limit;
-      params += "&column_order=" + this.column_order;
-      params += "&order=" + this.order;
-      // console.log(params)
-      return params;
-    },
-    async getReportByPage(page_number) {
-      await setTimeout(5000);
-      try {
-        this.isLoading = true;
-        let params = this.axiosParamsWithbyPage(page_number);
-        // console.log(process.env.ALL_PROFIT_LOSS);
-        // console.log(params);
-        let response = await this.getProfitByUserReport(params);
-        this.response = response;
-        this.isLoading = false;
-        // console.log(this.response,'logs')
-      } catch (error) {
-        this.isLoading = false;
-        console.log(error);
-      }
+      this.isLoading = false;
     },
   },
 };
