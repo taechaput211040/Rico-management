@@ -15,7 +15,7 @@
             <img
               src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
               alt=""
-              class=" img-icon icon-Logo"
+              class="img-icon icon-Logo"
             />
             <div>
               ยอดถอนรวม :<span class="primary--text font-weight-bold"
@@ -26,7 +26,7 @@
         </v-col>
       </v-row>
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
-        <div class=" pa-5 font-weight-bold">
+        <div class="pa-5 font-weight-bold">
           จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
           {{ date_start }} ถึงวันที่ {{ date_end }} จำนวนทั้งหมด
           {{ itemdeposit.length }} คน
@@ -41,19 +41,19 @@
             hide-default-footer
             single-expand
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
               </span>
             </template>
 
-            <template #[`item.bankAcc`]="{item}">
+            <template #[`item.bankAcc`]="{ item }">
               <div class="pa-2">
                 <img-bank :value="item.bankName"></img-bank>
                 <span class="font-weight-bold">{{ item.bankAcc }}</span>
               </div>
             </template>
-            <template #[`item.status`]="{item}">
+            <template #[`item.status`]="{ item }">
               <v-chip
                 small
                 v-if="item.status == 'Success'"
@@ -67,7 +67,7 @@
                 {{ item.status }}</v-chip
               >
             </template>
-            <template #[`item.name`]="{item}">
+            <template #[`item.name`]="{ item }">
               <div class="pa-2">
                 <span>{{ item.name }}</span
                 ><br />
@@ -76,12 +76,12 @@
                 }}</span>
               </div>
             </template>
-            <template #[`item.requsettime`]="{item}">
+            <template #[`item.requsettime`]="{ item }">
               <span>
                 {{ getthaidate(item.requsettime) }}
               </span>
             </template>
-            <template #[`item.bfafcredit`]="{item}">
+            <template #[`item.bfafcredit`]="{ item }">
               <div class="d-flex align-baseline justify-center">
                 <v-chip
                   class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1"
@@ -108,7 +108,7 @@
                 {{ item.afcredit }}
               </div>
             </template>
-            <template #[`item.data-table-expand`]="{isExpanded, expand }">
+            <template #[`item.data-table-expand`]="{ isExpanded, expand }">
               <div class="px-3">
                 <v-btn
                   @click="expand(true)"
@@ -134,6 +134,7 @@
                 <v-tooltip bottom color="success">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
+                      :disabled="canwrite"
                       v-bind="attrs"
                       v-on="on"
                       color="success mx-1"
@@ -148,6 +149,7 @@
                 <v-tooltip bottom color="error">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
+                      :disabled="canwrite"
                       v-bind="attrs"
                       v-on="on"
                       color="error mx-1"
@@ -161,6 +163,7 @@
                 <v-tooltip bottom color="primary">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
+                      :disabled="canwrite"
                       v-bind="attrs"
                       v-on="on"
                       color="primary mx-1"
@@ -175,6 +178,7 @@
                 <v-tooltip bottom color="grey">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
+                      :disabled="canwrite"
                       v-bind="attrs"
                       v-on="on"
                       color="grey mx-1"
@@ -203,7 +207,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import moment from "moment";
 export default {
   data() {
@@ -215,42 +219,42 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "ธนาคารลูกค้า",
           value: "bankAcc",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ชื่อบัญชีลูกค้า",
           value: "name",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ประเภท",
           value: "type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ยอดโอน",
           value: "amount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เวลากดถอน",
           value: "requsettime",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
 
         {
@@ -259,50 +263,50 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold "
+          cellClass: "font-weight-bold ",
         },
         {
           text: "เวลาโอนสำเร็จ",
           value: "transferTime",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ยอดเงินบัญชีถอน",
           value: "bonusamount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "โอนโดย",
           value: "operator",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "หมายเหตุ",
           value: "data-table-expand",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "สถานะ",
           value: "status",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "การดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
       itemdeposit: [],
       depositbalance: "1630",
@@ -311,8 +315,8 @@ export default {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
-      }
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
     };
   },
   async fetch() {
@@ -320,6 +324,13 @@ export default {
     this.itemdeposit = wdlist.data.data;
   },
   computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("reportTransaction_write")) return true;
+        else return false;
+      }
+    },
     date_start(val) {
       if (val) {
         return moment(String(this.dateFilter.startDate)).format("MM/DD/YYYY");
@@ -329,7 +340,7 @@ export default {
       if (val) {
         return moment(String(this.dateFilter.endDate)).format("MM/DD/YYYY");
       }
-    }
+    },
   },
   methods: {
     ...mapActions("transaction", ["getwdListtransaction"]),
@@ -341,8 +352,8 @@ export default {
     },
     searchdata() {
       console.log(this.dateFilter);
-    }
-  }
+    },
+  },
 };
 </script>
 

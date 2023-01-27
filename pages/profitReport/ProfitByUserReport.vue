@@ -4,7 +4,13 @@
       <loading-page></loading-page>
     </div>
     <v-container
-      ><h2 class="mb-2">รายงานฝาก /ถอน ตามบุคคล</h2>
+      ><div class="d-flex">
+        <h2 class="mb-2">รายงานฝาก /ถอน ตามบุคคล</h2>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" small @click="exportExcel" :loading="loadingBtn"
+          >EXPORT FILE</v-btn
+        >
+      </div>
       <search-filter
         :searchinput="false"
         :filter="dateFilter"
@@ -13,43 +19,43 @@
       <v-row class="mt-3">
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="จำนวน user ทั้งหมด "
-            :value="response.total + 'คน'"
+            title="จำนวน user ทั้งหมด(คน)"
+            :value="response.total | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/user.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="จำนวนครั้งที่ฝาก"
-            :value="total_dp_count + 'ครั้ง'"
+            title="จำนวนครั้งที่ฝาก(ครั้ง)"
+            :value="total_dp_count | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="ยอดฝากทั้งหมด"
-            :value="total_dp_amount + 'บาท'"
+            title="ยอดฝากทั้งหมด(บาท)"
+            :value="total_dp_amount | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/wallet.png"
           ></card-report> </v-col
         ><v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="จำนวนครั้งที่ถอน"
-            :value="total_wd_count + 'ครั้ง'"
+            title="จำนวนครั้งที่ถอน(ครั้ง)"
+            :value="total_wd_count | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="ยอดถอนทั้งหมด "
-            :value="total_wd_amount + 'บาท'"
+            title="ยอดถอนทั้งหมด(บาท) "
+            :value="total_wd_amount | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/withdrawbank.png"
           ></card-report>
         </v-col>
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">
           <card-report
-            title="กำไร/ขาดทุน"
-            :condition="true"
-            :value="profit_loss"
+            title="กำไร/ขาดทุน(บาท)"
+            :titleclass="profit_loss > 0 ? 'success--text' : 'error--text'"
+            :value="profit_loss | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report> </v-col
       ></v-row>
@@ -99,9 +105,11 @@
 
 <script>
 import { mapActions } from "vuex";
+import { saveExcel } from "@progress/kendo-vue-excel-export";
 export default {
   data() {
     return {
+      loadingBtn: false,
       options: {},
       response: {},
       headerCell: [
@@ -167,6 +175,28 @@ export default {
           cellClass: "font-weight-bold ",
         },
       ],
+      fields_export: [
+        // A virtual column that doesn't exist in items
+        { field: "username", title: "username", sortable: true },
+        {
+          field: "dp_count",
+          title: "จำนวนครั้งที่ฝาก",
+          sortable: true,
+        },
+        { field: "deposit", title: "ฝากทั้งหมด", sortable: true },
+        {
+          field: "wd_count",
+          title: "จำนวนครั้งที่ถอน",
+          sortable: true,
+        },
+        {
+          field: "withdraw",
+          title: "ถอนทั้งหมด",
+          sortable: true,
+        },
+        { field: "winlose", title: "กำไรขาดทุน", sortable: true },
+        { field: "telephone", title: "เบอร์โทร", sortable: true },
+      ],
       itemreport: [],
       dateFilter: {
         inputfilter: "",
@@ -196,6 +226,7 @@ export default {
   },
   async fetch() {
     this.getReport();
+    this.getReportSummary();
   },
   watch: {
     options: {
@@ -205,12 +236,71 @@ export default {
     },
   },
   methods: {
-    ...mapActions("profit", ["getProfitByUserReport"]),
+    ...mapActions("profit", ["getProfitByUserReport", "getProfitReport"]),
     getamount() {},
+    async exportExcel() {
+      this.loadingBtn = true;
+      let param = {
+        start: this.formatDate(
+          this.dateFilter.startDate,
+          this.dateFilter.startTime
+        ),
+        end: this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
+        limit: 10000,
+        page: 1,
+      };
+
+      try {
+        let res_export = await this.getProfitByUserReport(param);
+        console.log(res_export.data);
+        saveExcel({
+          data: res_export.data,
+          fileName: `result_data_${param.start}_${param.end}.xlsx`,
+          columns: this.fields_export,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.loadingBtn = await false;
+    },
     searchdata() {
       // console.log(this.dateFilter);
       this.page = 1;
       this.getReport();
+      this.getReportSummary();
+    },
+    async getReportSummary() {
+      this.isLoading = true;
+      try {
+        let params = this.axiosParamsSummary();
+        let response = await this.getProfitReport(params);
+        this.total_dp_amount = response.deposit;
+        this.total_wd_amount = response.withdraw;
+        this.profit_loss = response.winlose;
+        this.total_dpbonus = response.dp_bonus;
+        this.total_wd_count = response.wd_count;
+        this.total_dp_count = response.dp_count;
+
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+      }
+    },
+    axiosParamsSummary() {
+      let params = {
+        start: this.formatDate(
+          this.dateFilter.startDate,
+          this.dateFilter.startTime
+        ),
+        end: this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
+      };
+
+      return params;
     },
     formatDate(date, date2) {
       let result = "";
@@ -275,11 +365,7 @@ export default {
         let response = await this.getProfitByUserReport(params);
         this.response = response;
         this.total_user = response.total;
-        this.total_wd_count = response.total_sum.wd_count;
-        this.total_wd_amount = response.total_sum.withdraw;
-        this.total_dp_count = response.total_sum.dp_count;
-        this.total_dp_amount = response.total_sum.deposit;
-        this.profit_loss = response.total_sum.winlose;
+
         this.total_page = Math.ceil(response.total / this.limit);
       } catch (error) {
         this.isLoading = false;

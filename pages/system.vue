@@ -198,12 +198,14 @@
             />
             <div>
               <v-file-input
-                v-model="message.img"
                 color="deep-purple accent-4"
                 counter
+                @change="selectFile"
+                accept="image/png, image/jpeg, image/bmp"
+                clearable
                 dense
                 hide-details="auto"
-                label="เปลี่ยนรูปข้อความต้อนรับ"
+                  label="เปลี่ยนรูปข้อความต้อนรับ"
                 placeholder="เปลี่ยนรูปข้อความต้อนรับ"
                 prepend-icon="mdi-camera"
                 outlined
@@ -258,7 +260,6 @@ export default {
     try {
       let response = await this.getSetting();
       this.datasetting = response;
-      console.log(this.datasetting, "this.datasetting");
       let message = await this.getMessage();
       this.message = message;
     } catch (error) {
@@ -285,6 +286,34 @@ export default {
       "updateSetting",
       "updateMessage",
     ]),
+    selectFile(event) {
+      if (event) {
+        this.file = event;
+        this.message.img = URL.createObjectURL(this.file);
+      }
+    },
+    async saveImage() {
+      if (this.file) {
+        const data = new FormData();
+
+        data.append("file", this.file);
+
+        try {
+          this.loading = true;
+          let imageupdate = await this.$axios.post(
+            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            data
+          );
+          this.message.img = imageupdate.data.image;
+          console.log("img", imageupdate);
+
+          this.loading = false;
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+        }
+      }
+    },
     ...mapMutations("setting", ["setAllsetting", "setAllmessage"]),
     async handleUpdateMessage() {
       this.message.operator = this.$store.state.auth.name;
@@ -299,6 +328,7 @@ export default {
         cancelButtonText: "Cancel",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          await this.saveImage();
           // console.log(this.formCreate)
           await this.updateMessage(this.message);
           this.$swal({

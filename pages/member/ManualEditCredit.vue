@@ -15,9 +15,7 @@
                     รายการไม่เข้าระบบ
                   </v-card-title>
                   <template v-slot:actions>
-                    <v-icon color="grey" large>
-                      $expand
-                    </v-icon>
+                    <v-icon color="grey" large> $expand </v-icon>
                   </template></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -49,7 +47,7 @@
                       format="HH:mm"
                       arrow-control
                       placeholder="เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)"
-                      style="width: 100%;"
+                      style="width: 100%"
                     >
                     </el-time-picker>
                     หมายเหตุ (ไม่บังคับ)
@@ -70,7 +68,12 @@
                     >
 
                     <v-card-actions>
-                      <v-btn color="primary" class="ma-auto">เติมเงิน</v-btn>
+                      <v-btn
+                        color="primary"
+                        :disabled="canwrite"
+                        class="ma-auto"
+                        >เติมเงิน</v-btn
+                      >
                     </v-card-actions>
                   </div></v-expansion-panel-content
                 >
@@ -88,9 +91,7 @@
                     ตัดเครดิต
                   </v-card-title>
                   <template v-slot:actions>
-                    <v-icon color="error" large>
-                      $expand
-                    </v-icon>
+                    <v-icon color="error" large> $expand </v-icon>
                   </template></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -126,7 +127,9 @@
                       hide-details="auto"
                     ></v-text-field>
                     <v-card-actions>
-                      <v-btn color="error" class="ma-auto">ตัดเครดิต</v-btn>
+                      <v-btn :disabled="canwrite" color="error" class="ma-auto"
+                        >ตัดเครดิต</v-btn
+                      >
                     </v-card-actions>
                   </div>
                 </v-expansion-panel-content>
@@ -144,9 +147,7 @@
                     เติมเครดิต
                   </v-card-title>
                   <template v-slot:actions>
-                    <v-icon color="primary" large>
-                      $expand
-                    </v-icon>
+                    <v-icon color="primary" large> $expand </v-icon>
                   </template></v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -181,7 +182,7 @@
                       placeholder="หมายเหตุ (ไม่บังคับ)"
                       hide-details="auto"
                     ></v-text-field>
-                    <div class="card-turnsetting pa-2 ">
+                    <div class="card-turnsetting pa-2">
                       <v-card-subtitle class="font-weight-bold text-center">
                         ตั้งค่าเทิร์น
                       </v-card-subtitle>
@@ -272,7 +273,12 @@
                       ***</span
                     >
                     <v-card-actions>
-                      <v-btn color="primary" class="ma-auto">เติมเครดิต</v-btn>
+                      <v-btn
+                        :disabled="canwrite"
+                        color="primary"
+                        class="ma-auto"
+                        >เติมเครดิต</v-btn
+                      >
                     </v-card-actions>
                   </div>
                 </v-expansion-panel-content></v-expansion-panel
@@ -315,7 +321,7 @@
             :items="itemcredit"
             single-expand
           >
-            <template #[`item.data-table-expand`]="{isExpanded, expand }">
+            <template #[`item.data-table-expand`]="{ isExpanded, expand }">
               <div class="px-2">
                 <v-btn
                   @click="expand(true)"
@@ -342,12 +348,12 @@
                 </div>
               </td>
             </template>
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
               </span>
             </template>
-            <template #[`item.created_at`]="{item}">
+            <template #[`item.created_at`]="{ item }">
               <span>
                 {{ getthaidate(item.created_at) }}
               </span>
@@ -361,7 +367,7 @@
 
 <script>
 import moment from "moment";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import SearchFilter from "../../components/SearchFilter.vue";
 export default {
   components: { SearchFilter },
@@ -371,12 +377,12 @@ export default {
         username: "",
         amount: "",
         time: "",
-        remark: ""
+        remark: "",
       },
       formCutcredit: {
         username: "",
         amount: "",
-        remark: ""
+        remark: "",
       },
       formTopupCredit: {
         username: "",
@@ -388,7 +394,7 @@ export default {
         thorse: "",
         tcasino: "",
         tlotto: "",
-        twidthdraw: ""
+        twidthdraw: "",
       },
       header: [
         {
@@ -397,7 +403,7 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "ประเภท",
@@ -405,14 +411,14 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold col-1",
-          cellClass: "font-weight-bold"
+          cellClass: "font-weight-bold",
         },
         {
           text: "เวลา",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-2"
+          class: "font-weight-bold col-2",
         },
         {
           text: "USERNAME",
@@ -420,49 +426,49 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold col-1",
-          cellClass: "primary--text font-weight-bold"
+          cellClass: "primary--text font-weight-bold",
         },
         {
           text: "จำนวนเครดิต",
           value: "credit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "จำนวนโบนัส",
           value: "bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "เครกิตก่อนเติม",
           value: "bfcredit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "เติม",
           value: "topupcredit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "เครดิตหลังเติม",
           value: "afcredit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "หมายเหตุ",
           value: "data-table-expand",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-1"
+          class: "font-weight-bold col-1",
         },
         {
           text: "ทำโดย",
@@ -470,8 +476,8 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold col-1",
-          cellClass: "font-weight-bold"
-        }
+          cellClass: "font-weight-bold",
+        },
       ],
       itemcredit: [],
       tab: null,
@@ -481,11 +487,19 @@ export default {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
-      }
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
     };
   },
-  computed: {},
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("manageMember_write")) return true;
+        else return false;
+      }
+    },
+  },
   methods: {
     ...mapActions("member", ["getManualEditCredit"]),
     async serchdata() {},
@@ -507,8 +521,8 @@ export default {
         .add(7, "hours")
         .format("YYYY-MM-DD เวลา HH:mm:ss");
       return time;
-    }
-  }
+    },
+  },
 };
 </script>
 

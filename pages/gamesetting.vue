@@ -186,6 +186,7 @@
                 @change="selectFile"
                 :state="Boolean(file)"
                 solo
+                accept="image/png, image/jpeg,image/jpg,image/webp"
                 hide-details
                 placeholder="อัพโหลดไฟล์รูป"
                 drop-placeholder="หรือลากรูปลงที่นี่"
@@ -264,36 +265,12 @@ export default {
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("manageGame_write")) return true;
-        else return true;
+        else return false;
       }
     },
   },
   methods: {
     selectFile(value) {
-      // console.log());
-      // if (
-      //   event.target.files[0].type != "image/jpeg" &&
-      //   event.target.files[0].type != "image/png" &&
-      //   event.target.files[0].type != "image/svg+xml"
-      // ) {
-      //   this.showErrorAlert("โปรดใฃ้ไฟล์รูปภาพเท่านั้น");
-      //   this.file = "";
-
-      //   this.filecheck = false;
-      //   event.files = null;
-      //   this.url = "";
-      //   return;
-      // }
-      // if (parseInt(event.target.files[0].size) > 300000) {
-      //   this.file = "";
-
-      //   this.filecheck = false;
-      //   event.files = null;
-      //   this.url = "";
-      //   this.showErrorAlert("ไฟล์ขนาดไม่เกิน 200KB");
-
-      //   return;
-      // }
       if (value) {
         this.file = value;
         this.url = URL.createObjectURL(this.file);
@@ -308,15 +285,22 @@ export default {
       data.append("file", this.file);
       data.append("filename", this.file.name);
       try {
-        let response = await axios.post("/api/Upload", data);
+        let response = await this.$axios.post(
+          "https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123",
+          data
+        );
         //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
-        console.log(response.data);
-        this.modal_detail.image = response.data.picture_url;
+        this.modal_detail.image = response.data.image;
         this.changePic = false;
-        this.showSuccessAlert(
-          "อัพโหลดสำเร็จ อย่าลืมกดบันทึก ด้านล่างสุดเพื่อบันทึกผลการเปลี่ยนแปลง"
-        );
+        this.$swal({
+          icon: "success",
+          title:
+            "อัพโหลดสำเร็จ อย่าลืมกดบันทึก ด้านล่างสุดเพื่อบันทึกผลการเปลี่ยนแปลง",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500,
+        });
 
         this.loading = false;
       } catch (error) {
@@ -329,12 +313,11 @@ export default {
       this.listProvider = temp_backup;
     },
     confirmImage(item) {
-      item.image = item.image.trim();
-      this.listProvider = this.listProvider.map((x) => {
-        if (item.name == x.name) x.image = item.image;
-      });
+      // this.listProvider = this.listProvider.map((x) => {
+      //   if (item.name == x.name) x.image = item.image;
+      // });
       this.temp_img = "";
-      this.showDetail = true;
+      this.showDetail = false;
     },
     resetImage(item) {
       this.modal_detail.image = this.temp_img;
@@ -354,16 +337,26 @@ export default {
     },
     async saveProvider() {
       this.loading = true;
-      let res = await this.$store.dispatch("updateHashGame", this.grouplist);
-      this.showSuccessAlert("บันทึกสำเร็จ");
+      let res = await this.$store.dispatch(
+        "setting/updateHashGame",
+        this.grouplist
+      );
+
+      this.$swal({
+        icon: "success",
+        title: "บันทึกสำเร็จ",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       this.loading = false;
     },
     async resetProvider() {
       this.loading = true;
-      let result = await this.$store.dispatch("getMasterGameGroup");
+      let result = await this.$store.dispatch("setting/getMasterGameGroup");
       this.grouplist = result;
 
-      await this.$store.dispatch("updateHashGame", this.grouplist);
+      await this.$store.dispatch("setting/updateHashGame", this.grouplist);
       const temp_backup = this.listProvider_backup;
       this.listProvider = temp_backup;
       this.loading = false;
@@ -372,16 +365,6 @@ export default {
       console.log(item, "item");
       console.log(this.grouplist, "item");
 
-      // Object.keys(this.grouplist).map((key) => {
-      //   const item = this.grouplist[key];
-      //   if(Array.isArray(item) )
-      //   {
-      //      item.map((game) => {
-      //           game.status = true;
-      //         });
-      //   }
-
-      //     });
       this.selection = item.code;
       this.namegroup = item.name;
       this.listProvider = this.grouplist[item.code];

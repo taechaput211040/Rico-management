@@ -47,8 +47,12 @@
         </v-col>
         <v-col cols="12" sm="4" lg="2" class="pa-2">
           <card-report
-            titleclass="teal--text"
             title="กำไรขาดทุน"
+            :titleclass="
+              (profit_loss + sum_ALL_BONUS).toFixed(2) > 0
+                ? 'success--text'
+                : 'error--text'
+            "
             :value="(profit_loss + sum_ALL_BONUS).toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report>

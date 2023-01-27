@@ -9,16 +9,16 @@
       <div class="text-center">
         <img
           v-if="image"
-          :src="image.default_img"
+          :src="this.image.url"
           style="width: 235px"
           alt=""
         />
       </div>
       <div v-show="changepic == true" class="col-md-4 col-12 mx-auto">
         <v-file-input
-          :value="image.default_img"
           color="deep-purple accent-4"
           counter
+          @change="selectFile"
           accept="image/png, image/jpeg, image/bmp"
           clearable
           dense
@@ -830,6 +830,14 @@ export default {
         this.Renderdate = [];
       }
     },
+    selectFile(event) {
+      if (event) {
+        this.file = event;
+        this.image.url = URL.createObjectURL(this.file);
+      }
+
+      this.loading = false;
+    },
     useDefaultImage() {
       this.changepicIsClick = false;
       let im = this.image.default_img;
@@ -867,9 +875,7 @@ export default {
       this.image.url = im;
       this.url = im;
     },
-    selectFile(event) {
-      console.log(event);
-    },
+   
     changPicture() {
       this.changepicIsClick = !this.changepicIsClick;
       this.image.url = null;

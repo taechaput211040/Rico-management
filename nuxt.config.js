@@ -4,15 +4,15 @@ export default {
     titleTemplate: "%s - RICO-Smartbet",
     title: "RICO-Smartbet",
     htmlAttrs: {
-      lang: "en"
+      lang: "en",
     },
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" }
+      { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
   // proxy: {
   //   "/api/": {
@@ -23,14 +23,14 @@ export default {
   //   }
   // },
   server: {
-    port: 8000 // default: 3000
+    port: 8000, // default: 3000
   },
   mode: "spa",
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@/assets/main.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios", "~/plugins/formatter","~/plugins/socket.io"],
+  plugins: ["~/plugins/axios", "~/plugins/formatter", "~/plugins/socket.io"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -38,7 +38,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    "@nuxtjs/vuetify"
+    "@nuxtjs/vuetify",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -47,7 +47,7 @@ export default {
     "nuxt-element-ui",
     "@nuxtjs/dayjs",
     "vue-sweetalert2/nuxt",
-    "nuxt-socket-io"
+    "nuxt-socket-io",
   ],
   // io: {
   //   sockets: [
@@ -65,19 +65,19 @@ export default {
     defaultTimeZone: "Asia/Tokyo",
     plugins: [
       "utc", // import 'dayjs/plugin/utc'
-      "timezone" // import 'dayjs/plugin/timezone'
-    ] // Your Day.js plugin
+      "timezone", // import 'dayjs/plugin/timezone'
+    ], // Your Day.js plugin
   },
   axios: {
     proxy: true,
     // baseURL: "https://agent.bet-kub.com",
     crossDomain: true,
     proxyHeaders: false,
-    credentials: true
+    credentials: true,
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ["~/assets/variables.scss"]
+    customVariables: ["~/assets/variables.scss"],
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -92,16 +92,16 @@ export default {
     extend(config, ctx) {
       config.module.rules.push({
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: '[path][name].[ext]',
+          name: "[path][name].[ext]",
           esModule: false,
-        }
-      })
-    }
+        },
+      });
+    },
   },
   router: {
-    mode: "history"
+    mode: "history",
     // base: "/storage/dev-backoffice/"
     // base: "/storage/testRico/"
   },
@@ -121,8 +121,8 @@ export default {
     ALL_COMPANY_BANK: process.env.ALL_COMPANY_BANK,
     ALL_CRIMINAL: process.env.ALL_CRIMINAL,
     ALL_MESSAGE_WEB: process.env.ALL_MESSAGE_WEB,
-    ALL_RICO_REPORT:process.env.ALL_RICO_REPORT,
-    ALL_PROMOTION:process.env.ALL_PROMOTION,
-   
-  }
+    ALL_RICO_REPORT: process.env.ALL_RICO_REPORT,
+    ALL_PROMOTION: process.env.ALL_PROMOTION,
+    ALL_JSON_STATIC: process.env.ALL_JSON_STATIC,
+  },
 };

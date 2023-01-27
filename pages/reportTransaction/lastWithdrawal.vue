@@ -9,7 +9,8 @@
           <div class="card-child card-report elevation-5">
             <h3>เปิดการรีเฟรชอัตโนมัติ</h3>
             <v-switch
-              class=" text-center"
+              class="text-center"
+              :disabled="canwrite"
               v-model="autorefresh"
               hide-details="auto"
               true-value="เปิด"
@@ -29,23 +30,23 @@
           hide-default-footer
           single-expand
         >
-          <template #[`item.no`]="{index}">
+          <template #[`item.no`]="{ index }">
             <span class="font-weight-bold">
               {{ index + 1 }}
             </span>
           </template>
-          <template #[`item.requsettime`]="{item}">
+          <template #[`item.requsettime`]="{ item }">
             <span>
               {{ getthaidate(item.requsettime) }}
             </span>
           </template>
-          <template #[`item.bankAcc`]="{item}">
+          <template #[`item.bankAcc`]="{ item }">
             <div class="pa-2">
               <img-bank :value="item.bankName"></img-bank>
               <span class="font-weight-bold">{{ item.bankAcc }}</span>
             </div>
           </template>
-          <template #[`item.status`]="{item}">
+          <template #[`item.status`]="{ item }">
             <v-chip
               small
               v-if="item.status == 'Success'"
@@ -58,7 +59,7 @@
               ><v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
             >
           </template>
-          <template #[`item.name`]="{item}">
+          <template #[`item.name`]="{ item }">
             <div class="pa-2">
               <span>{{ item.name }}</span
               ><br />
@@ -67,7 +68,7 @@
               }}</span>
             </div>
           </template>
-          <template #[`item.bfafcredit`]="{item}">
+          <template #[`item.bfafcredit`]="{ item }">
             <div class="d-flex align-baseline justify-center">
               <v-chip
                 class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1"
@@ -94,7 +95,7 @@
               {{ item.afcredit }}
             </div>
           </template>
-          <template #[`item.data-table-expand`]="{isExpanded, expand }">
+          <template #[`item.data-table-expand`]="{ isExpanded, expand }">
             <div class="px-3">
               <v-btn
                 @click="expand(true)"
@@ -122,6 +123,7 @@
                   ><v-btn
                     v-bind="attrs"
                     v-on="on"
+                    :disabled="canwrite"
                     color="success mx-1"
                     x-small
                     fab
@@ -139,6 +141,7 @@
                     color="error mx-1"
                     x-small
                     fab
+                    :disabled="canwrite"
                     ><v-icon>mdi-close</v-icon></v-btn
                   ></template
                 >
@@ -152,6 +155,7 @@
                     color="primary mx-1"
                     x-small
                     dark
+                    :disabled="canwrite"
                     fab
                     ><v-icon>mdi-restore</v-icon></v-btn
                   ></template
@@ -166,6 +170,7 @@
                     color="grey mx-1"
                     x-small
                     dark
+                    :disabled="canwrite"
                     fab
                     ><v-icon>mdi-gesture-tap</v-icon></v-btn
                   ></template
@@ -188,7 +193,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -200,42 +205,42 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "ธนาคารลูกค้า",
           value: "bankAcc",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ชื่อบัญชีลูกค้า",
           value: "name",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ประเภท",
           value: "type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ยอดโอน",
           value: "amount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เวลากดถอน",
           value: "requsettime",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
 
         {
@@ -244,53 +249,62 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold "
+          cellClass: "font-weight-bold ",
         },
         {
           text: "เวลาโอนสำเร็จ",
           value: "transferTime",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ยอดเงินบัญชีถอน",
           value: "bonusamount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "โอนโดย",
           value: "operator",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "หมายเหตุ",
           value: "data-table-expand",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "สถานะ",
           value: "status",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "การดำเนินการ",
           value: "actions",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
-      itemdeposit: []
+      itemdeposit: [],
     };
+  },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("reportTransaction_write")) return true;
+        else return false;
+      }
+    },
   },
   async mounted() {},
   async fetch() {
@@ -308,8 +322,8 @@ export default {
         .add(7, "hours")
         .format("YYYY-MM-DD เวลา HH:mm:ss");
       return time;
-    }
-  }
+    },
+  },
 };
 </script>
 
