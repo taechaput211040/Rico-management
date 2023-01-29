@@ -11,6 +11,7 @@ export function getSetting({ rootState, commit, state }) {
         resolve(data);
       } catch (error) {
         reject(error);
+        //** */
       }
     } else {
       console.log("hio");
