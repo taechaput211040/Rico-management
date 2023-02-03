@@ -34,7 +34,8 @@
                 <v-tooltip bottom color="success" v-if="item.status == true">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                      @click="item.status = !item.status"
+                      :disabled="canwrite"
+                      @click="tougleStatus(item)"
                       v-bind="attrs"
                       v-on="on"
                       color="green darken-4"
@@ -50,7 +51,8 @@
                 <v-tooltip bottom color="red" v-else>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
-                      @click="item.status = !item.status"
+                      :disabled="canwrite"
+                      @click="tougleStatus(item)"
                       v-bind="attrs"
                       v-on="on"
                       color="red"
@@ -67,6 +69,7 @@
                 <v-tooltip bottom color="warning">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="editPromotion(item)"
                       v-bind="attrs"
                       v-on="on"
@@ -84,6 +87,7 @@
                 <v-tooltip bottom color="error">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
+                      :disabled="canwrite"
                       @click="deletePromotion(item.id)"
                       color="error"
                       v-bind="attrs"
@@ -251,8 +255,11 @@
                 </v-file-input></v-col
               >
               <div class="text-center">
-                {{ itemedit.promotionpic }}
-                <img :src="imageUpdated" alt="" class="img_promotion" />
+                <img
+                  :src="itemedit.promotionpic"
+                  alt=""
+                  class="img_promotion"
+                />
               </div>
               <v-col cols="12">
                 <v-textarea
@@ -743,6 +750,7 @@ export default {
   components: { AddPromotion },
   data() {
     return {
+      file: null,
       url: null,
       tempFile: null,
       itemedit: [],
@@ -793,6 +801,13 @@ export default {
   },
   computed: {
     ...mapState("promotion", ["itempromotion"]),
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("promotion_write")) return true;
+        else return false;
+      }
+    },
     // panalCheck(val) {
     //   if (val) {
     //     return this.openedPanel;
@@ -830,11 +845,29 @@ export default {
     },
     selectFile(event) {
       if (event) {
-        this.imageUpdated = URL.createObjectURL(event);
-        this.itemedit.promotionpic = this.imageUpdated;
+        this.file = event;
+        this.itemedit.promotionpic = URL.createObjectURL(this.file);
       }
     },
-
+    async saveImage() {
+      if (this.file) {
+        const data = new FormData();
+        data.append("file", this.file);
+        try {
+          this.loading = true;
+          let imageupdate = await this.$axios.post(
+            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            data
+          );
+          this.itemedit.promotionpic = imageupdate.data.image;
+          this.loading = false;
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+        }
+      }
+      this.file = null;
+    },
     async editPromotion(promotion) {
       console.log(promotion, "data");
       this.imageUpdated = promotion.promotionpic;
@@ -853,8 +886,16 @@ export default {
     async saveEdit() {
       try {
         console.log(this.itemedit);
+        await this.saveImage();
         await this.updatedPromotion(this.itemedit);
         this.editPromotionData = false;
+        this.$swal({
+          icon: "success",
+          title: "แก้ไขสำเร็จ",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } catch (error) {
         this.editPromotionData = false;
       }
@@ -864,6 +905,42 @@ export default {
       console.log("test_data");
       console.log(this.data);
       // this.addPromotion = false
+    },
+    tougleStatus(item) {
+      item.status = !item.status;
+      this.$swal({
+        title: item.status ? "เปิด" : "ปิด" + "ใช้งานโปรโมชั่นนี้",
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: item.status ? "เปิด" : "ปิด",
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
+        console.log(result, "result");
+        if (result.isConfirmed) {
+          try {
+            await this.updatedPromotion(item);
+            this.$swal({
+              icon: "success",
+              title: "แก้ไขสำเร็จ",
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(async (result) => {
+              this.dlupdate = false;
+              if (result) {
+                await this.$fetch();
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        } else if (!result.isConfirmed) {
+          item.status = !item.status;
+        }
+      });
     },
     addField(form) {
       console.log("chacek 13");

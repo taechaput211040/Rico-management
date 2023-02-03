@@ -28,25 +28,25 @@
               :options.sync="options"
               :footer-props="{
                 showFirstLastPage: true,
-                'items-per-page-text': ''
+                'items-per-page-text': '',
               }"
               :server-items-length="
                 itemSearch.meta ? itemSearch.meta.itemCount : 0
               "
             >
-              <template #[`item.bankAcc`]="{item}">
+              <template #[`item.bankAcc`]="{ item }">
                 <div class="row px-6 detailbank justify-center">
                   <div class="ma-auto col-3 pa-0">
                     <img-bank :value="item.bankName"></img-bank>
                   </div>
-                  <div class="font-weight-bold  col-9 pa-0">
-                    <span class="primary--text ">{{ item.bankName }}</span
+                  <div class="font-weight-bold col-9 pa-0">
+                    <span class="primary--text">{{ item.bankName }}</span
                     ><br />
                     {{ item.bankAcc }}
                   </div>
                 </div>
               </template>
-              <template #[`item.no`]="{index}">
+              <template #[`item.no`]="{ index }">
                 {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
               </template>
               <!-- <template #[`item.created_at`]="{item}">
@@ -59,10 +59,10 @@
                   {{ getthaidate(item.updated_at) }}
                 </span>
               </template> -->
-              <template #[`item.name`]="{item}">
+              <template #[`item.name`]="{ item }">
                 <span> {{ item.name }} {{ item.lastname }} </span>
               </template>
-              <template #[`item.log`]="{item}">
+              <template #[`item.log`]="{ item }">
                 <div class="">
                   <v-btn
                     class="mx-1"
@@ -81,7 +81,7 @@
                   >
                 </div>
               </template>
-              <template #[`item.actions`]="{item}">
+              <template #[`item.actions`]="{ item }">
                 <div class="d-sm-flex justify-center">
                   <v-tooltip bottom color="primary">
                     <template v-slot:activator="{ on, attrs }"
@@ -89,6 +89,7 @@
                         @click="openchangePass(item)"
                         v-bind="attrs"
                         v-on="on"
+                        :disabled="canwrite"
                         color="primary mx-1"
                         x-small
                         fab
@@ -103,6 +104,7 @@
                       ><v-btn
                         @click="handleUpdateMember(item)"
                         v-bind="attrs"
+                        :disabled="canwrite"
                         v-on="on"
                         color="warning mx-1"
                         x-small
@@ -120,6 +122,7 @@
                         color="black mx-1"
                         x-small
                         dark
+                        :disabled="canwrite"
                         fab
                         @click="handleLockUser(item)"
                         ><v-icon>mdi-lock</v-icon></v-btn
@@ -148,13 +151,13 @@
             :items="items_deposit"
             pagination.sync="pagination"
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">{{
                 options_deposit.itemsPerPage * (options_deposit.page - 1) +
-                  (index + 1)
+                (index + 1)
               }}</span>
             </template>
-            <template #[`item.companyBank`]="{item}"
+            <template #[`item.companyBank`]="{ item }"
               ><img-bank :value="item.companyBank"></img-bank
             ></template>
           </v-data-table>
@@ -175,13 +178,13 @@
             :items="items_withdraw"
             pagination.sync="pagination"
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">{{
                 options_withdraw.itemsPerPage * (options_withdraw.page - 1) +
-                  (index + 1)
+                (index + 1)
               }}</span>
             </template>
-            <template #[`item.companyBank`]="{item}"
+            <template #[`item.companyBank`]="{ item }"
               ><img-bank :value="item.companyBank"></img-bank
             ></template>
           </v-data-table>
@@ -275,21 +278,11 @@
           </v-form>
           <v-divider class="mt-5"></v-divider>
           <div class="row pa-3">
-            <div class="col-12 col-sm-6">
-              ผู้เเนะนำ: -
-            </div>
-            <div class="col-12 col-sm-6">
-              แหล่งที่มา: -
-            </div>
-            <div class="col-12 col-sm-6">
-              เดิมพันล่าสุด: -
-            </div>
-            <div class="col-12 col-sm-6">
-              เครดิตค้าง: 0
-            </div>
-            <div class="col-12 col-sm-6">
-              วันที่สมัคร: 0
-            </div>
+            <div class="col-12 col-sm-6">ผู้เเนะนำ: -</div>
+            <div class="col-12 col-sm-6">แหล่งที่มา: -</div>
+            <div class="col-12 col-sm-6">เดิมพันล่าสุด: -</div>
+            <div class="col-12 col-sm-6">เครดิตค้าง: 0</div>
+            <div class="col-12 col-sm-6">วันที่สมัคร: 0</div>
           </div>
         </v-card>
       </v-dialog>
@@ -322,7 +315,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ImgBank from "../../components/ImgBank.vue";
 import LoadingPage from "../../components/LoadingPage.vue";
 export default {
@@ -341,7 +334,7 @@ export default {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
       },
       columnReport: [
         {
@@ -349,59 +342,59 @@ export default {
           value: "no",
           align: "center",
           sortable: false,
-          width: "20px"
+          width: "20px",
         },
         {
           text: "ธนาคารลูกค้า",
           value: "bankAcc",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ชื่อ-นามสกุล",
           value: "name",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "username",
           value: "username",
           align: "center",
           width: "100px",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ผู้เเนะนำ",
           value: "recommender",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "มาจากช่องทาง",
           value: "knowFrom",
           align: "center",
-          sortable: false
+          sortable: false,
         },
 
         {
           text: "ผู้แก้ไขล่าสุด",
           value: "operator",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ประวัติการฝาก/ถอน",
           value: "log",
           align: "center",
-          sortable: false
+          sortable: false,
         },
 
         {
           text: "ดำเนินการ",
           value: "actions",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       options_deposit: {},
       itemSearch: [],
@@ -416,7 +409,7 @@ export default {
         { text: "เครดิตก่อนเติม", align: "center", value: "bfcredit" },
         { text: "เครดิตหลังเติม", align: "center", value: "afcredit" },
         { text: "เติมโดย", align: "center", value: "topupby" },
-        { text: "หมายเหตุ", align: "center", value: "remark" }
+        { text: "หมายเหตุ", align: "center", value: "remark" },
       ],
       options_withdraw: {},
       headers_withdraw: [
@@ -429,7 +422,7 @@ export default {
         { text: "เวลาโอนสำเร็จ", align: "center", value: "transferTime" },
         { text: "สถานะ", align: "center", value: "status" },
         { text: "กดถอนโดย", align: "center", value: "operator" },
-        { text: "หมายเหตุ", align: "center", value: "remark" }
+        { text: "หมายเหตุ", align: "center", value: "remark" },
       ],
       items_deposit: [],
       items_withdraw: [],
@@ -437,19 +430,28 @@ export default {
       dlWithdraw: false,
       newPass: {
         id: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   watch: {
     options: {
       async handler() {
         await this.getData();
-      }
-    }
+      },
+    },
   },
   async fetch() {
     this.bank = this.$store.state.bank;
+  },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("manageMember_write")) return true;
+        else return false;
+      }
+    },
   },
   methods: {
     handleUpdateMember(item) {
@@ -461,7 +463,7 @@ export default {
       "getReportmemberbyid",
       "getMemberDeposit",
       "getMemberWithdraw",
-      "changePasswordMember"
+      "changePasswordMember",
     ]),
     getthaidate(timethai) {
       const time = this.$moment(timethai).format("YYYY-MM-DD เวลา HH:mm:ss");
@@ -511,7 +513,7 @@ export default {
       }
       return {
         end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
-        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z"
+        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
       };
     },
     getParameter() {
@@ -520,7 +522,7 @@ export default {
         take: this.options.itemsPerPage,
         page: this.options.page,
         start: dateFill.start,
-        end: dateFill.end
+        end: dateFill.end,
       };
       return parameter;
     },
@@ -568,7 +570,7 @@ export default {
     async handleLockUser(item) {
       const payload = {
         id: item.id,
-        status: false
+        status: false,
       };
       try {
         this.$swal({
@@ -579,8 +581,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel"
-        }).then(async result => {
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             await this.changeStatus(payload);
             this.$swal({
@@ -588,8 +590,8 @@ export default {
               title: "Lock เรียบร้อย",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 this.changpassdl = false;
                 await this.getData();
@@ -611,12 +613,12 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel"
-        }).then(async result => {
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             let body = {
               id: this.newPass.id,
-              password: this.newPass.password
+              password: this.newPass.password,
             };
             console.log(body, "body");
             await this.changePasswordMember(body);
@@ -625,8 +627,8 @@ export default {
               title: "เปลี่ยนรหัสผ่านสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 this.changpassdl = false;
                 await this.getData();
@@ -641,8 +643,8 @@ export default {
     closeChangepass() {
       this.$refs.changepass.reset();
       this.changpassdl = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -16,7 +16,7 @@
           <card-report
             title="ฝาก"
             titleclass="primary--text"
-            :value="deposit + ' บาท'"
+            :value="deposit.toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
           ></card-report>
         </v-col>
@@ -24,7 +24,7 @@
           <card-report
             title="ถอน"
             titleclass="red--text"
-            :value="withdraw + ' บาท'"
+            :value="withdraw.toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
           ></card-report>
         </v-col>
@@ -32,7 +32,7 @@
           <card-report
             title="โบนัส"
             titleclass="purple--text"
-            :value="sum_ALL_BONUS + ' บาท'"
+            :value="sum_ALL_BONUS.toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin.png"
           ></card-report>
         </v-col>
@@ -41,16 +41,19 @@
             titleclass="purple--text"
             title="ฝาก+โบนัส"
             :condition="false"
-            :value="deposit + sum_ALL_BONUS + ' บาท'"
+            :value="(deposit + sum_ALL_BONUS).toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin-stack.png"
           ></card-report>
         </v-col>
         <v-col cols="12" sm="4" lg="2" class="pa-2">
           <card-report
-            titleclass="teal--text"
             title="กำไรขาดทุน"
-            :condition="true"
-            :value="profit_loss + sum_ALL_BONUS + ' บาท'"
+            :titleclass="
+              (profit_loss + sum_ALL_BONUS).toFixed(2) > 0
+                ? 'success--text'
+                : 'error--text'
+            "
+            :value="(profit_loss + sum_ALL_BONUS).toFixed(2) + ' บาท'"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-report>
         </v-col> </v-row
@@ -61,22 +64,16 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th>
-                      รายการโบนัส
-                    </th>
-                    <th class="text-center">
-                      โบนัส
-                    </th>
-                    <th class="text-center">
-                      รายละเอียด
-                    </th>
+                    <th>รายการโบนัส</th>
+                    <th class="text-center">โบนัส</th>
+                    <th class="text-center">รายละเอียด</th>
                   </tr>
                 </thead>
                 <tbody>
                   <!-- เครดิตเงินคืน -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">เครดิตเงินคืน</div>
+                      <div class="pl-md-2">เครดิตเงินคืน</div>
                     </td>
                     <td class="text-center">
                       {{ sum_cashback }}
@@ -90,7 +87,7 @@
                   <!-- โบนัสจากการเติมมือ -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสจากการเติมมือ</div>
+                      <div class="pl-md-2">โบนัสจากการเติมมือ</div>
                     </td>
                     <td class="text-center">
                       {{ sum_bonus_deposit }}
@@ -104,7 +101,7 @@
                   <!-- โบนัสสมาชิกใหม่ -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสสมาชิกใหม่</div>
+                      <div class="pl-md-2">โบนัสสมาชิกใหม่</div>
                     </td>
                     <td class="text-center">
                       {{ sum_new_member_bonus }}
@@ -118,7 +115,7 @@
                   <!-- โบนัสฝากแรกของวัน -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสฝากแรกของวัน</div>
+                      <div class="pl-md-2">โบนัสฝากแรกของวัน</div>
                     </td>
                     <td class="text-center">
                       {{ sum_first_deposit_bonus }}
@@ -132,7 +129,7 @@
                   <!-- โบนัสฝากทั้งวัน -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสฝากทั้งวัน</div>
+                      <div class="pl-md-2">โบนัสฝากทั้งวัน</div>
                     </td>
                     <td class="text-center">{{ sum_allday_bonus }}</td>
                     <td class="text-center">
@@ -144,7 +141,7 @@
                   <!-- โบนัสฝากต่อเนื่อง -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสฝากต่อเนื่อง</div>
+                      <div class="pl-md-2">โบนัสฝากต่อเนื่อง</div>
                     </td>
                     <td class="text-center">
                       {{ sum_continue_bonus }}
@@ -158,7 +155,7 @@
                   <!-- โบนัสกงล้อ -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสกงล้อ</div>
+                      <div class="pl-md-2">โบนัสกงล้อ</div>
                     </td>
                     <td class="text-center">{{ sum_wheel_deposit }}</td>
                     <td class="text-center">
@@ -170,7 +167,7 @@
                   <!-- โบนัสกงล้อ -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสเครดิตฟรี</div>
+                      <div class="pl-md-2">โบนัสเครดิตฟรี</div>
                     </td>
                     <td class="text-center">
                       {{ sum_credit_free }}
@@ -184,7 +181,7 @@
                   <!-- โบนัสเช็คอิน -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสเช็คอิน</div>
+                      <div class="pl-md-2">โบนัสเช็คอิน</div>
                     </td>
                     <td class="text-center">
                       {{ sum_checkin }}
@@ -197,7 +194,7 @@
                   </tr>
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">โบนัสแนะนำเพื่อน</div>
+                      <div class="pl-md-2">โบนัสแนะนำเพื่อน</div>
                     </td>
                     <td class="text-center">
                       {{ sum_affiliate_deposit }}
@@ -211,7 +208,7 @@
                   <!-- รวมโบนัส -->
                   <tr>
                     <td class="font-weight-bold">
-                      <div class="pl-md-2 ">รวมโบนัส</div>
+                      <div class="pl-md-2">รวมโบนัส</div>
                     </td>
                     <td
                       colspan="1"
@@ -227,7 +224,7 @@
         </v-card>
       </v-card>
       <v-dialog v-model="detailDialog" max-width="1500px">
-        <v-card class="pa-5 ">
+        <v-card class="pa-5">
           <v-card-text>
             <h3>รายการรับโบนัส</h3>
           </v-card-text>
@@ -241,15 +238,15 @@
                 :items="dataDetail"
                 hide-default-footer
               >
-                <template #[`item.no`]="{index}">
+                <template #[`item.no`]="{ index }">
                   <span class="font-weight-bold">
                     {{ index + 1 }}
                   </span>
                 </template>
-                <template #[`item.companyBank`]="{item}">
+                <template #[`item.companyBank`]="{ item }">
                   <img-bank :value="item.companyBank"></img-bank>
                 </template>
-                <template #[`item.data-table-expand`]="{isExpanded, expand }">
+                <template #[`item.data-table-expand`]="{ isExpanded, expand }">
                   <div class="px-3">
                     <v-btn
                       @click="expand(true)"
@@ -313,69 +310,69 @@ export default {
           text: "ลำดับ",
           value: "no",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "ธนาคารเว็ป",
           value: "companyBank",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เวลาใน SMS",
           value: "smsdatetime",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เวลาเติม",
           value: "created_at",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "USERNAME",
           value: "member_id",
           align: "center",
           sortable: false,
-          cellClass: "font-weight-bold primary--text"
+          cellClass: "font-weight-bold primary--text",
         },
         {
           text: "จำนวนเงิน",
           value: "amount",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "จำนวนโบนัส",
           value: "bonusamount",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เครดิตก่อนเเติม",
           value: "bfcredit",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เครดิตหลังเเติม",
           value: "afcredit",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "เติมโดย",
           value: "topupby",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "หมายเหตุ",
           value: "data-table-expand",
           align: "center",
-          sortable: false
-        }
+          sortable: false,
+        },
       ],
       dataDetail: [
         {
@@ -392,15 +389,19 @@ export default {
           smsdatetime: "-",
           sum: null,
           topupby: "RICO",
-          updated_at: "2022-01-27 00:41:15"
-        }
+          updated_at: "2022-01-27 00:41:15",
+        },
       ],
 
       dateFilter: {
         startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
+        endDate: new Date(
+          new Date().getFullYear(),
+          new Date().getMonth() + 1,
+          0
+        ),
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
       },
       header: [
         {
@@ -408,22 +409,22 @@ export default {
           value: "namebonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-6"
+          class: "font-weight-bold col-6",
         },
         {
           text: "โบนัส",
           value: "bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-2"
+          class: "font-weight-bold col-2",
         },
         {
           text: "รายละเอียด",
           value: "detail",
           align: "center",
           sortable: false,
-          class: "font-weight-bold col-4"
-        }
+          class: "font-weight-bold col-4",
+        },
       ],
       itemPromotion: {},
       sum_cashback: 0,
@@ -440,13 +441,13 @@ export default {
       deposit: 0,
       withdraw: 0,
       profit_loss: 0,
-      isLoading: false
+      isLoading: false,
     };
   },
   async fetch() {
     try {
       this.isLoading = true;
-      await this.getDataAPIProfirReport()
+      await this.getDataAPIProfirReport();
       await this.getDataAPIPromotionReport();
       this.isLoading = false;
     } catch (error) {
@@ -456,15 +457,15 @@ export default {
   },
 
   methods: {
-    ...mapActions("profit", ["getPromotionReport","getProfitByUserReport2"]),
-  
+    ...mapActions("profit", ["getPromotionReport", "getProfitByUserReport2"]),
+
     getamount() {},
     async opendetail() {
       this.detailDialog = true;
       // let { response } = await api id
       // this.dataDetail == response.data;
     },
-    resetBonusData(){
+    resetBonusData() {
       this.sum_cashback = 0;
       this.sum_bonus_deposit = 0;
       this.sum_new_member_bonus = 0;
@@ -477,23 +478,33 @@ export default {
       this.sum_affiliate_deposit = 0;
       this.sum_ALL_BONUS = 0;
     },
-    getDateTimeStr(date, time){
+    getDateTimeStr(date, time) {
       let _date = date;
       let _time = time;
 
-      let _str = [
-        _date.getFullYear(),
-        _date.getMonth() < 10 ? '0' + (_date.getMonth() + 1) : (_date.getMonth() + 1),
-        _date.getDate() < 10 ? '0'+_date.getDate() : _date.getDate(),
-      ].join('-') +' '+ [
-        _time.getHours() < 10 ? '0'+_time.getHours() : _time.getHours(),
-        _time.getMinutes() < 10 ? '0'+_time.getMinutes() : _time.getMinutes(),
-        _time.getSeconds() < 10 ? '0'+_time.getSeconds() : _time.getSeconds(),
-      ].join(':')+'Z';
+      let _str =
+        [
+          _date.getFullYear(),
+          _date.getMonth() < 10
+            ? "0" + (_date.getMonth() + 1)
+            : _date.getMonth() + 1,
+          _date.getDate() < 10 ? "0" + _date.getDate() : _date.getDate(),
+        ].join("-") +
+        " " +
+        [
+          _time.getHours() < 10 ? "0" + _time.getHours() : _time.getHours(),
+          _time.getMinutes() < 10
+            ? "0" + _time.getMinutes()
+            : _time.getMinutes(),
+          _time.getSeconds() < 10
+            ? "0" + _time.getSeconds()
+            : _time.getSeconds(),
+        ].join(":") +
+        "Z";
 
-      return _str;;
+      return _str;
     },
-    axiosParams(){
+    axiosParams() {
       // start Date()
       let s_d = this.dateFilter.startDate;
       let s_t = this.dateFilter.startTime;
@@ -501,8 +512,8 @@ export default {
       let e_d = this.dateFilter.endDate;
       let e_t = this.dateFilter.endTime;
 
-      let start_str = this.getDateTimeStr( s_d, s_t );
-      let end_str = this.getDateTimeStr( e_d, e_t );
+      let start_str = this.getDateTimeStr(s_d, s_t);
+      let end_str = this.getDateTimeStr(e_d, e_t);
 
       // console.log(start_str);
       // console.log(end_str);
@@ -510,20 +521,20 @@ export default {
       let params = {
         start: start_str,
         end: end_str,
-        company: localStorage.getItem('company'),
-        agent: localStorage.getItem('agent'),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
         page: 1,
         username: null,
         limit: 10000,
-        column_order: 'no_bonus_count',
-        order: 'DESC',
-      }
+        column_order: "no_bonus_count",
+        order: "DESC",
+      };
       // console.log('-----------------');
       // console.log('this is param');
       // console.log(params)
       return params;
     },
-    axiosParams2(){
+    axiosParams2() {
       // start Date()
       let s_d = this.dateFilter.startDate;
       let s_t = this.dateFilter.startTime;
@@ -531,45 +542,45 @@ export default {
       let e_d = this.dateFilter.endDate;
       let e_t = this.dateFilter.endTime;
 
-      let start_str = this.getDateTimeStr( s_d, s_t );
-      let end_str = this.getDateTimeStr( e_d, e_t );
+      let start_str = this.getDateTimeStr(s_d, s_t);
+      let end_str = this.getDateTimeStr(e_d, e_t);
 
       let params = {
         start: start_str,
         end: end_str,
-        company: localStorage.getItem('company'),
-        agent: localStorage.getItem('agent'),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
         page: 1,
         username: null,
         limit: 10000,
-        column_order: 'date',
-        order: 'ASC',
-      }
+        column_order: "date",
+        order: "ASC",
+      };
       // console.log('-----------------');
       // console.log('this is param');
       // console.log(params)
       return params;
     },
     async searchdata() {
-      try{
+      try {
         this.isLoading = true;
         await this.getDataAPIPromotionReport();
         await this.getDataAPIProfirReport();
         this.isLoading = false;
-      }catch(error){
+      } catch (error) {
         this.isLoading = false;
         console.log(error);
       }
     },
-    async getDataAPIPromotionReport(){
-      try{
+    async getDataAPIPromotionReport() {
+      try {
         let paramIn = this.axiosParams();
         console.log(paramIn);
         this.resetBonusData();
         // api 1
         let response = await this.getPromotionReport(paramIn);
         console.log(response);
-        for(let i = 0; i < response.total;i++){
+        for (let i = 0; i < response.total; i++) {
           this.sum_cashback += response.data[i].cashback;
           this.sum_bonus_deposit += response.data[i].bonus_deposit;
           this.sum_new_member_bonus += response.data[i].new_member_bonus;
@@ -581,37 +592,45 @@ export default {
           this.sum_affiliate_deposit += response.data[i].affiliate_deposit;
           this.sum_checkin += response.data[i].checkin;
         }
-        this.sum_ALL_BONUS += this.sum_cashback + this.sum_bonus_deposit + this.sum_new_member_bonus + this.sum_first_deposit_bonus + this.sum_allday_bonus + this.sum_continue_bonus + this.sum_wheel_deposit + this.sum_credit_free + this.sum_checkin;
+        this.sum_ALL_BONUS +=
+          this.sum_cashback +
+          this.sum_bonus_deposit +
+          this.sum_new_member_bonus +
+          this.sum_first_deposit_bonus +
+          this.sum_allday_bonus +
+          this.sum_continue_bonus +
+          this.sum_wheel_deposit +
+          this.sum_credit_free +
+          this.sum_checkin;
         this.itemPromotion = response.data;
-      }catch(error){
+      } catch (error) {
         this.isLoading = false;
         console.log(error);
       }
     },
-    async getDataAPIProfirReport(){
+    async getDataAPIProfirReport() {
       // api 2
-      try{
-      let paramIn2 = this.axiosParams2();
-      console.log(paramIn2)
-      this.deposit = 0;
-      this.withdraw = 0;
-      this.profit_loss = 0;
-      let responseAPI2 = await this.getProfitByUserReport2(paramIn2);
-      console.log(responseAPI2);
-      for(let i = 0; i < responseAPI2.total;i++){
+      try {
+        let paramIn2 = this.axiosParams2();
+        console.log(paramIn2);
+        this.deposit = 0;
+        this.withdraw = 0;
+        this.profit_loss = 0;
+        let responseAPI2 = await this.getProfitByUserReport2(paramIn2);
+        console.log(responseAPI2);
+        for (let i = 0; i < responseAPI2.total; i++) {
           this.withdraw += responseAPI2.data[i].withdraw;
           this.deposit += responseAPI2.data[i].deposit;
           this.profit_loss += responseAPI2.data[i].winlose;
           // console.log(response.data.length) ; or // console.log(response.total);
           // console.log(this.total_user,i);
         }
-      }catch(error){
+      } catch (error) {
         this.isLoading = false;
         console.log(error);
       }
     },
-
-  }
+  },
 };
 </script>
 

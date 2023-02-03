@@ -12,6 +12,7 @@
           color="success"
           :true-value="1"
           :false-value="0"
+          :disabled="canwrite"
           :label="`สถานะ`"
           v-model="cashback.status"
           @change="switchstatus"
@@ -39,6 +40,7 @@
                 color="deep-purple accent-4"
                 counter
                 dense
+                :disabled="canwrite"
                 hide-details="auto"
                 label="เปลี่ยนรูปโปรโมชั่น"
                 placeholder="รูปโปรโมชัน"
@@ -166,7 +168,12 @@
                   ></v-text-field
                 ></v-col> </v-row
               ><v-card-actions>
-                <v-btn class="mx-auto btn_sty" color="success">บันทึก</v-btn>
+                <v-btn
+                  class="mx-auto btn_sty"
+                  :disabled="canwrite"
+                  color="success"
+                  >บันทึก</v-btn
+                >
               </v-card-actions>
             </div></v-col
           >
@@ -177,7 +184,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -186,8 +193,8 @@ export default {
       itemstype: [
         { value: "DAY", text: "รับได้รายวัน" },
         { value: "WEEK", text: "รับได้รายสัปดาห์" },
-        { value: "MOUNTH", text: "รับได้รายเดือน" }
-      ]
+        { value: "MOUNTH", text: "รับได้รายเดือน" },
+      ],
     };
   },
   async fetch() {
@@ -196,13 +203,22 @@ export default {
       this.cashback = response.data;
     } catch (error) {}
   },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("promotion_write")) return true;
+        else return false;
+      }
+    },
+  },
   methods: {
     ...mapActions("promotion", ["getCashback"]),
 
     switchstatus() {
       console.log("ho");
-    }
-  }
+    },
+  },
 };
 </script>
 

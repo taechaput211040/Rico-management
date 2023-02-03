@@ -139,13 +139,17 @@
       </v-row>
       <v-divider class="my-4"></v-divider>
       <v-card-actions>
-        <v-btn color="primary" @click="update" class="mx-auto btn_sty"
+        <v-btn
+          color="primary"
+          @click="update"
+          class="mx-auto btn_sty"
+          :disabled="canwrite"
           >บันทึก</v-btn
         >
       </v-card-actions>
     </v-card>
     <h3 class="my-4">ตั้งค่าข้อความต้อนรับ</h3>
-    <v-card class="pa-3 elevation-3 rounded-lg ">
+    <v-card class="pa-3 elevation-3 rounded-lg">
       <v-switch
         hide-details="auto"
         class="my-4 font-weight-bold"
@@ -183,23 +187,25 @@
             ></v-textarea>
           </v-col>
           <v-col cols="12" sm="6" class="text-center pa-5">
-            <div class="font-weight-bold ">
+            <div class="font-weight-bold">
               รูปภาพ ขนาดไม่เกิน 1 MB 500x500 px(ถ้ามี)
             </div>
             <img
               class="img_promotion"
               :src="message.img"
               alt=""
-              style="width: 330px !important;"
+              style="width: 330px !important"
             />
             <div>
               <v-file-input
-                v-model="message.img"
                 color="deep-purple accent-4"
                 counter
+                @change="selectFile"
+                accept="image/png, image/jpeg, image/bmp"
+                clearable
                 dense
                 hide-details="auto"
-                label="เปลี่ยนรูปข้อความต้อนรับ"
+                  label="เปลี่ยนรูปข้อความต้อนรับ"
                 placeholder="เปลี่ยนรูปข้อความต้อนรับ"
                 prepend-icon="mdi-camera"
                 outlined
@@ -222,6 +228,7 @@
         </v-row>
         <v-card-actions>
           <v-btn
+            :disabled="canwrite"
             color="primary"
             @click="handleUpdateMessage"
             class="mx-auto btn_sty"
@@ -234,7 +241,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import LoadingPage from "../components/LoadingPage.vue";
 export default {
   components: { LoadingPage },
@@ -245,7 +252,7 @@ export default {
       filecheck: null,
       datasetting: {},
       message: {},
-      loading: false
+      loading: false,
     };
   },
   async fetch() {
@@ -253,7 +260,6 @@ export default {
     try {
       let response = await this.getSetting();
       this.datasetting = response;
-      console.log(this.datasetting, "this.datasetting");
       let message = await this.getMessage();
       this.message = message;
     } catch (error) {
@@ -263,15 +269,51 @@ export default {
     this.loading = false;
     // this.message = response.message;
   },
-  async mounted() {},
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("settingSystem_write")) return true;
+        else return false;
+      }
+    },
+  },
   methods: {
     ...mapActions("setting", [
       "getSetting",
       "getMessage",
       "createUser",
       "updateSetting",
-      "updateMessage"
+      "updateMessage",
     ]),
+    selectFile(event) {
+      if (event) {
+        this.file = event;
+        this.message.img = URL.createObjectURL(this.file);
+      }
+    },
+    async saveImage() {
+      if (this.file) {
+        const data = new FormData();
+
+        data.append("file", this.file);
+
+        try {
+          this.loading = true;
+          let imageupdate = await this.$axios.post(
+            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            data
+          );
+          this.message.img = imageupdate.data.image;
+          console.log("img", imageupdate);
+
+          this.loading = false;
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+        }
+      }
+    },
     ...mapMutations("setting", ["setAllsetting", "setAllmessage"]),
     async handleUpdateMessage() {
       this.message.operator = this.$store.state.auth.name;
@@ -283,9 +325,10 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Confirm",
-        cancelButtonText: "Cancel"
-      }).then(async result => {
+        cancelButtonText: "Cancel",
+      }).then(async (result) => {
         if (result.isConfirmed) {
+          await this.saveImage();
           // console.log(this.formCreate)
           await this.updateMessage(this.message);
           this.$swal({
@@ -293,8 +336,8 @@ export default {
             title: "บันทึกสำเร็จ",
             allowOutsideClick: false,
             showConfirmButton: false,
-            timer: 1500
-          }).then(async result => {
+            timer: 1500,
+          }).then(async (result) => {
             if (result) {
               await this.$fetch();
             }
@@ -312,8 +355,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel"
-        }).then(async result => {
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
             await this.updateSetting(this.datasetting);
@@ -322,8 +365,8 @@ export default {
               title: "บันทึกสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 await this.$fetch();
               }
@@ -340,8 +383,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

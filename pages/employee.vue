@@ -3,7 +3,9 @@
     <h3 class="mb-4">พนักงาน</h3>
     <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
       <div class="pa-3 font-weight-bold">
-        <v-btn color="primary" small @click="openDialog()">เพิ่มพนักงาน</v-btn>
+        <v-btn color="primary" :disabled="canwrite" small @click="openDialog()"
+          >เพิ่มพนักงาน</v-btn
+        >
       </div>
       <v-card width="100%" class="elevation-4 rounded-lg">
         <v-data-table
@@ -12,12 +14,12 @@
           hide-default-footer
           disable-pagination
         >
-          <template #[`item.no`]="{index}">
+          <template #[`item.no`]="{ index }">
             <span class="font-weight-bold">
               {{ index + 1 }}
             </span>
           </template>
-          <template #[`item.action`]="{item}">
+          <template #[`item.action`]="{ item }">
             <div class="text-center d-flex justify-center">
               <v-btn
                 color="black"
@@ -32,14 +34,14 @@
               >
             </div>
           </template>
-          <template #[`item.position`]="{item}">
+          <template #[`item.position`]="{ item }">
             <span v-if="item.is_admin == true">ADMIN</span>
             <span v-else>STAFF</span>
           </template>
-          <template #[`item.created_at`]="{item}">
+          <template #[`item.created_at`]="{ item }">
             <div class="pa-2">{{ item.created_at | dateFormat }}</div>
           </template>
-          <template #[`item.status`]="{item}">
+          <template #[`item.status`]="{ item }">
             <v-chip
               color="success"
               small
@@ -60,10 +62,10 @@
     </v-card>
     <!--createdialog -->
     <v-dialog v-model="dlemployee" max-width="800px" height="auto">
-      <v-card class="pa-5 ">
+      <v-card class="pa-5">
         <v-form ref="formCreate">
           <v-card-title>
-            <h4 class="font-weight-bold mx-auto  primary--text">
+            <h4 class="font-weight-bold mx-auto primary--text">
               {{ createEmployee ? `เพิ่ม` : `แก้ไข` }}พนักงาน
             </h4></v-card-title
           >
@@ -75,7 +77,7 @@
                 required
                 placeholder="ชื่อ-นามสกุล"
                 dense
-                :rules="[v => !!v || 'กรุณากรอกชื่อ นามสกุล']"
+                :rules="[(v) => !!v || 'กรุณากรอกชื่อ นามสกุล']"
                 v-model="createAccount.name"
                 hide-details="auto"
                 outlined
@@ -88,10 +90,10 @@
                 placeholder="กรอกเบอร์โทรศัพท์"
                 dense
                 :rules="[
-                  v => !!v || 'กรุณากรอกเบอร์มือถือ',
-                  v =>
+                  (v) => !!v || 'กรุณากรอกเบอร์มือถือ',
+                  (v) =>
                     (v && v.length >= 10 && v.length < 16) ||
-                    'กรุณากรอก กรุณากรอกเบอร์มือถือ 10 ถึง 15 ตัว'
+                    'กรุณากรอก กรุณากรอกเบอร์มือถือ 10 ถึง 15 ตัว',
                 ]"
                 v-model="createAccount.phone"
                 hide-details="auto"
@@ -105,7 +107,7 @@
                 placeholder="กรอก Username"
                 v-model="createAccount.username"
                 dense
-                :rules="[v => !!v || 'กรุณากรอก Username']"
+                :rules="[(v) => !!v || 'กรุณากรอก Username']"
                 hide-details="auto"
                 outlined
               ></v-text-field>
@@ -116,7 +118,7 @@
                 required
                 placeholder="กรอก Password"
                 dense
-                :rules="[v => !!v || 'กรุณากรอก Password ']"
+                :rules="[(v) => !!v || 'กรุณากรอก Password ']"
                 v-model="createAccount.password"
                 prepend-inner-icon="mdi-lock"
                 :type="hidden ? 'password' : 'text'"
@@ -186,7 +188,7 @@
                 hide-default-footer
                 disable-pagination
               >
-                <template #[`item.title`]="{item}">
+                <template #[`item.title`]="{ item }">
                   <div class="pa-2">{{ item.title }}</div>
                 </template>
                 <template #[`header.read`]>
@@ -195,12 +197,12 @@
                     v-model="selectedReadAll"
                     label="ดู"
                     :value="
-                      selected.filter(x => x.endsWith('_read')).length > 0
+                      selected.filter((x) => x.endsWith('_read')).length > 0
                     "
                     :indeterminate="
-                      selected.filter(x => x.endsWith('_read')).length > 0 &&
-                        selected.filter(x => x.endsWith('_read')).length <
-                          item_menu.length
+                      selected.filter((x) => x.endsWith('_read')).length > 0 &&
+                      selected.filter((x) => x.endsWith('_read')).length <
+                        item_menu.length
                     "
                     @change="
                       handleReadAllPermission(selectedReadAll, item_menu)
@@ -213,12 +215,12 @@
                     hide-details="auto"
                     label="แก้ไข"
                     :value="
-                      selected.filter(x => x.endsWith('_write')).length > 0
+                      selected.filter((x) => x.endsWith('_write')).length > 0
                     "
                     :indeterminate="
-                      selected.filter(x => x.endsWith('_write')).length > 0 &&
-                        selected.filter(x => x.endsWith('_write')).length <
-                          item_menu.length
+                      selected.filter((x) => x.endsWith('_write')).length > 0 &&
+                      selected.filter((x) => x.endsWith('_write')).length <
+                        item_menu.length
                     "
                     @change="
                       handleWriteAllPermission(selectedWriteAll, item_menu)
@@ -264,9 +266,9 @@
     <!-- createdialog -->
     <!-- update  -->
     <v-dialog v-model="dlupdate" max-width="800px" height="auto">
-      <v-card class="pa-5 ">
+      <v-card class="pa-5">
         <v-card-title>
-          <h4 class="font-weight-bold mx-auto  primary--text">
+          <h4 class="font-weight-bold mx-auto primary--text">
             แก้ไขพนักงาน
           </h4></v-card-title
         >
@@ -278,7 +280,7 @@
                 required
                 placeholder="ชื่อ-นามสกุล"
                 dense
-                :rules="[v => !!v || 'กรุณากรอกชื่อ นามสกุล']"
+                :rules="[(v) => !!v || 'กรุณากรอกชื่อ นามสกุล']"
                 v-model="updatedata.name"
                 hide-details="auto"
                 outlined
@@ -291,10 +293,10 @@
                 placeholder="กรอกเบอร์โทรศัพท์"
                 dense
                 :rules="[
-                  v => !!v || 'กรุณากรอกเบอร์มือถือ',
-                  v =>
+                  (v) => !!v || 'กรุณากรอกเบอร์มือถือ',
+                  (v) =>
                     (v && v.length >= 9 && v.length < 16) ||
-                    'กรุณากรอก กรุณากรอกเบอร์มือถือ 9 ถึง 15 ตัว'
+                    'กรุณากรอก กรุณากรอกเบอร์มือถือ 9 ถึง 15 ตัว',
                 ]"
                 v-model="updatedata.phone"
                 hide-details="auto"
@@ -310,7 +312,7 @@
                 disabled
                 filled
                 dense
-                :rules="[v => !!v || 'กรุณากรอก Username']"
+                :rules="[(v) => !!v || 'กรุณากรอก Username']"
                 hide-details="auto"
                 outlined
               ></v-text-field>
@@ -323,7 +325,7 @@
                 v-if="changepassword"
                 placeholder="กรอก Password"
                 dense
-                :rules="[v => !!v || 'กรุณากรอก Password ']"
+                :rules="[(v) => !!v || 'กรุณากรอก Password ']"
                 v-model="updatedata.password"
                 prepend-inner-icon="mdi-lock"
                 :type="hidden ? 'password' : 'text'"
@@ -400,8 +402,9 @@
                   v-model="updateReadAll"
                   label="ดู"
                   :indeterminate="
-                    editgroups.filter(x => x.read).length < editgroups.length &&
-                      editgroups.filter(x => x.read).length > 0
+                    editgroups.filter((x) => x.read).length <
+                      editgroups.length &&
+                    editgroups.filter((x) => x.read).length > 0
                   "
                   @change="selectAllRead(updateReadAll)"
                 ></v-checkbox>
@@ -410,9 +413,9 @@
                 <v-checkbox
                   hide-details="auto"
                   :indeterminate="
-                    editgroups.filter(x => x.write).length <
+                    editgroups.filter((x) => x.write).length <
                       editgroups.length &&
-                      editgroups.filter(x => x.write).length > 0
+                    editgroups.filter((x) => x.write).length > 0
                   "
                   v-model="updateWriteAll"
                   @change="selectAllWrite(updateWriteAll)"
@@ -467,39 +470,39 @@ export default {
         {
           text: "Menu",
           value: "title",
-          sortable: false
+          sortable: false,
         },
         {
           text: "View",
           value: "read",
           sortable: false,
-          align: "center"
+          align: "center",
         },
         {
           text: "Edit",
           value: "write",
           sortable: false,
-          align: "center"
-        }
+          align: "center",
+        },
       ],
       updatelist: [
         {
           text: "Menu",
           value: "title",
-          sortable: false
+          sortable: false,
         },
         {
           text: "View",
           value: "read",
           sortable: false,
-          align: "center"
+          align: "center",
         },
         {
           text: "Edit",
           value: "write",
           sortable: false,
-          align: "center"
-        }
+          align: "center",
+        },
       ],
       updatedata: {},
       selected: [],
@@ -522,7 +525,7 @@ export default {
         status: false,
         username: "",
         password: "",
-        tfa_status: false
+        tfa_status: false,
       },
       dledit: false,
       dlemployee: false,
@@ -533,7 +536,7 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "ชื่อ",
@@ -541,14 +544,14 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold"
+          cellClass: "font-weight-bold",
         },
         {
           text: "เบอร์โทรศัพท์",
           value: "phone",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "USERNAME",
@@ -556,7 +559,7 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold primary--text"
+          cellClass: "font-weight-bold primary--text",
         },
         {
           text: "ระดับพนักงาน",
@@ -564,45 +567,45 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold error--text"
+          cellClass: "font-weight-bold error--text",
         },
         {
           text: "สถานะ",
           value: "status",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "สร้างโดย",
           value: "operator",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เมื่อ",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "การดำเนินการ",
           value: "action",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
-      employee: []
+      employee: [],
     };
   },
 
   async fetch() {
     try {
       let response = await this.getEmployee();
-      this.employee = response.data.filter(x => {
+      this.employee = response.data.filter((x) => {
         return x.s_admin == false;
       });
       console.log(this.employee, "agentUser");
@@ -610,9 +613,17 @@ export default {
       console.log(error);
     }
   },
+
   computed: {
-    ...mapState(["menu"])
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("employee_write")) return true;
+        else return false;
+      }
+    },
   },
+
   methods: {
     async editEmployee(item) {
       let maingroups = [
@@ -622,7 +633,7 @@ export default {
           permission: "dashboard_read",
           to: "/",
           icon: "mdi-view-dashboard",
-          status: true
+          status: true,
         },
         {
           title: "รายงานระบบ",
@@ -635,45 +646,45 @@ export default {
               icon: "mdi-view-dashboard",
               text: "สถิติผู้ใช้งาน",
               to: "/reportSystem/statistics",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สถิติฝาก-ถอน",
               to: "/reportSystem/transaction",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าใหม่",
               to: "/reportSystem/newaccount",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าประจำ",
               to: "/reportSystem/regularReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานรับโบนัส",
               to: "/reportSystem/bonusReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานรับโบนัสชวนเพื่อน",
               to: "/reportSystem/affiliate",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าเลิกเล่น",
               to: "/reportSystem/quitMember",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "จัดการสมาชิก",
@@ -686,39 +697,39 @@ export default {
               icon: "mdi-view-dashboard",
               text: "สมัครสมาชิก",
               to: "/member/register",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานสมาชิก",
               to: "/member/reportMember",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
               to: "/member/memberCheck",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลการเล่น",
               to: "/member/memberReportTransaction",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ถอนเครดิตสมาชิก(Manual)",
               to: "/member/withdrawManual",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "แก้ไขเครดิต/รายการผิดพลาด",
               to: "/member/ManualEditCredit",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "รายงานฝาก/ถอน",
@@ -731,33 +742,33 @@ export default {
               icon: "mdi-view-dashboard",
               text: "รายการฝากสมาชิก",
               to: "/reportTransaction/deposite",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิก",
               to: "/reportTransaction/withdraw",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิกล่าสุด",
               to: "/reportTransaction/lastWithdrawal",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากแรก",
               to: "/reportTransaction/firstDeposit",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการที่ถูกซ่อน",
               to: "/reportTransaction/hiddenReport",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "รายงานสรุป",
@@ -770,21 +781,21 @@ export default {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน",
               to: "/profitReport/Report",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน รายบุคคล",
               to: "/profitReport/ProfitByUserReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สรุปโปรโมชัน",
               to: "/profitReport/PromotionReport",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "จัดการค่ายเกม",
@@ -792,7 +803,7 @@ export default {
           permission: "manageGroup_read",
           to: "/groupsetting",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "จัดการเกม",
@@ -800,7 +811,7 @@ export default {
           permission: "manageGame_read",
           to: "/gamesetting",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "Landing Page",
@@ -808,7 +819,7 @@ export default {
           permission: "landingpage_read",
           to: "/landingpage",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "Member Page",
@@ -816,7 +827,7 @@ export default {
           permission: "memberpage_read",
           to: "/memberpage",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
 
         {
@@ -830,15 +841,15 @@ export default {
               icon: "mdi-view-dashboard",
               text: "โปรโมชันทั่วไป",
               to: "/promotion/generalPromotion",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "Cashback",
               to: "/promotion/cashback",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่าลิงก์รับทรัพย์",
@@ -851,21 +862,21 @@ export default {
               icon: "mdi-view-dashboard",
               text: "รายงานลิงก์รับทรัพย์",
               to: "/Affiliate/report",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
               to: "/Affiliate/infomember",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ตั้งค่า",
               to: "/Affiliate/setting",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่า Feature",
@@ -878,45 +889,45 @@ export default {
               icon: "mdi-view-dashboard",
               text: "เครดิตฟรี",
               to: "/feature/creditfree",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "กงล้อนำโชค",
               to: "/feature/wheel",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดไพ่6ใบ",
               to: "/feature/sixcard",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดหีบสมบัติ",
               to: "/feature/chest",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คอินรายวัน",
               to: "/feature/checkindaily",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สะสมเเต้ม",
               to: "/feature/point",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ของพรีเมียม",
               to: "/feature/premiumn",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่าระบบ",
@@ -924,7 +935,7 @@ export default {
           to: "/system",
           permission: "settingSystem_read",
           icon: "mdi-cog-outline",
-          status: true
+          status: true,
         },
         {
           title: "LINE NOTIFY",
@@ -932,7 +943,7 @@ export default {
           to: "/lineNotify",
           permission: "lineNotify_read",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "รายชื่อมิจฉาชีพ",
@@ -940,7 +951,7 @@ export default {
           to: "/CriminalList",
           permission: "criminal_read",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "พนักงาน",
@@ -948,7 +959,7 @@ export default {
           permission: "employee_read",
           to: "/employee",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "ธนาคาร",
@@ -956,7 +967,7 @@ export default {
           permission: "companyBank_read",
           to: "/companyBank",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "โยกเงิน",
@@ -964,7 +975,7 @@ export default {
           to: "/transaction",
           permission: "transfer_read",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "รายการเดินบัญชี",
@@ -972,14 +983,14 @@ export default {
           permission: "transferReport_read",
           to: "/transactionReport",
           icon: "mdi-gamepad-square",
-          status: true
-        }
+          status: true,
+        },
       ];
 
       this.updatedata = Object.assign({}, item);
       let permissionSelect = this.updatedata.menu_permission;
 
-      maingroups.forEach(x => {
+      maingroups.forEach((x) => {
         if (permissionSelect.includes(`${x.menu}_read`)) {
           console.log("real");
           return (x.read = true);
@@ -987,7 +998,7 @@ export default {
           return (x.read = false);
         }
       });
-      maingroups.forEach(x => {
+      maingroups.forEach((x) => {
         if (permissionSelect.includes(`${x.menu}_write`)) {
           console.log("wreal");
           return (x.write = true);
@@ -998,12 +1009,12 @@ export default {
       this.editgroups = Object.assign([], maingroups);
 
       if (
-        this.editgroups.filter(x => x.read).length == this.editgroups.length
+        this.editgroups.filter((x) => x.read).length == this.editgroups.length
       ) {
         this.updateReadAll = true;
       }
       if (
-        this.editgroups.filter(x => x.write).length == this.editgroups.length
+        this.editgroups.filter((x) => x.write).length == this.editgroups.length
       ) {
         this.updateWriteAll = true;
       }
@@ -1012,9 +1023,9 @@ export default {
     },
     async selectAllRead(read) {
       read = !read;
-      this.editgroups.map(x => (x.read = !read));
+      this.editgroups.map((x) => (x.read = !read));
       if (read == true) {
-        this.editgroups.map(x => (x.write = false));
+        this.editgroups.map((x) => (x.write = false));
         this.updateWriteAll = false;
       }
     },
@@ -1026,11 +1037,11 @@ export default {
     },
     async selectAllWrite(write) {
       write = !write;
-      this.editgroups.forEach(x => (x.write = !write));
+      this.editgroups.forEach((x) => (x.write = !write));
       if (this.updateWriteAll) {
         if (!this.updateReadAll) {
-          this.editgroups.forEach(x => (x.read = !this.updateReadAll));
-        } else this.editgroups.forEach(x => (x.read = true));
+          this.editgroups.forEach((x) => (x.read = !this.updateReadAll));
+        } else this.editgroups.forEach((x) => (x.read = true));
       }
       if (this.updateWriteAll) {
         this.updateReadAll = true;
@@ -1039,20 +1050,20 @@ export default {
     handleReadPermission(value) {
       const item = value.split("_");
       this.selected = this.selected.filter(
-        selected => selected != `${item[0]}_write`
+        (selected) => selected != `${item[0]}_write`
       );
     },
     handleWritePermission(value) {
       const item = value.split("_");
       if (
-        this.selected.findIndex(selected => selected == `${item[0]}_read`) < 0
+        this.selected.findIndex((selected) => selected == `${item[0]}_read`) < 0
       ) {
         this.selected.push(`${item[0]}_read`);
       }
     },
     handleReadAllPermission(state, items) {
       if (state) {
-        this.selected = items.map(item => {
+        this.selected = items.map((item) => {
           return `${item.menu}_read`;
         });
       } else {
@@ -1062,13 +1073,13 @@ export default {
     handleWriteAllPermission(state, items) {
       if (state) {
         this.selected = items
-          .map(item => {
+          .map((item) => {
             return [`${item.menu}_read`, `${item.menu}_write`];
           })
           .reduce((prev, curr) => [...prev, ...curr], []);
       } else {
         this.selected = this.selected.filter(
-          selected => !selected.endsWith("_write")
+          (selected) => !selected.endsWith("_write")
         );
       }
     },
@@ -1076,7 +1087,7 @@ export default {
       "getEmployee",
       "DeleteUser",
       "createUser",
-      "updateUser"
+      "updateUser",
     ]),
     openDialog() {
       this.createEmployee = true;
@@ -1089,7 +1100,7 @@ export default {
           operator: this.$store.state.auth.user,
           company: this.$store.state.auth.company,
           agent: this.$store.state.auth.agent,
-          menu_permission: this.selected
+          menu_permission: this.selected,
         };
 
         this.$swal({
@@ -1100,8 +1111,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "สร้างพนักงาน",
-          cancelButtonText: "ยกเลิก"
-        }).then(async result => {
+          cancelButtonText: "ยกเลิก",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             try {
               await this.createUser(body);
@@ -1110,8 +1121,8 @@ export default {
                 title: "สร้างสำเร็จ",
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                timer: 1500
-              }).then(async result => {
+                timer: 1500,
+              }).then(async (result) => {
                 this.dlemployee = false;
                 if (result) {
                   await this.$fetch();
@@ -1148,8 +1159,8 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "แก้ไข",
-        cancelButtonText: "ยกเลิก"
-      }).then(async result => {
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             await this.updateUser(this.updatedata);
@@ -1158,8 +1169,8 @@ export default {
               title: "แก้ไขสำเร็จแล้ว",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 this.dlupdate = false;
                 await this.$fetch();
@@ -1186,8 +1197,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "ลบ",
-          cancelButtonText: "ยกเลิก"
-        }).then(async result => {
+          cancelButtonText: "ยกเลิก",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
             try {
@@ -1197,8 +1208,8 @@ export default {
                 title: "ลบสำเร็จแล้ว",
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                timer: 1500
-              }).then(async result => {
+                timer: 1500,
+              }).then(async (result) => {
                 if (result) {
                   await this.$fetch();
                 }
@@ -1209,8 +1220,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -9,36 +9,36 @@
           color="primary"
           rounded
           @click="createAff(dataCreate, true)"
-          :disabled="!$store.state.auth.isAdmin"
+          :disabled="!$store.state.auth.isAdmin && canwrite"
         >
           <v-icon left>mdi-plus</v-icon>
           สร้างการตั้งค่า
         </v-btn>
-        <v-card class=" mt-2">
+        <v-card class="mt-2">
           <v-data-table
             :headers="headerReportmain"
             :items="settingList"
             hide-default-footer
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
               </span>
             </template>
-            <template #[`item.dp_bonus`]="{item}">
+            <template #[`item.dp_bonus`]="{ item }">
               <span> {{ item.dp_bonus }} % </span>
             </template>
-            <template #[`item.dp_bonus_type`]="{item}">
+            <template #[`item.dp_bonus_type`]="{ item }">
               <span v-if="item.dp_bonus_type">ครั้งแรก </span>
               <span v-else> ทุกยอดฝาก </span>
             </template>
-            <template #[`item.created_at`]="{item}">
+            <template #[`item.created_at`]="{ item }">
               <span> {{ item.created_at | dateFormat }} </span>
             </template>
-            <template #[`item.winlose_bonus`]="{item}">
+            <template #[`item.winlose_bonus`]="{ item }">
               <span> {{ item.winlose_bonus }} % </span>
             </template>
-            <template #[`item.commision_bonus`]="{item}">
+            <template #[`item.commision_bonus`]="{ item }">
               <span v-if="!item.commision_mode">
                 <v-chip x-small color="success">ทุกประเภท</v-chip> <br />{{
                   item.commision_bonus
@@ -54,12 +54,14 @@
                 }}% HORSERACING:{{ item.commision_bonus_all.OT }}%
               </span>
             </template>
-            <template #[`item.recieve_mode`]="{item}">
+            <template #[`item.recieve_mode`]="{ item }">
               <span>
-                {{ type_recieve.find(x => x.value === item.recieve_mode).text }}
+                {{
+                  type_recieve.find((x) => x.value === item.recieve_mode).text
+                }}
               </span>
             </template>
-            <template #[`item.enable`]="{item}">
+            <template #[`item.enable`]="{ item }">
               <v-chip outlined small color="error" v-if="item.enable == false">
                 <v-icon x-small left>mdi-circle</v-icon> ปิดใช้งาน
               </v-chip>
@@ -67,19 +69,19 @@
                 small
                 color="success"
                 class="px-2"
-                outlined
+                outlined 
                 v-if="item.enable == true"
               >
                 <v-icon x-small left>mdi-circle</v-icon> เปิดใช้งาน
               </v-chip>
             </template>
-            <template #[`item.action`]="{item}">
+            <template #[`item.action`]="{ item }">
               <v-btn
                 class="btn-sm btn-warning btn mx-1"
                 small
                 color="warning"
                 @click="createAff(item, false)"
-                :disabled="!$store.state.auth.isAdmin"
+                :disabled="!$store.state.auth.isAdmin && canwrite"
               >
                 แก้ไข</v-btn
               ><v-btn
@@ -88,7 +90,7 @@
                 small
                 color="error"
                 @click="delete_setting(item.id)"
-                :disabled="!$store.state.auth.isAdmin"
+                :disabled="!$store.state.auth.isAdmin && canwrite"
               >
                 ลบ
               </v-btn>
@@ -97,7 +99,7 @@
         </v-card>
 
         <h2 class="mt-5">กรอก username เพื่อดูการตั้งค่าปัจจุบันของ ลูกค้า</h2>
-        <div class=" d-flex align-baseline">
+        <div class="d-flex align-baseline">
           <div class="col-8 col-md-3 pa-2">
             <v-text-field
               v-model.trim="username"
@@ -113,19 +115,19 @@
           >
         </div>
 
-        <v-card class=" mt-2">
+        <v-card class="mt-2">
           <v-data-table
             :headers="headerReportchild"
             :items="dataRender"
             hide-default-footer
           >
-            <template #[`item.no`]="{index}">
+            <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
               </span>
             </template>
 
-            <template #[`item.config_name`]="{item}">
+            <template #[`item.config_name`]="{ item }">
               <div class="pa-3">
                 {{ item.config_name }}
                 <v-btn
@@ -134,13 +136,13 @@
                   rounded
                   color="primary"
                   @click.prevent="openDlupdateCinfig('main')"
-                  :disabled="!$store.state.auth.isAdmin"
+                  :disabled="!$store.state.auth.isAdmin && canwrite"
                 >
                   เปลี่ยนการตั้งค่า
                 </v-btn>
               </div>
             </template>
-            <template #[`item.child_setting_name`]="{item}">
+            <template #[`item.child_setting_name`]="{ item }">
               <div class="pa-3">
                 {{ item.config_name }}
                 <v-btn
@@ -149,23 +151,23 @@
                   rounded
                   color="primary"
                   @click.prevent="openDlupdateCinfig('child')"
-                  :disabled="!$store.state.auth.isAdmin"
+                  :disabled="!$store.state.auth.isAdmin && canwrite"
                 >
                   เปลี่ยนการตั้งค่า
                 </v-btn>
               </div>
             </template>
-            <template #[`item.dp_bonus_type`]="{item}">
+            <template #[`item.dp_bonus_type`]="{ item }">
               {{ item.dp_bonus }} %
               <span v-if="item.dp_bonus_type">(ครั้งแรก) </span>
               <span v-else> (ทุกยอดฝาก) </span>
             </template>
-            <template #[`item.winlose_bonus`]="{item}">
+            <template #[`item.winlose_bonus`]="{ item }">
               {{ item.winlose_bonus }} %
               <span v-if="item.winlose_bonus_mode == false"> (ติดลบได้) </span>
             </template>
 
-            <template #[`item.commision_mode`]="{item}">
+            <template #[`item.commision_mode`]="{ item }">
               <span v-if="!item.commision_mode">
                 <v-chip x-small color="success">ทุกประเภท</v-chip> <br />{{
                   item.commision_bonus
@@ -182,15 +184,17 @@
               </span>
             </template>
 
-            <template #[`item.created_at`]="{item}">
+            <template #[`item.created_at`]="{ item }">
               <span> {{ item.created_at | dateFormat }} </span>
             </template>
-            <template #[`item.recieve_mode`]="{item}">
+            <template #[`item.recieve_mode`]="{ item }">
               <span>
-                {{ type_recieve.find(x => x.value === item.recieve_mode).text }}
+                {{
+                  type_recieve.find((x) => x.value === item.recieve_mode).text
+                }}
               </span>
             </template>
-            <template #[`item.enable`]="{item}">
+            <template #[`item.enable`]="{ item }">
               <v-chip outlined small color="error" v-if="item.enable == false">
                 <v-icon x-small left>mdi-circle</v-icon> ปิดใช้งาน
               </v-chip>
@@ -208,7 +212,7 @@
         </v-card>
         <v-dialog v-model="dlcreate" max-width="600px" height="auto">
           <v-card class="pa-5">
-            <v-card-title class="font-weight-blod primary--text ">
+            <v-card-title class="font-weight-blod primary--text">
               <h3 class="mx-auto">
                 {{ formCreate ? "สร้างการตั้งค่า" : "เเก้ไขการตั้งค่า" }}
               </h3>
@@ -275,13 +279,11 @@
                     <v-switch
                       hide-details="auto"
                       dense
-                      :label="
-                        `${
-                          !dataCreate.winlose_bonus_mode
-                            ? 'ติดลบ ตามกำไรของ downline'
-                            : 'ยอดที่ติดลบจะเป็น 0 '
-                        }`
-                      "
+                      :label="`${
+                        !dataCreate.winlose_bonus_mode
+                          ? 'ติดลบ ตามกำไรของ downline'
+                          : 'ยอดที่ติดลบจะเป็น 0 '
+                      }`"
                       v-model="dataCreate.winlose_bonus_mode"
                     ></v-switch>
                   </div>
@@ -402,7 +404,7 @@
                     dark
                     small
                     @click="createconfig()"
-                    :disabled="!$store.state.auth.isAdmin"
+                    :disabled="!$store.state.auth.isAdmin && canwrite"
                   >
                     {{ formCreate ? "สร้าง" : "เเก้ไข" }}
                   </v-btn>
@@ -457,6 +459,7 @@
   <!-- v-if="feature_status" -->
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
 import LoadingPage from "../../components/LoadingPage.vue";
 export default {
   components: { LoadingPage },
@@ -474,71 +477,71 @@ export default {
           value: "no",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สายงาน",
           value: "config_name",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "	สายงาน downline	",
           value: "child_setting_name",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "bonus ยอดฝาก",
           value: "dp_bonus_type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "bonusจากยอดเสีย",
           value: "winlose_bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "bonusจากturnover(commission)",
           value: "commision_mode",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "การรับรายได้",
           value: "recieve_mode",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สถานะ",
           value: "enable",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "วันที่สร้าง",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สร้างโดย",
           value: "create_by",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
-        }
+          class: "font-weight-bold",
+        },
       ],
       headerReportmain: [
         {
@@ -546,78 +549,78 @@ export default {
           value: "no",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สายงาน",
           value: "config_name",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "	bonusจากยอดฝาก	",
           value: "dp_bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "	ประเภท	",
           value: "dp_bonus_type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "bonusจากยอดเสีย",
           value: "winlose_bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "bonusจากturnover(commission)",
           value: "commision_bonus",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "การรับรายได้",
           value: "recieve_mode",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สถานะ",
           value: "enable",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "วันที่สร้าง",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "สร้างโดย",
           value: "create_by",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
+          class: "font-weight-bold",
         },
         {
           text: "ดำเนินการ",
           value: "action",
           align: "center",
           sortable: false,
-          class: "font-weight-bold"
-        }
+          class: "font-weight-bold",
+        },
       ],
       modal_edit: false,
       companyname: "membertest",
@@ -627,12 +630,12 @@ export default {
       type_recieve: [
         { value: 1, text: "รายวัน" },
         { value: 2, text: "รายเดือน" },
-        { value: 3, text: "รายสัปดาห์" }
+        { value: 3, text: "รายสัปดาห์" },
       ],
       type_line: ["A", "B"],
       type_obtion: [
         { value: true, text: "ครั้งแรก" },
-        { value: false, text: "ทุกยอดฝาก" }
+        { value: false, text: "ทุกยอดฝาก" },
       ],
       selector_option: [],
       dataRender: [],
@@ -659,17 +662,26 @@ export default {
             LC: 0,
             OT: 0,
             SB: 0,
-            SL: 0
+            SL: 0,
           },
           create_by: "surasak.bank",
           update_by: null,
-          delete_by: null
-        }
-      ]
+          delete_by: null,
+        },
+      ],
     };
   },
   async fetch() {
     await this.getDataAffiliate();
+  },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("affiliate_write")) return true;
+        else return false;
+      }
+    },
   },
   methods: {
     openDlupdateCinfig(type) {
@@ -692,7 +704,7 @@ export default {
         );
         this.feature_status = data.feature_status;
         this.settingList = data.config;
-        this.selector_option = data.config.map(item => {
+        this.selector_option = data.config.map((item) => {
           return { value: item.id, text: item.config_name };
         });
       } catch (error) {}
@@ -728,7 +740,7 @@ export default {
           title: "โปรดเลือกสายงาน",
           allowOutsideClick: false,
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       } else {
         if (type === "child") {
@@ -772,8 +784,8 @@ export default {
             LC: 0,
             OT: 0,
             SB: 0,
-            SL: 0
-          }
+            SL: 0,
+          },
         };
       }
       this.dlcreate = true;
@@ -809,8 +821,8 @@ export default {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel"
-        }).then(async result => {
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
             await this.$axios.delete(
@@ -821,8 +833,8 @@ export default {
               title: "ลบแล้ว",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 await this.$fetch();
               }
@@ -832,9 +844,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 

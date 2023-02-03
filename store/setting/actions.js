@@ -11,6 +11,7 @@ export function getSetting({ rootState, commit, state }) {
         resolve(data);
       } catch (error) {
         reject(error);
+        //** */
       }
     } else {
       console.log("hio");
@@ -71,15 +72,15 @@ export function getEmployee({ rootState }) {
 
 //ธนาคารของเว็บ
 export function getCompanybank({ rootState }) {
-  console.log('get bank')
+  console.log("get bank");
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.get(
         `${process.env.ALL_COMPANY_BANK}/api/Company?company=${rootState.auth.hash}`,
         {
           headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
 
@@ -303,5 +304,57 @@ export function getGame({ commit, state }) {
       }
     }
     resolve(state.game_hash);
+  });
+}
+
+export function getMasterGameGroup({ commit, state }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await axios.get("/api/Game/Master");
+      //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+      console.log(error);
+    }
+  });
+}
+export function updateHash({ commit, state }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await axios.put("/api/Provider", {
+        json: payload,
+      });
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function updateHashGame({ commit, state }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await axios.put("/api/Provider/Game", {
+        json: payload,
+      });
+      //
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function getgame({ commit, state }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `https://all-json-config-ehhif4jpyq-as.a.run.app/api/Provider/admin/game/al/ls`
+      );
+      //
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
   });
 }

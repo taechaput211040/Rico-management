@@ -41,7 +41,7 @@ export default function() {
           menu: "reportSystem",
           permission: "reportSystem_read",
           icon: "mdi-chart-bar",
-          status: true,
+          status: false,
           subLinks: [
             {
               icon: "mdi-view-dashboard",

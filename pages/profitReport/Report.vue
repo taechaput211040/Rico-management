@@ -32,7 +32,7 @@
           <card-view
             title="โบนัส"
             titleclass="purple--text"
-            :value="total_bonus"
+            :value="total_bonus | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin.png"
           ></card-view>
         </v-col>
@@ -40,7 +40,8 @@
           <card-view
             titleclass="purple--text"
             title="ฝาก+โบนัส"
-            :value="(total_dp_amount + total_bonus) | numberFormat"
+            :class="total_dpbonus < 0 ? 'error--text' : 'success--text'"
+            :value="total_dpbonus | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin-stack.png"
           ></card-view>
         </v-col>
@@ -48,7 +49,8 @@
           <card-view
             titleclass="teal--text"
             title="กำไรขาดทุน"
-            :value="(total_dp_amount + total_bonus - total_wd_amount).toFixed(2) | numberFormat"
+            :class="profit_loss < 0 ? 'error--text' : 'success--text'"
+            :value="profit_loss | numberFormat"
             iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
           ></card-view>
         </v-col>
@@ -83,12 +85,11 @@ export default {
       total_wd_amount: 0,
       total_bonus: 0,
       profit_loss: 0,
+      total_dpbonus: 0,
     };
   },
   async fetch() {
     try {
-      console.log("------------------");
-      console.log("fetch call");
       this.getReport();
     } catch (error) {
       console.log(error);
@@ -125,52 +126,30 @@ export default {
       // console.log(this.dateFilter);
       this.getReport();
     },
-    searchdata() {
-      // console.log(this.dateFilter);
-      this.getReport();
-    },
+
     axiosParams() {
-      let params = "";
-      params +=
-        "start=" +
-        this.formatDate(this.dateFilter.startDate, this.dateFilter.startTime);
-      params +=
-        "&end=" +
-        this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime);
-      params += "&company=" + localStorage.getItem("company");
-      params += "&agent=" + localStorage.getItem("agent");
-      params += "&page=1";
-      params += "&limit=10000";
-      // console.log(params)
+      let params = {
+        start: this.formatDate(
+          this.dateFilter.startDate,
+          this.dateFilter.startTime
+        ),
+        end: this.formatDate(this.dateFilter.endDate, this.dateFilter.endTime),
+        company: localStorage.getItem("company"),
+        agent: localStorage.getItem("agent"),
+      };
+
       return params;
     },
     async getReport() {
       this.isLoading = true;
       try {
         let params = this.axiosParams();
-        // console.log(process.env.ALL_PROFIT_LOSS);
-        // console.log(params);
         let response = await this.getProfitReport(params);
-        this.response = response;
-        // console.log(response, '---here---')
-        this.total_user = response.total;
-        this.total_wd_amount = 0;
-        this.total_dp_amount = 0;
-        this.profit_loss = 0;
-        for (let i = 0; i < this.total_user; i++) {
-          this.total_wd_amount += response.data[i].withdraw;
-          this.total_dp_amount += response.data[i].deposit;
-          this.total_bonus += response.data[i].bonus;
-
-          this.profit_loss += response.data[i].winlose;
-          // console.log(response.data.length);
-          // console.log( Math.ceil(response.data.length/this.limit) );
-          // console.log(this.total_user,i);
-        }
-        // console.log('-----------------');
-        // console.log(this.total_user, 'user');
-        // console.log( Math.ceil(response.total/this.limit) );
-        // console.log(this.response);
+        this.total_dp_amount = response.deposit;
+        this.total_wd_amount = response.withdraw;
+        this.total_bonus = response.bonus;
+        this.profit_loss = response.winlose;
+        this.total_dpbonus = response.dp_bonus;
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;

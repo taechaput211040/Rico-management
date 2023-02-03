@@ -1,9 +1,13 @@
 <template>
   <v-flex>
     <h3 class="mb-4">ธนาคารของเว็บ</h3>
-    <v-card class="elevation-3 rounded-lg ">
+    <v-card class="elevation-3 rounded-lg">
       <div class="pa-3 font-weight-bold">
-        <v-btn color="primary" small @click="dlcreate = true"
+        <v-btn
+          color="primary"
+          small
+          @click="dlcreate = true"
+          :disabled="canwrite"
           >เพิ่มธนาคาร</v-btn
         >
       </div>
@@ -14,7 +18,7 @@
           hide-default-footer
           disable-pagination
         >
-          <template #[`item.status`]="{item}">
+          <template #[`item.status`]="{ item }">
             <v-chip
               color="success"
               label
@@ -31,46 +35,52 @@
               ปิดใช้งาน
             </v-chip>
           </template>
-          <template #[`item.Companybank`]="{item}">
+          <template #[`item.Companybank`]="{ item }">
             <div class="pt-2">
               <img-bank :value="item.Companybank"></img-bank>
             </div>
           </template>
-          <template #[`item.no`]="{index}">
+          <template #[`item.no`]="{ index }">
             <span class="font-weight-bold">
               {{ index + 1 }}
             </span>
           </template>
-          <template #[`item.type`]="{item}">
+          <template #[`item.type`]="{ item }">
             <v-chip
               color="yellow"
               v-if="item.type == true"
-              class="font-weight-bold "
+              class="font-weight-bold"
             >
               ถอน
             </v-chip>
 
-            <v-chip dark color="primary" v-else class="font-weight-bold ">
+            <v-chip dark color="primary" v-else class="font-weight-bold">
               ฝาก
             </v-chip>
           </template>
-          <template #[`item.action`]="{item}">
+          <template #[`item.action`]="{ item }">
             <div class="text-center d-flex justify-center">
               <v-btn
                 color="black"
                 class="mx-1"
                 dark
                 small
+                :disabled="canwrite"
                 @click="updateBank(item)"
                 ><v-icon left>mdi-cog</v-icon>แก้ไข</v-btn
               >
-              <v-btn color="error" dark small @click="deleteBank(item)"
+              <v-btn
+                color="error"
+                :disabled="canwrite"
+                dark
+                small
+                @click="deleteBank(item)"
                 ><v-icon left>mdi-delete</v-icon>ลบ</v-btn
               >
             </div>
           </template>
 
-          <template #[`item.visibletomember`]="{item}">
+          <template #[`item.visibletomember`]="{ item }">
             <span
               v-if="item.type == true && item.visibletomember == false"
               class="font-weight-bold"
@@ -79,12 +89,21 @@
             <span
               v-else-if="item.type == false && item.visibletomember == true"
               class="font-weight-bold"
-              ><v-btn color="success" small @click="touglestatus(item)"
+              ><v-btn
+                :disabled="canwrite"
+                color="success"
+                small
+                @click="touglestatus(item)"
                 >เปิดการมองเห็น</v-btn
               ></span
             >
             <span v-else class="font-weight-bold"
-              ><v-btn color="grey" dark @click="touglestatus(item)" small
+              ><v-btn
+                :disabled="canwrite"
+                color="grey"
+                dark
+                @click="touglestatus(item)"
+                small
                 >ปิดการมองเห็น</v-btn
               ></span
             >
@@ -375,7 +394,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -386,12 +405,12 @@ export default {
       updateitem: {},
       typebank: [
         { value: false, text: "ฝาก" },
-        { value: true, text: "ถอน" }
+        { value: true, text: "ถอน" },
       ],
       bank_options: [
         { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
         { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
-        { value: "TRUEWALLET", text: "TRUEMONEY - ทรูวอลเลท" }
+        { value: "TRUEWALLET", text: "TRUEMONEY - ทรูวอลเลท" },
       ],
       createBank: {
         Companybank: "SCB",
@@ -408,7 +427,7 @@ export default {
         updateBy: "",
         createBy: "",
         true_api_status: false,
-        mode: 0
+        mode: 0,
       },
       dlupdate: false,
       dlcreate: false,
@@ -419,50 +438,50 @@ export default {
           value: "status",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ธนาคาร",
           value: "Companybank",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ชื่อบัญชี",
           value: "Companybankname",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เลขบัญชี / เบอร์โทรศัพท์",
           value: "Companybankacountnumber",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ประเภท",
           value: "type",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เปิดให้สมาชิกเห็น",
           value: "visibletomember",
           align: "center",
-          sortable: false
+          sortable: false,
         },
         {
           text: "การดำเนินการ",
           value: "action",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
-      ]
+          class: "font-weight-bold ",
+        },
+      ],
     };
   },
   async fetch() {
@@ -473,6 +492,15 @@ export default {
       console.log(error);
     }
   },
+  computed: {
+    ...mapState("auth", ["menu"]),
+    canwrite() {
+      if (this.menu) {
+        if (!this.menu.includes("companyBank_write")) return true;
+        else return false;
+      }
+    },
+  },
   async mounted() {
     let setting = await this.getSetting();
     console.log("setting", setting);
@@ -480,7 +508,7 @@ export default {
       companyName: setting.companyname,
       companyKey: setting.companykey,
       agentPrefixCode: setting.agent_username,
-      hash: setting.hash
+      hash: setting.hash,
     };
   },
   methods: {
@@ -490,7 +518,7 @@ export default {
       "createBankCompany",
       "EditBankCompany",
       "deleteBankCompany",
-      "getSetting"
+      "getSetting",
     ]),
     cancelFormScb() {
       console.log("cancel");
@@ -518,8 +546,8 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: `${status.visibletomember ? "เปิด" : "ปิด"}`,
-        cancelButtonText: "ยกเลิก"
-      }).then(async result => {
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             await this.EditBankCompany(this.createBank);
@@ -528,8 +556,8 @@ export default {
               title: `${status.visibletomember ? "เปิด" : "ปิด"}การมองเห็นแล้ว`,
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               this.dlupdate = false;
               if (result) {
                 await this.$fetch();
@@ -561,8 +589,8 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "สร้าง",
-        cancelButtonText: "ยกเลิก"
-      }).then(async result => {
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             await this.EditBankCompany(this.createBank);
@@ -571,8 +599,8 @@ export default {
               title: "แก้ไขสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               this.dlupdate = false;
               if (result) {
                 await this.$fetch();
@@ -602,12 +630,12 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "สร้าง",
-        cancelButtonText: "ยกเลิก"
-      }).then(async result => {
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           let payload = {
             ...this.createBank,
-            ...this.allSetting
+            ...this.allSetting,
           };
           console.log(payload, "payload");
           try {
@@ -617,8 +645,8 @@ export default {
               title: "สร้างสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               this.dlcreate = false;
               if (result) {
                 await this.$fetch();
@@ -662,13 +690,13 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "ลบ",
-        cancelButtonText: "ยกเลิก"
-      }).then(async result => {
+        cancelButtonText: "ยกเลิก",
+      }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             let payload = {
               id: item.id,
-              updateBy: this.$store.state.auth.name
+              updateBy: this.$store.state.auth.name,
             };
 
             await this.deleteBankCompany(payload);
@@ -677,8 +705,8 @@ export default {
               title: "ลบเรียบร้อย",
               allowOutsideClick: false,
               showConfirmButton: false,
-              timer: 1500
-            }).then(async result => {
+              timer: 1500,
+            }).then(async (result) => {
               if (result) {
                 await this.$fetch();
               }
@@ -688,8 +716,8 @@ export default {
           }
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
