@@ -345,3 +345,16 @@ export function updateHashGame({ commit, state }) {
     }
   });
 }
+export function getgame({ commit, state }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `https://all-json-config-ehhif4jpyq-as.a.run.app/api/Provider/admin/game/al/ls`
+      );
+      //
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

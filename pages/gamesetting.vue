@@ -253,6 +253,10 @@ export default {
     //   console.log(group);
     // } catch (error) {}
   },
+  async mounted() {
+    let { data } = await this.$store.dispatch(`setting/getgame`);
+    console.log(data, "dadatatagetgame");
+  },
   computed: {
     dragOptions() {
       return {
