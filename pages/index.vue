@@ -2,6 +2,7 @@
   <v-flex>
     <!-- sectioncard -->
     <!-- {{ depositlist }} -->
+    <loading-page v-if="isLoading"></loading-page>
     <v-row>
       <div class="col-12 col-lg-4">
         <h2 class="pa-2">ยอดรวมทั้งหมด</h2>
@@ -217,7 +218,7 @@
                     color="success"
                     label
                   >
-                    {{ item.deposit_amount | dateFormat }} บาท </v-chip
+                    {{ item.amount }} บาท </v-chip
                   ><br />
                   โบนัส :
                   <v-chip
@@ -369,7 +370,7 @@
                   ><v-icon class="mr-1" small>mdi-credit-card</v-icon
                   >เครดิตก่อน</v-chip
                 ><br />
-                {{ item.bfcredit | dateFormat }}<br />
+                {{ item.bfcredit  }}<br />
                 <v-chip
                   class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
                   color="grey darken-4"
@@ -380,7 +381,7 @@
                   <v-icon class="mr-1" small>mdi-credit-card</v-icon
                   >เครดิตหลัง</v-chip
                 ><br />
-                {{ item.afcredit | dateFormat }}
+                {{ item.afcredit  }}
               </div>
             </template>
             <template #[`item.credit`]="{ item }">
@@ -391,7 +392,7 @@
                   color="error"
                   label
                   outlined
-                  >{{ item.amount | dateFormat }} บาท</v-chip
+                  >{{ item.amount  }} บาท</v-chip
                 ><br />
                 <div class="card_status my-2">
                   <span class="font-weight-bold">status</span><br />
@@ -408,11 +409,11 @@
                   >
                   <br />
                 </div>
-                <span class="font-weight-bold">หลังเติม</span><br />
+                <span class="font-weight-bold">หลังถอน</span><br />
                 <span v-if="!item.afAmount" class="font-weight-bold"> - </span>
                 <span v-else> - </span>
                 <br />
-                <span class="font-weight-bold">ก่อนเติม</span><br />
+                <span class="font-weight-bold">ก่อนถอน</span><br />
                 <v-icon color="error"
                   >mdi-menu-down{{ item.afAmount | dateFormat }}</v-icon
                 >
@@ -662,7 +663,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("auth", ["GetInfomation", "Autostatus","checkBalanceBank","updateBalanceBank","updateAutoBankStatus"]),
+    ...mapActions("auth", ["GetInfomation", "Autostatus","checkBalanceBank","updateBalanceBank","updateAutoBankStatus","topupDashboardByOperator"]),
     ...mapMutations("auth", ["update_action_bank"]),
     topupDashboard(item){
       this.incoming_dashboard = item
@@ -670,7 +671,48 @@ export default {
     },
     hide(item){},
     async topUp(){
-      
+      if(!this.incoming_dashboard.username){
+        this.$swal({
+        title: `กรุณากรอก username`,
+        icon: "warning",
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ok"
+      })
+      return
+      }
+this.isLoading=true
+     const result =  await this.topupDashboardByOperator(this.incoming_dashboard)
+     this.isLoading=false
+     if(result.status =='success'){
+      this.isLoading=false
+      this.$swal({
+        title: `ทำรายการสำเร็จ`,
+        icon: "success",
+        text:result.message,
+        allowOutsideClick: true,
+        confirmButtonColor: "green",
+        confirmButtonText: "ok"
+      })
+      this.dialogTopup = false
+     return
+     }
+     else {
+      this.isLoading=false
+      this.$swal({
+        
+        title: `รายการไม่สำเร็จ`,
+        icon: "error",
+        text:result.message,
+        allowOutsideClick: true,
+        confirmButtonColor: "red",
+        confirmButtonText: "ok"
+      })
+    
+     return
+     }
+   
     },
     setCardshow(data) {
       if (data) {
