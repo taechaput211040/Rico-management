@@ -115,8 +115,87 @@ export function getBankByid(context, id) {
 }
 //ธนาคารของเว็บ
 
+export function getEmailBody(context, rootState) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.API_SCB_CORE}/api/Email/History/${localStorage
+          .getItem("agent")
+          .toLowerCase()}/${localStorage.getItem("company").toLowerCase()}`
+      );
+      console.log(response, "restr");
+      // resolve(response);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function getBalanceSCB(context, acc_number) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.API_SCB_CORE}/api/ScbCore/Summary`,
+        { acc_number: acc_number }
+      );
+      console.log(response, "getBalanceSCB");
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 //ธนาคารของเว็บ
 
+// export function getBalanceSCB(context, acc_number) {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       let response = await this.$axios.get(
+//         `${process.env.API_SCB_CORE}/api/Email/Transaction/${acc_number}?page=${page}`
+//       );
+//       console.log(response, "getBalanceSCB");
+//       resolve(response);
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// }
+
+export function sendEmailSCB(context, data_email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.API_SCB_CORE}/api/Email/SendCode`,
+        {
+          ...data_email,
+          agent: localStorage.getItem("agent").toLowerCase(),
+          company: localStorage.getItem("company").toLowerCase(),
+        }
+      );
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function sendEmailSCBVerify(context, data_send) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.post(
+        `${process.env.API_SCB_CORE}/api/Email/Verify`,
+        {
+          ...data_send,
+          agent: localStorage.getItem("agent").toLowerCase(),
+          company: localStorage.getItem("company").toLowerCase(),
+        }
+      );
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 //update setting
 
 export function updateSetting({ rootState }, data) {

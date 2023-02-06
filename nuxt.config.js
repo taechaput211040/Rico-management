@@ -124,5 +124,8 @@ export default {
     ALL_RICO_REPORT: process.env.ALL_RICO_REPORT,
     ALL_PROMOTION: process.env.ALL_PROMOTION,
     ALL_JSON_STATIC: process.env.ALL_JSON_STATIC,
+    ALL_PROMOTION: process.env.ALL_PROMOTION,
+    API_SCB_CORE: process.env.API_SCB_CORE,
+    ALL_LINE_NOTIFY: process.env.ALL_LINE_NOTIFY,
   },
 };

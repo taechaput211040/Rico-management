@@ -24,9 +24,40 @@ Vue.prototype.$moment = moment;
 Vue.use(ElementUI, { locale });
 
 Vue.use(GradientColorPicker);
-export default function() {
+export default function () {
   const Store = new Vuex.Store({
     state: {
+      bank_options_transfer: [
+        { value: null, text: "เลือกธนาคาร" },
+
+        { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
+        { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
+        { value: "TMB", text: "TTB - ทีเอ็มบีธนชาต" },
+
+        // { value: "TMB", text: "TMB - ธนาคารทหารไทย" },
+        { value: "BBL", text: "BBL - ธนาคารกรุงเทพ" },
+        { value: "KTB", text: "KTB - ธนาคารกรุงไทย" },
+        { value: "BAY", text: "BAY - ธนาคารกรุงศรีอยุธยา" },
+        { value: "KKP", text: "KKP - ธนาคารเกียรตินาคินภัทร" },
+        { value: "CIMB", text: "CIMB - ธนาคารซีไอเอ็มบีไทย" },
+        { value: "TISCO", text: "TISCO - ธนาคารทิสโก้" },
+        // { value: "TBANK", text: "TBANK - ธนาคารธนชาต" },
+        { value: "UOBT", text: "UOBT - ธนาคารยูโอบี" },
+        { value: "TCD", text: "TCD - ธนาคารไทยเครดิตเพื่อรายย่อย" },
+        { value: "LHFG", text: "LHFG - ธนาคารแลนด์แอนด์ เฮ้าส์" },
+        {
+          value: "BAAC",
+          text: "BAAC - ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร",
+        },
+        { value: "GSB", text: "GSB - ธนาคารออมสิน" },
+        { value: "GHB", text: "GHB - ธนาคารอาคารสงเคราะห์" },
+        { value: "ISBT", text: "ISBT - ธนาคารอิสลามแห่งประเทศไทย" },
+
+        { value: "CITI", text: "CITI - ธนาคาร CITIBANK" },
+        { value: "DB", text: "DB - ธนาคาร ดอยซ์แบงก์" },
+        { value: "HSBC", text: "HSBC - ธนาคาร เอชเอสบีซี" },
+        { value: "ICBC", text: "ICBC - ธนาคาร ไอซีบีซี" },
+      ],
       menu: [
         {
           title: "Dashboard",
@@ -34,7 +65,7 @@ export default function() {
           permission: "dashboard_read",
           to: "/",
           icon: "mdi-view-dashboard",
-          status: true
+          status: true,
         },
         {
           title: "รายงานระบบ",
@@ -47,45 +78,45 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "สถิติผู้ใช้งาน",
               to: "/reportSystem/statistics",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สถิติฝาก-ถอน",
               to: "/reportSystem/transaction",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าใหม่",
               to: "/reportSystem/newaccount",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าประจำ",
               to: "/reportSystem/regularReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานรับโบนัส",
               to: "/reportSystem/bonusReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานรับโบนัสชวนเพื่อน",
               to: "/reportSystem/affiliate",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานลูกค้าเลิกเล่น",
               to: "/reportSystem/quitMember",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "จัดการสมาชิก",
@@ -98,39 +129,39 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "สมัครสมาชิก",
               to: "/member/register",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายงานสมาชิก",
               to: "/member/reportMember",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลปัจจุบัน/จำนวนเทิร์น",
               to: "/member/memberCheck",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คข้อมูลการเล่น",
               to: "/member/memberReportTransaction",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ถอนเครดิตสมาชิก(Manual)",
               to: "/member/withdrawManual",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "แก้ไขเครดิต/รายการผิดพลาด",
               to: "/member/ManualEditCredit",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "รายงานฝาก/ถอน",
@@ -143,33 +174,33 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "รายการฝากสมาชิก",
               to: "/reportTransaction/deposite",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิก",
               to: "/reportTransaction/withdraw",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการถอนสมาชิกล่าสุด",
               to: "/reportTransaction/lastWithdrawal",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการฝากแรก",
               to: "/reportTransaction/firstDeposit",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "รายการที่ถูกซ่อน",
               to: "/reportTransaction/hiddenReport",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "รายงานสรุป",
@@ -182,21 +213,21 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน",
               to: "/profitReport/Report",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "กำไร/ขาดทุน รายบุคคล",
               to: "/profitReport/ProfitByUserReport",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สรุปโปรโมชัน",
               to: "/profitReport/PromotionReport",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "จัดการค่ายเกม",
@@ -204,7 +235,7 @@ export default function() {
           permission: "manageGroup_read",
           to: "/groupsetting",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "จัดการเกม",
@@ -212,7 +243,7 @@ export default function() {
           permission: "manageGame_read",
           to: "/gamesetting",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "Landing Page",
@@ -220,7 +251,7 @@ export default function() {
           permission: "landingpage_read",
           to: "/landingpage",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "Member Page",
@@ -228,7 +259,7 @@ export default function() {
           permission: "memberpage_read",
           to: "/memberpage",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
 
         {
@@ -242,15 +273,15 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "โปรโมชันทั่วไป",
               to: "/promotion/generalPromotion",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "Cashback",
               to: "/promotion/cashback",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่าลิงก์รับทรัพย์",
@@ -263,21 +294,21 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "รายงานลิงก์รับทรัพย์",
               to: "/Affiliate/report",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ข้อมูลสมาชิกลิงก์รับทรัพย์",
               to: "/Affiliate/infomember",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ตั้งค่า",
               to: "/Affiliate/setting",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่า Feature",
@@ -290,45 +321,45 @@ export default function() {
               icon: "mdi-view-dashboard",
               text: "เครดิตฟรี",
               to: "/feature/creditfree",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "กงล้อนำโชค",
               to: "/feature/wheel",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดไพ่6ใบ",
               to: "/feature/sixcard",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เปิดหีบสมบัติ",
               to: "/feature/chest",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "เช็คอินรายวัน",
               to: "/feature/checkindaily",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "สะสมเเต้ม",
               to: "/feature/point",
-              status: true
+              status: true,
             },
             {
               icon: "mdi-view-dashboard",
               text: "ของพรีเมียม",
               to: "/feature/premiumn",
-              status: true
-            }
-          ]
+              status: true,
+            },
+          ],
         },
         {
           title: "ตั้งค่าระบบ",
@@ -336,7 +367,7 @@ export default function() {
           to: "/system",
           permission: "settingSystem_read",
           icon: "mdi-cog-outline",
-          status: true
+          status: true,
         },
         {
           title: "LINE NOTIFY",
@@ -344,7 +375,7 @@ export default function() {
           to: "/lineNotify",
           permission: "lineNotify_read",
           icon: "mdi-history",
-          status: true
+          status: true,
         },
         {
           title: "รายชื่อมิจฉาชีพ",
@@ -352,7 +383,7 @@ export default function() {
           to: "/CriminalList",
           permission: "criminal_read",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "พนักงาน",
@@ -360,7 +391,7 @@ export default function() {
           permission: "employee_read",
           to: "/employee",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "ธนาคาร",
@@ -368,7 +399,7 @@ export default function() {
           permission: "companyBank_read",
           to: "/companyBank",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "โยกเงิน",
@@ -376,7 +407,7 @@ export default function() {
           to: "/transaction",
           permission: "transfer_read",
           icon: "mdi-gamepad-square",
-          status: true
+          status: true,
         },
         {
           title: "รายการเดินบัญชี",
@@ -384,105 +415,105 @@ export default function() {
           permission: "transferReport_read",
           to: "/transactionReport",
           icon: "mdi-gamepad-square",
-          status: true
-        }
+          status: true,
+        },
       ],
       bank: [
         {
           value: "WAVEPAY",
           code: "WAVEPAY",
-          text: "WAVEPAY"
+          text: "WAVEPAY",
         },
         {
           value: "KBANK",
           code: "KBANK",
-          text: "ธนาคารกสิกรไทย"
+          text: "ธนาคารกสิกรไทย",
         },
         {
           value: "TRUEWALLET",
           code: "TRUEWALLET",
-          text: "ทรูวอลเล็ต"
+          text: "ทรูวอลเล็ต",
         },
         {
           value: "TMB",
           code: "TMB",
-          text: "ธนาคารทหารไทย"
+          text: "ธนาคารทหารไทย",
         },
         {
           value: "BBL",
           code: "BBL",
-          text: "ธนาคารกรุงเทพ"
+          text: "ธนาคารกรุงเทพ",
         },
         {
           value: "KTB",
           code: "KTB",
-          text: "ธนาคารกรุงไทย"
+          text: "ธนาคารกรุงไทย",
         },
         {
           value: "BAY",
           code: "BAY",
-          text: "ธนาคารกรุงศรีอยุธยา"
+          text: "ธนาคารกรุงศรีอยุธยา",
         },
         {
           value: "KKP",
           code: "KKP",
-          text: "ธนาคารเกียรตินาคินภัทร"
+          text: "ธนาคารเกียรตินาคินภัทร",
         },
         {
           value: "CIMB",
           code: "CIMB",
-          text: "ธนาคารซีไอเอ็มบีไทย"
+          text: "ธนาคารซีไอเอ็มบีไทย",
         },
         {
           value: "TISCO",
           code: "TISCO",
-          text: "ธนาคารทิสโก้"
+          text: "ธนาคารทิสโก้",
         },
         {
           value: "TBANK",
           code: "TBANK",
-          text: "ธนาคารธนชาต"
+          text: "ธนาคารธนชาต",
         },
         {
           value: "UOBT",
           code: "UOBT",
-          text: "ธนาคารยูโอบี"
+          text: "ธนาคารยูโอบี",
         },
         {
           value: "TCD",
           code: "TCD",
-          text: "ธนาคารไทยเครดิตเพื่อรายย่อย"
+          text: "ธนาคารไทยเครดิตเพื่อรายย่อย",
         },
         {
           value: "LHFG",
           code: "LHFG",
-          text: "ธนาคารแลนด์แอนด์ เฮ้าส์"
+          text: "ธนาคารแลนด์แอนด์ เฮ้าส์",
         },
         {
           value: "BAAC",
           code: "BAAC",
-          text: "ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร"
+          text: "ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร",
         },
         {
           value: "GSB",
           code: "GSB",
-          text: "ธนาคารออมสิน"
+          text: "ธนาคารออมสิน",
         },
         {
           value: "GHB",
           code: "GHB",
-          text: "ธนาคารอาคารสงเคราะห์"
+          text: "ธนาคารอาคารสงเคราะห์",
         },
         {
           value: "ISBT",
           code: "ISBT",
-          text: "ธนาคารอิสลามแห่งประเทศไทย"
+          text: "ธนาคารอิสลามแห่งประเทศไทย",
         },
         {
           value: "SCB",
           code: "SCB",
-          text: "ธนาคารไทยพานิชย์"
-        }
+          text: "ธนาคารไทยพานิชย์",
+        },
       ],
       webPalette: {
         logo: "https://image.smart-ai-api.com/public/Rico-main-resite/logo.png",
@@ -491,66 +522,66 @@ export default function() {
             navberColor: {
               label: "สีพื้นหลัง navber ข้างบน",
               type: "color",
-              value: "#1A1426"
+              value: "#1A1426",
             },
             sidebarColor: {
               label: "สีพื้นหลัง sidebar ด้านข้าง",
               type: "color",
-              value: "#1F1D31"
+              value: "#1F1D31",
             },
             bgColor: {
               label: "สีพื้นหลัง Background",
               type: "color",
-              value: "#28243d"
+              value: "#28243d",
             },
             textColor: {
               label: "สีตัวอักษร web",
               type: "color",
-              value: "#ffffff"
+              value: "#ffffff",
             },
             activeMenuColor: {
               label: "สีตอนกดปุ่ม menu",
               type: "color",
-              value: "#9155fd"
-            }
+              value: "#9155fd",
+            },
           },
           card: {
             cardBgColor: {
               label: "สี card",
               type: "color",
-              value: "#1F1D31"
+              value: "#1F1D31",
             },
             cardTextColor: {
               label: "สีตัวอักษรใน card",
               type: "color",
-              value: "#E9E9E9"
-            }
+              value: "#E9E9E9",
+            },
           },
 
           table: {
             colorTable: {
               label: "สีหัวตาราง",
               type: "color",
-              value: "#1E1E1E"
+              value: "#1E1E1E",
             },
             colorBodyTable: {
               label: "สีในตัวตาราง",
               type: "color",
-              value: "#1E1E1E"
+              value: "#1E1E1E",
             },
             colorTextTable: {
               label: "สีตัวอักษรในตาราง",
               type: "color",
-              value: "#FFFFFF"
+              value: "#FFFFFF",
             },
             bgTable: {
               label: "สีพื้นหลังตาราง",
               type: "color",
-              value: "#1f1d31"
-            }
-          }
-        }
-      }
+              value: "#1f1d31",
+            },
+          },
+        },
+      },
     },
     modules: {
       auth,
@@ -560,8 +591,8 @@ export default function() {
       profit,
       setting,
       account,
-      report
-    }
+      report,
+    },
   });
   return Store;
 }

@@ -174,6 +174,7 @@
             ><span class="purple--text font-weight-bold font-italic"
               >โบนัส</span
             >
+            
             <v-select
               v-model="formRegister.bonusid"
               hide-details="auto"
