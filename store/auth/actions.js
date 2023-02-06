@@ -219,6 +219,7 @@ export function GetInfomation(context) {
 export function Autostatus(context) {
   return new Promise(async (resolve, reject) => {
     try {
+
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}`
       );
@@ -250,6 +251,38 @@ export function updateAutoBankStatus(context, { data }) {
       reject(error);
     }
   });
+}
+
+
+export async function  topupDashboardByOperator(context, incomingSMS) {
+  // console.log('geee')
+console.log('ssss:',incomingSMS)
+incomingSMS.operator = context.state.user
+
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/Dashboard/${incomingSMS.username}`,
+      incomingSMS
+      
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return{status:'success',message:response.data.message}
+  } catch (error) {
+    return{status:'error',message:error.response.data.message}
+  }
+
+
 }
 export function updateBalanceBank(context, { id, balance }) {
   // console.log('geee')

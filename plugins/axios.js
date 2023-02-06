@@ -2,7 +2,7 @@ export default function ({ $axios, redirect, store, app }) {
   // export default function(config) {
 
   $axios.onRequest((config) => {
-    config.headers.common["Authorization"] = `${store.state.auth.key}`;
+    config.headers.common["Authorization"] = `Bearer ${store.state.auth.key}`;
   });
   $axios.onError((error) => {
     if (error.response.status === 401) {
