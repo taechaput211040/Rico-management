@@ -310,7 +310,7 @@
       </v-card>
     </v-dialog>
     <v-dialog ref="remark" title="ข้อความ" ok-only>
-      <div>
+      <v-card>
         <div class="text-center">
           <div>รายการโอนสำเร็จ</div>
           <div>ยอดก่อนโอน : {{ remark_render.bf_balance }}</div>
@@ -321,7 +321,7 @@
             <qr-code :text="remark_render.qrcode"></qr-code>
           </div>
         </div>
-      </div>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -329,12 +329,11 @@
 <script>
 import Vue from "vue";
 import VueQRCodeComponent from "vue-qrcode-component";
-import LoadingPage from "../components/LoadingPage.vue";
 Vue.component("qr-code", VueQRCodeComponent);
 export default {
   data() {
     return {
-      LoadingPagemodal_multi_2: false,
+      modal_multi_2: false,
       confirmTransfer: false,
       display_time: "",
       emailData: { email: { email: "" }, ref: "", expire: "", pin: "" },

@@ -23,8 +23,22 @@
       </div>
       <div class="mt-5">
         <div class="p-auto ma-4" v-if="items">
-          <v-btn color="warning" @click="prevPage">BACK</v-btn>
-          <v-btn color="success" @click="nextPage">NEXT</v-btn>
+          <v-btn
+            color="warning"
+            small
+            rounded
+            :disabled="!selectBank"
+            @click="prevPage"
+            ><v-icon left>mdi-menu-left</v-icon>BACK</v-btn
+          >
+          <v-btn
+            color="success"
+            small
+            rounded
+            :disabled="!selectBank"
+            @click="nextPage"
+            >NEXT<v-icon right>mdi-menu-right</v-icon></v-btn
+          >
         </div>
         <v-data-table hide-default-footer :headers="fields" :items="items">
           <template #[`item.amount`]="{ item }">
