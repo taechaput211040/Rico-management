@@ -137,10 +137,28 @@ export function addDeposit(state, payload) {
 export function addIncoming(state, payload) {
   state.incomingSMS.unshift(payload) 
   if(state.incomingSMS.length > 20){
-    // state.incomingSMS.slice(0,19)
+    state.incomingSMS.slice(0,19)
   }
 }
+export function updateIncoming(state, payload) {
+  state.incomingSMS = payload
+  if(state.incomingSMS.length > 20){
+    state.incomingSMS.slice(0,19)
+  }
+}
+export function updateWithdrawlist(state, payload) {
+  console.log('doing')
+  state.wdlist = payload
 
+}
+
+
+export function RemoveIncoming(state, payload) {
+
+  
+ 
+ 
+}
 export function serTfa_credential(state, payload) {
   state.tfa_credential = payload;
 }

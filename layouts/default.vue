@@ -3,36 +3,23 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="font-weight-bold" v-text="title" />
-      <button
-        class="btn btn-primary btn-sm"
-        @click.prevent="
-          playSound(
-            'http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3'
-          )
-        "
-      >
+      <button class="btn btn-primary btn-sm" @click.prevent="
+        playSound(
+          'http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3'
+        )
+      ">
         <span class="fa fa-play-circle-o"></span>
       </button>
 
       <v-spacer />
       <!-- <audio src="~/assets/sound/Doorbell.wav" controls></audio> -->
-      <v-chip outlined class="font-weight-bold" color="success"
-        ><v-icon left c>mdi-account</v-icon>{{ memberOnline }}
+      <v-chip outlined class="font-weight-bold" color="success"><v-icon left c>mdi-account</v-icon>{{ memberOnline }}
         Online member
         <v-icon class="mx-2" @click="showMember = true">mdi-chart-box</v-icon>
       </v-chip>
       <v-tooltip left color="orange">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            @click="dialogsound = true"
-            fab
-            dark
-            v-bind="attrs"
-            v-on="on"
-            small
-            class="mx-3"
-            color="orange"
-          >
+          <v-btn @click="dialogsound = true" fab dark v-bind="attrs" v-on="on" small class="mx-3" color="orange">
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
         </template>
@@ -46,15 +33,7 @@
         </template>
         <v-tooltip left color="black">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              fab
-              dark
-              v-bind="attrs"
-              v-on="on"
-              small
-              color="black"
-              @click="$router.push('/palette')"
-            >
+            <v-btn fab dark v-bind="attrs" v-on="on" small color="black" @click="$router.push('/palette')">
               <v-icon>mdi-cog</v-icon>
             </v-btn>
           </template>
@@ -62,15 +41,7 @@
         </v-tooltip>
         <v-tooltip left color="red">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              fab
-              dark
-              v-bind="attrs"
-              v-on="on"
-              small
-              color="red"
-              @click="logoutAuto()"
-            >
+            <v-btn fab dark v-bind="attrs" v-on="on" small color="red" @click="logoutAuto()">
               <v-icon>mdi-logout</v-icon>
             </v-btn>
           </template>
@@ -78,81 +49,35 @@
         </v-tooltip>
       </v-speed-dial>
     </v-app-bar>
-    <v-navigation-drawer
-      v-model="drawer"
-      :clipped="clipped"
-      app
-      fixed
-      width="270"
-    >
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" app fixed width="270">
       <v-toolbar-title class="font-weight-bold pa-4 text-center" align-center>
-        <v-img
-          max-height="150"
-          
-          @click="$router.push('/')"
-          max-width="200"
-          contain
-          class="ma-auto my-5"
-          src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
-        ></v-img>
+        <v-img max-height="150" @click="$router.push('/')" max-width="200" contain class="ma-auto my-5"
+          src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"></v-img>
       </v-toolbar-title>
       <v-list nav dense class="mt-5">
         <div v-for="(link, i) in items" :key="i">
-          <v-list-item
-            v-if="!link.subLinks"
-            :disabled="link.status == 2"
-            :to="link.to"
-            class="pa-1 font-weight-bold"
-            active-class="bg-primary-grediaun"
-          >
+          <v-list-item v-if="!link.subLinks" :disabled="link.status == 2" :to="link.to" class="pa-1 font-weight-bold"
+            active-class="bg-primary-grediaun">
             <v-list-item-icon>
               <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-title v-text="link.title" />
-            <v-badge
-              color="error"
-              right
-              style="z-index: -1"
-              v-if="link.status == 2"
-              :disabled="link.status == 2"
-              icon="mdi-tools"
-              inline
-              overlap
-            ></v-badge>
+            <v-badge color="error" right style="z-index: -1" v-if="link.status == 2" :disabled="link.status == 2"
+              icon="mdi-tools" inline overlap></v-badge>
           </v-list-item>
-          <v-list-group
-            color="deep-purple lighten-2 "
-            v-else
-            :key="link.title"
-            no-action
-            :prepend-icon="link.icon"
-            :value="false"
-          >
+          <v-list-group color="deep-purple lighten-2 " v-else :key="link.title" no-action :prepend-icon="link.icon"
+            :value="false">
             <template v-slot:activator>
               <v-list-item-title>{{ link.title }}</v-list-item-title>
             </template>
-            <v-list-item
-              class="pa-1"
-              v-for="sublink in link.subLinks"
-              :to="sublink.to"
-              :key="sublink.text"
-              :disabled="sublink.status == 2"
-              active-class="bg-primary-grediaun"
-            >
+            <v-list-item class="pa-1" v-for="sublink in link.subLinks" :to="sublink.to" :key="sublink.text"
+              :disabled="sublink.status == 2" active-class="bg-primary-grediaun">
               <v-list-item-icon>
                 <v-icon>{{ sublink.icon }}</v-icon>
               </v-list-item-icon>
               <v-list-item-title v-text="sublink.text" />
-              <v-badge
-                color="error"
-                right
-                style="z-index: -1"
-                v-if="sublink.status == 2"
-                :disabled="sublink.status == 2"
-                icon="mdi-tools"
-                inline
-                overlap
-              ></v-badge>
+              <v-badge color="error" right style="z-index: -1" v-if="sublink.status == 2"
+                :disabled="sublink.status == 2" icon="mdi-tools" inline overlap></v-badge>
             </v-list-item>
           </v-list-group>
         </div>
@@ -166,23 +91,12 @@
         </div>
       </v-list>
 
-      <v-toolbar-title
-        class="font-weight-bold mt-5 text-center"
-        style="position: relative; height: 200px"
-      >
+      <v-toolbar-title class="font-weight-bold mt-5 text-center" style="position: relative; height: 200px">
         <v-tooltip bottom color="red">
           <template v-slot:activator="{ on, attrs }">
-            <v-img
-              @click="logdownweb()"
-              max-height="100"
-              max-width="100"
-              contain
-              v-bind="attrs"
-              v-on="on"
+            <v-img @click="logdownweb()" max-height="100" max-width="100" contain v-bind="attrs" v-on="on"
               class="ma-auto mt-5 emergency"
-              src="https://image.smart-ai-api.com/public/thongtest/emergency.png"
-            ></v-img
-          ></template>
+              src="https://image.smart-ai-api.com/public/thongtest/emergency.png"></v-img></template>
           <span>ปิดระบบด่วน!!!!</span>
         </v-tooltip>
       </v-toolbar-title>
@@ -206,59 +120,23 @@
           <v-card-text class="font-weight-bold">
             <div class="my-2">
               ฝากเงิน (ไม่ออโต้) :
-              <v-btn
-                color="primary"
-                small
-                v-if="soundsetting.noauto == true"
-                rounded
-                @click="setsound('noauto')"
-                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-              >
-              <v-btn
-                color="grey"
-                small
-                v-if="soundsetting.noauto == false"
-                rounded
-                @click="setsound('noauto')"
-                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-              >
+              <v-btn color="primary" small v-if="soundsetting.noauto == true" rounded
+                @click="setsound('noauto')"><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn>
+              <v-btn color="grey" small v-if="soundsetting.noauto == false" rounded @click="setsound('noauto')"><v-icon
+                  left>mdi-volume-mute</v-icon> ปิด</v-btn>
             </div>
             <div class="my-2">
               ฝากเงิน :
-              <v-btn
-                color="primary"
-                v-if="soundsetting.dp == true"
-                small
-                rounded
-                @click="setsound('dp')"
-                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-              ><v-btn
-                color="grey"
-                v-if="soundsetting.dp == false"
-                small
-                rounded
-                @click="setsound('dp')"
-                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-              >
+              <v-btn color="primary" v-if="soundsetting.dp == true" small rounded @click="setsound('dp')"><v-icon
+                  left>mdi-volume-high</v-icon> เปิด</v-btn><v-btn color="grey" v-if="soundsetting.dp == false" small
+                rounded @click="setsound('dp')"><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn>
             </div>
             <div class="my-2">
               ถอนเงิน :
-              <v-btn
-                color="primary"
-                v-if="soundsetting.wd == true"
-                small
-                rounded
-                @click="setsound('wd')"
-                ><v-icon left>mdi-volume-high</v-icon> เปิด</v-btn
-              >
-              <v-btn
-                color="grey"
-                v-if="soundsetting.wd == false"
-                small
-                rounded
-                @click="setsound('wd')"
-                ><v-icon left>mdi-volume-mute</v-icon> ปิด</v-btn
-              >
+              <v-btn color="primary" v-if="soundsetting.wd == true" small rounded @click="setsound('wd')"><v-icon
+                  left>mdi-volume-high</v-icon> เปิด</v-btn>
+              <v-btn color="grey" v-if="soundsetting.wd == false" small rounded @click="setsound('wd')"><v-icon
+                  left>mdi-volume-mute</v-icon> ปิด</v-btn>
             </div>
           </v-card-text>
           <v-card-actions>
@@ -271,9 +149,7 @@
       </v-dialog>
       <v-dialog v-model="showMember" max-width="850px">
         <v-card class="pa-3">
-          <v-card-title class="justifiy-center font-weight-bold success--text"
-            >Member Online</v-card-title
-          >
+          <v-card-title class="justifiy-center font-weight-bold success--text">Member Online</v-card-title>
           <v-data-table :headers="headersMember" hide-default-footer>
           </v-data-table>
           <v-card-actions class="justify-end">
@@ -432,11 +308,24 @@ export default {
 
         this.socket.on("withdraw", async (msg) => {
           console.log("withdraw websocket initiate");
-          await this.playWithdraw();
+          console.log("socket wd",JSON.parse(msg));
+          const check = await this.findInWdList(JSON.parse(msg))
+          if (check) {
+            console.log("withdraw founded");
+         const list =    await this.updateWithdrawlistAction(JSON.parse(msg))
+            await this.updateWithdrawlist(list)
+          } else {
+            console.log("withdraw not founded");
+            await this.addWithdraw(JSON.parse(msg))
+            await this.playWithdraw();
+          }
+
         });
-        this.socket.on("updatewithdraw", async (msg) => {
-          console.log("updatewithdraw websocket initiate");
-        });
+        // this.socket.on("updatewithdraw", async (msg) => {
+        //   console.log("updatewithdraw websocket initiate");
+
+        //   await this.updateWithdrawlist(JSON.parse(msg))
+        // });
         this.socket.on("autostatus", async (msg) => {
           console.log("autostatus websocket initiate");
           // console.log(msg)
@@ -456,6 +345,13 @@ export default {
           await this.addIncoming(JSON.parse(msg));
           await this.playSoundNoauto();
         });
+        this.socket.on("remove_noauto", async (msg) => {
+          console.log("remove_noauto websocket initiate");
+          console.log(JSON.parse(msg))
+          await this.RemoveIncoming(JSON.parse(msg));
+          // await this.addIncoming(JSON.parse(msg));
+          // await this.playSoundNoauto();
+        });
       }
     } catch (error) {
       console.log(error);
@@ -471,6 +367,8 @@ export default {
       "logout",
       "getLockdown",
       "setLockdown",
+      "findInWdList",
+      "updateWithdrawlistAction"
     ]),
     ...mapActions("account", ["getPalletePreset"]),
     ...mapMutations("auth", [
@@ -478,6 +376,9 @@ export default {
       "update_action_bank",
       "addIncoming",
       "addDeposit",
+      "RemoveIncoming",
+      "updateWithdrawlist",
+      "addWithdraw"
     ]),
     ...mapActions("setting", ["getSetting"]),
     async playSoundNoauto() {
@@ -543,4 +444,6 @@ export default {
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>

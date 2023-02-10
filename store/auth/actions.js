@@ -254,16 +254,77 @@ export function updateAutoBankStatus(context, { data }) {
 }
 
 
-export async function  topupDashboardByOperator(context, incomingSMS) {
+export async function updateIncoming(context, incomingSMS) {
   // console.log('geee')
-console.log('ssss:',incomingSMS)
-incomingSMS.operator = context.state.user
+  console.log('ssss:', incomingSMS)
+  incomingSMS.operator = context.state.user
+  let incomingData = context.state.incomingSMS
+  for (let index = 0; index < state.incomingSMS; index++) {
+    const element = incomingData[index];
+    console.log(element.id)
+    console.log('count', index)
+    if (element.id == payload.id) {
+      delete incomingData[index]
+    }
+  }
+
+  console.log('incomingData:', incomingData)
+
+}
+
+export async function updateWithdrawlistAction(context, payload) {
+  console.log('wdlist:', context.state.wdlist)
+  let wd_temp = context.state.wdlist
+  console.log('temp:', wd_temp)
+  console.log('payload:', payload)
+  for (let index = 0; index < wd_temp.length; index++) {
+    const element = wd_temp[index];
+    if (element.id == payload.id) {
+      console.log(
+        'found id :', payload
+      )
+      wd_temp[index] = payload
+    }
+
+
+
+  }
+console.log(wd_temp)
+
+return wd_temp
+  console.log(context.state.wdlist)
+
+}
+export async function findInWdList(context, withdrawlist) {
+  console.log('finding:',context.state.wdlist)
+
+  let temp_wd = context.state.wdlist
+
+  for (let index = 0; index < temp_wd.length; index++) {
+    const element = temp_wd[index];
+    if (element.id == withdrawlist.id) {
+      return true
+    }
+
+
+  }
+  return false
+
+
+}
+export async function manualWithdrawFromDashboard(context, withdrawlist) {
+  // console.log('geee')
+
+  withdrawlist.operator = context.state.user
+
+console.log('before send:',withdrawlist)
+console.log('before send state:',context.state.wdlist)
 
   try {
     let response = await this.$axios.post(
-      `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/Dashboard/${incomingSMS.username}`,
-      incomingSMS
-      
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/ManualWd/Dashboard`,
+      withdrawlist
+
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -277,9 +338,93 @@ incomingSMS.operator = context.state.user
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return{status:'success',message:response.data.message}
+    return { status: 'success', message: response.data.message }
   } catch (error) {
-    return{status:'error',message:error.response.data.message}
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
+export async function hideIncomingFromDashBoardByOperator(context, incomingSMS) {
+  // console.log('geee')
+
+  incomingSMS.operator = context.state.user
+  const state_incomingData = context.state.incomingSMS
+
+
+  let updated_state_incomingData = state_incomingData.map(x => {
+    if (x.id != incomingSMS.id) {
+      return x
+    }
+    return null
+  }).filter(x => x)
+
+  context.commit("updateIncoming", updated_state_incomingData);
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/Hide/Dashboard`,
+      incomingSMS
+
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
+export async function topupDashboardByOperator(context, incomingSMS) {
+  // console.log('geee')
+  console.log('ssss:', incomingSMS)
+  incomingSMS.operator = context.state.user
+  console.log('state:', context.state)
+  incomingSMS.operator = context.state.user
+  const state_incomingData = context.state.incomingSMS
+
+
+  let updated_state_incomingData = state_incomingData.map(x => {
+    if (x.id != incomingSMS.id) {
+      return x
+    }
+    return null
+  }).filter(x => x)
+
+  console.log('incomingDataasdasd:', state_incomingData)
+  console.log('after map:', updated_state_incomingData)
+  context.commit("updateIncoming", updated_state_incomingData);
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/Dashboard/${incomingSMS.username}`,
+      incomingSMS
+
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
   }
 
 
@@ -319,7 +464,7 @@ export function updateBalanceBank(context, { id, balance }) {
 export function checkBalanceBank(context, { bank }) {
   // console.log(bank.Companybankacountnumber)
 
-  return new Promise(async (resolve, reject) => { 
+  return new Promise(async (resolve, reject) => {
     try {
       // console.log('feeesse')
       let response = await this.$axios.get(
