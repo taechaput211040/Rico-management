@@ -506,7 +506,6 @@ export default {
       this.turn = await this.$axios.$get(
         "https://all-wheel-ehhif4jpyq-as.a.run.app/api/Wheel/admin/704bd453-4b05-4e68-a8b3-a906fe6cc74d"
       );
-      console.log(turn, "turn");
     } catch (error) {
       console.log(error);
     }
