@@ -37,14 +37,15 @@ export async function changePasswordMember({ commit }, payload) {
     }
   });
 }
-export async function changeStatus({ commit }, payload) {
+export async function changeStatus(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.patch(
         `${process.env.ALL_MEMBER}/api/Member/Agent/Status`,
         {
           id: payload.id,
-          stats: payload.stats
+          status: payload.status,
+          operator :  context.rootState.auth.user
         }
       );
       resolve(data);
@@ -275,11 +276,12 @@ export function getTransactionMember(context, params) {
   });
 }
 
-export function createMember({}, body) {
+export function createMember(context, body) {
   return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.hash)
     try {
       let response = await this.$axios.post(
-        `${process.env.ALL_MEMBER}/api/Member/Agent`,
+        `${process.env.ALL_MEMBER}/api/Member/Auto/${context.rootState.auth.hash}`,
         body
       );
 
@@ -315,6 +317,22 @@ export function getMemberWithdraw(context, username) {
         `${process.env.ALL_SUPPORT}/api/Website/Rico/Member/WithdrawV2?username=${username}`
       );
       console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function editMember(context, body) {
+  return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.user)
+    body.operator = context.rootState.auth.user
+    try {
+      let response = await this.$axios.put(
+        `${process.env.ALL_MEMBER}/api/Member/`,
+        body
+      );
+
       resolve(response);
     } catch (error) {
       reject(error);

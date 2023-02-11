@@ -51,6 +51,12 @@ export function getPromotion(context) {
       );
 
       context.commit("set_promotion", data);
+
+      let bonuslist = data.map(x=>{
+        return {text:x.promotionname,value:x.id}
+      })
+bonuslist.unshift({text:'ไม่รับโบนัส',value:'0'})
+      context.commit("set_bonuslist",bonuslist);
       resolve(data);
     } catch (error) {
       reject(error);

@@ -56,7 +56,7 @@
         <v-row>
           <v-col cols="8" md="8" v-if="searchinput == true"
             ><v-text-field
-              label="ค้นหา"
+              label="ค้นหาด้วย username"
               placeholder="กรอกคำค้นหา"
               dense
               v-model.trim="filter.inputfilter"

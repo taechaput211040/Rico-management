@@ -133,6 +133,7 @@
               >รู้จักจาก</span
             >
             <v-select
+            :items="know_from_list"
               hide-details="auto"
               v-model="formRegister.knowFrom"
               dense
@@ -158,7 +159,8 @@
             <el-date-picker
               class="full-width"
               v-model="formRegister.birthdate"
-              arrow-control
+         
+              type="date"
               placeholder="วันที่"
               style="width: 100%"
             />
@@ -176,7 +178,8 @@
             >
             
             <v-select
-              v-model="formRegister.bonusid"
+            :items="bonus_list"
+              v-model="formRegister.bonusid_v2"
               hide-details="auto"
               dense
               outlined
@@ -211,6 +214,17 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
+      know_from_list:[
+        {text:'FACEBOOK',value:'FACEBOOK'},
+        {text:'GOOGLE',value:'GOOGLE'},
+        {text:'YOUTUBE',value:'YOUTUBE'},
+        {text:'LINE',value:'LINE'},
+        {text:'TWITTER',value:'TWITTER'},
+        {text:'INSTRAGRAM',value:'INSTRAGRAM'},
+        {text:'TIKTOK',value:'TIKTOK'},
+        {text:'เพื่อนแนะนำมา',value:'FRIEND'},
+        {text:'อื่นๆ',value:'OTHER'},
+      ],
       valid: false,
       rulesFrom: {
         nameRules: [(v) => !!v || "กรุณากรอกชื่อ"],
@@ -247,10 +261,11 @@ export default {
         lineID: null,
         recommender: null,
         remark: null,
-        birthdate: null,
+        birthdate: new Date().toISOString().slice(0,10),
         dpAuto: true,
         wdAuto: true,
         bonusid: 0,
+        bonusid_v2: '0',
         knowFrom: "สมัครผ่านแอดมิน",
         username: null,
         password: null,
@@ -259,6 +274,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("promotion", ["bonus_list"]),
     ...mapState("auth", ["menu"]),
     canwrite() {
       if (this.menu) {
@@ -267,7 +283,16 @@ export default {
       }
     },
   },
+  async fetch() {
+   
+      await this.getPromotion();
+
+   
+  },
   methods: {
+    ...mapActions("promotion", [
+      "getPromotion"
+    ]),
     ...mapActions("member", ["createMember"]),
     createUsername() {
       this.formRegister.username =
@@ -288,7 +313,7 @@ export default {
           this.formRegister.birthdate
         ).format(`YYYY-MM-DD`);
         this.$swal({
-          title: "ต้องการบันทึกการตั้งค่าหรือไม่ ?",
+          title: "ยืนยันการสมัครสมาชิก",
           icon: "question",
           showCancelButton: true,
           allowOutsideClick: false,
@@ -302,7 +327,7 @@ export default {
             await this.createMember(this.formRegister);
             this.$swal({
               icon: "success",
-              title: "บันทึกสำเร็จ",
+              title: "สมัครสมาชิกสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
               timer: 1500,
@@ -325,7 +350,7 @@ export default {
         this.formRegister.bankAccRef = "X" + this.formRegister.bankAcc.slice(4);
       } else if (this.formRegister.bankName == "KBANK") {
         this.formRegister.bankAccRef =
-          "X" + this.formRegister.bankAcc.slice(3, 9) + "X";
+          "X-" + this.formRegister.bankAcc.slice(6);
       } else if (this.formRegister.bankName == "TRUEWALLET") {
         this.formRegister.bankAccRef = this.formRegister.phone;
       } else if (this.formRegister.bankName == "GSB") {

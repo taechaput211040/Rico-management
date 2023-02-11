@@ -19,6 +19,7 @@
     "core-js": "^3.15.1",
     "dayjs": "^1.10.7",
     "element-ui": "^2.15.6",
+    "fs": "^0.0.1-security",
     "moment": "^2.29.1",
     "nuxt": "^2.15.7",
     "nuxt-element-ui": "^1.0.10",

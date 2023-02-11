@@ -5,11 +5,7 @@
       <v-row>
         <h2 class="mb-2">รายการสมาชิก</h2>
 
-        <search-filter
-          :filter="dateFilter"
-          @search="getData()"
-          :searchinput="false"
-        ></search-filter>
+        <search-filter :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true" @yesterday="getYesterDay()" @today="getToday()"></search-filter>
       </v-row>
       <v-row>
         <v-card class="elevation-4 mt-5 rounded-lg pb-5" width="100%">
@@ -22,26 +18,19 @@
 
           <div class="tabledata">
             <!-- {{ options }} -->
-            <v-data-table
-              :headers="columnReport"
-              :items="itemSearch.data"
-              :options.sync="options"
-              :footer-props="{
-                showFirstLastPage: true,
-                'items-per-page-text': '',
-              }"
-              :server-items-length="
-                itemSearch.meta ? itemSearch.meta.itemCount : 0
-              "
-            >
+            <v-data-table :headers="columnReport" :items="itemSearch.data" :options.sync="options" :footer-props="{
+              showFirstLastPage: true,
+              'items-per-page-text': '',
+            }" :server-items-length="
+  itemSearch.meta ? itemSearch.meta.itemCount : 0
+">
               <template #[`item.bankAcc`]="{ item }">
                 <div class="row px-6 detailbank justify-center">
                   <div class="ma-auto col-3 pa-0">
                     <img-bank :value="item.bankName"></img-bank>
                   </div>
                   <div class="font-weight-bold col-9 pa-0">
-                    <span class="primary--text">{{ item.bankName }}</span
-                    ><br />
+                    <span class="primary--text">{{ item.bankName }}</span><br />
                     {{ item.bankAcc }}
                   </div>
                 </div>
@@ -60,75 +49,57 @@
                 </span>
               </template> -->
               <template #[`item.name`]="{ item }">
-                <span> {{ item.name }} {{ item.lastname }} </span>
+                <div>
+                  <span> {{ item.name }} {{ item.lastname }} </span>
+                </div>
+                <div>
+                  ฝาก {{ item.dp_count }} , ถอน {{ item.wd_count }}
+                </div>
+              </template>
+              <template #[`item.username`]="{ item }">
+                <div> {{ item.username }} </div>
+                <div> {{ item.ip }} </div>
+                <div v-if="item.group == 'common'">
+
+
+                  <small><b> <v-chip class="ma-2" x-small color="blue" outlined>
+                        สมากชิกทั่วไป
+                      </v-chip></b> </small>
+                </div>
+                <div v-else>   <small><b> <v-chip class="ma-2" x-small color="red" outlined>
+                  {{ item.group }}
+                </v-chip></b> </small> </div>
               </template>
               <template #[`item.log`]="{ item }">
                 <div class="">
-                  <v-btn
-                    class="mx-1"
-                    color="success"
-                    dark
-                    small
-                    @click.stop="CheckDeposit(item.username)"
-                    >ฝาก</v-btn
-                  ><v-btn
-                    class="mx-1"
-                    color="error"
-                    dark
-                    small
-                    @click.stop="CheckWithdraw(item.username)"
-                    >ถอน</v-btn
-                  >
+                  <v-btn class="mx-1" color="success" dark small
+                    @click.stop="CheckDeposit(item.username)">ฝาก</v-btn><v-btn class="mx-1" color="error" dark small
+                    @click.stop="CheckWithdraw(item.username)">ถอน</v-btn>
                 </div>
               </template>
               <template #[`item.actions`]="{ item }">
                 <div class="d-sm-flex justify-center">
                   <v-tooltip bottom color="primary">
-                    <template v-slot:activator="{ on, attrs }"
-                      ><v-btn
-                        @click="openchangePass(item)"
-                        v-bind="attrs"
-                        v-on="on"
-                        :disabled="canwrite"
-                        color="primary mx-1"
-                        x-small
-                        fab
-                        ><v-icon>mdi-lastpass</v-icon></v-btn
-                      ></template
-                    >
+                    <template v-slot:activator="{ on, attrs }"><v-btn @click="openchangePass(item)" v-bind="attrs"
+                        v-on="on" :disabled="canwrite" color="primary mx-1" x-small
+                        fab><v-icon>mdi-lastpass</v-icon></v-btn></template>
                     <span>เปลี่ยนรหัสผ่าน</span>
                   </v-tooltip>
 
                   <v-tooltip bottom color="warning">
-                    <template v-slot:activator="{ on, attrs }"
-                      ><v-btn
-                        @click="handleUpdateMember(item)"
-                        v-bind="attrs"
-                        :disabled="canwrite"
-                        v-on="on"
-                        color="warning mx-1"
-                        x-small
-                        fab
-                        ><v-icon>mdi-pencil</v-icon></v-btn
-                      ></template
-                    >
+                    <template v-slot:activator="{ on, attrs }"><v-btn @click="handleUpdateMember(item)" v-bind="attrs"
+                        :disabled="canwrite" v-on="on" color="warning mx-1" x-small
+                        fab><v-icon>mdi-pencil</v-icon></v-btn></template>
                     <span>แก้ไขข้อมูล</span>
                   </v-tooltip>
                   <v-tooltip bottom color="black">
-                    <template v-slot:activator="{ on, attrs }"
-                      ><v-btn
-                        v-bind="attrs"
-                        v-on="on"
-                        color="black mx-1"
-                        x-small
-                        dark
-                        :disabled="canwrite"
-                        fab
-                        @click="handleLockUser(item)"
-                        ><v-icon>mdi-lock</v-icon></v-btn
-                      ></template
-                    >
-                    <span>LOCK USER!</span>
+                    <template v-slot:activator="{ on, attrs }"><v-btn v-bind="attrs" v-on="on" color="black mx-1"
+                        x-small dark :disabled="canwrite" fab @click="handleLockUser(item)"><v-icon
+                          v-if="item.status">mdi-lock-open-outline</v-icon>
+                        <v-icon v-if="!item.status" color="red">mdi-lock</v-icon>
+                      </v-btn></template>
+                    <span v-if="item.status">LOCK USER!</span>
+                    <span v-if="!item.status">UNLOCK USER!</span>
                   </v-tooltip>
                 </div>
               </template>
@@ -136,57 +107,37 @@
           </div>
         </v-card>
       </v-row>
-      <v-dialog
-        v-model="dlDeposit"
-        :overlay="false"
-        transition="dialog-transition"
-      >
+      <v-dialog v-model="dlDeposit" :overlay="false" transition="dialog-transition">
         <v-card class="pa-3">
           <h3 class="pa-3">
-            รายการฝากเงินล่าสุด : {{ items_deposit.length }} รายการ
+            รายการฝากเงินล่าสุด : 50 รายการ
           </h3>
-          <v-data-table
-            :options.sync="options_deposit"
-            :headers="headers_deposit"
-            :items="items_deposit"
-            pagination.sync="pagination"
-          >
-            <template #[`item.no`]="{ index }">
+          <v-data-table :options.sync="options_deposit" :headers="headers_deposit" :items="items_deposit"
+            pagination.sync="pagination">
+            <!-- <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">{{
                 options_deposit.itemsPerPage * (options_deposit.page - 1) +
                 (index + 1)
               }}</span>
-            </template>
-            <template #[`item.companyBank`]="{ item }"
-              ><img-bank :value="item.companyBank"></img-bank
-            ></template>
+            </template> -->
+            <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
           </v-data-table>
         </v-card>
       </v-dialog>
-      <v-dialog
-        v-model="dlWithdraw"
-        :overlay="false"
-        transition="dialog-transition"
-      >
+      <v-dialog v-model="dlWithdraw" :overlay="false" transition="dialog-transition">
         <v-card class="pa-3">
           <h3 class="pa-3">
             รายการถอนเงินล่าสุด : {{ items_withdraw.length }} รายการ
           </h3>
-          <v-data-table
-            :options.sync="options_withdraw"
-            :headers="headers_withdraw"
-            :items="items_withdraw"
-            pagination.sync="pagination"
-          >
+          <v-data-table :options.sync="options_withdraw" :headers="headers_withdraw" :items="items_withdraw"
+            pagination.sync="pagination">
             <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">{{
                 options_withdraw.itemsPerPage * (options_withdraw.page - 1) +
-                (index + 1)
+                  (index + 1)
               }}</span>
             </template>
-            <template #[`item.companyBank`]="{ item }"
-              ><img-bank :value="item.companyBank"></img-bank
-            ></template>
+            <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
           </v-data-table>
         </v-card>
       </v-dialog>
@@ -198,116 +149,96 @@
             <div class="row">
               <div class="col-12 col-sm-6">
                 เบอร์โทรศัพท์
-                <v-text-field
-                  outlined
-                  filled
-                  v-model="updateForm.phone"
-                  dense
-                  hide-details="auto"
-                  disabled
-                ></v-text-field>
+                <v-text-field outlined v-model="updateForm.phone" dense hide-details="auto"></v-text-field>
               </div>
-              <div class="col-12 col-sm-6 d-sm-block d-none"></div>
+              <div class="col-12 col-sm-6 ">
+                กลุ่ม
+                <v-select v-model="updateForm.group" outlined :items="userGroup" dense hide-details="auto"></v-select>
+
+              </div>
               <div class="col-12 col-sm-6">
                 ชื่อ
-                <v-text-field
-                  outlined
-                  v-model="updateForm.name"
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
+                <v-text-field outlined v-model="updateForm.name" dense hide-details="auto"></v-text-field>
               </div>
               <div class="col-12 col-sm-6">
                 นามสกุล
-                <v-text-field
-                  v-model="updateForm.lastname"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
+                <v-text-field v-model="updateForm.lastname" outlined dense hide-details="auto"></v-text-field>
               </div>
               <div class="col-12 col-sm-6">
                 ธนาคาร
-                <v-select
-                  v-model="updateForm.bankName"
-                  outlined
-                  :items="bank"
-                  dense
-                  hide-details="auto"
-                ></v-select>
+                <v-select v-model="updateForm.bankName" outlined :items="bank" dense hide-details="auto"></v-select>
               </div>
               <div class="col-12 col-sm-6">
                 เลขบัญชีธนาคาร
-                <v-text-field
-                  outlined
-                  v-model="updateForm.bankAcc"
-                  hide-details="auto"
-                  dense
-                ></v-text-field>
+                <v-text-field outlined v-model="updateForm.bankAcc" hide-details="auto" dense></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                ผู้เเนะนำ manual
+                <v-text-field v-model="updateForm.recommender" outlined hide-details="auto" dense></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                ผู้เเนะนำ affiliate
+                <v-text-field v-if="updateForm.parent_username" outlined disabled v-model="updateForm.parent_username"
+                  hide-details="auto" dense></v-text-field>
+                <v-text-field v-else outlined disabled filled placeholder="ไม่มี" hide-details="auto"
+                  dense></v-text-field>
+              </div>
+              <div class="col-12 col-sm-6">
+                affiliate code
+                <v-text-field outlined disabled v-model="updateForm.aff_id" hide-details="auto" dense
+                  filled></v-text-field>
               </div>
               <div class="col-12 col-sm-6">
                 LINE
-                <v-text-field
-                  outlined
-                  filled
-                  v-model="updateForm.lineID"
-                  dense
-                  hide-details="auto"
-                  disabled
-                ></v-text-field>
+                <v-text-field outlined v-model="updateForm.lineID" dense hide-details="auto"></v-text-field>
               </div>
               <div class="col-12 col-sm-6">
-                Lock User
-                <v-checkbox
-                  label="ห้ามเดิมพัน"
-                  hide-details="auto"
-                  value="0"
-                ></v-checkbox>
-                <v-checkbox
-                  label="ห้ามฝากถอน"
-                  hide-details="auto"
-                  value="0"
-                ></v-checkbox>
+                มาจากช่องทาง
+                <v-text-field outlined v-model="updateForm.knowFrom" dense hide-details="auto"></v-text-field>
+            
+              </div>
+              <div class="col-12 col-sm-6">
+                PROMOTION
+                <v-select v-model="updateForm.bonusid_v2" outlined :items="bonus_list" dense hide-details="auto"></v-select>
+         
+
               </div>
             </div>
             <div class="text-center my-2">
-              <v-btn color="success">บันทึก</v-btn>
+              <v-btn color="success"  @click="editmemberByOperator()">บันทึก</v-btn>
               <v-btn color="error" @click="updateMember = false">ปิด</v-btn>
-              <v-btn color="purple white--text">ลบโปรโมชัน</v-btn>
+              
             </div>
           </v-form>
           <v-divider class="mt-5"></v-divider>
           <div class="row pa-3">
-            <div class="col-12 col-sm-6">ผู้เเนะนำ: -</div>
-            <div class="col-12 col-sm-6">แหล่งที่มา: -</div>
-            <div class="col-12 col-sm-6">เดิมพันล่าสุด: -</div>
-            <div class="col-12 col-sm-6">เครดิตค้าง: 0</div>
-            <div class="col-12 col-sm-6">วันที่สมัคร: 0</div>
+            <div class="col-12 col-sm-6">USERNAME: {{ updateForm.username }}</div>
+            <div class="col-12 col-sm-6">วันที่สมัคร: {{ updateForm.created_at | dateFormat }}</div>
+            <div class="col-12 col-sm-6">ฝากออโต้:  <v-switch  v-model="updateForm.dpAuto" > <span
+              v-if="updateForm.dpAuto">เปิด</span><span v-else>ปิด</span></v-switch></div>
+              <div class="col-12 col-sm-6">ถอนออโต้:  <v-switch  v-model="updateForm.wdAuto" > <span
+                v-if="updateForm.wdAuto">เปิด</span><span v-else>ปิด</span></v-switch></div>
+            <div class="col-12 col-sm-6">สมัครโดย: {{ updateForm.operator }}</div>
+            <div class="col-12 col-sm-6">สถานะ user: <span
+              v-if="updateForm.status">ปกติ</span><span v-else>LOCKED</span></div>
+            
+            
+
           </div>
         </v-card>
       </v-dialog>
     </v-container>
-    <v-dialog
-      v-model="changpassdl"
-      max-width="500px"
-      transition="dialog-transition"
-    >
+    <v-dialog v-model="changpassdl" max-width="500px" transition="dialog-transition">
       <v-card class="pa-3">
         <v-card-title class="justify-center" primary-title>
           เปลี่ยนรหัสผ่าน
         </v-card-title>
         <v-form ref="changepass">
-          <v-text-field
-            v-model="newPass.password"
-            dense
-            outlined
-            hide-details="auto"
-          ></v-text-field>
+          <v-text-field v-model="newPass.password" dense outlined hide-details="auto"></v-text-field>
         </v-form>
         <v-card-actions class="justify-center">
-          <v-btn color="success" @click="handlesubmitChangePass()"
-            >เปลี่ยนรหัสผ่าน</v-btn
-          ><v-btn color="error" @click="closeChangepass()">ปิด</v-btn>
+          <v-btn color="success" @click="handlesubmitChangePass()">เปลี่ยนรหัสผ่าน</v-btn><v-btn color="error"
+            @click="closeChangepass()">ปิด</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -315,6 +246,7 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import { mapActions, mapState } from "vuex";
 import ImgBank from "../../components/ImgBank.vue";
 import LoadingPage from "../../components/LoadingPage.vue";
@@ -331,11 +263,18 @@ export default {
       wddialog: false,
       dateFilter: {
         inputfilter: "",
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date().toISOString().slice(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date().toISOString().slice(0, 10),
         endTime: new Date(new Date().setHours(23, 59, 59, 999)),
       },
+      userGroup: [
+        { text: 'สมาชิกทั่วไป', value: 'common' },
+        { text: 'VIP1', value: 'VIP1' },
+        { text: 'VIP2', value: 'VIP2' },
+        { text: 'VIP3', value: 'VIP3' },
+        { text: 'VIP4', value: 'VIP4' },
+      ],
       columnReport: [
         {
           text: "ลำดับ",
@@ -351,21 +290,27 @@ export default {
           sortable: false,
         },
         {
-          text: "ชื่อ-นามสกุล",
+          text: "ชื่อ-นามสกุล / ฝาก-ถอน (ครั้ง)",
           value: "name",
           align: "center",
           sortable: false,
         },
         {
-          text: "username",
+          text: "username / กลุ่ม",
           value: "username",
           align: "center",
           width: "100px",
           sortable: false,
         },
         {
-          text: "ผู้เเนะนำ",
+          text: "ผู้เเนะนำ manual",
           value: "recommender",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: "ผู้เเนะนำ affiliate",
+          value: "parent_username",
           align: "center",
           sortable: false,
         },
@@ -438,6 +383,7 @@ export default {
     options: {
       async handler() {
         await this.getData();
+        await this.getPromotion();
       },
     },
   },
@@ -445,6 +391,7 @@ export default {
     this.bank = this.$store.state.bank;
   },
   computed: {
+    ...mapState("promotion", ["bonus_list"]),
     ...mapState("auth", ["menu"]),
     canwrite() {
       if (this.menu) {
@@ -452,19 +399,97 @@ export default {
         else return false;
       }
     },
+
   },
   methods: {
-    handleUpdateMember(item) {
-      this.updateForm = Object.assign({}, item);
-      this.updateMember = true;
-    },
+    ...mapActions("promotion", [
+      "getPromotion"
+    ]),
     ...mapActions("member", [
       "getReportmember",
       "getReportmemberbyid",
       "getMemberDeposit",
       "getMemberWithdraw",
       "changePasswordMember",
+      "changeStatus",
+      "editMember"
     ]),
+   
+   async editmemberByOperator(){
+
+
+   console.log(this.updateForm)
+    try {
+          this.$swal({
+            title: `ยืนยันการแก้ไขข้อมูล User : ${this.updateForm.username} นี้ ?`,
+            icon: "question",
+            showCancelButton: true,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              this.isLoading = true
+              await this.editMember(this.updateForm)
+
+              this.$swal({
+                icon: "success",
+                title: "บันทึกข้อมูลเรียบร้อย",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(async (result) => {
+                this.isLoading = false
+                this.updateMember = false
+                if (result) {
+                 
+                  await this.getData();
+                }
+              });
+
+              this.isLoading = false
+         
+
+            }
+          });
+        } catch (error) {
+          this.$swal({
+                icon: "error",
+                title: "พบข้อผิดพลาด !",
+                text:error.message,
+                allowOutsideClick: true,
+                showConfirmButton: true,
+                timer: 1500,
+              })
+          this.isLoading = false
+          console.log(error);
+        }
+    
+   
+   },
+   
+
+    checkStatusMember(status) {
+      if (status == true) {
+        return 'ปกติ'
+      } else {
+        return 'LOCKED'
+      }
+    },
+    checkStatusAuto(status) {
+      if (status == true) {
+        return 'เปิด'
+      } else {
+        return 'ปิด'
+      }
+    },
+    handleUpdateMember(item) {
+      this.updateForm = Object.assign({}, item);
+      this.updateMember = true;
+    },
+
     getthaidate(timethai) {
       const time = this.$moment(timethai).format("YYYY-MM-DD เวลา HH:mm:ss");
 
@@ -523,12 +548,62 @@ export default {
         page: this.options.page,
         start: dateFill.start,
         end: dateFill.end,
+        username:null
       };
       return parameter;
     },
-    async getData() {
+    async getData(input=null) {
       this.isLoading = true;
       let params = this.getParameter();
+      if(!input){
+        try {
+        console.log(params);
+        const data = await this.getReportmember(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+      } else {
+        console.log(input)
+        params.username = input
+        try {
+        console.log(params);
+        const data = await this.getReportmember(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+      }
+     
+    },
+    async getYesterDay() {
+      this.isLoading = true;
+      let params = this.getParameter();
+    
+      params.start = dayjs().add(-1,'day').startOf('day').toISOString()
+      params.end = dayjs().add(-1,'day').endOf('day').toISOString()
+      try {
+        console.log(params);
+        const data = await this.getReportmember(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    },
+    async getToday() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.start = dayjs().startOf('day').toISOString()
+      params.end = dayjs().endOf('day').toISOString()
       try {
         console.log(params);
         const data = await this.getReportmember(params);
@@ -542,9 +617,9 @@ export default {
     },
     async CheckDeposit(username) {
       this.isLoading = true;
-      let { data } = await this.getMemberDeposit(username);
-      console.log(data);
-      this.items_deposit = data.info;
+      let res = await this.getMemberDeposit(username);
+      console.log(res.data);
+      this.items_deposit = res.data;
       this.isLoading = false;
       this.dlDeposit = true;
     },
@@ -568,40 +643,91 @@ export default {
       this.changpassdl = true;
     },
     async handleLockUser(item) {
+
       const payload = {
         id: item.id,
-        status: false,
+        status: !item.status,
       };
-      try {
-        this.$swal({
-          title: `แน่ใจหรือว่าไม่ต้องการ Lock User : ${item.username} นี้ ?`,
-          icon: "question",
-          showCancelButton: true,
-          allowOutsideClick: false,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Confirm",
-          cancelButtonText: "Cancel",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            await this.changeStatus(payload);
-            this.$swal({
-              icon: "success",
-              title: "Lock เรียบร้อย",
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(async (result) => {
-              if (result) {
-                this.changpassdl = false;
-                await this.getData();
-              }
-            });
-          }
-        });
-      } catch (error) {
-        console.log(error);
+      if (item.status) {
+        try {
+          this.$swal({
+            title: `แน่ใจหรือว่าต้องการ Lock User : ${item.username} นี้ ?`,
+            icon: "question",
+            showCancelButton: true,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              this.isLoading = true
+              await this.changeStatus(payload);
+
+              this.$swal({
+                icon: "success",
+                title: "Lock เรียบร้อย",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(async (result) => {
+                this.isLoading = false
+                if (result) {
+                  this.changpassdl = false;
+                  await this.getData();
+                }
+              });
+
+
+
+
+            }
+          });
+        } catch (error) {
+          this.isLoading = false
+          console.log(error);
+        }
+      } else {
+        try {
+          this.$swal({
+            title: `แน่ใจหรือว่าต้องการ ปลดล็อค User : ${item.username} นี้ ?`,
+            icon: "question",
+            showCancelButton: true,
+            allowOutsideClick: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              this.isLoading = true
+              await this.changeStatus(payload);
+
+              this.$swal({
+                icon: "success",
+                title: "ปลดล็อค เรียบร้อย",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(async (result) => {
+                this.isLoading = false
+                if (result) {
+                  this.changpassdl = false;
+                  await this.getData();
+                }
+              });
+
+
+
+
+            }
+          });
+        } catch (error) {
+          this.isLoading = false
+          console.log(error);
+        }
       }
+
     },
     async handlesubmitChangePass() {
       try {
@@ -648,4 +774,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
