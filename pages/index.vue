@@ -99,18 +99,25 @@
                 {{ item.Companybankacountnumber }}</span
               >
             </template>
-            <template #[`item.actions`]="{item}">
+            <template #[`item.actions`]="{ item }">
               <div v-if="item.Companybank == 'SCB' && item.mode == 2">
-                <v-btn  v-if="!checking" small rounded color="primary" @click="checkBalance(item)">เช็คยอด</v-btn>
-                <v-progress-circular v-if="checking"
+                <v-btn
+                  v-if="!checking"
+                  small
+                  rounded
+                  color="primary"
+                  @click="checkBalance(item)"
+                  >เช็คยอด</v-btn
+                >
+                <v-progress-circular
+                  v-if="checking"
                   indeterminate
                   color="primary"
                 ></v-progress-circular>
-              
-              </div>  </template>
-          </v-data-table>
-        </v-card></v-col
-      >
+              </div>
+            </template>
+          </v-data-table> </v-card
+      ></v-col>
       <v-col cols="12" lg="4"
         ><v-card width="100%" height="100%" class="elevation-3 rounded-lg pa-2">
           <v-card-title primary-title class="font-weight-bold">
@@ -133,20 +140,25 @@
                 {{ item.Companybankacountnumber }}</span
               >
             </template>
-            <template #[`item.actions`]="{item}">
+            <template #[`item.actions`]="{ item }">
               <div v-if="item.Companybank == 'SCB' && item.mode == 2">
-                <v-btn  v-if="!checking" small rounded color="primary" @click="checkBalance(item)">เช็คยอด</v-btn>
-                <v-progress-circular v-if="checking"
+                <v-btn
+                  v-if="!checking"
+                  small
+                  rounded
+                  color="primary"
+                  @click="checkBalance(item)"
+                  >เช็คยอด</v-btn
+                >
+                <v-progress-circular
+                  v-if="checking"
                   indeterminate
                   color="primary"
                 ></v-progress-circular>
-              
               </div>
-          
             </template>
-          </v-data-table>
-        </v-card></v-col
-      >
+          </v-data-table> </v-card
+      ></v-col>
     </v-row>
     <!-- sectiontable -->
 
@@ -164,25 +176,33 @@
             :items="incomingSMS"
             :items-per-page="5"
           >
-          <template #[`item.companyBank`]="{item}">
-            <div>
-              <img-bank :value="item.companyBank"></img-bank>
-    
-            </div>
-            <div>
-              {{ item.remark }}
-        
-            </div>
-        </template>
-          <template #[`item.dateSms`]="{item}">
-{{ item.dateSms }}
-         </template>
-          <template #[`item.actions`]="{item}">
-            <span >    <v-btn small rounded color="primary" @click="topupDashboard(item)">เติม</v-btn></span>
-        <span>  <v-btn small rounded color="red" @click="hide(item)">ซ่อน</v-btn></span>
-          
-          </template>
-          
+            <template #[`item.companyBank`]="{ item }">
+              <div>
+                <img-bank :value="item.companyBank"></img-bank>
+              </div>
+              <div>
+                {{ item.remark }}
+              </div>
+            </template>
+            <template #[`item.dateSms`]="{ item }">
+              {{ item.dateSms }}
+            </template>
+            <template #[`item.actions`]="{ item }">
+              <span>
+                <v-btn
+                  small
+                  rounded
+                  color="primary"
+                  @click="topupDashboard(item)"
+                  >เติม</v-btn
+                ></span
+              >
+              <span>
+                <v-btn small rounded color="red" @click="hide(item)"
+                  >ซ่อน</v-btn
+                ></span
+              >
+            </template>
           </v-data-table>
         </v-card>
       </v-col>
@@ -322,7 +342,8 @@
                   >{{ item.name }}</v-chip
                 >
                 <div class="font-weight-bold my-1">
-                  <v-icon small color="grey" class="mx-1">mdi-card-text-outline</v-icon
+                  <v-icon small color="grey" class="mx-1"
+                    >mdi-card-text-outline</v-icon
                   >{{ item.bankAcc }}<br />
                   <v-icon small color="grey">mdi-account</v-icon>
                   {{ item.username }}
@@ -439,7 +460,7 @@
     </v-row>
     <!-- secttiondeposit -->
 
- <!-- secttion dialog -->
+    <!-- secttion dialog -->
     <v-dialog v-model="dialogTopup" max-width="290">
       <v-card>
         <v-card-title>
@@ -449,49 +470,51 @@
         <v-card-text class="font-weight-bold">
           <div class="my-2">
             <v-text-field
-            placeholder="กรอก username : "
-            hide-details="auto"
-            v-model="incoming_dashboard.username"
-            dense
-            outlined
-            :rules="rulesFrom.usernameRules"
-            required
-          ></v-text-field>
-         
-          
+              placeholder="กรอก username : "
+              hide-details="auto"
+              v-model="incoming_dashboard.username"
+              dense
+              outlined
+              :rules="rulesFrom.usernameRules"
+              required
+            ></v-text-field>
           </div>
-          <div class="my-2">
-            จำนวนเงิน : {{incoming_dashboard.amount }}
-       </div>
-         
+          <div class="my-2">จำนวนเงิน : {{ incoming_dashboard.amount }}</div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-         
-          <v-btn color="success"  small  @click="topUp()"> ยืนยัน</v-btn>
-          <v-btn color="red"  small  @click="dialogTopup = false"> ยกเลิก</v-btn>
+
+          <v-btn color="success" small @click="topUp()"> ยืนยัน</v-btn>
+          <v-btn color="red" small @click="dialogTopup = false"> ยกเลิก</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-flex>
 </template>
 <script>
-import { mapActions,mapState,mapMutations } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 import GradientInput from "../components/palette/GradientInput.vue";
 export default {
   computed: {
-    ...mapState("auth",["datarander","dpbank","wdbank","dplist","wdlist","incomingSMS","actionBankState"]),
+    ...mapState("auth", [
+      "datarander",
+      "dpbank",
+      "wdbank",
+      "dplist",
+      "wdlist",
+      "incomingSMS",
+      "actionBankState",
+    ]),
   },
   components: { ImgBank, GradientInput },
   async fetch() {
     try {
       await this.getsatatusBank();
-     await this.GetInfomation();
-   console.log('getinfo done')
+      await this.GetInfomation();
+      console.log("getinfo done");
       // this.datainformation = response.data;
       this.setCardshow(this.datainformation);
-  
     } catch (error) {
       console.log(error);
     }
@@ -499,22 +522,17 @@ export default {
   mounted() {},
   data() {
     return {
-      depositlist:[],
-      withdrawlist:[],
-      dialogTopup:false,
-      incoming_dashboard:{username:'',amount:0},
+      depositlist: [],
+      withdrawlist: [],
+      dialogTopup: false,
+      incoming_dashboard: { username: "", amount: 0 },
       rulesFrom: {
-        usernameRule: [v => !!v || "กรุณากรอก username"]
-       
+        usernameRule: [(v) => !!v || "กรุณากรอก username"],
       },
 
-
-      checking:false,
+      checking: false,
       datainformation: [],
       isLoading: false,
-   
-     
-    
       bankDepositColumn: [
         {
           text: "ธนาคาร",
@@ -655,69 +673,66 @@ export default {
           class: "col-2",
         },
       ],
-   
-
-     
     };
   },
 
   methods: {
-    ...mapActions("auth", ["GetInfomation", "Autostatus","checkBalanceBank","updateBalanceBank","updateAutoBankStatus"]),
+    ...mapActions("auth", [
+      "GetInfomation",
+      "Autostatus",
+      "checkBalanceBank",
+      "updateBalanceBank",
+      "updateAutoBankStatus",
+    ]),
     ...mapMutations("auth", ["update_action_bank"]),
-    topupDashboard(item){
-      this.incoming_dashboard = item
-      this.dialogTopup = true
+    topupDashboard(item) {
+      this.incoming_dashboard = item;
+      this.dialogTopup = true;
     },
-    hide(item){},
-    async topUp(){
-      
-    },
+    hide(item) {},
+    async topUp() {},
     setCardshow(data) {
       if (data) {
-      //   this.datarander = {
-      //     depositbalance: data.dpamountoneday.amount,
-      //     withdrawbalance: data.wdamountoneday.amount,
-      //     profitlossDate:
-      //       data.dpamountoneday.amount - data.wdamountoneday.amount,
-      //     profitlossmounth: data.OneMonthProfit
-      //   };
-      //   this.dpbank = data.dpbank;
-      //   this.wdbank = data.wdbank;
-      //   this.dplist = data.dplist;
-      //   this.wdlist = data.wdlist;
-      //   this.incomingSMS = data.incomingSMS;
+        //   this.datarander = {
+        //     depositbalance: data.dpamountoneday.amount,
+        //     withdrawbalance: data.wdamountoneday.amount,
+        //     profitlossDate:
+        //       data.dpamountoneday.amount - data.wdamountoneday.amount,
+        //     profitlossmounth: data.OneMonthProfit
+        //   };
+        //   this.dpbank = data.dpbank;
+        //   this.wdbank = data.wdbank;
+        //   this.dplist = data.dplist;
+        //   this.wdlist = data.wdlist;
+        //   this.incomingSMS = data.incomingSMS;
       }
     },
-    async updateStatusBank(item){
-
-      await this.updateAutoBankStatus({data:item})
-
-      
+    async updateStatusBank(item) {
+      await this.updateAutoBankStatus({ data: item });
     },
     async getsatatusBank() {
-      console.log('getsatatusBank')
+      console.log("getsatatusBank");
       try {
-         await this.Autostatus();
-    
-         console.log('Autostatus done')
+        await this.Autostatus();
+
+        console.log("Autostatus done");
       } catch (error) {
         console.log(error);
       }
     },
-    async checkBalance(item){
-      this.checking = true
+    async checkBalance(item) {
+      this.checking = true;
       try {
-        await this.checkBalanceBank({bank:item})
-        this.checking = false
+        await this.checkBalanceBank({ bank: item });
+        this.checking = false;
       } catch (error) {
-        this.checking = false
+        this.checking = false;
       }
-     
 
       // await this.updateBalanceBank({id:item.id,balance:balance})
-      this.checking = false
-    }
-  }
+      this.checking = false;
+    },
+  },
 };
 </script>
 <style lang="scss"></style>
