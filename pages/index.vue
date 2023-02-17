@@ -939,7 +939,6 @@ export default {
       checking: false,
       datainformation: [],
       isLoading: false,
-
       bankDepositColumn: [
         {
           text: "ธนาคาร",
@@ -1401,7 +1400,7 @@ export default {
     },
   },
 };
-</script>
+</script> 
 <style lang="scss">
 .tr-fade-enter-active,
 .tr-fade-leave-active {

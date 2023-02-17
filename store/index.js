@@ -419,6 +419,14 @@ export default function () {
           icon: "mdi-gamepad-square",
           status: true,
         },
+        {
+          title: "Staff Log",
+          menu: "staffLog",
+          permission: "staffLog_read",
+          to: "/staffLog",
+          icon: "mdi-gamepad-square",
+          status: true,
+        },
       ],
       bank: [
         {
