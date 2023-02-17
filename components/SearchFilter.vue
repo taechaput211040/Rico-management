@@ -68,13 +68,11 @@
           <v-col
             cols="4"
             md="3"
-            class="d-flex "
+            class="d-flex"
             :class="{ aligncclass: searchinput == false }"
           >
             <v-btn color="primary" @click="search()">
-              <v-icon left dark>
-                mdi-magnify
-              </v-icon>
+              <v-icon left dark> mdi-magnify </v-icon>
               ค้นหา</v-btn
             ></v-col
           >
@@ -94,7 +92,7 @@
 export default {
   data() {
     return {
-      inputdata: ""
+      inputdata: "",
     };
   },
 
@@ -102,9 +100,9 @@ export default {
     filter: Object,
     searchinput: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    keyword: ""
+    keyword: "",
   },
   methods: {
     getDateTime(date, time) {
@@ -148,21 +146,26 @@ export default {
       return {
         startDate: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
         endDate: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
-        search: this.filter.inputfilter
+        search: this.filter.inputfilter,
       };
     },
+
     search() {
       let response = this.getFilterParameter();
-
       this.$emit("search", response);
     },
     toyesterday() {
+      let param = {
+        startDate: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        endDate: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        search: this.filter.inputfilter,
+      };
       this.$emit("yesterday");
     },
     today() {
       this.$emit("today");
-    }
-  }
+    },
+  },
 };
 </script>
 
