@@ -16,13 +16,15 @@ import setting from "./setting";
 import account from "./account";
 import GradientColorPicker from "vue-gradient-color-picker";
 import report from "./report";
+import VueQRCodeComponent from 'vue-qrcode-component'
+
 
 Vue.use(VueSweetalert2);
 
 Vue.prototype.$moment = moment;
 
 Vue.use(ElementUI, { locale });
-
+Vue.component('qr-code', VueQRCodeComponent)
 Vue.use(GradientColorPicker);
 export default function () {
   const Store = new Vuex.Store({

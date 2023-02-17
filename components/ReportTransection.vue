@@ -38,6 +38,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     dbresult: Array
@@ -86,9 +87,13 @@ export default {
     };
   },
   methods: {
+ 
     async showmore(item) {
+
       this.$router.push(`${this.$route.path}?group=${item.grouped}`);
-    }
+    },
+   
+
   }
 };
 </script>

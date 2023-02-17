@@ -14,7 +14,7 @@
       <v-spacer />
       <!-- <audio src="~/assets/sound/Doorbell.wav" controls></audio> -->
       <v-chip outlined class="font-weight-bold" color="success"><v-icon left c>mdi-account</v-icon>{{ memberOnline }}
-        Online member
+        Online member 
         <v-icon class="mx-2" @click="showMember = true">mdi-chart-box</v-icon>
       </v-chip>
       <v-tooltip left color="orange">
@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations} from "vuex";
 import GradientInput from "../components/palette/GradientInput.vue";
 export default {
   components: { GradientInput },
@@ -238,6 +238,13 @@ export default {
       title: "RICO",
     };
   },
+  watch: {
+    options: {
+      async handler() {
+        await this.getsatatusBank();
+      },
+    },
+  },
   mounted() {
     // this.socket = this.$socket();
     // if (this.socket) {
@@ -257,8 +264,7 @@ export default {
   async fetch() {
     let data = await this.$store.dispatch("report/GetDplist");
     let wd = await this.$store.dispatch("report/GetWdlist");
-    console.log(data, "datatatadp");
-    console.log(wd, "wd");
+   
   },
   async created() {
     try {
@@ -296,7 +302,6 @@ export default {
         this.$router.push("/test");
       }
 
-      console.log(this.items.length, "items");
 
       this.socket = this.$socket();
       if (this.socket) {
@@ -308,24 +313,28 @@ export default {
 
         this.socket.on("withdraw", async (msg) => {
           console.log("withdraw websocket initiate");
-          console.log("socket wd",JSON.parse(msg));
+          
           const check = await this.findInWdList(JSON.parse(msg))
           if (check) {
             console.log("withdraw founded");
-         const list =    await this.updateWithdrawlistAction(JSON.parse(msg))
+            console.log("commiting update state");
+            await this.updateComponentkey(false)
+            const list = await this.updateWithdrawlistAction(JSON.parse(msg))
             await this.updateWithdrawlist(list)
+            await this.updateComponentkey(true)
+            console.log("commiting update state done");
+           
+        
+            return
           } else {
             console.log("withdraw not founded");
             await this.addWithdraw(JSON.parse(msg))
+            console.log("playing withdraw sound");
             await this.playWithdraw();
           }
-
+        
         });
-        // this.socket.on("updatewithdraw", async (msg) => {
-        //   console.log("updatewithdraw websocket initiate");
 
-        //   await this.updateWithdrawlist(JSON.parse(msg))
-        // });
         this.socket.on("autostatus", async (msg) => {
           console.log("autostatus websocket initiate");
           // console.log(msg)
@@ -360,6 +369,10 @@ export default {
   async beforeMount() {
     await this.CheckOrganize();
   },
+  computed: {
+  
+
+  },
   methods: {
     ...mapActions("auth", [
       "getUser",
@@ -368,7 +381,8 @@ export default {
       "getLockdown",
       "setLockdown",
       "findInWdList",
-      "updateWithdrawlistAction"
+      "updateWithdrawlistAction",
+      "GetInfomation"
     ]),
     ...mapActions("account", ["getPalletePreset"]),
     ...mapMutations("auth", [
@@ -378,7 +392,8 @@ export default {
       "addDeposit",
       "RemoveIncoming",
       "updateWithdrawlist",
-      "addWithdraw"
+      "addWithdraw",
+      "updateComponentkey"
     ]),
     ...mapActions("setting", ["getSetting"]),
     async playSoundNoauto() {

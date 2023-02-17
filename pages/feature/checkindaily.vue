@@ -787,7 +787,7 @@ export default {
               this.$store.state.setting?.setting?.hash,
           }
         );
-        console.log(data, "data");
+        
         this.token = data.token;
       } catch (error) {
         console.log(error);
@@ -795,7 +795,7 @@ export default {
     },
     async getConfig() {
       try {
-        console.log(`Bearer ${this.token}`);
+        
         let res = await this.$axios.get(
           `${process.env.ALL_CHECKIN}/api/config`,
           {
@@ -857,7 +857,7 @@ export default {
             data
           );
           this.image.url = imageupdate.data.image;
-          console.log("img", imageupdate);
+        
           await this.saveCheckin();
 
           this.loading = false;

@@ -13,6 +13,6 @@ export function setPallete(state, payload) {
     }
   }
   state.webPalette = payload;
-  console.log("set_success");
+  console.log("set palete success");
   // localStorage.setItem('presetPallete', JSON.stringify(payload))
 }

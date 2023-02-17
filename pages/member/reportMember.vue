@@ -11,8 +11,8 @@
         <v-card class="elevation-4 mt-5 rounded-lg pb-5" width="100%">
           <div class="ma-5 font-weight-bold">
             จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
-            {{ getthaidate(dateFilter.startDate) }} ถึงวันที่
-            {{ getthaidate(dateFilter.endDate) }} จำนวนทั้งหมด
+            {{ dateFilter.startDate }} ถึงวันที่
+            {{ dateFilter.endDate }} จำนวนทั้งหมด
             {{ itemSearch.meta ? itemSearch.meta.itemCount : 0 }} คน
           </div>
 
@@ -56,9 +56,17 @@
                   ฝาก {{ item.dp_count }} , ถอน {{ item.wd_count }}
                 </div>
               </template>
+              <template #[`item.knowFrom`]="{ item }">
+                <div>
+                  <span> {{ item.knowFrom }} </span>
+                </div>
+                <div>
+                  สมัครเมื่อ  {{ item.created_at | dateFormat }} 
+                </div>
+              </template>
               <template #[`item.username`]="{ item }">
                 <div> {{ item.username }} </div>
-                <div> {{ item.ip }} </div>
+                <div><small>IP:{{ item.ip }}</small> </div>
                 <div v-if="item.group == 'common'">
 
 
@@ -582,9 +590,22 @@ export default {
       }
      
     },
+  
+    setYesterday() {
+    
+     this.dateFilter.startDate = dayjs().add(-1,'day').format('YYYY-MM-DD')
+     this.dateFilter.startTime = dayjs().add(-1,'day').format('HH:mm:ss')
+     this.dateFilter.endDate = dayjs().endOf(-1,'day').format('YYYY-MM-DD')
+     this.dateFilter.endTime = dayjs().endOf(-1,'day').format('HH:mm:ss')
+    
+  
+     
+  },
     async getYesterDay() {
       this.isLoading = true;
       let params = this.getParameter();
+      await this.setYesterday()
+
     
       params.start = dayjs().add(-1,'day').startOf('day').toISOString()
       params.end = dayjs().add(-1,'day').endOf('day').toISOString()

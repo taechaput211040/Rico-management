@@ -1,7 +1,7 @@
 <template>
   <v-flex>
     <v-container>
-      <h2 class="mb-2">แก้ไขเครดิต ตัดเครดิต เติมเครดิต</h2>
+      <h2 class="mb-2">เติมเงิน ตัดเครดิต เติมโบนัส</h2>
       <v-expansion-panels accordion class="mb-5">
         <v-row>
           <v-col cols="12" md="4">
@@ -12,7 +12,7 @@
                     primary-title
                     class="font-weight-bold grey--text"
                   >
-                    รายการไม่เข้าระบบ
+                    เติมเงิน
                   </v-card-title>
                   <template v-slot:actions>
                     <v-icon color="grey" large> $expand </v-icon>
@@ -116,15 +116,16 @@
                       placeholder="กรอกจำนวนเงิน"
                       hide-details="auto"
                     ></v-text-field>
-                    หมายเหตุ (ไม่บังคับ)
+                    หมายเหตุ 
                     <v-text-field
                       class="mb-2"
                       dense
                       outlined
                       v-model="formCutcredit.remark"
                       clearable
-                      placeholder="หมายเหตุ (ไม่บังคับ)"
+                      placeholder="หมายเหตุ "
                       hide-details="auto"
+                      required
                     ></v-text-field>
                     <v-card-actions>
                       <v-btn :disabled="canwrite" color="error" class="ma-auto"
@@ -144,7 +145,7 @@
                     primary-title
                     class="font-weight-bold primary--text"
                   >
-                    เติมเครดิต
+                    เติมโบนัส
                   </v-card-title>
                   <template v-slot:actions>
                     <v-icon color="primary" large> $expand </v-icon>

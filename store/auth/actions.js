@@ -28,6 +28,8 @@ export function login(context, { username, password, agentkey }) {
 //login//
 
 //two-facter
+
+
 export function twofactor(context, input) {
   return new Promise(async (resolve, reject) => {
     console.log(process.env.VUE_APP_PATH_MICROSERVICE, "env");
@@ -165,7 +167,7 @@ export function getFeature(context) {
           wheel: { activated: true },
         },
       };
-      console.log(response.feature);
+      // console.log(response.feature);
       // let response = await this.$axios.get("apigetFeature")
       // });
       // resolve(response);
@@ -182,7 +184,10 @@ export function getFeature(context) {
 export function GetInfomation(context) {
   console.log("GetInfomation");
   return new Promise(async (resolve, reject) => {
-    if (context.state.datarander.data == true) return;
+    if (context.state.datarander.data == true) {
+      // await context.commit("set_dashboard", context.auth.data);
+      return;
+    }
     try {
       const query = {
         start: dayjs().month() + 1,
@@ -273,10 +278,9 @@ export async function updateIncoming(context, incomingSMS) {
 }
 
 export async function updateWithdrawlistAction(context, payload) {
-  console.log('wdlist:', context.state.wdlist)
+
   let wd_temp = context.state.wdlist
-  console.log('temp:', wd_temp)
-  console.log('payload:', payload)
+
   for (let index = 0; index < wd_temp.length; index++) {
     const element = wd_temp[index];
     if (element.id == payload.id) {
@@ -289,14 +293,13 @@ export async function updateWithdrawlistAction(context, payload) {
 
 
   }
-console.log(wd_temp)
 
-return wd_temp
-  console.log(context.state.wdlist)
+
+  return wd_temp
 
 }
 export async function findInWdList(context, withdrawlist) {
-  console.log('finding:',context.state.wdlist)
+
 
   let temp_wd = context.state.wdlist
 
@@ -312,13 +315,75 @@ export async function findInWdList(context, withdrawlist) {
 
 
 }
+
+export async function memberManualWithdrawByOperator(context, body) {
+  // console.log('geee')
+
+
+  console.log('before send:', body)
+
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/ManualWd/Operator`,
+      {
+        credit: body.wdAmount,
+        username: body.username,
+        operator: context.state.user,
+        ip_operator: context.state.ip
+      }
+
+    );
+   
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
+export async function manualRejectFromDashboard(context, withdrawlist) {
+  // console.log('geee')
+
+
+  withdrawlist.operator = context.state.user
+  withdrawlist.ip_operator = context.state.ip
+  withdrawlist.remark = `${context.state.user} กด reject ยอด ${withdrawlist.amount}`
+
+
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/RejectWd/Dashboard`,
+      withdrawlist
+
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
 export async function manualWithdrawFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
-  withdrawlist.operator = context.state.user
 
-console.log('before send:',withdrawlist)
-console.log('before send state:',context.state.wdlist)
+  withdrawlist.operator = context.state.user
+  withdrawlist.ip_operator = context.state.ip
+
+  console.log('before send:', withdrawlist)
+  console.log('before send state:', context.state.wdlist)
 
   try {
     let response = await this.$axios.post(
@@ -345,6 +410,75 @@ console.log('before send state:',context.state.wdlist)
 
 
 }
+export async function manualApproveFromDashboard(context, withdrawlist) {
+  // console.log('geee')
+
+
+  withdrawlist.operator = context.state.user
+  withdrawlist.ip_operator = context.state.ip
+  withdrawlist.remark = `${context.state.user} อนุมัติรายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`
+
+
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/ApproveWd/Dashboard`,
+      withdrawlist
+
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
+export async function manualResetFromDashboard(context, withdrawlist) {
+  // console.log('geee')
+
+
+  withdrawlist.operator = context.state.user
+  withdrawlist.ip_operator = context.state.ip
+  withdrawlist.remark = `${context.state.user} กด RESET รายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`
+
+
+  try {
+    let response = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/ResetWd/Dashboard`,
+      withdrawlist
+
+    );
+    //             "balance" => $balance,
+    //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
+    //             "updateBy" => "by " . env('AGENT')
+    // resolve(response);
+    // context.$swal({
+    //   title: `ทำรายการสำเร็จ`,
+    //   icon: "success",
+    //   // text:response.data.message,
+    //   allowOutsideClick: true,
+    //   confirmButtonColor: "green",
+    //   confirmButtonText: "ok"
+    // })
+    return { status: 'success', message: response.data.message }
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message }
+  }
+
+
+}
+
 export async function hideIncomingFromDashBoardByOperator(context, incomingSMS) {
   // console.log('geee')
 

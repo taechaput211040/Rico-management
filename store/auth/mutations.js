@@ -58,6 +58,7 @@ export function set_user(state, payload) {
   // state.hash = payload.setting.hash;
   state.company = payload.company;
   state.agent = payload.agent;
+  state.ip = payload.ip;
   localStorage.setItem("agent", payload.agent);
   localStorage.setItem("company", payload.company);
   // localStorage.setItem("hash", payload.hash);
@@ -122,7 +123,7 @@ export function set_logout(state) {
 export function addWithdraw(state, payload) {
   state.wdlist.unshift(payload) 
   if(state.wdlist.length > 30){
-    // state.wdlist.slice(0,29)
+    state.wdlist.slice(0,29)
   }
 }
 export function addDeposit(state, payload) {
@@ -151,7 +152,11 @@ export function updateWithdrawlist(state, payload) {
   state.wdlist = payload
 
 }
+export function updateComponentkey(state, payload) {
+  console.log('componentKey ',payload)
+  state.componentKey = payload
 
+}
 
 export function RemoveIncoming(state, payload) {
 

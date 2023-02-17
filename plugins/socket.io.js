@@ -20,7 +20,6 @@ import io from "socket.io-client";
 export default ({ $axios, redirect, store, app }, inject) => {
   inject('socket', () => {
     // export default function(config) {
-    console.log('store here', store.state.auth)
     if (store.state.auth.company && store.state.auth.agent) {
 
       const socket = io("http://localhost:4000/", {

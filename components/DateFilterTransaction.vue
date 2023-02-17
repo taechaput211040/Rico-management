@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 export default {
   data() {
       return {
@@ -64,7 +65,7 @@ export default {
         datePickerOptions: {
       disabledDate (date) {
 
-        return date < new Date()
+        return date < dayjs().add(-2,('day'))
       }
     }
       };
@@ -75,25 +76,10 @@ export default {
       startTime: new Date(new Date().setHours(0, 0, 0, 0)),
       endDate: new Date(),
       endTime: new Date(new Date().setHours(23, 59, 59, 999)),
-      dateLimit:null
+    
     }
     
   },
-  methods: {
-    pick({ maxDate, minDate }) {
-     
-        this.fromDate = minDate;
-      
- 
-    },
-
-    disabledDate(date) {
-      return false
-       if (this.fromDate) {
-         return this.fromDate > date
-       }
-       return false;
-     }
-  }
+  
 };
 </script>

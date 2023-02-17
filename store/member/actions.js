@@ -98,48 +98,85 @@ export async function getReportmemberbyid({ commit }, fillter = {}) {
     }
   });
 }
+export function providerMap(context, input) {
+  console.log(context)
+  console.log(input)
+  const string_data = context.rootState.auth.provider[input]
+  console.log(string_data)
+  return input
+}
 // เชครีพอตเมมเบอร์ ID
 //เชคข้อมูลปัจจุบัน turn
-export async function getTurnByid({ commit, username }) {
+export async function getTurnByid( context, username ) {
+  console.log(username)
   return new Promise(async (resolve, reject) => {
-    try {
-      const response = {
-        data: {
-          result: {
-            credit: 0,
-            id: "ecaa9f1a-28c9-4f85-8ef0-f121143f6210",
-            name: "อูเซ็ง โต๊ะแม",
-            phone: "0824786902",
-            provider_active: "PG",
-            role: "e82ca544-9954-4eb4-baa2-a8e55c18f8b1",
-            status: 1,
-            user: "BE824786902"
-          },
-          ip_data: {
-            id: "70e17dce-f6e8-4b6d-908d-e7b8ca41950d",
-            created_at: "2022-02-08T17:05:34.763Z",
-            updated_at: "2022-02-09T07:31:08.533Z",
-            code: "PG",
-            provider_name: "PG",
-            game_name: "f95b7092-2b10-4438-b49f-cac796656572",
-            username: "BE824786902",
-            ip: "49.230.173.219",
-            device:
-              "Mozilla/5.0 (Linux; Android 11; vivo 1904 Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/93.0.4577.62 Mobile Safari/537.36 Line/11.16.2/IAB"
-          }
-        }
-      };
-      // let response = await api.get(`/api/progress/${fillter.username}`, {
-      //   params: {
-      //     username
-      //   }
-      // });
-      resolve(response);
-    } catch (error) {
-      reject(error);
-    }
+//get turn
+try {
+  let result = await this.$axios.get(
+    `${process.env.ALL_MEMBER}/api/MemberTurn/Auto/${username}`,
+  
+  );
+  resolve(result);
+} catch (error) {
+  reject(error);
+}
+//get credit
+
+//get winlose
+  
   });
-} //เชคข้อมูลปัจจุบัน turn
+} 
+export async function updateTurn( context, turn ) {
+  // console.log(turn)
+  // return
+  turn.operator = context.rootState.auth.user
+  turn.ip_operator = context.rootState.auth.ip
+  
+  return new Promise(async (resolve, reject) => {
+//get turn
+try {
+  let result = await this.$axios.put(
+    `${process.env.ALL_MEMBER}/api/MemberTurn`,turn
+  
+  );
+  resolve(result);
+} catch (error) {
+  reject(error);
+}
+//get credit
+
+//get winlose
+  
+  });
+} 
+export async function getDetailLink( context, url ) {
+
+  // return
+  
+  
+  return new Promise(async (resolve, reject) => {
+//get turn
+
+try {
+ 
+    let result = await this.$axios.post(
+      `${process.env.ALL_SUPPORT}/api/Website/Betdetail`,{url:url}
+    
+    );
+  
+
+  resolve(result);
+} catch (error) {
+  console.log(error)
+  reject(error);
+}
+//get credit
+
+//get winlose
+  
+  });
+}
+//เชคข้อมูลปัจจุบัน turn
 //เชคข้อมูลปัจจุบัน transection
 export async function getTransactionid({ commit, username }) {
   return new Promise(async (resolve, reject) => {
@@ -267,6 +304,23 @@ export function getTransactionMember(context, params) {
       let response = await this.$axios.get(
         `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
         { params }
+      );
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function get5DepositRecord(context, username) {
+  // console.log(context.state)
+  // return
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_SUPPORT}/api/Website/Deposit5/${username}`
+        
       );
       console.log(response.data);
       resolve(response);
