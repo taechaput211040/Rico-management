@@ -129,6 +129,8 @@ export default {
     ALL_LINE_NOTIFY: process.env.ALL_LINE_NOTIFY,
     ALL_NOTIFICATE: process.env.ALL_NOTIFICATE,
     ALL_EDITCREDIT: process.env.ALL_EDITCREDIT,
-    
+    ALL_WHEEL: process.env.ALL_WHEEL,
+    BASIC_AUTH_USERNAME: process.env.BASIC_AUTH_USERNAME,
+    BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD
   },
 };

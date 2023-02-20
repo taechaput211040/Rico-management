@@ -482,13 +482,19 @@ export default {
     },
   },
   async fetch() {
+    this.turn = await this.getWheel()
+ try {
+  
+ } catch (error) {
+  
+ }
     await this.$axios
-      .$get(
-        `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/704bd453-4b05-4e68-a8b3-a906fe6cc74d`,
+    .$get(
+        `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
         {
           auth: {
-            username: "taechaput",
-            password: "tong211040",
+            username:`${process.env.BASIC_AUTH_USERNAME}`,
+            password: `${process.env.BASIC_AUTH_PASSWORD}`,
           },
         }
       )
@@ -503,14 +509,13 @@ export default {
 
   async mounted() {
     try {
-      this.turn = await this.$axios.$get(
-        "https://all-wheel-ehhif4jpyq-as.a.run.app/api/Wheel/admin/704bd453-4b05-4e68-a8b3-a906fe6cc74d"
-      );
+      this.turn = await this.getWheel()
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
+    ...mapActions("member", ["updateWheel","getWheel"]),
     openSetting(item, index) {
       this.$bvModal.show("setting-roulette") == true;
       this.settingitem = item;
@@ -575,10 +580,7 @@ export default {
       this.loading = true;
       this.turn.service_id = this.roullet[0].agent_id;
       try {
-        await this.$axios.patch(
-          `https://all-wheel-ehhif4jpyq-as.a.run.app/api/Wheel/admin/704bd453-4b05-4e68-a8b3-a906fe6cc74d`,
-          this.turn
-        );
+        await this.updateWheel(this.turn)
         this.showSuccessAlert("บันทึกสำเร็จ");
         this.loading = false;
       } catch (error) {

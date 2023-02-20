@@ -647,8 +647,9 @@ export default {
     async CheckWithdraw(username) {
       this.isLoading = true;
       let { data } = await this.getMemberWithdraw(username);
+      
       console.log(data);
-      this.items_withdraw = data.info;
+      this.items_withdraw = data.info? data.info : [];
       this.isLoading = false;
 
       this.dlWithdraw = true;

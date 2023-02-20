@@ -464,3 +464,41 @@ export function PostEditTopupBonus(context, body) {
     }
   });
 }
+export function getWheel(context){
+  return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.user)
+  
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_WHEEL}/api/Wheel/admin/${context.rootState.auth.company}/${context.rootState.auth.agent}`
+      
+      );
+
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+ 
+}
+export function updateWheel(context, turn){
+  return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.user)
+   
+    try {
+      let response = await this.$axios.patch(
+        `${process.env.ALL_WHEEL}/api/Wheel/admin/${turn.id}`,
+        turn
+      );
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+
+
+    
+
+}

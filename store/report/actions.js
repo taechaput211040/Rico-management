@@ -43,7 +43,7 @@ export function GetDplist({ rootState, commit }) {
   return new Promise(async (resolve, reject) => {
     try {
       const { data } = await this.$axios.get(
-        `https://all-deposit-v2-test-ehhif4jpyq-as.a.run.app/api/Deposit/Dashboard/${rootState.auth.company}/${rootState.auth.agent}`
+        `https://all-deposit-ehhif4jpyq-as.a.run.app/api/Deposit/Dashboard/${rootState.auth.company}/${rootState.auth.agent}`
       );
       commit("setDplist", data);
       resolve(data);

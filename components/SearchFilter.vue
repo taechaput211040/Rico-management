@@ -38,7 +38,8 @@
           </v-col></v-row> </v-col><v-divider vertical class="display-mb"></v-divider>
       <v-col cols="12" md="6" lg="6">
         <v-row>
-          <v-col cols="8" md="8" v-if="searchinput == true"><v-text-field label="ค้นหาด้วย username"
+          <v-col cols="8" md="8" v-if="searchinput == true">
+            <v-text-field label="ค้นหาด้วย username"
               placeholder="กรอกคำค้นหา" dense v-model.trim="filter.inputfilter" outlined clearable
               hide-details="auto"></v-text-field></v-col>
           <v-col cols="4" md="3" class="d-flex " :class="{ aligncclass: searchinput == false }">

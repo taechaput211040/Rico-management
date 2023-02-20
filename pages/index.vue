@@ -128,6 +128,11 @@
               </div>
               <div>
                 {{ item.remark }}
+
+              </div>
+              <div>
+                {{ item.fromBankRef }}
+                
               </div>
             </template>
             <template #[`item.dateSms`]="{ item }">

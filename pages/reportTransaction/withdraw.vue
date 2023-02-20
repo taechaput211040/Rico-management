@@ -1,25 +1,21 @@
 <template>
   <v-flex>
+    <loading-page v-if="isLoading"></loading-page>
     <v-container>
-      <v-row class="mb-2 pa-3"
-        ><h2>รายการถอนเงินของสมาชิก</h2>
-        <search-filter
-          :filter="dateFilter"
-          @search="searchdata"
-        ></search-filter>
+      <v-row class="mb-2 pa-3"></v-row>
+        <h2>รายการถอนเงินของสมาชิก</h2>
+        <search-filter :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true"
+          @yesterday="getYesterDay()" @today="getToday()">
+        </search-filter>
       </v-row>
       <h2 class="mt-5">ยอดถอนรวม</h2>
       <v-row>
         <v-col cols="12" sm="3" md="3">
           <div class="card-child card-report elevation-5 text-center">
-            <img
-              src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
-              alt=""
-              class="img-icon icon-Logo"
-            />
+            <img src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png" alt=""
+              class="img-icon icon-Logo" />
             <div>
-              ยอดถอนรวม :<span class="primary--text font-weight-bold"
-                >{{ depositbalance }}
+              ยอดถอนรวม :<span class="primary--text font-weight-bold">{{ depositbalance }}
               </span>
             </div>
           </div>
@@ -33,14 +29,12 @@
         </div>
 
         <v-card width="100%" class="elevation-4 rounded-lg">
-          <v-data-table
-            show-expand
-            class="elevation-1"
-            :headers="headerCell"
-            :items="itemdeposit"
-            hide-default-footer
-            single-expand
-          >
+          <v-data-table show-expand class="elevation-1" :headers="headerCell" :items="itemdeposit.data"
+            hide-default-footer single-expand :options.sync="options" :footer-props="{
+              showFirstLastPage: true,
+              'items-per-page-text': '',
+            }" :server-items-length="
+  itemdeposit.meta ? itemdeposit.meta.itemCount : 0">
             <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">
                 {{ index + 1 }}
@@ -54,23 +48,14 @@
               </div>
             </template>
             <template #[`item.status`]="{ item }">
-              <v-chip
-                small
-                v-if="item.status == 'Success'"
-                outlined
-                color="success"
-              >
-                <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
-              >
-              <v-chip small v-else color="error" outlined
-                ><v-icon left small>mdi-circle</v-icon>
-                {{ item.status }}</v-chip
-              >
+              <v-chip small v-if="item.status == 'Success'" outlined color="success">
+                <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip>
+              <v-chip small v-else color="error" outlined><v-icon left small>mdi-circle</v-icon>
+                {{ item.status }}</v-chip>
             </template>
             <template #[`item.name`]="{ item }">
               <div class="pa-2">
-                <span>{{ item.name }}</span
-                ><br />
+                <span>{{ item.name }}</span><br />
                 <span class="font-weight-bold primary--text">{{
                   item.username
                 }}</span>
@@ -83,111 +68,48 @@
             </template>
             <template #[`item.bfafcredit`]="{ item }">
               <div class="d-flex align-baseline justify-center">
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1"
-                  color="grey darken-1"
-                  label
-                  x-small
-                  dark
-                  ><v-icon class="mr-1" small>mdi-credit-card</v-icon>ก่อน
-                  :</v-chip
-                >
+                <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1" color="grey darken-1" label x-small
+                  dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>ก่อน
+                  :</v-chip>
                 {{ item.bfcredit }}
               </div>
 
               <div class="d-flex align-baseline justify-center">
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1"
-                  color="grey darken-1"
-                  label
-                  x-small
-                  dark
-                  ><v-icon class="mr-1" small>mdi-credit-card</v-icon>หลัง
-                  :</v-chip
-                >
+                <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1" color="grey darken-1" label x-small
+                  dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>หลัง
+                  :</v-chip>
                 {{ item.afcredit }}
               </div>
             </template>
             <template #[`item.data-table-expand`]="{ isExpanded, expand }">
               <div class="px-3">
-                <v-btn
-                  @click="expand(true)"
-                  v-if="!isExpanded"
-                  color="black"
-                  dark
-                  small
-                >
-                  ดูเพิ่มเติม <v-icon right>mdi-menu-down</v-icon></v-btn
-                >
-                <v-btn
-                  @click="expand(false)"
-                  v-if="isExpanded"
-                  color="black"
-                  dark
-                  small
-                  >ปิด<v-icon right>mdi-menu-up</v-icon></v-btn
-                >
+                <v-btn @click="expand(true)" v-if="!isExpanded" color="black" dark small>
+                  ดูเพิ่มเติม <v-icon right>mdi-menu-down</v-icon></v-btn>
+                <v-btn @click="expand(false)" v-if="isExpanded" color="black" dark small>ปิด<v-icon
+                    right>mdi-menu-up</v-icon></v-btn>
               </div>
             </template>
             <template #[`item.actions`]>
               <div class="d-flex">
                 <v-tooltip bottom color="success">
-                  <template v-slot:activator="{ on, attrs }"
-                    ><v-btn
-                      :disabled="canwrite"
-                      v-bind="attrs"
-                      v-on="on"
-                      color="success mx-1"
-                      x-small
-                      fab
-                      ><v-icon>mdi-check</v-icon></v-btn
-                    ></template
-                  >
+                  <template v-slot:activator="{ on, attrs }"><v-btn :disabled="canwrite" v-bind="attrs" v-on="on"
+                      color="success mx-1" x-small fab><v-icon>mdi-check</v-icon></v-btn></template>
                   <span>อนุมัติ</span>
                 </v-tooltip>
 
                 <v-tooltip bottom color="error">
-                  <template v-slot:activator="{ on, attrs }"
-                    ><v-btn
-                      :disabled="canwrite"
-                      v-bind="attrs"
-                      v-on="on"
-                      color="error mx-1"
-                      x-small
-                      fab
-                      ><v-icon>mdi-close</v-icon></v-btn
-                    ></template
-                  >
+                  <template v-slot:activator="{ on, attrs }"><v-btn :disabled="canwrite" v-bind="attrs" v-on="on"
+                      color="error mx-1" x-small fab><v-icon>mdi-close</v-icon></v-btn></template>
                   <span>ไม่อนุมัติ</span>
                 </v-tooltip>
                 <v-tooltip bottom color="primary">
-                  <template v-slot:activator="{ on, attrs }"
-                    ><v-btn
-                      :disabled="canwrite"
-                      v-bind="attrs"
-                      v-on="on"
-                      color="primary mx-1"
-                      x-small
-                      dark
-                      fab
-                      ><v-icon>mdi-restore</v-icon></v-btn
-                    ></template
-                  >
+                  <template v-slot:activator="{ on, attrs }"><v-btn :disabled="canwrite" v-bind="attrs" v-on="on"
+                      color="primary mx-1" x-small dark fab><v-icon>mdi-restore</v-icon></v-btn></template>
                   <span>Reset</span>
                 </v-tooltip>
                 <v-tooltip bottom color="grey">
-                  <template v-slot:activator="{ on, attrs }"
-                    ><v-btn
-                      :disabled="canwrite"
-                      v-bind="attrs"
-                      v-on="on"
-                      color="grey mx-1"
-                      x-small
-                      dark
-                      fab
-                      ><v-icon>mdi-gesture-tap</v-icon></v-btn
-                    ></template
-                  >
+                  <template v-slot:activator="{ on, attrs }"><v-btn :disabled="canwrite" v-bind="attrs" v-on="on"
+                      color="grey mx-1" x-small dark fab><v-icon>mdi-gesture-tap</v-icon></v-btn></template>
                   <span>ถอนมือ</span>
                 </v-tooltip>
               </div>
@@ -207,11 +129,15 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
+import ImgBank from "../../components/ImgBank.vue";
+import LoadingPage from "../../components/LoadingPage.vue";
 import { mapActions, mapState } from "vuex";
 import moment from "moment";
 export default {
   data() {
     return {
+      isLoading: false,
       headerCell: [
         {
           text: "ลำดับ",
@@ -308,8 +234,10 @@ export default {
           class: "font-weight-bold ",
         },
       ],
+      options_deposit: {},
+      options: {},
       itemdeposit: [],
-      depositbalance: "1630",
+      depositbalance: 0,
       dateFilter: {
         inputfilter: "",
         startDate: new Date().toISOString().substr(0, 10),
@@ -319,9 +247,10 @@ export default {
       },
     };
   },
+  components: { ImgBank, LoadingPage },
   async fetch() {
-    let wdlist = await this.getwdListtransaction();
-    this.itemdeposit = wdlist.data.data;
+    let wdlist = await this.getData();
+    this.itemdeposit = wdlist.data;
   },
   computed: {
     ...mapState("auth", ["menu"]),
@@ -352,6 +281,138 @@ export default {
     },
     searchdata() {
       console.log(this.dateFilter);
+    },
+    getDateTime(date, time) {
+      let dateFormat = "YYYY-MM-DD";
+      let timeFormat = "HH:mm:ss";
+      return this.$moment(
+        `${this.$moment(date).format(dateFormat)} ${this.$moment(time).format(
+          timeFormat
+        )}`,
+        "YYYY-MM-DD HH:mm:ss"
+      )
+        .utc()
+        .format(`${dateFormat} ${timeFormat}`);
+    },
+    getDateFilter() {
+      let start = undefined;
+      let end = undefined;
+      if (this.dateFilter.startDate) {
+        if (this.dateFilter.startTime) {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            this.dateFilter.startTime
+          );
+        } else {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            new Date().setHours(0, 0, 0, 0)
+          );
+        }
+      }
+      if (this.dateFilter.endDate) {
+        if (this.dateFilter.endTime) {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            this.dateFilter.endTime
+          );
+        } else {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            new Date().setHours(23, 59, 59, 999)
+          );
+        }
+      }
+      return {
+        end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
+      };
+    },
+    getParameter() {
+      let dateFill = this.getDateFilter();
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+        start: dateFill.start,
+        end: dateFill.end,
+        username: null
+      };
+      return parameter;
+    },
+    setYesterday() {
+
+      this.dateFilter.startDate = dayjs().add(-1, 'day').format('YYYY-MM-DD')
+      this.dateFilter.startTime = dayjs().add(-1, 'day').format('HH:mm:ss')
+      this.dateFilter.endDate = dayjs().endOf(-1, 'day').format('YYYY-MM-DD')
+      this.dateFilter.endTime = dayjs().endOf(-1, 'day').format('HH:mm:ss')
+
+
+
+    },
+    async getYesterDay() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      await this.setYesterday()
+
+
+      params.start = dayjs().add(-1, 'day').startOf('day').toISOString()
+      params.end = dayjs().add(-1, 'day').endOf('day').toISOString()
+      try {
+        console.log(params);
+        const data = await this.getwdListtransaction(params);
+        this.itemdeposit = data;
+        this.depositbalance = data.sum
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    },
+    async getToday() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.start = dayjs().startOf('day').toISOString()
+      params.end = dayjs().endOf('day').toISOString()
+      try {
+        console.log(params);
+        const data = await this.getwdListtransaction(params);
+        this.itemdeposit = data;
+        this.depositbalance = data.sum
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    },
+    async getData(input = null) {
+      this.isLoading = true;
+      let params = this.getParameter();
+      if (!input) {
+        try {
+          console.log(params);
+          const data = await this.getwdListtransaction(params);
+          this.itemdeposit = data;
+this.depositbalance = data.sum
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      } else {
+        console.log(input)
+        params.username = input
+        try {
+          console.log(params);
+          const data = await this.getwdListtransaction(params);
+          this.itemdeposit = data;
+
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      }
+
     },
   },
 };
