@@ -419,7 +419,11 @@ export default function () {
           status: true,
         },
         {
+<<<<<<< HEAD
           title: "STAFF LOG",
+=======
+          title: "Staff Log",
+>>>>>>> ecc16b5cc40abc4879b2e8935771d2cce79622a4
           menu: "staffLog",
           permission: "staffLog_read",
           to: "/staffLog",

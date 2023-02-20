@@ -205,7 +205,7 @@
                 clearable
                 dense
                 hide-details="auto"
-                  label="เปลี่ยนรูปข้อความต้อนรับ"
+                label="เปลี่ยนรูปข้อความต้อนรับ"
                 placeholder="เปลี่ยนรูปข้อความต้อนรับ"
                 prepend-icon="mdi-camera"
                 outlined
@@ -237,6 +237,52 @@
         </v-card-actions>
       </div>
     </v-card>
+    <div v-if="notificate.web_status">
+      <h3 class="my-4">การตั้งค่าอื่นๆ</h3>
+      <v-card class="pa-3 elevation-3 rounded-lg">
+        <span class="font-weight-bold">รายการ bet</span>
+        <div class="d-flex">
+          <v-switch
+            hide-details
+            v-model="notificate.fillter_bet_status"
+            class="my-4 font-weight-bold"
+          ></v-switch>
+          <div class="col-10 col-sm-4">
+            <v-text-field
+              dense
+              outlined
+              :disabled="!notificate.fillter_bet_status"
+              v-model="notificate.fillter_bet_amount"
+            ></v-text-field>
+          </div>
+        </div>
+        <span class="font-weight-bold"> รายการแตก</span>
+        <div class="d-flex">
+          <v-switch
+            v-model="notificate.fillter_payout_status"
+            hide-details
+            class="my-4 font-weight-bold"
+          ></v-switch>
+          <div class="col-10 col-sm-4">
+            <v-text-field
+              :disabled="!notificate.fillter_payout_status"
+              v-model="notificate.fillter_payout_amount"
+              dense
+              outlined
+            ></v-text-field>
+          </div>
+        </div>
+        <v-card-actions class="justify-center">
+          <v-btn
+            :disabled="canwrite"
+            color="primary"
+            @click="handleUpdateIncomeNotificate"
+            class="mx-auto btn_sty"
+            >บันทึก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </div>
   </v-flex>
 </template>
 
@@ -253,6 +299,7 @@ export default {
       datasetting: {},
       message: {},
       loading: false,
+      notificate: {},
     };
   },
   async fetch() {
@@ -262,6 +309,7 @@ export default {
       this.datasetting = response;
       let message = await this.getMessage();
       this.message = message;
+      this.notificate = await this.$store.dispatch("setting/getIncome");
     } catch (error) {
       console.log(error);
     }
@@ -315,6 +363,41 @@ export default {
       }
     },
     ...mapMutations("setting", ["setAllsetting", "setAllmessage"]),
+    async handleUpdateIncomeNotificate() {
+      this.$swal({
+        title: "บันทึกการตั้งค่า notification ?",
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await this.$store.dispatch(
+              "setting/setNotification",
+              this.notificate
+            );
+          } catch (error) {
+            console.log(error);
+          }
+
+          this.$swal({
+            icon: "success",
+            title: "บันทึกสำเร็จ",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(async (result) => {
+            if (result) {
+              await this.$fetch();
+            }
+          });
+        }
+      });
+    },
     async handleUpdateMessage() {
       this.message.operator = this.$store.state.auth.name;
       this.$swal({

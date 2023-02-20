@@ -242,51 +242,63 @@ export async function getTransactionid({ commit, username }) {
 }
 //เชคข้อมูลปัจจุบัน transection
 //เเก้ไขเครดิต/รายการผิดพลาด
-export async function getManualEditCredit({ commit, fillter }) {
+export async function getManualEditCredit(context, params) {
+
+  //   try {
+  //     const response = {
+  //       data: {
+  //         data: [
+  //           {
+  //             afcredit: 0,
+  //             bfcredit: 0,
+  //             bonus: 0,
+  //             created_at: "2022-01-24T14:41:51.000000Z",
+  //             credit: 75,
+  //             id: 903,
+  //             operator: "nan mon",
+  //             remark:
+  //               "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
+  //             topupcredit: 0,
+  //             type: "SYSTEMNODATA",
+  //             username: "BE9794691646"
+  //           },
+  //           {
+  //             afcredit: 0,
+  //             bfcredit: 0,
+  //             bonus: 0,
+  //             created_at: "2022-01-24T14:41:51.000000Z",
+  //             credit: 75,
+  //             id: 904,
+  //             operator: "nan mon",
+  //             remark:
+  //               "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
+  //             topupcredit: 0,
+  //             type: "SYSTEMNODATA",
+  //             username: "BE9794691646"
+  //           }
+  //         ],
+  //         total_bonus: 0,
+  //         total_cutcredit: 100,
+  //         total_nodata: 2121
+  //       }
+  //     };
+  //     // let response = await api.get(`/api/getManualEditCredit`, {
+  //     //   params: {
+  //     //     ..fillter
+  //     //   }
+  //     // });
+  //     resolve(response);
+  //   } catch (error) {
+  //     reject(error);
+  //   }
+  // });
   return new Promise(async (resolve, reject) => {
     try {
-      const response = {
-        data: {
-          data: [
-            {
-              afcredit: 0,
-              bfcredit: 0,
-              bonus: 0,
-              created_at: "2022-01-24T14:41:51.000000Z",
-              credit: 75,
-              id: 903,
-              operator: "nan mon",
-              remark:
-                "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-              topupcredit: 0,
-              type: "SYSTEMNODATA",
-              username: "BE9794691646"
-            },
-            {
-              afcredit: 0,
-              bfcredit: 0,
-              bonus: 0,
-              created_at: "2022-01-24T14:41:51.000000Z",
-              credit: 75,
-              id: 904,
-              operator: "nan mon",
-              remark:
-                "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-              topupcredit: 0,
-              type: "SYSTEMNODATA",
-              username: "BE9794691646"
-            }
-          ],
-          total_bonus: 0,
-          total_cutcredit: 100,
-          total_nodata: 2121
-        }
-      };
-      // let response = await api.get(`/api/getManualEditCredit`, {
-      //   params: {
-      //     ..fillter
-      //   }
-      // });
+      let response = await this.$axios.get(
+        `${process.env.ALL_EDITCREDIT}/api/Edit/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
+        { params }
+      );
+      console.log(response.data);
       resolve(response);
     } catch (error) {
       reject(error);
@@ -384,6 +396,65 @@ export function editMember(context, body) {
     try {
       let response = await this.$axios.put(
         `${process.env.ALL_MEMBER}/api/Member/`,
+        body
+      );
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function PostEditTopupCredit(context, body) {
+  return new Promise(async (resolve, reject) => {
+
+    // console.log(context.rootState.auth.user)
+    body.operator = context.rootState.auth.user
+    body.ip_operator = context.rootState.auth.ip
+    body.company = context.rootState.auth.company
+    body.agent = context.rootState.auth.agent
+    console.log(body)
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_SUPPORT}/api/Website/Edit/Credit`,
+        body
+      );
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function PostEditCutCredit(context, body) {
+  return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.user)
+    body.operator = context.rootState.auth.user
+    body.ip_operator = context.rootState.auth.ip
+    body.company = context.rootState.auth.company
+    body.agent = context.rootState.auth.agent
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_SUPPORT}/api/Website/Edit/Cut`,
+        body
+      );
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function PostEditTopupBonus(context, body) {
+  return new Promise(async (resolve, reject) => {
+    // console.log(context.rootState.auth.user)
+    body.operator = context.rootState.auth.user
+    body.ip_operator = context.rootState.auth.ip
+    body.company = context.rootState.auth.company
+    body.agent = context.rootState.auth.agent
+    try {
+      let response = await this.$axios.post(
+        `${process.env.ALL_SUPPORT}/api/Website/Edit/Bonus`,
         body
       );
 

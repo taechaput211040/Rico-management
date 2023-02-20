@@ -20,6 +20,45 @@ export function getSetting({ rootState, commit, state }) {
   });
 }
 //ตั้งค่าระบบ
+
+//ตั้งค่าอื่นๆ
+export function getIncome(context, params) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.get(
+        `${
+          process.env.ALL_NOTIFICATE
+        }/all_notifly/api/setting?agent=${localStorage.getItem(
+          "agent"
+        )}&company=${localStorage.getItem("company")}`
+      );
+
+      resolve(data);
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+//ตั้งค่าอื่นๆ
+//ตั้งค่าอื่นๆ
+export function setNotification(context, payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.patch(
+        `${process.env.ALL_NOTIFICATE}/all_notifly/api/setting/${payload.id}`,
+        payload
+      );
+
+      resolve(data);
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+//ตั้งค่าอื่นๆ
+
 //เพิ่มรายชื่อ มิจฉาชีพ
 export function getCriminallist(context, params) {
   return new Promise(async (resolve, reject) => {
