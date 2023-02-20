@@ -13,11 +13,109 @@ div,
 span {
   font-family: "Montserrat", "Noto Sans Thai", "sans-serif";
 }
+:root {
+  --card_cardBgColor: #1f1d31;
+  --card_cardTextColor: #e9e9e9;
+  --menu_activeMenuColor: #9155fd;
+  --menu_bgColor: #28243d;
+  --menu_bgColorIner: #e9e9e9;
+  --menu_navberColor: #1a1426;
+  --menu_sidebarColor: #1f1d31;
+  --menu_textColor: #ffffff; //สีเวป
+  --menu_textColor_withIcon: #ffffff; // เพิ่ม
+  --table_bgTable: #1f1d31; // ไม่ใช้
+  --table_colorBodyTable: #1e1e1e; // ไม่ใช้
+  --table_colorTable: linear-gradient(#722bbb 0%, #9c64d7 100%); //ใช้
+  --table_colorTextTable: #ffffff; //ใช้;
+}
+.grad_btn {
+  background: linear-gradient(146deg, #df6ba9 0%, #c10000 65%) !important;
+  color: white !important;
+}
+//ตาราง
+
+.v-data-table-header {
+  // background: linear-gradient(#722bbb 0%, #9c64d7 100%);
+  background: var(--table_colorTable); //สีหัวตาราง
+  th {
+    color: var(--table_colorTextTable);
+  }
+}
+
+.table-data {
+  table.v-table tbody td:first-child,
+  table.v-table tbody td:not(:first-child),
+  table.v-table tbody th:first-child,
+  table.v-table tbody th:not(:first-child),
+  table.v-table thead td:first-child,
+  table.v-table thead td:not(:first-child),
+  table.v-table thead th:first-child,
+  table.v-table thead th:not(:first-child) {
+    padding: 0 10px;
+  }
+}
+//ตาราง
+//พื้นหลัง
+.v-main__wrap {
+  background: var(--menu_bgColor) !important;
+  color: var(--menu_textColor) !important;
+}
+//พื้นหลัง
+.mainshow {
+  background: var(--menu_bgColorIner) !important;
+}
+.v-app-bar {
+  .v-btn--icon.v-size--default {
+    background: black !important;
+    color: #ffffff !important;
+  }
+}
 .v-navigation-drawer__content {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
+.body_card {
+  background: white !important;
+  color: #000 !important;
+}
+//เมนู สีไอคอน
+.v-navigation-drawer {
+  .v-icon,
+  .v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+    color: var(--menu_textColor_withIcon) !important;
+  }
+}
+
+//เมนู สีไอคอน
+
+//การ์ด
+.cardView {
+  background: var(--card_cardBgColor) !important;
+  color: var(--card_cardTextColor) !important;
+}
+//การ์ด
+
+//sidebar ด้านข้าง
+.v-navigation-drawer {
+  background: var(--menu_sidebarColor) !important;
+  color: hsla(0, 0%, 100%, 0.76) !important;
+}
+//sidebar ด้านข้าง
+//navber ข้างบน
+.v-toolbar__content {
+  background: var(--menu_navberColor);
+}
+
+//navber ข้างบน
+.bg-primary-grediaun,
+.bg-primary-grediaun:hover {
+  background: var(--menu_activeMenuColor) !important;
+  box-shadow: 0 5px 10px -4px rgb(94 86 105 / 42%);
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #000 !important;
+}
+
 ::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent;
@@ -49,6 +147,12 @@ span {
   font-size: 1rem !important;
 }
 
+.img_logo_bar {
+  max-width: 100%;
+  width: auto;
+  padding: 20px;
+  cursor: pointer;
+}
 .card-child {
   flex: 1 1 auto;
   padding: 1rem;
@@ -165,7 +269,9 @@ table thead > tr > th > i {
   transition: 0.2s;
 }
 .v-tabs:not(.v-tabs--vertical):not(.v-tabs--right)
-  > .v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-slide-group--has-affixes)
+  > .v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(
+    .v-slide-group--has-affixes
+  )
   .v-slide-group__prev {
   display: none !important;
 }
@@ -307,10 +413,6 @@ table thead > tr > th > i {
   color: whitesmoke !important;
 }
 
-.v-data-table-header {
-  background: linear-gradient(#722bbb 0%, #9c64d7 100%);
-}
-
 table tbody tr:nth-child(even) {
   background-color: #efefef;
 }
@@ -339,40 +441,6 @@ table.v-table thead th:not(:first-child) {
   border-radius: 11px;
 }
 
-.table-data {
-  table thead > tr > th,
-  table thead > tr > th > i {
-    color: whitesmoke !important;
-  }
-
-  table thead > tr > th:nth-child(even),
-  table thead > tr > th:nth-child(even).active {
-    background: #3e3e3e !important;
-  }
-
-  table thead > tr > th:nth-child(odd),
-  table thead > tr > th:nth-child(odd).active {
-    background: #303030 !important;
-  }
-
-  table tbody tr:nth-child(even) {
-    background-color: #efefef;
-  }
-
-  table tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  table.v-table tbody td:first-child,
-  table.v-table tbody td:not(:first-child),
-  table.v-table tbody th:first-child,
-  table.v-table tbody th:not(:first-child),
-  table.v-table thead td:first-child,
-  table.v-table thead td:not(:first-child),
-  table.v-table thead th:first-child,
-  table.v-table thead th:not(:first-child) {
-    padding: 0 10px;
-  }
-}
 .emergency {
   max-height: 100px;
   max-width: 100px;
@@ -524,7 +592,7 @@ $redFire: rgba(244, 91, 105, 1);
   /* left: 50%; */
   margin: auto;
   max-width: 800px;
-  transform: translate(0, 250px);
+  
   transition: transform 300ms, box-shadow 300ms;
   font-weight: bold !important;
   box-shadow: 0px 4px 20px 16px rgb(0 0 0 / 18%), 0 10px 10px rgb(0 0 0 / 11%);
@@ -808,7 +876,7 @@ button:hover {
     }
   }
 }
-.frist_color{
+.frist_color {
   font-size: 0.7vw;
 }
 .switch-center {

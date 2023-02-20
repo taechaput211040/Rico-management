@@ -986,7 +986,7 @@ export default {
           status: true,
         },
         {
-          title: "Staff Log",
+          title: "STAFF LOG",
           menu: "staffLog",
           permission: "staffLog_read",
           to: "/staffLog",

@@ -16,15 +16,14 @@ import setting from "./setting";
 import account from "./account";
 import GradientColorPicker from "vue-gradient-color-picker";
 import report from "./report";
-import VueQRCodeComponent from 'vue-qrcode-component'
-
+import VueQRCodeComponent from "vue-qrcode-component";
 
 Vue.use(VueSweetalert2);
 
 Vue.prototype.$moment = moment;
 
 Vue.use(ElementUI, { locale });
-Vue.component('qr-code', VueQRCodeComponent)
+Vue.component("qr-code", VueQRCodeComponent);
 Vue.use(GradientColorPicker);
 export default function () {
   const Store = new Vuex.Store({
@@ -420,7 +419,7 @@ export default function () {
           status: true,
         },
         {
-          title: "Staff Log",
+          title: "STAFF LOG",
           menu: "staffLog",
           permission: "staffLog_read",
           to: "/staffLog",
@@ -528,66 +527,65 @@ export default function () {
       webPalette: {
         logo: "https://image.smart-ai-api.com/public/Rico-main-resite/logo.png",
         palette: {
-          menu: {
-            navberColor: {
-              label: "สีพื้นหลัง navber ข้างบน",
-              type: "color",
-              value: "#1A1426",
-            },
-            sidebarColor: {
-              label: "สีพื้นหลัง sidebar ด้านข้าง",
-              type: "color",
-              value: "#1F1D31",
-            },
-            bgColor: {
-              label: "สีพื้นหลัง Background",
-              type: "color",
-              value: "#28243d",
-            },
-            textColor: {
-              label: "สีตัวอักษร web",
-              type: "color",
-              value: "#ffffff",
-            },
-            activeMenuColor: {
-              label: "สีตอนกดปุ่ม menu",
-              type: "color",
-              value: "#9155fd",
-            },
-          },
           card: {
             cardBgColor: {
               label: "สี card",
               type: "color",
-              value: "#1F1D31",
+              value: "#FFFFFF",
             },
             cardTextColor: {
               label: "สีตัวอักษรใน card",
-              type: "color",
-              value: "#E9E9E9",
+              type: "color_text",
+              value: "#000000FF",
             },
           },
-
-          table: {
-            colorTable: {
-              label: "สีหัวตาราง",
-              type: "color",
-              value: "#1E1E1E",
+          menu: {
+            textColor: {
+              label: "สีตัวอักษรเว้ปไซต์",
+              type: "color_text",
+              value: "#000000FF",
             },
-            colorBodyTable: {
-              label: "สีในตัวตาราง",
-              type: "color",
-              value: "#1E1E1E",
-            },
-            colorTextTable: {
-              label: "สีตัวอักษรในตาราง",
+            bgColor: {
+              label: "สีพื้นหลัง Background ด้านนอก",
               type: "color",
               value: "#FFFFFF",
             },
-            bgTable: {
-              label: "สีพื้นหลังตาราง",
+            bgColorIner: {
+              label: "สีพื้นหลัง Background ด้านใน",
               type: "color",
-              value: "#1f1d31",
+              value: "#FFFFFF",
+            },
+            navberColor: {
+              label: "สีพื้นหลัง navber ข้างบน",
+              type: "color",
+              value: "#FFFFFF",
+            },
+            sidebarColor: {
+              label: "สีพื้นหลัง sidebar ด้านข้าง",
+              type: "color",
+              value: "#FFFFFF",
+            },
+            textColor_withIcon: {
+              label: "สีตัวอักษรเมนูและไอคอน",
+              type: "color_text",
+              value: "#000000FF",
+            },
+            activeMenuColor: {
+              label: "สีตอนกดปุ่ม menu",
+              type: "color",
+              value: "#9155FD",
+            },
+          },
+          table: {
+            colorTable: {
+              label: "สีหัวตาราง",
+              type: "linear",
+              value: "linear-gradient(#722bbb 0%, #9c64d7 100%)",
+            },
+            colorTextTable: {
+              label: "สีตัวอักษรหัวตาราง",
+              type: "color_text",
+              value: "#000000FF",
             },
           },
         },

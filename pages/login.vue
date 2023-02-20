@@ -2,15 +2,15 @@
   <div class="bg-page">
     <loading-page v-if="isLoading"></loading-page>
     <form class="login font-weight-bold">
-      <img
+      <!-- <img
         src="https://image.smart-ai-api.com/public/Rico-main-resite/mockup_rico.png"
         class="img-mockup"
-      />
-      <div class="my-3 text-center  header-login">
-        <img
+      /> -->
+      <div class="my-3 text-center header-login">
+        <!-- <img
           src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
-        />
-        <h2>WELCOME TO RICO</h2>
+        /> -->
+        <img :src="image ? image : this.webPalette.logo" class="img_logo" />
         <h4>กรอกข้อมูลเพื่อเข้าสู่ระบบ</h4>
       </div>
       <label>Username</label>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import LoadingPage from "../components/LoadingPage.vue";
 export default {
   components: { LoadingPage },
@@ -62,7 +62,7 @@ export default {
       isLoading: false,
       username: "",
       password: "",
-      agentkey: ""
+      agentkey: "",
     };
   },
   async mounted() {
@@ -70,13 +70,16 @@ export default {
       this.$router.push("/");
     }
   },
+  computed: {
+    ...mapState("account", ["webPalette"]),
+  },
   methods: {
     ...mapMutations("auth", [
       "set_login",
       "setTFAdata",
       "serTfa_credential",
       "setVerify",
-      "set_data_secret"
+      "set_data_secret",
     ]),
     ...mapActions("auth", ["login", "getLockdown"]),
     async auth() {
@@ -84,13 +87,13 @@ export default {
       let formData = {
         username: this.username,
         password: this.password,
-        agent: this.agentkey
+        agent: this.agentkey,
       };
       try {
         const response = await this.login({
           username: this.username,
           password: this.password,
-          agentkey: this.agentkey
+          agentkey: this.agentkey,
         });
         await this.setTFAdata(formData);
         // console.log(response.data);
@@ -109,7 +112,7 @@ export default {
         } else if (!response.tfa_status) {
           if (response.token) {
             await this.set_login(response);
-          
+
             if (!response.menu) {
               this.$router.push("/test");
             } else {
@@ -124,8 +127,8 @@ export default {
         console.log(err);
       }
       this.isLoading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -204,7 +207,8 @@ $redFire: rgba(244, 91, 105, 1);
   /* left: 50%; */
   margin: auto;
   max-width: 800px;
-  transform: translate(0, 250px);
+
+  transform: translate(0, 150px);
   transition: transform 300ms, box-shadow 300ms;
   font-weight: bold !important;
   box-shadow: 0px 4px 20px 16px rgb(0 0 0 / 18%), 0 10px 10px rgb(0 0 0 / 11%);
@@ -255,7 +259,8 @@ $redFire: rgba(244, 91, 105, 1);
 }
 @media (min-width: 767.98px) {
   .bg-page {
-    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgdy.jpg");
+    // background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgdy.jpg");
+    background: black;
     min-height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
@@ -265,7 +270,8 @@ $redFire: rgba(244, 91, 105, 1);
 }
 @media (max-width: 320.98px) {
   .bg-page {
-    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgmb.jpg");
+    // background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgmb.jpg");
+    background: black;
     min-height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
@@ -288,7 +294,7 @@ $redFire: rgba(244, 91, 105, 1);
 }
 @media (max-width: 767.98px) and (min-width: 321px) {
   .bg-page {
-    background-image: url("https://image.smart-ai-api.com/public/Rico-main-resite/bgmb.jpg");
+    background: black;
     min-height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
@@ -304,7 +310,7 @@ $redFire: rgba(244, 91, 105, 1);
   }
   .login {
     margin-top: 30px;
-    transform: translate(0, 145px);
+    transform: translate(0);
     padding: 30px 30px 30px 30px !important;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class=" card-child card-report elevation-5">
+  <div class=" card-child card-report elevation-5 cardView">
     <div class="d-flex">
       <div
         class=" text-data text-primary d-flex align-center justify-space-between"

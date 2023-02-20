@@ -2,13 +2,10 @@
   <v-card :style="` background:${bgTable} !important;`"
     ><v-data-table
       class="headerColor"
+      hide-default-footer
       :item-class="itemRowBackground"
       :items="dataExample"
       :headers="header"
-      :footer-props="{
-        showFirstLastPage: true,
-        'items-per-page-text': '',
-      }"
     >
     </v-data-table>
   </v-card>
@@ -24,6 +21,7 @@ export default {
           value: "examplevalue1",
           sortable: false,
           align: "center",
+          class: "headerText",
         },
         {
           text: "header1",
@@ -56,23 +54,17 @@ export default {
   },
   props: {
     bgHeader: { default: String },
-    bgBody: { default: String },
     textColor: { default: String },
-    bgTable: { default: String },
   },
   mounted() {
     this.selectTextColor();
     this.selectBgheaderColor();
-    this.selectTextColor();
-    this.selectBgBodyColor();
   },
   watch: {
     bgHeader() {
       this.selectBgheaderColor();
     },
-    bgBody() {
-      this.selectBgBodyColor();
-    },
+
     textColor() {
       this.selectTextColor();
     },
@@ -83,19 +75,19 @@ export default {
       document.getElementsByClassName(
         "v-data-table-header"
       )[0].style.background = this.bgHeader;
+      console.log(this.bgHeader, "this.bgHeader");
       //   bgColorBtn.style.setProperty('background-color', activeMenu)
     },
     itemRowBackground: function (item) {
       return "itemRowBackground";
     },
-    selectBgBodyColor() {
-      //   let boxParaRule
-      document.getElementsByClassName("itemRowBackground")[0].style.background =
-        this.bgBody;
-      //   bgColorBtn.style.setProperty('background-color', activeMenu)
-    },
+
     selectTextColor() {
-      document.getElementsByClassName("headerColor")[0].style.color =
+      console.log(
+        document.getElementsByClassName("headerText")[0].style.color,
+        "asds"
+      );
+      document.getElementsByClassName("headerText")[0].style.color =
         this.textColor;
     },
   },
