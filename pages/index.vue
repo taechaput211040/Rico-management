@@ -710,7 +710,7 @@
           </div>
           <div class="my-2" v-if="incoming_dashboard.username">
             <v-text-field placeholder="กรอก username : " hide-details="auto" v-model="incoming_dashboard.username" dense
-              outlined :rules="rulesFrom.usernameRules" required disabled></v-text-field>
+              outlined :rules="rulesFrom.usernameRules" required></v-text-field>
           </div>
           <div class="my-2">จำนวนเงิน : {{ incoming_dashboard.amount }}</div>
         </v-card-text>
