@@ -224,7 +224,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
-                            v-model="formTopupCredit.thorse"
+                            v-model="formTopupCredit.tother"
                             label="เทิร์น HORSE RACING"
                             outlined
                             clearable
@@ -389,13 +389,15 @@ export default {
         username: "",
         bonusCredit: "",
         remark: "",
-        tslot: "20",
+        turn:{ tslot: "20",
         tsportbook: "",
         tesport: "",
-        thorse: "",
+        tother: "",
         tcasino: "",
         tlotto: "",
         twidthdraw: "",
+        tfishing:""}
+       
       },
       header: [
         {

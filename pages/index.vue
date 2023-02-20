@@ -423,7 +423,7 @@
                 </div>
 
                 <div v-if="item.status == 'Pending'" class="ma-2 text-center">
-                  <v-btn v-if="item.bankName != 'TRUEWALLET'" color="primary" class="my-1" rounded small>Reset</v-btn>
+                  <v-btn v-if="item.bankName != 'TRUEWALLET'" color="primary" class="my-1" rounded small @click="resetWD(item)">Reset</v-btn>
                   <v-btn color="primary" outlined rounded class="my-1" small @click="showRemark(item)">หมายเหตุ</v-btn>
                 </div>
               </td>
