@@ -128,5 +128,7 @@ export default {
     API_SCB_CORE: process.env.API_SCB_CORE,
     ALL_LINE_NOTIFY: process.env.ALL_LINE_NOTIFY,
     ALL_NOTIFICATE: process.env.ALL_NOTIFICATE,
+    ALL_EDITCREDIT: process.env.ALL_EDITCREDIT,
+    
   },
 };
