@@ -2,8 +2,15 @@ export async function getPalletePreset({ commit, state, rootState }) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.get(
-        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`
+        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`,
+        {
+          headers: {
+            key: "ramidasky",
+            origin: "https://member.rafa168.com",
+          },
+        }
       );
+      console.log(data, "data");
       commit("setPallete", data);
       resolve(data);
     } catch (error) {
@@ -17,7 +24,7 @@ export function updatePalette(
   params = {
     web_id: undefined,
     presetId: undefined,
-    detail: undefined
+    detail: undefined,
   }
 ) {
   return new Promise(async (resolve, reject) => {
@@ -25,7 +32,7 @@ export function updatePalette(
       let response = await this.$axios.patch(
         `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico/${params.web_id}/${params.presetId}`,
         {
-          palette: params.detail
+          palette: params.detail,
         }
       );
       commit("setPallete", response.data);
@@ -53,7 +60,7 @@ export function CreatePreset(
   { commit },
   params = {
     id: undefined,
-    detail: undefined
+    detail: undefined,
   }
 ) {
   return new Promise(async (resolve, reject) => {
@@ -61,7 +68,7 @@ export function CreatePreset(
       let response = await this.$axios.post(
         `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico/${params.id}`,
         {
-          palette: params.detail
+          palette: params.detail,
         }
       );
       resolve(response);

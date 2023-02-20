@@ -1,7 +1,7 @@
 <template>
-  <div class="rounded-lg elevation-2 my-1">
+  <div class="rounded-lg elevation-2 my-1 cardView mt-3">
     <div class="row">
-      <div class="col-4 text-center d-flex ">
+      <div class="col-4 text-center d-flex">
         <div class="ma-auto">
           <img :src="iconSrc" class="img-icon icon-show" />
         </div>
@@ -11,7 +11,7 @@
           <h1 v-if="value > 0" class="success--text">+{{ value }}</h1>
           <h1 v-if="value < 0" class="red--text">{{ value }}</h1>
         </div>
-        <div class=" card-icontitle" v-else>
+        <div class="card-icontitle" v-else>
           <h1>{{ value }}</h1>
         </div>
 
@@ -31,12 +31,12 @@ export default {
     titleclass: "",
     condition: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: { type: String, default: "" },
     value: { type: [Number, String], default: "" },
-    iconSrc: { type: String, default: "" }
-  }
+    iconSrc: { type: String, default: "" },
+  },
 };
 </script>
 

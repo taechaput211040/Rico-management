@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3>{{ label }}</h3> 
+  <div class="mt-2">
+    <h2>{{ label }}</h2> 
     <v-color-picker v-model="color"></v-color-picker>
   </div>
 </template>

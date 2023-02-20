@@ -985,6 +985,14 @@ export default {
           icon: "mdi-gamepad-square",
           status: true,
         },
+        {
+          title: "STAFF LOG",
+          menu: "staffLog",
+          permission: "staffLog_read",
+          to: "/staffLog",
+          icon: "mdi-gamepad-square",
+          status: true,
+        },
       ];
 
       this.updatedata = Object.assign({}, item);

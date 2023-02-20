@@ -54,7 +54,7 @@ export function GetDplist({ rootState, commit }) {
   });
 }
 
-export function GetWdlist({ rootState,commit }) {
+export function GetWdlist({ rootState, commit }) {
   return new Promise(async (resolve, reject) => {
     try {
       const { data } = await this.$axios.get(

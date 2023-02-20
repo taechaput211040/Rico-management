@@ -1,8 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - RICO-Smartbet",
-    title: "RICO-Smartbet",
+    title: "RICO-ALIEN",
     htmlAttrs: {
       lang: "en",
     },
@@ -23,7 +22,7 @@ export default {
   //   }
   // },
   server: {
-    port: 8000, // default: 3000
+    port: 3000, // default: 3000
   },
   mode: "spa",
   // Global CSS: https://go.nuxtjs.dev/config-css

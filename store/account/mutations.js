@@ -1,9 +1,13 @@
 export function setPallete(state, payload) {
   for (const [key, v] of Object.entries(payload.palette)) {
-    // console.log(key, v, 'jetmea')
     if (typeof v === "object") {
       for (const [k, val] of Object.entries(v)) {
-        if (val.type == "color") {
+        if (val.type == "color" || val.type == "color_text") {
+          document.documentElement.style.setProperty(
+            `--${key}_${k}`,
+            val.value
+          );
+        } else if (val.type == "linear") {
           document.documentElement.style.setProperty(
             `--${key}_${k}`,
             val.value

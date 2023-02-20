@@ -2,7 +2,9 @@
   <div>
     <h2 class="text-center">Palette Management</h2>
     <div class="row justify-center pa-5">
-      <div class="card-show-section col-lg-4 col-md-4 col-12 rounded justify-center pa-sm-3  pa-1 ma-5">
+      <div
+        class="card-show-section col-lg-4 col-md-4 col-12 rounded justify-center pa-sm-3 pa-1 ma-5"
+      >
         <h2 class="text-center text-decoration-underline font-italic my-2">
           ภาพ LOGO
         </h2>
@@ -21,7 +23,9 @@
     </div>
 
     <div v-for="(item, index) in mainitem" :key="index">
-      <div class="card-show-section ma-2 rounded justify-center row pa-0 pa-sm-3">
+      <div
+        class="card-show-section ma-2 rounded justify-center row pa-0 pa-sm-3"
+      >
         <h1
           class="text-center text-decoration-underline my-2 font-italic"
           v-if="index === 'menu'"
@@ -48,17 +52,18 @@
             :bgMainColor="mainitem.menu.bgColor.value"
             :text_color="mainitem.menu.textColor.value"
             :activeMenu="mainitem.menu.activeMenuColor.value"
+            :textWithIcon="mainitem.menu.textColor_withIcon.value"
+            :bgColorIner="mainitem.menu.bgColorIner.value"
             v-if="index === 'menu'"
             class="col-lg-8 col-xl-6 col-md-8 col-sm-12 col-12"
           ></navbar-detail>
           <table-detail
             :bgHeader="mainitem.table.colorTable.value"
-            :bgBody="mainitem.table.colorBodyTable.value"
             :textColor="mainitem.table.colorTextTable.value"
-            :bgTable="mainitem.table.bgTable.value"
-            class="pa-0  col-xl-6 col-md-8 col-sm-12 col-12"
+            class="pa-0 col-xl-6 col-md-8 col-sm-12 col-12"
             v-if="index === 'table'"
           ></table-detail>
+          <!-- :bgColorIner="mainitem.table.bgColorIner.value" -->
         </div>
         <div class="col-12 row justify-center pa-0">
           <div
@@ -101,7 +106,7 @@ export default {
     NavbarDetail,
     TableDetail,
     CheckType,
-    GradientInput
+    GradientInput,
   },
   data() {
     return {
@@ -111,22 +116,24 @@ export default {
       dataExample: {},
       theme: true,
       imageUpload: {},
-      isLoading: false
+      isLoading: false,
     };
   },
-  async mounted() {
-    let current_palette = JSON.parse(sessionStorage.getItem("current_palette"));
-    if (current_palette) {
-      this.mainitem = JSON.parse(sessionStorage.getItem("current_palette"));
-    } else {
+  async beforeMount() {
+    try {
+      await this.$store.dispatch("account/getPalletePreset");
       this.mainitem = this.webPalette.palette;
+      this.image = this.webPalette.logo;
       sessionStorage.setItem("current_palette", JSON.stringify(this.mainitem));
+    } catch (error) {
+      console.log(error);
     }
-    this.image = this.webPalette.logo;
+  },
+  async mounted() {
     // await this.selectData();
   },
   computed: {
-    ...mapState("account", ["webPalette"])
+    ...mapState("account", ["webPalette"]),
   },
   // watch: {
   //   '$vuetify.theme.isDark': {
@@ -139,36 +146,200 @@ export default {
   // },
 
   methods: {
-    async saveLogo() {},
     async inputImage(value) {
       if (value) this.image = URL.createObjectURL(value);
       let formData = new FormData();
       formData.append("file", value);
       this.imageUpload = formData;
-      
+    },
+    async saveLogo() {
+      this.$swal({
+        title: "Are you sure you want to Change Logo ?",
+        icon: "warning",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.isLoading = true;
+          await this.handleUploadImage(this.imageUpload)
+            .then(async (logo) => {
+              if (logo) {
+                try {
+                  let { data } = await this.$axios.patch(
+                    `https://static-template-api-ehhif4jpyq-as.a.run.app/css/profile/rico/${this.webPalette.web_id}`,
+                    {
+                      logo: logo,
+                    }
+                  );
+                  this.image = data.logo;
+                  this.isLoading = false;
+                  this.$swal({
+                    icon: "success",
+                    title: "Update Logo Success",
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  }).then(async (result) => {
+                    if (result) {
+                      this.isLoading = false;
+                      await location.reload();
+                      //refreshandredirect/
+                    }
+                  });
+                } catch (error) {
+                  this.$swal({
+                    icon: "error",
+                    title: `${error.response.data.message}`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  this.isLoading = false;
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      });
+      this.isLoading = false;
+    },
+    async handleUploadImage(image) {
+      try {
+        let { data } = await this.$axios.post(
+          `https://static-template-api-ehhif4jpyq-as.a.run.app/image/file/image/smart`,
+          image
+        );
+        console.log(data.image, "response");
+        return data.image;
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
     },
 
-    // async handleUploadImage(image) {
-    //   try {
-    //     let { data } = await this.$axios.post(
-    //       `http://localhost:3000/image/file/image/smart`,
-    //       image
-    //     );
-    //     console.log(data.image, "response");
-    //     return data.image;
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoading = false;
-    //   }
-    // },
-
-    async savePallette() {},
-    refresh() {},
-    async backtobeginer() {}
+    async savePallette() {
+      const body = {
+        web_id: this.webPalette.web_id,
+        presetId: this.webPalette.presetId,
+        detail: this.mainitem,
+      };
+      try {
+        this.$swal({
+          title: "Are you sure you want to Update Pallete ?",
+          icon: "warning",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            // console.log(this.formCreate)
+            try {
+              let { data } = await this.$store.dispatch(
+                "account/updatePalette",
+                body
+              );
+              console.log(data);
+              sessionStorage.setItem(
+                "current_palette",
+                JSON.stringify(data.palette)
+              );
+              this.$swal({
+                icon: "success",
+                title: "Update Pallete Success",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(async (result) => {
+                if (result) {
+                  await location.reload();
+                  //refreshandredirect/
+                }
+              });
+            } catch (error) {
+              this.$swal({
+                icon: "error",
+                title: `${error.response.data.message}`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    refresh() {
+      this.mainitem = JSON.parse(sessionStorage.getItem("current_palette"));
+    },
+    async backtobeginer() {
+      const body = {
+        web_id: this.webPalette.web_id,
+        presetId: this.webPalette.presetId,
+        detail: this.$store.state.webPalette.palette,
+      };
+      console.log(body, "bodetyyy");
+      try {
+        this.$swal({
+          title: "Are you sure you want to Restore Pallete ?",
+          icon: "warning",
+          showCancelButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            // console.log(this.formCreate)
+            try {
+              let { data } = await this.$store.dispatch(
+                "account/updatePalette",
+                body
+              );
+              console.log(data);
+              sessionStorage.setItem(
+                "current_palette",
+                JSON.stringify(data.palette)
+              );
+              this.$swal({
+                icon: "success",
+                title: "Restore Pallete Success",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(async (result) => {
+                if (result) {
+                  await location.reload();
+                  //refreshandredirect/
+                }
+              });
+            } catch (error) {
+              this.$swal({
+                icon: "error",
+                title: `${error.response.data.message}`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   async destroyed() {
     console.log("refresh");
-  }
+  },
 };
 </script>
 

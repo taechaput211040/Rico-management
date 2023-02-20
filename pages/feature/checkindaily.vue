@@ -196,7 +196,7 @@
                 hide-details="auto"
                 outlined
                 type="number"
-                v-model="$v.turn.wdlimit.$model"
+                v-model.number="$v.turn.wdlimit.$model"
                 required
               />
               <div
@@ -226,7 +226,7 @@
                 hide-details="auto"
                 outlined
                 type="number"
-                v-model="$v.turn.SLOT.$model"
+                v-model.number="$v.turn.SLOT.$model"
                 required
               />
               <div
@@ -245,7 +245,7 @@
                 dense
                 hide-details="auto"
                 outlined
-                v-model="$v.turn.FOOTBALL.$model"
+                v-model.number="$v.turn.FOOTBALL.$model"
                 type="number"
                 required
               />
@@ -265,7 +265,7 @@
                 dense
                 hide-details="auto"
                 outlined
-                v-model="$v.turn.ESPORT.$model"
+                v-model.number="$v.turn.ESPORT.$model"
                 type="number"
                 required
               />
@@ -285,7 +285,7 @@
                 dense
                 hide-details="auto"
                 outlined
-                v-model="$v.turn.HORSERACING.$model"
+                v-model.number="$v.turn.HORSERACING.$model"
                 type="number"
                 required
               />
@@ -308,7 +308,7 @@
                 hide-details="auto"
                 outlined
                 type="number"
-                v-model="$v.turn.CASINO.$model"
+                v-model.number="$v.turn.CASINO.$model"
                 required
               />
               <div
@@ -328,7 +328,7 @@
                 hide-details="auto"
                 outlined
                 type="number"
-                v-model="$v.turn.LOTTO.$model"
+                v-model.number="$v.turn.LOTTO.$model"
                 required
               />
               <div
