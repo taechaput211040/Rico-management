@@ -37,7 +37,7 @@
           </template>
           <template #[`item.requsettime`]="{ item }">
             <span>
-              {{ getthaidate(item.requsettime) }}
+              {{ item.requsettime | dateFormat }}
             </span>
           </template>
           <template #[`item.bankAcc`]="{ item }">

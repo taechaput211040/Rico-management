@@ -179,7 +179,7 @@
             </template>
             <template #[`item.created_at`]="{ item }">
               <span>
-                {{ getthaidate(item.created_at) }}
+                {{ item.created_at |dateFormat }}
               </span>
             </template>
           </v-data-table>

@@ -4,10 +4,10 @@ export async function getPalletePreset({ commit, state, rootState }) {
       let { data } = await this.$axios.get(
         `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`,
         {
-          headers: {
-            key: "ramidasky",
-            origin: "https://member.rafa168.com",
-          },
+          // headers: {
+          //   key: "ramidasky",
+          //   origin: "https://member.rafa168.com",
+          // },
         }
       );
       console.log(data, "data");

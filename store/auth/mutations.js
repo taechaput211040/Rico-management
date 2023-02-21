@@ -84,6 +84,19 @@ export function set_logout(state) {
   state.isAdmin = false;
   state.hash = null;
   state.tokenMember = null;
+  state.datarander=  {
+    data:false,
+    depositbalance: 0,
+    withdrawbalance: 0,
+    profitlossDate:
+      0,
+    profitlossmounth: 0
+  },
+  state.dpbank = [],
+  state.wdbank = [],
+  state.dplist = [],
+  state.wdlist = [],
+  state.incomingSMS =[]
 }
 // playSoundNoauto() {
 //   //127.0.0.1:8000/

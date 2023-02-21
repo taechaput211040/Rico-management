@@ -72,12 +72,12 @@
             </template>
             <template #[`item.smsdatetime`]="{item}">
               <span>
-                {{ getthaidate(item.smsdatetime) }}
+                {{ item.smsdatetime | dateFormat }}
               </span>
             </template>
             <template #[`item.created_at`]="{item}">
               <span>
-                {{ getthaidate(item.created_at) }}
+                {{ item.created_at |dateFormat }}
               </span>
             </template>
             <template v-slot:expanded-item="{ headers, item }">
@@ -136,7 +136,7 @@ export default {
         },
         {
           text: "USERNAME",
-          value: "member_id",
+          value: "username",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",

@@ -128,6 +128,9 @@
                 (index + 1)
               }}</span>
             </template> -->
+
+            <template #[`item.created_at`]="{ item }">{{created_at | dateFormat}}</template>
+            <template #[`item.smsdatetime`]="{ item }">{{smsdatetime | dateFormat}}</template>
             <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
           </v-data-table>
         </v-card>
@@ -356,7 +359,7 @@ export default {
         { text: "ธนาคารเว็ป", align: "center", value: "companyBank" },
         { text: "เวลาใน SMS", align: "center", value: "smsdatetime" },
         { text: "เวลาเติม", align: "center", value: "created_at" },
-        { text: "username", align: "center", value: "member_id" },
+        { text: "username", align: "center", value: "username" },
         { text: "จำนวนเงิน", align: "center", value: "amount" },
         { text: "จำนวนโบนัส", align: "center", value: "bonusamount" },
         { text: "เครดิตก่อนเติม", align: "center", value: "bfcredit" },
