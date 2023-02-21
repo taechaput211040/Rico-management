@@ -44,7 +44,11 @@
             <v-icon> mdi-account-circle </v-icon>
           </v-btn>
         </template>
-        <v-tooltip left color="black">
+        <v-tooltip
+          left
+          color="black"
+          v-if="$store.state.auth.name === 'Super Admin'"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               fab
@@ -85,14 +89,14 @@
       fixed
       width="270"
     >
-      <v-toolbar-title class="font-weight-bold  text-center" align-center>
+      <v-toolbar-title class="font-weight-bold text-center" align-center>
         <img
           :src="image ? image : this.webPalette.logo"
           class="img_logo_bar"
           @click="$router.push('/')"
         />
       </v-toolbar-title>
-      <v-list nav dense >
+      <v-list nav dense>
         <div v-for="(link, i) in items" :key="i">
           <v-list-item
             v-if="!link.subLinks"
