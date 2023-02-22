@@ -535,8 +535,6 @@ export async function topupDashboardByOperator(context, incomingSMS) {
     return null
   }).filter(x => x)
 
-  console.log('incomingDataasdasd:', state_incomingData)
-  console.log('after map:', updated_state_incomingData)
   context.commit("updateIncoming", updated_state_incomingData);
   try {
     let response = await this.$axios.post(

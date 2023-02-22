@@ -294,7 +294,7 @@
               </td>
               <td class="col text-center">
                 <div v-if="item.status == 'Success' || item.status == 'rejected'">
-                  <v-btn color="primary" outlined rounded class="my-1" small @click="showRemark(item)">หมายเหตุ</v-btn>
+                <v-btn color="primary" outlined rounded class="my-1" small @click="showRemark(item)">หมายเหตุ</v-btn>
                 </div>
                 <div v-if="item.status == 'Error'" class="ma-2 text-center">
                   <v-btn color="error" class="my-1" rounded small @click="rejectWD(item)">ไม่อนุมัติ</v-btn>
@@ -409,7 +409,7 @@
               </td>
               <td>
                 <div v-if="item.status == 'Success' || item.status == 'rejected'">
-                  <v-btn color="primary" outlined rounded class="my-1" small @click="showRemark(item)">หมายเหตุ</v-btn>
+                <v-btn color="primary" outlined rounded class="my-1" small @click="showRemark(item)">หมายเหตุ</v-btn>
                 </div>
                 <div v-if="item.status == 'Error'" class="ma-2 text-center">
                   <v-btn color="error" class="my-1" rounded small @click="rejectWD(item)">ไม่อนุมัติ</v-btn>
