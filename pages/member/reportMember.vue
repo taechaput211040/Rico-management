@@ -5,7 +5,7 @@
       <v-row>
         <h2 class="mb-2">รายการสมาชิก</h2>
 
-        <search-filter :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true" @yesterday="getYesterDay()" @today="getToday()"></search-filter>
+        <search-filter-member :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true" @yesterday="getYesterDay()" @today="getToday()"></search-filter-member>
       </v-row>
       <v-row>
         <v-card class="elevation-4 mt-5 rounded-lg pb-5" width="100%">
@@ -285,6 +285,7 @@ export default {
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().slice(0, 10),
         endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+        options:'username'
       },
       userGroup: [
         { text: 'สมาชิกทั่วไป', value: 'common' },
@@ -567,6 +568,7 @@ export default {
       return {
         end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
         start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        options:this.dateFilter.options
       };
     },
     getParameter() {
@@ -576,13 +578,18 @@ export default {
         page: this.options.page,
         start: dateFill.start,
         end: dateFill.end,
-        username:null
+        username:null,
+        options:dateFill.options,
+        keyword:this.dateFilter.inputfilter
       };
       return parameter;
     },
     async getData(input=null) {
       this.isLoading = true;
+    
       let params = this.getParameter();
+      params.keyword = input
+      console.log('asdasdasd',params)
       if(!input){
         try {
         console.log(params);

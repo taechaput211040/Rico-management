@@ -6,7 +6,7 @@ export async function getReportmember({ commit }, fillter = {}) {
       let { data } = await this.$axios.get(
         `${
           process.env.ALL_MEMBER
-        }/api/Member/Agent/SubScribe/${localStorage.getItem(
+        }/api/Member/Agent/SubScribeOption/${localStorage.getItem(
           "company"
         )}/${localStorage.getItem("agent")}`,
         {

@@ -2,11 +2,9 @@
   <v-flex>
     <loading-page v-if="isLoading"></loading-page>
     <v-container>
-      <v-row class="mb-2 pa-3"></v-row>
+      <v-row class="mb-2 pa-3">
         <h2>รายการถอนเงินของสมาชิก</h2>
-        <search-filter :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true"
-          @yesterday="getYesterDay()" @today="getToday()">
-        </search-filter>
+        <search-filter-member :filter="dateFilter" @search="getData(dateFilter.inputfilter)" :searchinput="true" @yesterday="getYesterDay()" @today="getToday()"></search-filter-member>
       </v-row>
       <h2 class="mt-5">ยอดถอนรวม</h2>
       <v-row>
@@ -240,10 +238,11 @@ export default {
       depositbalance: 0,
       dateFilter: {
         inputfilter: "",
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date().toISOString().slice(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date().toISOString().slice(0, 10),
         endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+        options:'username'
       },
     };
   },
@@ -335,7 +334,9 @@ export default {
         page: this.options.page,
         start: dateFill.start,
         end: dateFill.end,
-        username: null
+        username:null,
+        options:dateFill.options,
+        keyword:this.dateFilter.inputfilter
       };
       return parameter;
     },
@@ -387,6 +388,8 @@ export default {
     async getData(input = null) {
       this.isLoading = true;
       let params = this.getParameter();
+      params.keyword = input
+      console.log('asdasdasd',params)
       if (!input) {
         try {
           console.log(params);
