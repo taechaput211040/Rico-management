@@ -1,5 +1,6 @@
 <template>
   <v-flex>
+    <loading-page v-if="isLoading"></loading-page>
     <v-container>
       <h2 class="mb-2">ตั้งค่าเครดิตเงินคืน (Cashback)</h2>
       <v-card
@@ -10,8 +11,8 @@
           hide-details="auto"
           class="mx-5 mt-2"
           color="success"
-          :true-value="1"
-          :false-value="0"
+          :true-value="true"
+          :false-value="false"
           :disabled="canwrite"
           :label="`สถานะ`"
           v-model="cashback.status"
@@ -36,8 +37,9 @@
                 class="img_promotion pa-md-3"
               />
               <v-file-input
-                v-model="cashback.pictureUrl"
+                v-model="inputPicture"
                 color="deep-purple accent-4"
+                @change="selectFile"
                 counter
                 dense
                 :disabled="canwrite"
@@ -60,6 +62,15 @@
                   </v-chip>
                 </template>
               </v-file-input>
+              <v-btn
+                class="mx-auto btn_sty"
+                color="success"
+                prepend-icon="mdi-camera"
+                label="upload"
+                @click="uploadImage"
+              >
+                <v-icon>mdi-upload</v-icon> Upload
+              </v-btn>
             </div>
           </v-col>
           <v-col cols="12" sm="6">
@@ -119,7 +130,7 @@
                     dense
                     hide-details="auto"
                     label="SLOT"
-                    v-model="cashback.step"
+                    v-model="cashback.SL"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="4">
@@ -127,7 +138,7 @@
                     outlined
                     dense
                     hide-details="auto"
-                    v-model="cashback.football"
+                    v-model="cashback.SB"
                     label="Sportbook"
                   ></v-text-field
                 ></v-col>
@@ -137,7 +148,7 @@
                     dense
                     hide-details="auto"
                     label="ESPORT"
-                    v-model="cashback.game"
+                    v-model="cashback.ES"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="4">
@@ -146,7 +157,7 @@
                     dense
                     hide-details="auto"
                     label="HorseRacing"
-                    v-model="cashback.parlay"
+                    v-model="cashback.OT"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="4">
@@ -155,7 +166,7 @@
                     dense
                     hide-details="auto"
                     label="casino"
-                    v-model="cashback.casino"
+                    v-model="cashback.LC"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="4"
@@ -163,7 +174,7 @@
                     outlined
                     dense
                     hide-details="auto"
-                    v-model="cashback.lotto"
+                    v-model="cashback.LT"
                     label="lotto"
                   ></v-text-field
                 ></v-col> </v-row
@@ -172,6 +183,7 @@
                   class="mx-auto btn_sty"
                   :disabled="canwrite"
                   color="success"
+                  @click.prevent="submitCashback"
                   >บันทึก</v-btn
                 >
               </v-card-actions>
@@ -188,7 +200,9 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      cashback: {},
+      isLoading: true,
+      inputPicture: undefined,
+      cashback: { status: false },
       typeselect: "รับได้รายวัน",
       itemstype: [
         { value: "DAY", text: "รับได้รายวัน" },
@@ -200,7 +214,8 @@ export default {
   async fetch() {
     try {
       let response = await this.getCashback();
-      this.cashback = response.data;
+      this.cashback = response;
+      this.isLoading = false;
     } catch (error) {}
   },
   computed: {
@@ -213,10 +228,58 @@ export default {
     },
   },
   methods: {
-    ...mapActions("promotion", ["getCashback"]),
-
+    ...mapActions("promotion", ["getCashback", "saveCashback"]),
+    async submitCashback() {
+      this.isLoading = true;
+      await this.saveCashback(this.cashback);
+      this.isLoading = false;
+    },
     switchstatus() {
-      console.log("ho");
+      this.submitCashback();
+    },
+    selectFile(value) {
+      if (value) {
+        this.cashback.pictureUrl = URL.createObjectURL(this.inputPicture);
+      } else {
+        this.url = "";
+      }
+    },
+    async uploadImage() {
+      this.loading = true;
+      if (!this.inputPicture?.name) {
+        this.$swal({
+          icon: "warning",
+          title: "กรุณาเลือกรูปที่ต้องการ",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
+      const data = new FormData();
+      data.append("file", this.inputPicture);
+      data.append("filename", this.inputPicture.name);
+      try {
+        let response = await this.$axios.post(
+          "https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123",
+          data
+        );
+        //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+        this.cashback.pictureUrl = response.data.image;
+        this.$swal({
+          icon: "success",
+          title:
+            "อัพโหลดสำเร็จ อย่าลืมกดบันทึก ด้านล่างสุดเพื่อบันทึกผลการเปลี่ยนแปลง",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+      }
     },
   },
 };
