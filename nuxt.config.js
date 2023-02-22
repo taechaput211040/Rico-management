@@ -116,6 +116,7 @@ export default {
     ALL_SUPPORT: process.env.ALL_SUPPORT,
     AFF_SETTING: process.env.AFF_SETTING,
     AGENT_DOMAIN: process.env.AGENT_DOMAIN,
+    ALL_CASHBACK: process.env.ALL_CASHBACK,
     ALL_CHECKIN: process.env.ALL_CHECKIN,
     ALL_COMPANY_BANK: process.env.ALL_COMPANY_BANK,
     ALL_CRIMINAL: process.env.ALL_CRIMINAL,
@@ -130,6 +131,6 @@ export default {
     ALL_EDITCREDIT: process.env.ALL_EDITCREDIT,
     ALL_WHEEL: process.env.ALL_WHEEL,
     BASIC_AUTH_USERNAME: process.env.BASIC_AUTH_USERNAME,
-    BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD
+    BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
   },
 };
