@@ -1,4 +1,5 @@
 // เชครีพอตเมมเบอร์
+import dayjs from "dayjs";
 export async function getReportmember({ commit }, fillter = {}) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -310,8 +311,8 @@ export async function getManualEditCredit(context, params) {
 export function getTransactionMember(context, params) {
   // console.log(context.state)
   // return
-
   return new Promise(async (resolve, reject) => {
+    
     try {
       let response = await this.$axios.get(
         `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
@@ -413,6 +414,13 @@ export function PostEditTopupCredit(context, body) {
     body.ip_operator = context.rootState.auth.ip
     body.company = context.rootState.auth.company
     body.agent = context.rootState.auth.agent
+    body.created_at = dayjs().toISOString()
+    if(body.smsdatetime){
+      body.smsdatetime = dayjs().format("YYYY-MM-DD ") + body.smsdatetime
+    } else {
+      body.smsdatetime = dayjs().format("YYYY-MM-DD HH:mm")
+    }
+
     console.log(body)
     try {
       let response = await this.$axios.post(

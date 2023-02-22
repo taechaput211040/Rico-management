@@ -309,7 +309,7 @@ export default {
       this.datasetting = response;
       let message = await this.getMessage();
       this.message = message;
-      this.notificate = await this.$store.dispatch("setting/getIncome");
+      // this.notificate = await this.$store.dispatch("setting/getIncome");
     } catch (error) {
       console.log(error);
     }

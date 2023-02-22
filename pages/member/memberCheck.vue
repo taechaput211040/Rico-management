@@ -192,7 +192,17 @@ export default {
       turn_fix:null,
       dialogFixTurn: false,
 
-
+      ip_data_mock: {
+        code: "ยังไม่มัข้อมูล",
+        created_at: "ยังไม่มัข้อมูล",
+        device: "ยังไม่มัข้อมูล",
+        game_name: "ยังไม่มัข้อมูล",
+        id: "",
+        ip: "ip",
+        provider_name: "ยังไม่มัข้อมูล",
+        updated_at: "เวลาล่าสุด",
+        username: "username"
+      },
       ip_data: {
         code: "",
         created_at: "",
@@ -355,7 +365,7 @@ export default {
         this.serchsuccess = true;
         console.log(this.username)
         let response = await this.getTurnByid(this.username);
-        this.ip_data = response.data.ip_data;
+        this.ip_data = response.data.ip_data? response.data.ip_data : this.ip_data_mock;
         this.turn_fix = response.data.turn
         const display_turn = await this.mapTurn(response.data)
 

@@ -1,5 +1,26 @@
 export function getCashback(context) {
   return new Promise(async (resolve, reject) => {
+//     try {
+//       let { data } = await this.$axios.get(
+//         `${
+//           process.env.AL_CASHBACK
+//         }/api/Promotion/Auto/Main/${localStorage.getItem(
+//           "company"
+//         )}/${localStorage.getItem("agent")}`
+//       );
+
+//       context.commit("set_promotion", data);
+
+//       let bonuslist = data.map(x=>{
+//         return {text:x.promotionname,value:x.id}
+//       })
+// bonuslist.unshift({text:'ไม่รับโบนัส',value:'0'})
+//       context.commit("set_bonuslist",bonuslist);
+//       resolve(data);
+//     } catch (error) {
+//       reject(error);
+//     }
+  
     try {
       const response = {
         data: {

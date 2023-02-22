@@ -129,9 +129,11 @@
               }}</span>
             </template> -->
 
-            <template #[`item.created_at`]="{ item }">{{created_at | dateFormat}}</template>
-            <template #[`item.smsdatetime`]="{ item }">{{smsdatetime | dateFormat}}</template>
-            <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
+            <template #[`item.created_at`]="{ item }">{{renderDate2( item.created_at )}}</template>
+            <template #[`item.smsdatetime`]="{ item }">{{renderDate2(item.smsdatetime )}}</template>
+            <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank> 
+            
+            </template>
           </v-data-table>
         </v-card>
       </v-dialog>
@@ -147,6 +149,11 @@
                 options_withdraw.itemsPerPage * (options_withdraw.page - 1) +
                   (index + 1)
               }}</span>
+            </template>
+            <template #[`item.requsettime`]="{ item }">
+              <span class="font-weight-bold">
+                {{ renderDate(item.requsettime) }}
+              </span>
             </template>
             <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
           </v-data-table>
@@ -425,7 +432,17 @@ export default {
       "changeStatus",
       "editMember"
     ]),
-   
+    renderDate2(date){
+      if((new Date(date).getSeconds() > 0) ){
+        return  dayjs(new Date(date)).format("YYYY-MM-DD HH:mm:ss")
+      }
+    return '-'
+    },
+    renderDate(date){
+     
+     
+     return  dayjs(new Date(date)).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
+   },
    async editmemberByOperator(){
 
 

@@ -206,6 +206,28 @@
         >
       </v-card-actions>
     </v-card>
+    <v-dialog v-model="dialogRegister" max-width="290">
+      <v-card>
+        <v-card-title>
+          <h4>สมัครสมาชิกสำเร็จ</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+         
+          <div ref="copytext" id="texttoCopoy">
+             username: {{ submit_result.username }} <br/>
+             password: {{ submit_result.password }}
+          </div>
+          
+          <div class="my-2 "> <v-btn center color="green"  @click="copyCode()"> คัดลอก</v-btn>  </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="primary" small @click="dialogRegister = false"> ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-flex>
 </template>
 
@@ -214,6 +236,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
+      submit_result:{username:'',password:''},
       know_from_list:[
         {text:'FACEBOOK',value:'FACEBOOK'},
         {text:'GOOGLE',value:'GOOGLE'},
@@ -248,6 +271,7 @@ export default {
         { value: "TRUEWALLET", text: "TRUEWALLET - ทรูวอเล็ต" },
         { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
       ],
+      dialogRegister:false,
       formRegister: {
         name: null,
         lastname: null,
@@ -294,6 +318,24 @@ export default {
       "getPromotion"
     ]),
     ...mapActions("member", ["createMember"]),
+    selectText(element) {
+      var range;
+      if (document.selection) {
+        // IE
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        range = document.createRange();
+        range.selectNode(element);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+    },
+    copyCode() {
+      this.selectText(this.$refs.copytext); // e.g. <div ref="text">
+      document.execCommand("copy");
+    },
     createUsername() {
       this.formRegister.username =
         this.$store.state.auth.company + this.$store.state.auth.agent;
@@ -324,7 +366,9 @@ export default {
         }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
-            await this.createMember(this.formRegister);
+           let result =  await this.createMember(this.formRegister);
+           this.submit_result = result.data
+           this.dialogRegister = true
             this.$swal({
               icon: "success",
               title: "สมัครสมาชิกสำเร็จ",

@@ -136,8 +136,8 @@ export default {
         username: this.username,
         provider: undefined ? undefined : this.$route.query.group,
         roundid: undefined,
-        starttime: dateFill.start,
-        endtime: dateFill.end
+        starttime: dayjs(dateFill.start).toISOString(),
+        endtime: dayjs(dateFill.end).toISOString()
       };
       return parameter;
     },

@@ -24,7 +24,7 @@
                     <v-text-field class="mb-2" v-model="formEditCredit.credit" dense outlined type="number"
                       placeholder="กรอกจำนวนเงิน" hide-details="auto"></v-text-field>
                     เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)
-                    <el-time-picker class="full-width mb-2" v-model="formEditCredit.created_at" format="HH:mm"
+                    <el-time-picker class="full-width mb-2" v-model="formEditCredit.smsdatetime" format="HH:mm"
                       arrow-control placeholder="เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)" style="width: 100%">
                     </el-time-picker>
                     หมายเหตุ (ไม่บังคับ)
@@ -389,7 +389,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("auth", ["menu"]),
+    ...mapState("auth", ["menu","operator"]),
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("manageMember_write")) return true;
@@ -404,6 +404,8 @@ export default {
     },
     async editTopupCredit_confirm() {
       this.isLoading = true
+      this.formEditCredit.type ='เติม'
+      this.formEditCredit.remark +=` เติมเงิน ${this.formEditCredit.username}  โดย ${this.operator}`
       const result = await this.PostEditTopupCredit(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -437,6 +439,8 @@ export default {
     },
     async editCutcredit_confirm() {
       this.isLoading = true
+      this.formEditCredit.type ='ตัด'
+      this.formEditCredit.remark +=` ตัดเครดิต ${this.formEditCredit.username}  โดย ${this.operator}`
       const result = await this.PostEditCutCredit(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -468,6 +472,8 @@ export default {
     },
     async editTopupBonus_confirm() {
       this.isLoading = true
+      this.formEditCredit.type ='โบนัส'
+      this.formEditCredit.remark +=` เติมโบนัส ${this.formEditCredit.username} โดย ${this.operator}`
       const result = await this.PostEditTopupBonus(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -496,6 +502,7 @@ export default {
     async serchdata() { },
     refreshform() {
       this. formEditCredit= {
+        smsdatetime:null,
         created_at: "",
         username: "",
         credit: 0,

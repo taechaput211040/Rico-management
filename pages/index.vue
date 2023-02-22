@@ -180,10 +180,10 @@
               <div class="text-center my-3 my-md-2 showdetail">
                 <v-chip class="font-weight-bold pa-2 elevation-2" color="grey darken-4" label x-small dark><v-icon
                     class="mr-1" small>mdi-timer</v-icon>เติม</v-chip><br />
-                {{ item.created_at ?? item.deposit_time | dateFormat }}<br />
+                {{ renderDate2(item.created_at ?? item.deposit_time) }}<br />
                 <v-chip class="font-weight-bold pa-2 elevation-2 mt-2" color="grey darken-4" dark label x-small>
                   <v-icon class="mr-1" small>mdi-message-processing</v-icon>SMS</v-chip><br />
-                {{ item.smsdatetime ?? item.sms_time | dateFormat }}<br />
+                {{ renderDate( item.smsdatetime ?? item.sms_time)  }}<br />
               </div>
             </template>
             <template #[`item.credit`]="{ item }">
@@ -249,16 +249,16 @@
                 <div class="text-center my-3 my-md-2 showdetail">
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip><br />
-                  {{ item.requsettime }}<br />
+                  {{ renderDate(item.requsettime) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip><br />
-                  {{ item.transferTime }}<br />
+                  {{ item.transferTime  }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตก่อน</v-chip><br />
-                  {{ item.bfcredit }}<br />
+                  {{ item.bfcredit?.toFixed(2) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small dark>
                     <v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตหลัง</v-chip><br />
-                  {{ item.afcredit }}
+                  {{ item.afcredit?.toFixed(2) }}
                 </div>
               </td>
             </tr>
@@ -366,16 +366,16 @@
                 <div class="text-center my-3 my-md-2 showdetail">
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip><br />
-                  {{ item.requsettime }}<br />
+                  {{ renderDate(item.requsettime)  }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip><br />
                   {{ item.transferTime }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตก่อน</v-chip><br />
-                  {{ item.bfcredit }}<br />
+                  {{ item.bfcredit?.toFixed(2) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small dark>
                     <v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตหลัง</v-chip><br />
-                  {{ item.afcredit }}
+                  {{ item.afcredit?.toFixed(2) }}
                 </div>
               </td>
               <td>
@@ -876,6 +876,8 @@
   </v-flex>
 </template>
 <script>
+
+import dayjs from 'dayjs';
 import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 import ImgBank from "../components/ImgBank.vue";
 import GradientInput from "../components/palette/GradientInput.vue";
@@ -1114,6 +1116,17 @@ export default {
       "updateWithdrawlist",
       "addWithdraw"
     ]),
+    renderDate2(date){
+      if((new Date(date).getSeconds() > 0) ){
+        return  dayjs(new Date(date)).format("YYYY-MM-DD HH:mm:ss")
+      }
+    return '-'
+    },
+    renderDate(date){
+     
+     
+      return  dayjs(new Date(date)).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
+    },
     approveWd(item) {
       (this.withdraw_temp = item), (this.dialogApproveWD = true);
     },
