@@ -233,9 +233,23 @@ export default {
       this.isLoading = true;
       await this.saveCashback(this.cashback);
       this.isLoading = false;
+      this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
     },
     switchstatus() {
       this.submitCashback();
+      this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
     },
     selectFile(value) {
       if (value) {

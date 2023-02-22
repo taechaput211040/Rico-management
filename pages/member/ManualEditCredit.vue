@@ -281,14 +281,14 @@ export default {
         type: null,
         remark: "รายการแก้ไข",
         turn: {
-          tslot: "2",
-          tsportbook: "2",
-          tesport: "2",
-          tother: "2",
-          tcasino: "2",
-          tlotto: "2",
+          tslot: "1",
+          tsportbook: "1",
+          tesport: "1",
+          tother: "1",
+          tcasino: "1",
+          tlotto: "1",
           twidthdraw: "10000",
-          tfishing: "2"
+          tfishing: "1"
         }
 
       },
