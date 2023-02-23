@@ -8,7 +8,7 @@ variables:
 services:
   - docker:19-dind
 
-build-test:
+test-to-sharehost:
   stage: build
   variables:
     DEPLOY_CURL_COMMAND: |
@@ -26,7 +26,7 @@ build-test:
     - docker pull $CI_REGISTRY_IMAGE:main
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
-    - docker run --rm $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
+    - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
     - eval $DEPLOY_CURL_COMMAND
 # build:
 #   stage: build
