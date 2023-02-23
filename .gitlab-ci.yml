@@ -12,6 +12,8 @@ test-to-sharehost:
   stage: build
   variables:
     DEPLOY_AUTH: "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN"
+    DEPLOY_PATH: "%2Fpublic%2F$DEPLOY_DOMAIN"
+    DEPLOY_UPLOAD_URL: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
   except:
     - tags
   before_script:
@@ -19,9 +21,7 @@ test-to-sharehost:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE
     - IMAGE_TAG="$(echo "$CI_BUILD_REF_NAME" | tr '/' '-')"
   script:
-    - DEPLOY_PATH="%2Fpublic%2F$DEPLOY_DOMAIN"
-    - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
-    - DEPLOY_UPLOAD_COMMAND=$(echo "curl --location '$CPANEL_HOST' --header $DEPLOY_AUTH --form '=@"/usr/output/dist-ci.zip"'")
+    - DEPLOY_UPLOAD_COMMAND=$(echo "curl --location '$DEPLOY_UPLOAD_URL' --header $DEPLOY_AUTH --form '=@"/usr/output/dist-ci.zip"'")
     - IMAGE_TAG=main
     - echo $DEPLOY_UPLOAD_COMMAND
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
