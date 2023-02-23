@@ -11,8 +11,9 @@ services:
 test-to-sharehost:
   stage: build
   variables:
-    DEPLOY_CURL_COMMAND: |
-      curl --location "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1" --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN" --form '=@"/usr/output/dist-ci.zip"'
+    DEPLOY_UPLOAD_URL: $CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1
+    DEPLOY_UPLOAD_COMMAND: >
+      curl --location $DEPLOY_UPLOAD_URL --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN" --form '=@"/usr/output/dist-ci.zip"'
   except:
     - tags
   before_script:
@@ -24,8 +25,8 @@ test-to-sharehost:
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
-    - echo $DEPLOY_CURL_COMMAND
-    - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl $DEPLOY_CURL_COMMAND
+    - echo $DEPLOY_UPLOAD_COMMAND
+    - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl $DEPLOY_UPLOAD_COMMAND
 # build:
 #   stage: build
 #   only:
