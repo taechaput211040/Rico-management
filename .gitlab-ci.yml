@@ -26,6 +26,7 @@ test-to-sharehost:
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
+    - echo $DEPLOY_CURL_COMMAND
     - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl $DEPLOY_CURL_COMMAND
 # build:
 #   stage: build
