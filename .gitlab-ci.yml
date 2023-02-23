@@ -28,10 +28,9 @@ push-to-sharehost:
   stage: deploy
   variables:
     DEPLOY_CURL_COMMAND: |
-      curl --location '$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=
-      /public/$DEPLOY_DOMAIN&overwrite=1' \
-      --header 'Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN' \
-      --form '=@"./output/dist.zip"'
+      curl --location "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1" \
+      --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN" \
+      --form '=@"./output/dist-ci.zip"'
   when: manual
   except:
     - tags
@@ -41,5 +40,5 @@ push-to-sharehost:
   script:
     - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
-    - docker run -it --rm $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist.zip
+    - docker run -it --rm $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
     - eval $DEPLOY_CURL_COMMAND
