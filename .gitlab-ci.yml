@@ -12,8 +12,8 @@ test-to-sharehost:
   stage: build
   variables:
     DEPLOY_CURL_COMMAND: |
-      curl --location "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1" \
-      --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN" \
+      curl --location "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1"
+      --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN"
       --form '=@"/usr/output/dist-ci.zip"'
   except:
     - tags
