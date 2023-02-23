@@ -38,11 +38,12 @@ test-to-sharehost:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE
     - IMAGE_TAG="$(echo "$CI_BUILD_REF_NAME" | tr '/' '-')"
   script:
-    - ENCODE_SCRIPT=$URL_ENCODE
-    - echo $ENCODE_SCRIPT > urlencode.sh
-    - chmod +x ./urlencode.sh
+    # - ENCODE_SCRIPT=$URL_ENCODE
+    # - echo $ENCODE_SCRIPT > urlencode.sh
+    # - chmod +x ./urlencode.sh
     - DEPLOY_PRE_PATH=/public/$DEPLOY_DOMAIN
-    - DEPLOY_PATH=$(./urlencode.sh $DEPLOY_PATH)
+    - DEPLOY_PATH=$(python -c "import urllib, sys; print urllib.quote(sys.argv[1])"  "$DEPLOY_PRE_PATH")
+    # - DEPLOY_PATH=$(./urlencode.sh $DEPLOY_PATH)
     - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - docker pull $CI_REGISTRY_IMAGE:main
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
