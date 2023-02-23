@@ -23,6 +23,7 @@ test-to-sharehost:
     - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - DEPLOY_UPLOAD_COMMAND=$(echo "curl --location $DEPLOY_UPLOAD_URL --header $DEPLOY_AUTH --form '=@"/usr/output/dist-ci.zip"'")
     - IMAGE_TAG=main
+    - echo $DEPLOY_UPLOAD_COMMAND
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
