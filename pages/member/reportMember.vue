@@ -142,8 +142,13 @@
           <h3 class="pa-3">
             รายการถอนเงินล่าสุด : {{ items_withdraw.length }} รายการ
           </h3>
-          <v-data-table :options.sync="options_withdraw" :headers="headers_withdraw" :items="items_withdraw"
-            pagination.sync="pagination">
+          <v-data-table show-expand  hide-default-footer single-expand 
+          :options.sync="options_withdraw" 
+          :headers="headers_withdraw" 
+          :items="items_withdraw"
+            pagination.sync="pagination"
+            
+            >
             <template #[`item.no`]="{ index }">
               <span class="font-weight-bold">{{
                 options_withdraw.itemsPerPage * (options_withdraw.page - 1) +
@@ -155,7 +160,28 @@
                 {{ renderDate(item.requsettime) }}
               </span>
             </template>
+            <template #[`item.data-table-expand`]="{ isExpanded, expand }">
+              <div class="px-3">
+                <v-btn @click="expand(true)" v-if="!isExpanded" color="black" dark small>
+                  ดูเพิ่มเติม <v-icon right>mdi-menu-down</v-icon></v-btn>
+                <v-btn @click="expand(false)" v-if="isExpanded" color="black" dark small>ปิด<v-icon
+                    right>mdi-menu-up</v-icon></v-btn>
+              </div>
+            </template>
+         
             <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank></template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                <div v-if="validateItemQr(item)">
+                  <qr-code  :text="remark_render.qrcode"></qr-code>
+                </div>
+                <div class="text-center font-weight-bold purple--text" v-else > 
+                  {{ item.remark }}
+                  
+                </div>
+            
+              </td>
+            </template>
           </v-data-table>
         </v-card>
       </v-dialog>
@@ -381,12 +407,14 @@ export default {
         { text: "ธนาคารลูกค้า", align: "center", value: "bankName" },
         { text: "username", align: "center", value: "username" },
         { text: "ประเภท", align: "center", value: "type" },
-        { text: "ยอดโอน", align: "center", value: "amount" },
+        { text: "ยอดถอน", align: "center", value: "amount" },
+        { text: "เครดิตก่อนถอน", align: "center", value: "bfcredit" },
+        { text: "เครดิตหลังถอน", align: "center", value: "afcredit" },
         { text: "เวลากดถอน", align: "center", value: "requsettime" },
         { text: "เวลาโอนสำเร็จ", align: "center", value: "transferTime" },
         { text: "สถานะ", align: "center", value: "status" },
         { text: "กดถอนโดย", align: "center", value: "operator" },
-        { text: "หมายเหตุ", align: "center", value: "remark" },
+        { text: "หมายเหตุ", align: "center", value: "data-table-expand" },
       ],
       items_deposit: [],
       items_withdraw: [],
@@ -396,6 +424,8 @@ export default {
         id: "",
         password: "",
       },
+      remark_render:{remakr:null,qrcode:null,af_balance:null,bf_balance:null},
+    
     };
   },
   watch: {
@@ -433,6 +463,14 @@ export default {
       "changeStatus",
       "editMember"
     ]),
+    validateItemQr(item){
+    
+      if(item.remark.startsWith("QR_")){
+        this.remark_render.qrcode = item.remark.slice(0,3)
+        return true
+      } 
+     return false
+    },
     renderDate2(date){
       if((new Date(date).getSeconds() > 0) ){
         return  dayjs(new Date(date)).format("YYYY-MM-DD HH:mm:ss")
@@ -499,7 +537,18 @@ export default {
    
    },
    
+   showRemark(item) {
+      if(item.remark.startsWith("QR_")) {
+        this.remark_render.qrcode = item.remark.slice(3);
+        this.remark_render.bf_balance = item.bfAmount;
+        this.remark_render.af_balance = item.afAmount;
+      } else {
+        this.remark_render.remark = item.remark;
+        this.remark_render.qrcode = null;
+      }
 
+      this.dialogRemark = true;
+    },
     checkStatusMember(status) {
       if (status == true) {
         return 'ปกติ'

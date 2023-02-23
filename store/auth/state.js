@@ -32,17 +32,14 @@ export default function() {
     dplist : [],
     wdlist : [],
     incomingSMS :[],
-    actionBankState: [
+    actionBankState: 
       {
-        kbank:"start"
-      },
-      {
-        scb: "start"
-      },
-      {
+        kbank:"start",
+        scb: "start",
         true: "start"
-      }
-    ],
+      },
+    
+    
     gameType: {
       SL: "SLOT",
       LC: "LIVE-CASINO",

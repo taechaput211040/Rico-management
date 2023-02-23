@@ -66,8 +66,7 @@
                     <v-text-field class="mb-2" dense outlined v-model="formEditCredit.remark" clearable
                       placeholder="หมายเหตุ " hide-details="auto" required></v-text-field>
                     <v-card-actions>
-                      <v-btn :disabled="canwrite" color="error" class="ma-auto"
-                        @click="editCutCredit()">ตัดเครดิต</v-btn>
+                      <v-btn :disabled="canwrite" color="error" class="ma-auto" @click="editCutCredit()">ตัดเครดิต</v-btn>
                     </v-card-actions>
                   </div>
                 </v-expansion-panel-content>
@@ -116,15 +115,14 @@
                           <v-text-field dense v-model="formEditCredit.turn.tcasino" label="เทิร์น CASINO" outlined
                             type="number" clearable hide-details="auto"></v-text-field></v-col>
                         <v-col cols="6">
-                          <v-text-field dense label="เทิร์น LOTTO" outlined v-model="formEditCredit.turn.tlotto"
-                            clearable type="number" hide-details="auto"></v-text-field></v-col>
+                          <v-text-field dense label="เทิร์น LOTTO" outlined v-model="formEditCredit.turn.tlotto" clearable
+                            type="number" hide-details="auto"></v-text-field></v-col>
                         <v-col cols="6">
                           <v-text-field dense label="เทิร์น FISHING" outlined v-model="formEditCredit.turn.tfishing"
                             clearable type="number" hide-details="auto"></v-text-field></v-col>
                         <v-col cols="12">
-                          <v-text-field dense v-model="formEditCredit.turn.twidthdraw"
-                            label="อั้นถอน(กรอกเป็นจำนวนเงิน)" outlined clearable type="number"
-                            hide-details="auto"></v-text-field></v-col>
+                          <v-text-field dense v-model="formEditCredit.turn.twidthdraw" label="อั้นถอน(กรอกเป็นจำนวนเงิน)"
+                            outlined clearable type="number" hide-details="auto"></v-text-field></v-col>
                       </v-row>
                     </div>
                     <span class="error--text">หมายเหตุ: *** การแก้ไขเครดิตในหน้านี้ จะทำการ เติม โบนัส
@@ -142,7 +140,8 @@
         </v-row></v-expansion-panels>
       <v-row class="pa-3">
         <h2 class="mb-2">ค้นหารายการแก้ไข</h2>
-        <search-filter :searchinput="false" :filter="dateFilter" @search="searchdata"></search-filter>
+        <search-filter :searchinput="true" :filter="dateFilter" @search="searchdata(dateFilter.inputfilter)"
+          @yesterday="getYesterDay()" @today="getToday()"></search-filter>
       </v-row>
       <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
         <v-row class="ma-1 my-2">
@@ -151,14 +150,29 @@
             class="ma-1 font-weight-bold">ตัดเครดิต</v-btn><v-btn color="primary" outlined
             class="ma-1 font-weight-bold">เติมเครดิต</v-btn><v-spacer></v-spacer>
           <span class="font-weight-bold my-2">
-            จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate }} ถึงวันที่
-            {{ dateFilter.endDate }} ทั้งหมดจำนวน
-            {{ itemcredit.length }} รายการ</span>
+            จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate | dateFormat}} ถึงวันที่
+            {{ dateFilter.endDate  | dateFormat }} ทั้งหมดจำนวน
+            {{ itemcredit?.meta?.itemCount }} รายการ</span>
         </v-row>
 
         <v-card class="mt-5">
-          <v-data-table show-expand hide-default-footer class="elevation-1" :headers="header" :items="itemcredit"
-            single-expand>
+          <v-data-table
+    
+          
+          :headers="header" :items="itemcredit.data" :options.sync="options" :footer-props="{
+            showFirstLastPage: true,
+            'items-per-page-text': '',
+            'items-per-page-options': [50, 100],
+          }" :server-items-length="
+  itemcredit.meta ? itemcredit.meta.itemCount : 0
+" :items-per-page="limit"
+
+
+
+>
+            <template #[`item.no`]="{ index }">
+              {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
+            </template>
             <template #[`item.data-table-expand`]="{ isExpanded, expand }">
               <div class="px-2">
                 <v-btn @click="expand(true)" v-if="!isExpanded" color="black" dark small>ดูเพิ่มเติม</v-btn>
@@ -179,7 +193,7 @@
             </template>
             <template #[`item.created_at`]="{ item }">
               <span>
-                {{ item.created_at |dateFormat }}
+                {{ item.created_at | dateFormat }}
               </span>
             </template>
           </v-data-table>
@@ -256,6 +270,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import LoadingPage from "../../components/LoadingPage.vue";
 import moment from "moment";
 import { mapActions, mapState } from "vuex";
@@ -340,21 +355,15 @@ export default {
           class: "font-weight-bold col-1",
         },
         {
-          text: "เครกิตก่อนเติม",
+          text: "เครกิตก่อน",
           value: "bfcredit",
           align: "center",
           sortable: false,
           class: "font-weight-bold col-1",
         },
+
         {
-          text: "เติม",
-          value: "topupcredit",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold col-1",
-        },
-        {
-          text: "เครดิตหลังเติม",
+          text: "เครดิตหลัง",
           value: "afcredit",
           align: "center",
           sortable: false,
@@ -376,26 +385,41 @@ export default {
           cellClass: "font-weight-bold",
         },
       ],
+  
       itemcredit: [],
       tab: null,
       time: "",
+
+      
+      options: {},
       opento: false,
       dateFilter: {
-        startDate: new Date().toISOString().substr(0, 10),
-        startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+        inputfilter: "",
+        startDate: dayjs().startOf('day').toISOString(),
+        endDate: dayjs().endOf('day').toISOString(),
+        options: 'username',
       },
+      limit: 50,
     };
   },
   computed: {
-    ...mapState("auth", ["menu","operator"]),
+    ...mapState("auth", ["menu", "operator"]),
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("manageMember_write")) return true;
         else return false;
       }
     },
+  },
+  watch: {
+    options: {
+      async handler() {
+        await this.searchdata();
+      },
+    },
+  },
+  async fetch() {
+    await this.searchdata()
   },
   methods: {
     ...mapActions("member", ["getManualEditCredit", "PostEditTopupCredit", "PostEditCutCredit", "PostEditTopupBonus"]),
@@ -404,8 +428,8 @@ export default {
     },
     async editTopupCredit_confirm() {
       this.isLoading = true
-      this.formEditCredit.type ='เติม'
-      this.formEditCredit.remark +=` เติมเงิน ${this.formEditCredit.username}  โดย ${this.operator}`
+      this.formEditCredit.type = 'เติม'
+      this.formEditCredit.remark += ` เติมเงิน ${this.formEditCredit.username}  โดย ${this.operator}`
       const result = await this.PostEditTopupCredit(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -439,8 +463,8 @@ export default {
     },
     async editCutcredit_confirm() {
       this.isLoading = true
-      this.formEditCredit.type ='ตัด'
-      this.formEditCredit.remark +=` ตัดเครดิต ${this.formEditCredit.username}  โดย ${this.operator}`
+      this.formEditCredit.type = 'ตัด'
+      this.formEditCredit.remark += ` ตัดเครดิต ${this.formEditCredit.username}  โดย ${this.operator}`
       const result = await this.PostEditCutCredit(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -472,8 +496,8 @@ export default {
     },
     async editTopupBonus_confirm() {
       this.isLoading = true
-      this.formEditCredit.type ='โบนัส'
-      this.formEditCredit.remark +=` เติมโบนัส ${this.formEditCredit.username} โดย ${this.operator}`
+      this.formEditCredit.type = 'โบนัส'
+      this.formEditCredit.remark += ` เติมโบนัส ${this.formEditCredit.username} โดย ${this.operator}`
       const result = await this.PostEditTopupBonus(this.formEditCredit)
       if (result.data.status == 'success') {
         this.$swal({
@@ -499,10 +523,10 @@ export default {
       }
 
     },
-    async serchdata() { },
+
     refreshform() {
-      this. formEditCredit= {
-        smsdatetime:null,
+      this.formEditCredit = {
+        smsdatetime: null,
         created_at: "",
         username: "",
         credit: 0,
@@ -522,24 +546,82 @@ export default {
 
       }
     },
-    async searchdata() {
+  
+   
+    getParameter() {
+
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+        start: this.dateFilter.startDate,
+        end: this.dateFilter.endDate,
+
+        keyword: this.dateFilter.inputfilter
+      };
+      return parameter;
+    },
+    setYesterday() {
+
+      this.dateFilter.startDate = dayjs().add(-1, 'day').format('YYYY-MM-DD')
+      this.dateFilter.startTime = dayjs().add(-1, 'day').format('HH:mm:ss')
+      this.dateFilter.endDate = dayjs().endOf(-1, 'day').format('YYYY-MM-DD')
+      this.dateFilter.endTime = dayjs().endOf(-1, 'day').format('HH:mm:ss')
+
+
+
+    },
+    async searchdata(input = null) {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.keyword = input
+      console.log(params)
       try {
-        let response = await this.getManualEditCredit(this.dateFilter);
-        this.itemcredit = response.data.data;
+        let data = await this.getManualEditCredit(params);
+        this.itemcredit = data;
+        this.isLoading = false;
       } catch (error) {
         console.log(error);
+        this.isLoading = false;
       }
     },
-    getthaidate(timethai) {
-      const time = moment(timethai)
-        .add(7, "hours")
-        .format("YYYY-MM-DD เวลา HH:mm:ss");
-      return time;
+    async getYesterDay() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      await this.setYesterday()
+
+
+      params.start = dayjs().add(-1, 'day').startOf('day').toISOString()
+      params.end = dayjs().add(-1, 'day').endOf('day').toISOString()
+      try {
+        console.log(params);
+        const data = await this.getManualEditCredit(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
     },
+    async getToday() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.start = dayjs().startOf('day').toISOString()
+      params.end = dayjs().endOf('day').toISOString()
+      try {
+        console.log(params);
+        const data = await this.getManualEditCredit(params);
+        this.itemSearch = data;
+        console.log(this.itemSearch, "data");
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    }
+  
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

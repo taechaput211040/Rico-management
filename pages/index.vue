@@ -153,7 +153,7 @@
             รายการฝากเงินล่าสุด 20 รายการ
           </v-card-title>
 
-          <v-data-table v-if="dplist.length > 0" :headers="depositColumn" :items="dplist" :items-per-page="5">
+          <v-data-table v-if="dplist.length > 0" :headers="depositColumn" :items="dplist" :items-per-page="20">
             <template #[`item.no`]="{ item }">
               <div class="text-center my-3 my-md-2 showdetail">
                 <img-bank :value="item.companyBank"></img-bank>
@@ -237,6 +237,11 @@
                     โดย:
                     <v-chip x-small class="my-1 white--text elevation-2" color="pink" label>
                       {{ item.operator }}</v-chip>
+                  </div>
+                  <div class="my-1 font-weight-bold" v-if="item.type == 'affiliate'">
+                
+                    <v-chip x-small class="my-1 white--text elevation-2" color="red" label>
+                      {{ item.type }}</v-chip>
                   </div>
                 </div>
               </td>
@@ -908,7 +913,8 @@ export default {
  
   async created() {
     try {
-      await this.getsatatusBank();
+      await this.Autostatus();
+      // await this.getsatatusBank();
       await this.GetInfomation();
       console.log("getinfo done");
      
@@ -1397,7 +1403,7 @@ export default {
     async getsatatusBank() {
       console.log("getsatatusBank");
       try {
-        await this.Autostatus();
+     
 
         console.log("Autostatus done");
       } catch (error) {

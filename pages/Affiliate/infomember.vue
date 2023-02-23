@@ -53,7 +53,7 @@
                             รายได้วันนี้
                             <hr class="solid my-2" />
                             <div class="text-end  font-weight-bold">
-                              {{ userinfo.profit_today.toFixed(2) }}
+                              {{ userinfo.profit_today?.toFixed(2) }}
                             </div>
                           </div>
                         </div>
@@ -62,7 +62,7 @@
                             รายได้ปัจจุบันที่ยังไม่ได้รับ
                             <hr class="solid my-2" />
                             <div class="text-end  font-weight-bold">
-                              {{ userinfo.profit_balance.toFixed(2) }}
+                              {{ userinfo.profit_balance?.toFixed(2) }}
                             </div>
                           </div>
                         </div>
@@ -71,7 +71,7 @@
                             รายสะสมได้ที่รับไปเเล้ว
                             <hr class="solid my-2" />
                             <div class="text-end  font-weight-bold">
-                              {{ userinfo.recieved_profit.toFixed(2) }}
+                              {{ userinfo.recieved_profit?.toFixed(2) }}
                             </div>
                           </div>
                         </div>
@@ -151,7 +151,7 @@
                             <div
                               class="text-end success--text font-weight-bold"
                             >
-                              {{ userinfo.all_deposit_downline.toFixed(2) }}
+                              {{ userinfo.all_deposit_downline?.toFixed(2) }}
                               <span style="color: black"
                                 ><b
                                   ><small
@@ -174,7 +174,7 @@
                             <div
                               class="text-end success--text font-weight-bold"
                             >
-                              {{ userinfo.all_bonus.aff_deposit.toFixed(2) }}
+                              {{ userinfo.all_bonus.aff_deposit?.toFixed(2) }}
                             </div>
                           </div>
                         </div>
@@ -184,7 +184,7 @@
                             รายได้ ยอดเสีย downline สะสม
                             <hr class="solid my-2" />
                             <div class="text-end error--text font-weight-bold">
-                              {{ userinfo.all_bonus.aff_winlose.toFixed(2) }}
+                              {{ userinfo.all_bonus.aff_winlose?.toFixed(2) }}
                             </div>
                           </div>
                         </div>
@@ -194,7 +194,7 @@
                             รายได้ ยอดคอมมิชชั่น downline สะสม
                             <hr class="solid my-2" />
                             <div class="text-end  font-weight-bold">
-                              {{ userinfo.all_bonus.aff_commission.toFixed(2) }}
+                              {{ userinfo.all_bonus.aff_commission?.toFixed(2) }}
                             </div>
                           </div>
                         </div>

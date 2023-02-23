@@ -228,8 +228,18 @@ export function Autostatus(context) {
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}`
       );
-
-      context.commit("update_action_bank", response.data);
+      let status_auto
+      //[{"kbank":"start"},{"scb":"start"},{"true":"start"}]
+        if( Array.isArray(response.data)){
+           status_auto = {
+            kbank:response.data[0].kbank,
+            scb:response.data[0].scb,
+            true:response.data[0].true,
+          }
+        } else {
+          status_auto = response.data
+        }
+      context.commit("update_action_bank", status_auto);
 
       resolve(response);
       return response;

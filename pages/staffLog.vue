@@ -23,6 +23,9 @@
         <template #[`item.no`]="{index}">
           {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
         </template>
+        <template #[`item.created_at`]="{item}">
+          {{ item.created_at | dateFormat  }}
+        </template>
       </v-data-table>
     </v-card>
   </div>

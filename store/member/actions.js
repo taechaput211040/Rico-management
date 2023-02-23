@@ -243,64 +243,21 @@ export async function getTransactionid({ commit, username }) {
 }
 //เชคข้อมูลปัจจุบัน transection
 //เเก้ไขเครดิต/รายการผิดพลาด
-export async function getManualEditCredit(context, params) {
+export async function getManualEditCredit(context, fillter = {}) {
 
-  //   try {
-  //     const response = {
-  //       data: {
-  //         data: [
-  //           {
-  //             afcredit: 0,
-  //             bfcredit: 0,
-  //             bonus: 0,
-  //             created_at: "2022-01-24T14:41:51.000000Z",
-  //             credit: 75,
-  //             id: 903,
-  //             operator: "nan mon",
-  //             remark:
-  //               "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-  //             topupcredit: 0,
-  //             type: "SYSTEMNODATA",
-  //             username: "BE9794691646"
-  //           },
-  //           {
-  //             afcredit: 0,
-  //             bfcredit: 0,
-  //             bonus: 0,
-  //             created_at: "2022-01-24T14:41:51.000000Z",
-  //             credit: 75,
-  //             id: 904,
-  //             operator: "nan mon",
-  //             remark:
-  //               "เติมเงินให้ BE9794691646 จำนวน 75 บาท ,รายการไม่เข้าระบบ,เติมตามเงื่อนไขโปรโมชั่น โปรดเช็ครายการฝาก,เติมโดย nan mon หมายเหตุเพิ่มเติม t",
-  //             topupcredit: 0,
-  //             type: "SYSTEMNODATA",
-  //             username: "BE9794691646"
-  //           }
-  //         ],
-  //         total_bonus: 0,
-  //         total_cutcredit: 100,
-  //         total_nodata: 2121
-  //       }
-  //     };
-  //     // let response = await api.get(`/api/getManualEditCredit`, {
-  //     //   params: {
-  //     //     ..fillter
-  //     //   }
-  //     // });
-  //     resolve(response);
-  //   } catch (error) {
-  //     reject(error);
-  //   }
-  // });
+  
   return new Promise(async (resolve, reject) => {
     try {
-      let response = await this.$axios.get(
+      let { data }  = await this.$axios.get(
         `${process.env.ALL_EDITCREDIT}/api/Edit/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
-        { params }
+        {
+          params: {
+            ...fillter
+          }
+        }
       );
-      console.log(response.data);
-      resolve(response);
+      console.log(data);
+      resolve(data);
     } catch (error) {
       reject(error);
     }
