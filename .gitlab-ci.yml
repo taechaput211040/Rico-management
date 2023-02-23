@@ -11,7 +11,8 @@ services:
 test-to-sharehost:
   stage: build
   variables:
-    URL_ENCODE: >
+    URL_ENCODE: |
+      <<-EOF
       urlencode() {
         old_lc_collate=$LC_COLLATE
         LC_COLLATE=C
