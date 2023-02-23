@@ -9,6 +9,8 @@
         :searchinput="false"
         :filter="dateFilter"
         @search="searchdata"
+        @yesterday="searchdata"
+        @today="searchdata"
       ></search-filter>
       <h2 class="mt-5">สรุปยอด กำไร / ขาดทุน</h2>
       <v-row class="mt-1">
