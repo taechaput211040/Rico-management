@@ -15,7 +15,7 @@ test-to-sharehost:
     DEPLOY_PATH: "%2Fpublic_html%2F$DEPLOY_DOMAIN"
     DEPLOY_UPLOAD_URL: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     DEPLOY_EXACT_SOURCE_DEST: "sourcefiles=$DEPLOY_PATH/dist-ci.zip&destfiles=%2Fpublic_html%2Fbetkubstar.com"
-    DEPLOY_EXACT_FILE: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=fileop&dir=$DEPLOY_PATH&op=extract&$DEPLOY_EXACT_SOURCE_DEST"
+    DEPLOY_EXACT_FILE_URL: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=fileop&dir=$DEPLOY_PATH&op=extract&$DEPLOY_EXACT_SOURCE_DEST"
   except:
     - tags
   before_script:
@@ -29,7 +29,7 @@ test-to-sharehost:
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
     - docker run --rm -v $PWD/output:/usr/output alpine/curl --location "$DEPLOY_UPLOAD_URL"  --header "$DEPLOY_AUTH" --form '=@"/usr/output/dist-ci.zip"'
-    - docker run --rm -v $PWD/output:/usr/output alpine/curl --location "$DEPLOY_UPLOAD_URL"  --header "$DEPLOY_AUTH" --form '=@"/usr/output/dist-ci.zip"'
+    - docker run --rm -v $PWD/output:/usr/output alpine/curl --location "$DEPLOY_EXACT_FILE_URL"  --header "$DEPLOY_AUTH"
 # build:
 #   stage: build
 #   only:
