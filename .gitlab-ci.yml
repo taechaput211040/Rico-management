@@ -42,9 +42,8 @@ test-to-sharehost:
     - ENCODE_SCRIPT=$URL_ENCODE
     - echo $ENCODE_SCRIPT > urlencode.sh
     - chmod +x ./urlencode.sh
-    - cat urlencode.sh
     - DEPLOY_PRE_PATH=/public/$DEPLOY_DOMAIN
-    - DEPLOY_PATH=$(python3 -c "import urllib, sys; print urllib.quote(sys.argv[1])"  "$DEPLOY_PRE_PATH")
+    - DEPLOY_PATH=$(./urlencode.sh $DEPLOY_PRE_PATH)
     # - DEPLOY_PATH=$(./urlencode.sh $DEPLOY_PATH)
     - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - docker pull $CI_REGISTRY_IMAGE:main
