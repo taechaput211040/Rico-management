@@ -15,6 +15,8 @@
         :searchinput="false"
         :filter="dateFilter"
         @search="searchdata"
+        @yesterday="searchdata"
+        @today="searchdata"
       ></search-filter>
       <v-row class="mt-3">
         <v-col lg="2" sm="4" md="4" cols="12" class="pa-2">

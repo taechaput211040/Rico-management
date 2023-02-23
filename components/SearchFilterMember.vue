@@ -134,7 +134,6 @@ export default {
       };
     },
     setToday() {
-
       return {
         startDate: dayjs().startOf('day').toISOString(),
         endDate: dayjs().endOf('day').toISOString(),

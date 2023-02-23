@@ -3,16 +3,22 @@
     <v-container>
       <v-row class="mb-2 pa-3"
         ><h2>รายการฝากเงินครั้งแรกของสมาชิก</h2>
-        <search-filter :filter="dateFilter" @search="searchdata"></search-filter
+        <search-filter
+          :filter="dateFilter"
+          @search="getData(dateFilter.inputfilter)"
+          :searchinput="true"
+          @yesterday="getYesterDay()"
+          @today="getToday()"
+        ></search-filter
       ></v-row>
 
       <v-row>
-        <v-col cols="12" sm="3" md="3">
+        <v-col cols="12" sm="4" md="4">
           <div class="card-child card-report elevation-5 text-center">
             <img
               src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
               alt=""
-              class=" img-icon icon-Logo"
+              class="img-icon icon-Logo"
             />
             <div>
               ยอดฝากแรกของสมาชิกรวม :<span
@@ -32,30 +38,30 @@
         </v-col>
       </v-row>
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
-        <div class=" pa-5 font-weight-bold">
-          จำนวนสมาชิกทั้งหมดตั้งเเต่วันที่
-          {{ date_start }} ถึงวันที่ {{ date_end }} จำนวนทั้งหมด
-          {{ itemdeposit.length }} คน
-        </div>
         <v-card width="100%" class="elevation-4 rounded-lg">
           <v-data-table
             show-expand
             class="elevation-1"
             :headers="headerCell"
             :items="itemdeposit"
-            hide-default-footer
+            :options.sync="options"
+            :footer-props="{
+              showFirstLastPage: true,
+              'items-per-page-text': '',
+              'items-per-page-options': [50, 100],
+            }"
             single-expand
           >
-            <template #[`item.no`]="{index}">
-              <span class="font-weight-bold">
-                {{ index + 1 }}
-              </span>
+            <template #[`item.no`]="{ index }">
+              <span class="font-weight-bold">{{
+                options.itemsPerPage * (options.page - 1) + (index + 1)
+              }}</span>
             </template>
 
-            <template #[`item.companyBank`]="{item}">
+            <template #[`item.companyBank`]="{ item }">
               <img-bank :value="item.companyBank"></img-bank>
             </template>
-            <template #[`item.data-table-expand`]="{isExpanded, expand }">
+            <template #[`item.data-table-expand`]="{ isExpanded, expand }">
               <div class="px-2">
                 <v-btn
                   @click="expand(true)"
@@ -75,12 +81,12 @@
                 >
               </div>
             </template>
-            <template #[`item.smsdatetime`]="{item}">
+            <template #[`item.smsdatetime`]="{ item }">
               <span>
                 {{ item.smsdatetime }}
               </span>
             </template>
-            <template #[`item.created_at`]="{item}">
+            <template #[`item.created_at`]="{ item }">
               <span>
                 {{ item.created_at }}
               </span>
@@ -100,6 +106,7 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -111,28 +118,28 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "ธนาคารเว็บ",
           value: "companyBank",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เวลาใน SMS",
           value: "smsdatetime",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เวลาเติม",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "USERNAME",
@@ -140,28 +147,28 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold primary--text"
+          cellClass: "font-weight-bold primary--text",
         },
         {
           text: "จำนวนเงิน",
           value: "amount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "จำนวนโบนัส",
           value: "bonusamount",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เครดิตหลังเติม",
           value: "afcredit",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "เติมโดย",
@@ -169,15 +176,15 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          cellClass: "font-weight-bold "
+          cellClass: "font-weight-bold ",
         },
         {
           text: "หมายเหตุ",
           value: "data-table-expand",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
       itemdeposit: [],
       depositbalance: "1630",
@@ -186,46 +193,77 @@ export default {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
-      }
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
     };
   },
-  computed: {
-    date_start(val) {
-      if (val) {
-        return this.$moment(String(this.dateFilter.startDate)).format(
-          "MM/DD/YYYY"
-        );
-      }
+  computed: {},
+  watch: {
+    options: {
+      async handler() {
+        await this.getData();
+      },
     },
-    date_end(val) {
-      if (val) {
-        return this.$moment(String(this.dateFilter.endDate)).format(
-          "MM/DD/YYYY"
-        );
-      }
-    }
-  },
-  async fetch() {
-    try {
-      let response = await this.getFirstdeposit();
-      this.itemdeposit = response.data.data;
-    } catch (error) {
-      console.log(error);
-    }
   },
   methods: {
-    ...mapActions("transaction", ["getFirstdeposit"]),
-    searchdata() {
-      console.log(this.dateFilter);
+    async getData() {
+      try {
+        let { data } = await this.getFirstdeposit();
+        this.itemdeposit = data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
-    getthaidate(timethai) {
-      const time = this.$moment(timethai)
-        .add(7, "hours")
-        .format("YYYY-MM-DD เวลา HH:mm:ss");
-      return time;
-    }
-  }
+    getParameter() {
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+        start: this.dateFilter.startDate,
+        end: this.dateFilter.endDate,
+        username: null,
+      };
+      return parameter;
+    },
+    setYesterday() {
+      this.dateFilter.startDate = dayjs().add(-1, "day").format("YYYY-MM-DD");
+      this.dateFilter.startTime = dayjs().add(-1, "day").format("HH:mm:ss");
+      this.dateFilter.endDate = dayjs().endOf(-1, "day").format("YYYY-MM-DD");
+      this.dateFilter.endTime = dayjs().endOf(-1, "day").format("HH:mm:ss");
+    },
+    async getYesterDay() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      await this.setYesterday();
+      params.start = dayjs().add(-1, "day").startOf("day").toISOString();
+      params.end = dayjs().add(-1, "day").endOf("day").toISOString();
+      try {
+        console.log(params);
+        const data = await this.getFirstdeposit(params);
+        this.itemdeposit = data;
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    },
+    async getToday() {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.start = dayjs().startOf("day").toISOString();
+      params.end = dayjs().endOf("day").toISOString();
+      try {
+        console.log(params);
+        const data = await this.getFirstdeposit(params);
+        this.itemdeposit = data;
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
+    },
+
+    ...mapActions("transaction", ["getFirstdeposit"]),
+  },
 };
 </script>
 
