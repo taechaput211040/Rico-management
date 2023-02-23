@@ -22,13 +22,11 @@ test-to-sharehost:
     # - IMAGE_TAG="$(echo "$CI_BUILD_REF_NAME" | tr '/' '-')"
     - IMAGE_TAG=$CI_COMMIT_SHORT_SHA
   script:
-    - DEPLOY_UPLOAD_COMMAND=$(echo "curl --location '$DEPLOY_UPLOAD_URL' --header '$DEPLOY_AUTH' --form '=@"/usr/output/dist-ci.zip"'")
     - IMAGE_TAG=main
-    - echo $DEPLOY_UPLOAD_COMMAND
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
-    - docker run --rm -v $PWD/output:/usr/output/dist-ci.zip alpine/curl $DEPLOY_UPLOAD_COMMAND
+    - docker run --rm -v $PWD/output:/usr/output alpine/curl --location '$DEPLOY_UPLOAD_URL' --header '$DEPLOY_AUTH' --form '=@"/usr/output/dist-ci.zip"
 # build:
 #   stage: build
 #   only:
