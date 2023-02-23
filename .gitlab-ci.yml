@@ -40,7 +40,7 @@ test-to-sharehost:
   script:
     - echo $URL_ENCODE >> urlencode.sh
     - chmod +x ./urlencode.sh
-    - DEPLOY_PATH="$(./urlencode.sh "/public/$DEPLOY_DOMAIN")"
+    - DEPLOY_PATH=$(bash urlencode.sh "/public/$DEPLOY_DOMAIN")
     - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - docker pull $CI_REGISTRY_IMAGE:main
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
