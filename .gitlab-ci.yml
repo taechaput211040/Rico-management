@@ -42,8 +42,8 @@ test-to-sharehost:
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
     - $URL_ENCODE
-    - DEPLOY_UPLOAD_URL= "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - DEPLOY_PATH="$(urlencode "/public/$DEPLOY_DOMAIN")"
+    - DEPLOY_UPLOAD_URL="$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl curl $DEPLOY_UPLOAD_COMMAND
 # build:
 #   stage: build
