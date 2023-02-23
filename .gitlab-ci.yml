@@ -11,9 +11,25 @@ services:
 test-to-sharehost:
   stage: build
   variables:
-    DEPLOY_UPLOAD_URL: $CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=/public/$DEPLOY_DOMAIN&overwrite=1
-    DEPLOY_UPLOAD_COMMAND: >
-      curl --location $DEPLOY_UPLOAD_URL --header "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN" --form '=@"/usr/output/dist-ci.zip"'
+    URL_ENCODE: |
+      urlencode() {
+        old_lc_collate=$LC_COLLATE
+        LC_COLLATE=C
+
+        local length="${#1}"
+        for (( i = 0; i < length; i++ )); do
+            local c="${1:$i:1}"
+            case $c in
+                [a-zA-Z0-9.~_-]) printf '%s' "$c" ;;
+                *) printf '%%%02X' "'$c" ;;
+            esac
+        done
+
+        LC_COLLATE=$old_lc_collate
+      }
+    DEPLOY_AUTH: "Authorization: cpanel $CPANEL_USER:$CPANEL_TOKEN"
+    DEPLOY_UPLOAD_COMMAND: |
+      curl --location $DEPLOY_UPLOAD_URL --header $DEPLOY_AUTH --form '=@"/usr/output/dist-ci.zip"'
   except:
     - tags
   before_script:
@@ -25,8 +41,10 @@ test-to-sharehost:
     # - docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
     - mkdir -p $PWD/output
     - docker run --rm -v $PWD/output:/usr/output $CI_REGISTRY_IMAGE:$IMAGE_TAG cp ../output/dist.zip /usr/output/dist-ci.zip
-    - echo $DEPLOY_UPLOAD_COMMAND
-    - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl $DEPLOY_UPLOAD_COMMAND
+    - eval $URL_ENCODE
+    - DEPLOY_UPLOAD_URL= "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
+    - DEPLOY_PATH="$(urlencode "/public/$DEPLOY_DOMAIN")"
+    - docker run --rm -v $PWD/output:/usr/output -w /usr/output alpine/curl curl $DEPLOY_UPLOAD_COMMAND
 # build:
 #   stage: build
 #   only:
