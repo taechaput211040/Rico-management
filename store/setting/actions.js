@@ -1,13 +1,16 @@
 //ตั้งค่าระบบ
-export function getSetting({ rootState, commit, state }) {
+export function getSetting(context, rootState, commit, state ) {
+  console.log(context)
   return new Promise(async (resolve, reject) => {
-    if (!state.setting) {
+    if (!context.rootState.setting.setting) {
       try {
         console.log("no");
         let { data } = await this.$axios.get(
-          `${process.env.ALL_SETTING}/api/Setting/${rootState.auth.hash}`
+          `${process.env.ALL_SETTING}/api/Setting/${context.rootState.auth.hash}`
         );
-        await commit("setAllsetting", data);
+        await context.commit("setAllsetting", data);
+
+        console.log('asdasdasdasd',data)
         resolve(data);
       } catch (error) {
         reject(error);
@@ -15,7 +18,7 @@ export function getSetting({ rootState, commit, state }) {
       }
     } else {
       console.log("hio");
-      resolve(state.setting);
+      resolve(context.rootState.setting.setting);
     }
   });
 }

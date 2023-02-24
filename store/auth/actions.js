@@ -696,7 +696,7 @@ export function logout(context) {
         `${process.env.ALL_RICO_USER}/api/Auth/logout`
         // `http://localhost:3200/api/Auth/logout`
       );
-      context.commit("set_logout");
+      context.commit("set_logout",context);
       resolve(response);
 
       // resolve(response);

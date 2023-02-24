@@ -72,7 +72,16 @@ export function set_data_secret(state, payload) {
   localStorage.setItem("tokenMember", payload.token);
 }
 
-export function set_logout(state) {
+export function set_logout(state,context) {
+  console.log(state)
+  console.log(context)
+  context.rootState.setting.setting = null
+  context.rootState.setting.message = null
+  context.rootState.provider_hash = null
+  context.rootState.game_hash = null
+
+  context.rootState.itempromotion = []
+  context.rootState.bonus_list = []
   localStorage.clear();
   state.key = null;
   state.user = null;
@@ -84,6 +93,7 @@ export function set_logout(state) {
   state.isAdmin = false;
   state.hash = null;
   state.tokenMember = null;
+  // state.rootState.setting.setting = null;
   state.datarander=  {
     data:false,
     depositbalance: 0,
@@ -92,11 +102,23 @@ export function set_logout(state) {
       0,
     profitlossmounth: 0
   },
-  state.dpbank = [],
-  state.wdbank = [],
-  state.dplist = [],
-  state.wdlist = [],
+  state.dpbank = []
+  state.wdbank = []
+  state.dplist = []
+  state.wdlist = []
   state.incomingSMS =[]
+  state.agent = null
+  state.company =null
+  state.tfa_credential =null
+  state.tfa_data =null
+  state.tokenMember =null
+  state.user =null
+  state.verify =null
+  state.key =null
+
+  state.isAdmin =false
+
+
 }
 // playSoundNoauto() {
 //   //127.0.0.1:8000/
