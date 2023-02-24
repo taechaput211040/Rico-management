@@ -318,7 +318,6 @@
       </v-row>
       <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
         <v-row class="ma-1 my-2">
-<<<<<<< HEAD
           <v-btn color="black" dark class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter)">ทั้งหมด</v-btn>
           <v-btn color="grey" dark class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter,'เติม')">รายการไม่เข้าระบบ</v-btn>
           <v-btn color="error" outlined class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter,'ตัด')">ตัดเครดิต</v-btn>
@@ -333,45 +332,13 @@
 
         <v-card class="mt-5">
           <v-data-table single-expand show-expand :headers="header" :items="itemcredit.data" :options.sync="options"
-=======
-          <v-btn color="black" dark class="ma-1 font-weight-bold">ทั้งหมด</v-btn
-          ><v-btn color="grey" dark class="ma-1 font-weight-bold"
-            >รายการไม่เข้าระบบ</v-btn
-          ><v-btn color="error" outlined class="ma-1 font-weight-bold"
-            >ตัดเครดิต</v-btn
-          ><v-btn color="primary" outlined class="ma-1 font-weight-bold"
-            >เติมเครดิต</v-btn
-          ><v-spacer></v-spacer>
-          <span class="font-weight-bold my-2">
-            จำนวนรายการทั้งหมดตั้งแต่วันที่
-            {{ dateFilter.startDate | dateFormat }} ถึงวันที่
-            {{ dateFilter.endDate | dateFormat }} ทั้งหมดจำนวน
-            {{ itemcredit?.meta?.itemCount }} รายการ</span
-          >
-        </v-row>
-
-        <v-card class="mt-5">
-          <v-data-table
-            :headers="header"
-            :items="itemcredit.data"
-            :options.sync="options"
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
             :footer-props="{
               showFirstLastPage: true,
               'items-per-page-text': '',
               'items-per-page-options': [50, 100],
-<<<<<<< HEAD
             }" :server-items-length="
   itemcredit.meta ? itemcredit.meta.itemCount : 0
 " :items-per-page="limit">
-=======
-            }"
-            :server-items-length="
-              itemcredit.meta ? itemcredit.meta.itemCount : 0
-            "
-            :items-per-page="limit"
-          >
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
             <template #[`item.no`]="{ index }">
               {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
             </template>
@@ -634,10 +601,6 @@ export default {
       tab: null,
       time: "",
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
       options: {},
       opento: false,
       dateFilter: {
@@ -792,12 +755,8 @@ export default {
         },
       };
     },
-<<<<<<< HEAD
 
 
-    getParameter() {
-=======
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
 
     getParameter() {
       let parameter = {
@@ -819,14 +778,9 @@ export default {
     async searchdata(input = null,option=null) {
       this.isLoading = true;
       let params = this.getParameter();
-<<<<<<< HEAD
       params.keyword = input
       params.options = option
       console.log(params)
-=======
-      params.keyword = input;
-      console.log(params);
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
       try {
         let data = await this.getManualEditCredit(params);
         this.itemcredit = data;
@@ -869,13 +823,9 @@ export default {
         this.isLoading = false;
       }
       this.isLoading = false;
-<<<<<<< HEAD
     }
 
-=======
-    },
->>>>>>> 56093b88096dc0ede1d14317075e5709f42721c4
-  },
+  }
 };
 </script>
 
