@@ -301,12 +301,28 @@ export default {
       const value = turn
       return value
     },
+    findMinTurn(input) {
+    const obj = {
+      SLOT: input.SL,
+      FOOTBALL: input.SB,
+      CASINO: input.LC,
+      LOTTO: input.LT,
+      FISHING: input.FH,
+      HORSERACING: input.OT,
+      ESPORT: input.ES
+    }
+    const values = Object.values(obj);
+    const min = Math.min(...values);
+    console.log(min); // 👉️ 5
+    return min
+  },
     async fixturn_confirm() {
       
     this.turn_fix = {...this.turn_fix,...this.turn_new}
     this.turn_fix.editturn=true
-    
+    this.turn_fix.min_turn =   this.findMinTurn(this.turn_fix)
     await this.reMaping(this.response)
+    console.log(this.turn_fix)
       // console.log(this.turn_fix)
       try {
           this.$swal({

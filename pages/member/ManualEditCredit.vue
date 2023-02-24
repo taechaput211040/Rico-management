@@ -145,31 +145,27 @@
       </v-row>
       <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
         <v-row class="ma-1 my-2">
-          <v-btn color="black" dark class="ma-1 font-weight-bold">ทั้งหมด</v-btn><v-btn color="grey" dark
-            class="ma-1 font-weight-bold">รายการไม่เข้าระบบ</v-btn><v-btn color="error" outlined
-            class="ma-1 font-weight-bold">ตัดเครดิต</v-btn><v-btn color="primary" outlined
-            class="ma-1 font-weight-bold">เติมเครดิต</v-btn><v-spacer></v-spacer>
+          <v-btn color="black" dark class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter)">ทั้งหมด</v-btn>
+          <v-btn color="grey" dark class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter,'เติม')">รายการไม่เข้าระบบ</v-btn>
+          <v-btn color="error" outlined class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter,'ตัด')">ตัดเครดิต</v-btn>
+          <v-btn color="primary" outlined class="ma-1 font-weight-bold" @click="searchdata(dateFilter.inputfilter,'โบนัส')">เติมโบนัส</v-btn>
+
+          <v-spacer></v-spacer>
           <span class="font-weight-bold my-2">
-            จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate | dateFormat}} ถึงวันที่
-            {{ dateFilter.endDate  | dateFormat }} ทั้งหมดจำนวน
+            จำนวนรายการทั้งหมดตั้งแต่วันที่ {{ dateFilter.startDate | dateFormat }} ถึงวันที่
+            {{ dateFilter.endDate | dateFormat }} ทั้งหมดจำนวน
             {{ itemcredit?.meta?.itemCount }} รายการ</span>
         </v-row>
 
         <v-card class="mt-5">
-          <v-data-table
-    
-          
-          :headers="header" :items="itemcredit.data" :options.sync="options" :footer-props="{
-            showFirstLastPage: true,
-            'items-per-page-text': '',
-            'items-per-page-options': [50, 100],
-          }" :server-items-length="
+          <v-data-table single-expand show-expand :headers="header" :items="itemcredit.data" :options.sync="options"
+            :footer-props="{
+              showFirstLastPage: true,
+              'items-per-page-text': '',
+              'items-per-page-options': [50, 100],
+            }" :server-items-length="
   itemcredit.meta ? itemcredit.meta.itemCount : 0
-" :items-per-page="limit"
-
-
-
->
+" :items-per-page="limit">
             <template #[`item.no`]="{ index }">
               {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
             </template>
@@ -385,12 +381,12 @@ export default {
           cellClass: "font-weight-bold",
         },
       ],
-  
+
       itemcredit: [],
       tab: null,
       time: "",
 
-      
+
       options: {},
       opento: false,
       dateFilter: {
@@ -546,8 +542,8 @@ export default {
 
       }
     },
-  
-   
+
+
     getParameter() {
 
       let parameter = {
@@ -570,10 +566,11 @@ export default {
 
 
     },
-    async searchdata(input = null) {
+    async searchdata(input = null,option=null) {
       this.isLoading = true;
       let params = this.getParameter();
       params.keyword = input
+      params.options = option
       console.log(params)
       try {
         let data = await this.getManualEditCredit(params);
@@ -619,7 +616,7 @@ export default {
       }
       this.isLoading = false;
     }
-  
+
   },
 };
 </script>

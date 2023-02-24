@@ -69,14 +69,17 @@ export function updatedPromotion({ state }, payload) {
     }
   });
 }
-export function deletedPromotion(contex, payload) {
+export function deletedPromotion(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.delete(
         `${process.env.ALL_PROMOTION}/api/Promotion/Auto/${payload}`
       );
-
-      console.log(`${process.env.ALL_PROMOTION}/api/Promotion/Auto/${payload}`);
+      // console.log('old',context.state.itempromotion)
+      let new_ob = context.state.itempromotion.filter(x=>x.id !=payload)
+// console.log('new',new_ob)
+      context.commit("updatePromotionAfterDelete",new_ob)
+      // console.log(`${process.env.ALL_PROMOTION}/api/Promotion/Auto/${payload}`);
       resolve(data);
     } catch (error) {
       reject("error");

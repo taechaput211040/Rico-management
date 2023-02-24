@@ -6,7 +6,7 @@
         ><h2>รายการฝากเงินของสมาชิก</h2>
         <search-filter :filter="dateFilter" @search="getData(dateFilter.inputfilter)"  :searchinput="true" @yesterday="getYesterDay()" @today="getToday()"></search-filter
       ></v-row>
-      <!-- <h2 class="mt-5">ยอดฝากรวม แยก ธนาคาร</h2>
+      <h2 class="mt-5">ยอดฝากรวม แยก ธนาคาร</h2>
 
       <v-row>
         <v-col cols="12" sm="3" md="3" v-for="(item, i) in itembank" :key="i">
@@ -19,7 +19,7 @@
             </div>
           </div>
         </v-col>
-      </v-row> -->
+      </v-row>
 
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class=" pa-5 font-weight-bold">

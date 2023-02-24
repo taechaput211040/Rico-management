@@ -16,7 +16,7 @@
           ><v-icon>mdi-plus</v-icon> เพิ่มโปรโมชัน</v-btn
         >
       </div>
-      <v-row class="mt-5">
+      <v-row class="mt-5" v-if="check">
         <v-col
           cols="12"
           sm="6"
@@ -221,7 +221,7 @@
                   outlined
                   dense
                   filled
-                  :value="itemedit.promotionname"
+                  v-model="itemedit.promotionname"
                   hide-details="auto"
                   label="ใส่ชื่อโปรโมชัน"
                 ></v-text-field
@@ -750,6 +750,7 @@ export default {
   components: { AddPromotion },
   data() {
     return {
+      check:true,
       file: null,
       url: null,
       tempFile: null,
@@ -815,14 +816,21 @@ export default {
 
     // },
   },
+  watch: {
+    check: {
+      async handler() {
+        await this.getPromotion();
+      },
+    },
+  },
   methods: {
-    ...mapMutations("promotion", ["set_promotion"]),
+    ...mapMutations("promotion", ["set_promotion","updatePromotionAfterDelete"]),
     ...mapActions("promotion", [
       "getPromotion",
       "updatedPromotion",
       "deletedPromotion",
     ]),
-    deletePromotion(id) {
+   async deletePromotion(id) {
       Swal.fire({
         title: "ลบโปรโมชั่นนี้หรือไม่",
         icon: "warning",
@@ -831,9 +839,11 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "ลบ",
         cancelButtonText: "ยกเลิก",
-      }).then((result) => {
+      }).then( async(result) => {
+      
         if (result.isConfirmed) {
           this.deletedPromotion(id);
+          await this.updatePromotionAfterDelete(id)
           Swal.fire({
             icon: "success",
             confirmButtonColor: "red",
@@ -841,7 +851,19 @@ export default {
             confirmButtonText: "ปิด",
           });
         }
+   
+      }).then(async (success) =>{
+
+        
+        this.isLoading = true
+        console.log('ooooooooo')
+      this.check = false
+        await this.getPromotion();
+        this.check = true
+        console.log('ssssssssssss')
+        this.isLoading =  false
       });
+  
     },
     selectFile(event) {
       if (event) {
@@ -872,7 +894,8 @@ export default {
       console.log(promotion, "data");
       this.imageUpdated = promotion.promotionpic;
       this.editPromotionData = true;
-      this.itemedit = JSON.parse(JSON.stringify(promotion));
+   
+      this.itemedit = promotion;
       this.planalcheck = promotion.promotion_details.map((element, index) => {
         if (element.typestatus) {
           return index;
