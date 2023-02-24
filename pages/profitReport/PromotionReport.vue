@@ -9,6 +9,8 @@
         :searchinput="false"
         :filter="dateFilter"
         @search="searchdata"
+        @yesterday="searchdata"
+        @today="searchdata"
       ></search-filter>
 
       <v-row class="mt-3 justify-center">
@@ -61,7 +63,7 @@
         <v-card class="elevation-3">
           <template>
             <v-simple-table>
-              <template v-slot:default>
+              <template >
                 <thead>
                   <tr>
                     <th>รายการโบนัส</th>
@@ -76,7 +78,7 @@
                       <div class="pl-md-2">เครดิตเงินคืน</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_cashback }}
+                      {{ sum_cashback | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -90,7 +92,7 @@
                       <div class="pl-md-2">โบนัสจากการเติมมือ</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_bonus_deposit }}
+                      {{ sum_bonus_deposit | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -104,7 +106,7 @@
                       <div class="pl-md-2">โบนัสสมาชิกใหม่</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_new_member_bonus }}
+                      {{ sum_new_member_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -118,7 +120,7 @@
                       <div class="pl-md-2">โบนัสฝากแรกของวัน</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_first_deposit_bonus }}
+                      {{ sum_first_deposit_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -131,7 +133,9 @@
                     <td class="font-weight-bold">
                       <div class="pl-md-2">โบนัสฝากทั้งวัน</div>
                     </td>
-                    <td class="text-center">{{ sum_allday_bonus }}</td>
+                    <td class="text-center">
+                      {{ sum_allday_bonus | numberFormat }}
+                    </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
@@ -144,7 +148,7 @@
                       <div class="pl-md-2">โบนัสฝากต่อเนื่อง</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_continue_bonus }}
+                      {{ sum_continue_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -157,7 +161,9 @@
                     <td class="font-weight-bold">
                       <div class="pl-md-2">โบนัสกงล้อ</div>
                     </td>
-                    <td class="text-center">{{ sum_wheel_deposit }}</td>
+                    <td class="text-center">
+                      {{ sum_wheel_deposit | numberFormat }}
+                    </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
@@ -170,7 +176,7 @@
                       <div class="pl-md-2">โบนัสเครดิตฟรี</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_credit_free }}
+                      {{ sum_credit_free | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -197,7 +203,7 @@
                       <div class="pl-md-2">โบนัสแนะนำเพื่อน</div>
                     </td>
                     <td class="text-center">
-                      {{ sum_affiliate_deposit }}
+                      {{ sum_affiliate_deposit | numberFormat }}
                     </td>
                     <td class="text-center">
                       <v-btn color="black" dark small @click="opendetail()"
@@ -214,7 +220,7 @@
                       colspan="1"
                       class="text-center font-weight-bold primary--text"
                     >
-                      {{ sum_ALL_BONUS }}
+                      {{ sum_ALL_BONUS | numberFormat }}
                     </td>
                   </tr>
                 </tbody>
@@ -478,49 +484,10 @@ export default {
       this.sum_affiliate_deposit = 0;
       this.sum_ALL_BONUS = 0;
     },
-    getDateTimeStr(date, time) {
-      let _date = date;
-      let _time = time;
-
-      let _str =
-        [
-          _date.getFullYear(),
-          _date.getMonth() < 10
-            ? "0" + (_date.getMonth() + 1)
-            : _date.getMonth() + 1,
-          _date.getDate() < 10 ? "0" + _date.getDate() : _date.getDate(),
-        ].join("-") +
-        " " +
-        [
-          _time.getHours() < 10 ? "0" + _time.getHours() : _time.getHours(),
-          _time.getMinutes() < 10
-            ? "0" + _time.getMinutes()
-            : _time.getMinutes(),
-          _time.getSeconds() < 10
-            ? "0" + _time.getSeconds()
-            : _time.getSeconds(),
-        ].join(":") +
-        "Z";
-
-      return _str;
-    },
     axiosParams() {
-      // start Date()
-      let s_d = this.dateFilter.startDate;
-      let s_t = this.dateFilter.startTime;
-      // end Date()
-      let e_d = this.dateFilter.endDate;
-      let e_t = this.dateFilter.endTime;
-
-      let start_str = this.getDateTimeStr(s_d, s_t);
-      let end_str = this.getDateTimeStr(e_d, e_t);
-
-      // console.log(start_str);
-      // console.log(end_str);
-
       let params = {
-        start: start_str,
-        end: end_str,
+        start: this.dateFilter.startDate,
+        end: this.dateFilter.endDate,
         company: localStorage.getItem("company"),
         agent: localStorage.getItem("agent"),
         page: 1,
@@ -535,19 +502,9 @@ export default {
       return params;
     },
     axiosParams2() {
-      // start Date()
-      let s_d = this.dateFilter.startDate;
-      let s_t = this.dateFilter.startTime;
-      // end Date()
-      let e_d = this.dateFilter.endDate;
-      let e_t = this.dateFilter.endTime;
-
-      let start_str = this.getDateTimeStr(s_d, s_t);
-      let end_str = this.getDateTimeStr(e_d, e_t);
-
       let params = {
-        start: start_str,
-        end: end_str,
+        start: this.dateFilter.startDate,
+        end: this.dateFilter.endDate,
         company: localStorage.getItem("company"),
         agent: localStorage.getItem("agent"),
         page: 1,

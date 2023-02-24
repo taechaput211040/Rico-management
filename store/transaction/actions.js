@@ -9,25 +9,25 @@ export async function getbankinfo({ commit }) {
             {
               companyBank: "RICO",
               companyAccRef: "xxxxxxx",
-              total_sum: 2121
+              total_sum: 2121,
             },
             {
               companyBank: "KBANK",
               companyAccRef: "X162266X",
-              total_sum: 630
+              total_sum: 630,
             },
             {
               companyBank: "SCB",
               companyAccRef: "x694871",
-              total_sum: 1485
+              total_sum: 1485,
             },
             {
               companyBank: "TRUEWALLET",
               companyAccRef: "0645609241",
-              total_sum: 500
-            }
-          ]
-        }
+              total_sum: 500,
+            },
+          ],
+        },
       };
       // let response = await api.get(`/api/getbankinfo`, {
       //   params: {
@@ -42,58 +42,54 @@ export async function getbankinfo({ commit }) {
 }
 
 //ลิสยอดฝากรวม แยก ธนาคาร
-export async function getdpListtransaction(context,fillter = {}) {
+export async function getdpListtransaction(context, fillter = {}) {
   return new Promise(async (resolve, reject) => {
-   
-      try {
-        let  data  = await this.$axios.get(
-          `${process.env.ALL_DEPOSIT}/api/Deposit/Transation/${ context.rootState.auth.company}/${context.rootState.auth.agent}`,
-          {
-            params: {
-              ...fillter
-            }
-          }
-        );
-    
-        resolve(data.data);
-      } catch (error) {
-        reject(error);
-      }
-    
-      // let response = await api.get(`/api/getdpListtransaction`, {
-      //   params: {
-      //     ..fillter
-      //   }
-      // });
-      resolve(response);
-    
+    try {
+      let data = await this.$axios.get(
+        `${process.env.ALL_DEPOSIT}/api/Deposit/Transation/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
+        {
+          params: {
+            ...fillter,
+          },
+        }
+      );
+
+      resolve(data.data);
+    } catch (error) {
+      reject(error);
+    }
+
+    // let response = await api.get(`/api/getdpListtransaction`, {
+    //   params: {
+    //     ..fillter
+    //   }
+    // });
   });
 }
 //ลิสยอดฝากรวม แยก ธนาคาร
 
 //ลิสยอดถอนรวม แยก ธนาคาร
-export async function getwdListtransaction(context,fillter = {}) {
+export async function getwdListtransaction(context, fillter = {}) {
   return new Promise(async (resolve, reject) => {
     try {
-      let  data  = await this.$axios.get(
-        `${process.env.ALL_SUPPORT}/api/Website/Withdraw/Transation/${ context.rootState.auth.company}/${context.rootState.auth.agent}`,
+      let data = await this.$axios.get(
+        `${process.env.ALL_SUPPORT}/api/Website/Withdraw/Transation/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
         {
           params: {
-            ...fillter
-          }
+            ...fillter,
+          },
         }
       );
-  
+
       resolve(data.data);
     } catch (error) {
       reject(error);
     }
-  
   });
 }
 //ลิสยอดถอนรวม แยก ธนาคาร
 // รายการถอนเงินของสมาชิกล่าสุด
-export async function getLastwithdraw({ commit }) {
+export async function getLastwithdraw({ commit, params }) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = {
@@ -115,7 +111,7 @@ export async function getLastwithdraw({ commit }) {
               status: "Success",
               transferTime: "โอนมือ",
               type: "common",
-              username: "BE9401631989"
+              username: "BE9401631989",
             },
             {
               afAmount: null,
@@ -133,16 +129,12 @@ export async function getLastwithdraw({ commit }) {
               status: "Error",
               transferTime: "โอนมือ",
               type: "common",
-              username: "BE9693319559"
-            }
-          ]
-        }
+              username: "BE9693319559",
+            },
+          ],
+        },
       };
-      // let response = await api.get(`/api/getLastwithdraw`, {
-      //   params: {
-      //     ..fillter
-      //   }
-      // });
+
       resolve(response);
     } catch (error) {
       reject(error);
@@ -150,7 +142,7 @@ export async function getLastwithdraw({ commit }) {
   });
 }
 // รายการฝากครั้งเเรก
-export async function getFirstdeposit({ commit }) {
+export async function getFirstdeposit({ commit, params }) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = {
@@ -171,7 +163,7 @@ export async function getFirstdeposit({ commit }) {
               smsdatetime: "2022-01-25T02:57:24",
               sum: null,
               topupby: "phue phue",
-              updated_at: "2022-01-26 03:30:01"
+              updated_at: "2022-01-26 03:30:01",
             },
             {
               afcredit: 360,
@@ -188,16 +180,30 @@ export async function getFirstdeposit({ commit }) {
               smsdatetime: "2022-01-25T02:48:15",
               sum: null,
               topupby: "phue phue",
-              updated_at: "2022-01-26 03:18:42"
-            }
-          ]
-        }
+              updated_at: "2022-01-26 03:18:42",
+            },
+          ],
+        },
       };
       // let response = await api.get(`/api/getFirstdeposit`, {
       //   params: {
       //     ..fillter
       //   }
       // });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export async function getHiddenReport({ commit, params }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(`/api/getHiddenReport`, {
+        params: {
+          ...params,
+        },
+      });
       resolve(response);
     } catch (error) {
       reject(error);

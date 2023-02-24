@@ -1,5 +1,5 @@
 <template>
-  <v-card :style="` background:${bgTable} !important;`"
+  <v-card
     ><v-data-table
       class="headerColor"
       hide-default-footer

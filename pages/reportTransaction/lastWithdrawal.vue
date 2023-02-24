@@ -27,13 +27,18 @@
           class="elevation-1"
           :headers="headerCell"
           :items="itemdeposit"
-          hide-default-footer
           single-expand
+          :options.sync="options"
+          :footer-props="{
+            showFirstLastPage: true,
+            'items-per-page-text': '',
+            'items-per-page-options': [50, 100],
+          }"
         >
           <template #[`item.no`]="{ index }">
-            <span class="font-weight-bold">
-              {{ index + 1 }}
-            </span>
+            <span class="font-weight-bold">{{
+              options.itemsPerPage * (options.page - 1) + (index + 1)
+            }}</span>
           </template>
           <template #[`item.requsettime`]="{ item }">
             <span>
@@ -197,6 +202,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
+      options: {},
       autorefresh: "ปิด",
       headerCell: [
         {
@@ -306,22 +312,32 @@ export default {
       }
     },
   },
-  async mounted() {},
-  async fetch() {
-    try {
-      let response = await this.getLastwithdraw();
-      this.itemdeposit = response.data.data;
-    } catch (error) {
-      console.log(error);
-    }
+  watch: {
+    options: {
+      async handler() {
+        await this.getReport();
+      },
+    },
   },
+  async mounted() {},
+
   methods: {
     ...mapActions("transaction", ["getLastwithdraw"]),
-    getthaidate(timethai) {
-      const time = this.$moment(timethai)
-        .add(7, "hours")
-        .format("YYYY-MM-DD เวลา HH:mm:ss");
-      return time;
+    getParameter() {
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+      };
+      return parameter;
+    },
+    async getReport() {
+      let params = this.getParameter();
+      try {
+        let { data } = await this.getLastwithdraw(params);
+        this.itemdeposit = data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
