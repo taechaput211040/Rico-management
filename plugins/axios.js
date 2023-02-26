@@ -2,6 +2,13 @@ export default function ({ $axios, redirect, store, app }) {
   // export default function(config) {
 
   $axios.onRequest((config) => {
+  //  console.log("asdasdasdasdasdads",store)
+    const version = localStorage.getItem("version")
+    console.log("v",version)
+    if(version != process.env.VERSION){
+      localStorage.clear();
+      redirect("/login");
+    }
     config.headers.common["Authorization"] = `Bearer ${store.state.auth.key}`;
   });
   $axios.onError((error) => {

@@ -115,7 +115,7 @@
       class="icon-bank img-icon"
     />
     <img
-      src="~/assets/image/bank/TMB.png"
+      src="~/assets/image/bank/TTB.png"
       v-if="value == 'TMB'"
       alt=""
       class="icon-bank img-icon"

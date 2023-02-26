@@ -727,6 +727,13 @@ export default {
             `${process.env.AFF_SETTING}/api/MainSetting/Setting`,
             this.dataCreate
           );
+
+          this.$swal({
+          title: "บันทึกสำเร็จ",
+         
+      
+        })
+        this.dlcreate=false
         } catch (error) {
           console.log(error);
         }

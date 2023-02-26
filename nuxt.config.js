@@ -132,5 +132,7 @@ export default {
     ALL_WHEEL: process.env.ALL_WHEEL,
     BASIC_AUTH_USERNAME: process.env.BASIC_AUTH_USERNAME,
     BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
+    VERSION_APP: process.env.VERSION_APP
+    
   },
 };

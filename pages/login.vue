@@ -10,7 +10,7 @@
         <!-- <img
           src="https://image.smart-ai-api.com/public/Rico-main-resite/logo.png"
         /> -->
-        <img :src="image ? image : this.webPalette.logo" class="img_logo" />
+        <img :src="Image ? Image : this.webPalette.logo" class="img_logo" />
         <h4>กรอกข้อมูลเพื่อเข้าสู่ระบบ</h4>
       </div>
       <label>Username</label>
@@ -71,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("account", ["webPalette"]),
+    ...mapState("account", ["webPalette","Image"]),
   },
   methods: {
     ...mapMutations("auth", [

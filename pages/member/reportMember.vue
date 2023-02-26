@@ -129,8 +129,10 @@
               }}</span>
             </template> -->
 
-            <template #[`item.created_at`]="{ item }">{{renderDate2( item.created_at )}}</template>
-            <template #[`item.smsdatetime`]="{ item }">{{renderDate2(item.smsdatetime )}}</template>
+            <template #[`item.created_at`]="{ item }">{{ item.created_at.slice(0,10)+' ' + item.created_at.slice(11,19) }}</template>
+            <!-- <template #[`item.created_at`]="{ item }">{{ renderDate2(item.created_at) }}</template> -->
+            <template #[`item.smsdatetime`]="{ item }">{{item.smsdatetime.slice(0,19) }}</template>
+            <!-- <template #[`item.smsdatetime`]="{ item }">{{renderDate2(item.smsdatetime )}}</template> -->
             <template #[`item.companyBank`]="{ item }"><img-bank :value="item.companyBank"></img-bank> 
             
             </template>

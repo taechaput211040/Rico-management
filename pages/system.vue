@@ -122,15 +122,15 @@
           อั้นถอนจำนวนครั้งต่อวัน
           <v-switch
             hide-details="auto"
-            v-model="datasetting.wd_status"
+            v-model="datasetting.wdlimit_time_status"
           ></v-switch>
         </v-col>
         <v-col cols="12" sm="6">
           อั้นจำนวนครั้งในการถอนต่อวัน
           <v-text-field
-            :disabled="datasetting.wd_status == false"
-            :filled="datasetting.wd_status == false"
-            :outlined="datasetting.wd_status"
+            :disabled="datasetting.wdlimit_time_status == false"
+            :filled="datasetting.wdlimit_time_status == false"
+            :outlined="datasetting.wdlimit_time_status"
             v-model.number="datasetting.wdlimitTime"
             dense
             hide-details="auto"

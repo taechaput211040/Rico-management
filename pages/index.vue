@@ -254,10 +254,10 @@
                 <div class="text-center my-3 my-md-2 showdetail">
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip><br />
-                  {{ renderDate(item.requsettime) }}<br />
+                  {{ renderDateTest(item.requsettime) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip><br />
-                  {{ item.transferTime  }}<br />
+                  {{ renderDateTest(item.transferTime)  }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตก่อน</v-chip><br />
                   {{ item.bfcredit?.toFixed(2) }}<br />
@@ -371,10 +371,10 @@
                 <div class="text-center my-3 my-md-2 showdetail">
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip><br />
-                  {{ renderDate(item.requsettime)  }}<br />
+                  {{ renderDateTest(item.requsettime)  }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip><br />
-                  {{ item.transferTime }}<br />
+                  {{ renderDateTest(item.transferTime) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตก่อน</v-chip><br />
                   {{ item.bfcredit?.toFixed(2) }}<br />
@@ -1133,6 +1133,11 @@ export default {
      
       return  dayjs(new Date(date)).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
     },
+    renderDateTest(date){
+     
+     
+     return  dayjs().format("YYYY-MM-DD HH:mm:ss")
+   },
     approveWd(item) {
       (this.withdraw_temp = item), (this.dialogApproveWD = true);
     },
