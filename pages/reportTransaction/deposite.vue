@@ -6,26 +6,53 @@
         ><h2>รายการฝากเงินของสมาชิก</h2>
         <search-filter
           :filter="dateFilter"
-          @search="getData()"
+          @search="getData(dateFilter.inputfilter)"
           :searchinput="true"
-          @yesterday="getData()"
-          @today="getData()"
+          @yesterday="getYesterDay(dateFilter.inputfilter)"
+          @today="getToday(dateFilter.inputfilter)"
         ></search-filter
       ></v-row>
-      <!-- <h2 class="mt-5">ยอดฝากรวม แยก ธนาคาร</h2>
+      <h2 class="mt-5">ยอดฝากรวม แยก ธนาคาร</h2>
 
-      <v-row>
-        <v-col cols="12" sm="3" md="3" v-for="(item, i) in itembank" :key="i">
-          <div class="card-child card-report elevation-5 text-center">
-            <img-bank :value="item.companyBank"></img-bank>
+      <v-row v-if="itembank.length > 0">
+        <v-col cols="12" sm="3" md="3" v-for="(item, i) in itembank" :key="i" >
+          <div class="card-child card-report elevation-5 text-center" @click="getDataOption(item.companybank)">
+            <img-bank :value="item.companybank"></img-bank>
             <div>
-              ยอดฝากรวม :<span class="primary--text font-weight-bold"
+              <span class="primary--text font-weight-bold" v-if="item.companybank == 'AUTO'"
+                >เติมมิอ
+              </span>
+              <span class="primary--text font-weight-bold" v-if="item.companybank == 'XXXXXX'"
+              >เติมโบนัส
+            </span>
+              <span class="primary--text font-weight-bold"  v-if="item.companybank == 'SCB'"
+              >SCB
+            </span>
+            <span class="primary--text font-weight-bold" v-if="item.companybank == 'KBANK'"
+            >KBANK
+          </span>
+          <span class="primary--text font-weight-bold"  v-if="item.companybank == 'TRUEWALLET'"
+          >TRUEWALLET
+        </span>
+            </div>
+            <div>
+              ฝากรวม :<span class="primary--text font-weight-bold"
                 >{{ item.total_sum }}
+              </span>
+            </div>
+            <div>
+              โบนัสรวม :<span class="primary--text font-weight-bold"
+                >{{ item.total_bonus }}
+              </span>
+            </div>
+            <div>
+              ครั้ง :<span class="primary--text font-weight-bold"
+                >{{ item.count }}
               </span>
             </div>
           </div>
         </v-col>
-      </v-row> -->
+      </v-row>
 
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class="pa-5 font-weight-bold">
@@ -221,19 +248,47 @@ export default {
     },
   },
   methods: {
-    ...mapActions("transaction", ["getbankinfo", "getdpListtransaction"]),
+    ...mapActions("transaction", ["getbankinfoSum", "getdpListtransaction"]),
 
     getParameter() {
       let parameter = {
         take: this.options.itemsPerPage,
         page: this.options.page,
-        start: this.dateFilter.startDate,
-        end: this.dateFilter.endDate,
+        start: dayjs(this.dateFilter.startDate).format(),
+        end: dayjs(this.dateFilter.endDate).endOf('day').format(),
         username: this.dateFilter.inputfilter,
       };
       return parameter;
     },
-  
+    async getDataOption(input = null){
+      this.isLoading = true;
+      let params = this.getParameter();
+
+      if (!input) {
+        try {
+          console.log(params);
+          const data = await this.getdpListtransaction(params);
+          this.itemdeposit = data;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      } else {
+        console.log(input);
+        params.companyBank = input;
+        params.username = null
+        try {
+          console.log(params);
+          const data = await this.getdpListtransaction(params);
+          this.itemdeposit = data;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      }
+    },
     async getData(input = null) {
       this.isLoading = true;
       let params = this.getParameter();
@@ -242,6 +297,7 @@ export default {
           console.log(params);
           const data = await this.getdpListtransaction(params);
           this.itemdeposit = data;
+          await this.getBank()
         } catch (error) {
           console.log(error);
           this.isLoading = false;
@@ -261,16 +317,63 @@ export default {
         this.isLoading = false;
       }
     },
-    searchdata() {
-      console.log(this.dateFilter);
-    },
+   
     async getBank() {
+      let params = this.getParameter();
       try {
-        let response = await this.getbankinfo();
-        this.itembank = response.data.bankSummary;
+        let response = await this.getbankinfoSum(params);
+     
+        this.itembank = response.bankSummary;
       } catch (error) {
         console.log(error);
       }
+    },
+    setYesterday() {
+    
+    this.dateFilter.startDate = dayjs().add(-1,'day').format('YYYY-MM-DD')
+    this.dateFilter.startTime = dayjs().add(-1,'day').format('HH:mm:ss')
+    this.dateFilter.endDate = dayjs().endOf(-1,'day').format('YYYY-MM-DD')
+    this.dateFilter.endTime = dayjs().endOf(-1,'day').format('HH:mm:ss')
+   
+ 
+    
+ },
+   async getYesterDay(input=null) {
+     this.isLoading = true;
+     let params = this.getParameter();
+     params.username = input
+     await this.setYesterday()
+
+   
+     params.start = dayjs().add(-1,'day').startOf('day').toISOString()
+     params.end = dayjs().add(-1,'day').endOf('day').toISOString()
+     try {
+       console.log(params);
+       const data = await this.getdpListtransaction(params);
+       this.itemdeposit = data;
+       await this.getBank()
+     } catch (error) {
+       console.log(error);
+       this.isLoading = false;
+     }
+     this.isLoading = false;
+   },
+   async getToday(input=null) {
+      this.isLoading = true;
+      let params = this.getParameter();
+      params.start = dayjs().startOf('day').toISOString()
+      params.end = dayjs().endOf('day').toISOString()
+      params.username = input
+      try {
+        console.log(params);
+        const data = await this.getdpListtransaction(params);
+        this.itemdeposit = data;
+        await this.getBank()
+      } catch (error) {
+        console.log(error);
+        this.isLoading = false;
+      }
+      this.isLoading = false;
     },
   },
 };

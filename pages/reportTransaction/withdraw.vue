@@ -8,8 +8,8 @@
           :filter="dateFilter"
           @search="getData(dateFilter.inputfilter)"
           :searchinput="true"
-          @yesterday="getYesterDay()"
-          @today="getToday()"
+          @yesterday="getYesterDay(dateFilter.inputfilter)"
+          @today="getToday(dateFilter.inputfilter)"
         ></search-filter>
       </v-row>
       <h2 class="mt-5">ยอดถอนรวม</h2>
@@ -377,9 +377,10 @@ export default {
       this.dateFilter.endDate = dayjs().endOf(-1, "day").format("YYYY-MM-DD");
       this.dateFilter.endTime = dayjs().endOf(-1, "day").format("HH:mm:ss");
     },
-    async getYesterDay() {
+    async getYesterDay(input = null) {
       this.isLoading = true;
       let params = this.getParameter();
+      params.username = input;
       await this.setYesterday();
 
       params.start = dayjs().add(-1, "day").startOf("day").toISOString();
@@ -395,9 +396,10 @@ export default {
       }
       this.isLoading = false;
     },
-    async getToday() {
+    async getToday(input = null) {
       this.isLoading = true;
       let params = this.getParameter();
+      params.username = input;
       params.start = dayjs().startOf("day").toISOString();
       params.end = dayjs().endOf("day").toISOString();
       try {
