@@ -13,18 +13,86 @@
         ></search-filter>
       </v-row>
       <h2 class="mt-5">ยอดถอนรวม</h2>
-      <v-row>
-        <v-col cols="12" sm="3" md="3">
-          <div class="card-child card-report elevation-5 text-center">
+      <v-row v-if="depositbalance.length > 0">
+        <v-col
+          cols="12"
+          sm="3"
+          md="3"
+          v-for="(item, i) in depositbalance"
+          :key="i"
+        >
+          <div class="card-child card-report elevation-5 text-center"  @click="getDataOption(item.status)">
             <img
               src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
               alt=""
               class="img-icon icon-Logo"
             />
-            <div>
+            <!-- <div>
               ยอดถอนรวม :<span class="primary--text font-weight-bold"
-                >{{ depositbalance }}
+                >{{ depositbalance.amount }}
               </span>
+            </div>
+            <div>
+               <span class="primary--text font-weight-bold"
+                >{{ depositbalance.count }} ครั้ง
+              </span>
+            </div> -->
+            <div >
+              <img-bank :value="item.companybank"></img-bank>
+              <div>
+                <div  v-if="item.status == 'Success'">
+                  <div
+                  class="primary--text font-weight-bold"
+                 
+                  >ถอนสำเร็จ :{{ item.count }} รายการ
+                </div>
+                <div    class="primary--text font-weight-bold">
+                  จำนวน :{{ item.amount }}
+                </div>
+                </div>
+             
+                <div  v-if="item.status == 'rejected'">
+                  <div
+                  class="primary--text font-weight-bold"
+                 
+                  >rejected :{{ item.count }} รายการ
+                </div>
+                <div    class="primary--text font-weight-bold">
+                  จำนวน :{{ item.amount }}
+                </div>
+                </div>
+               
+                <div  v-if="item.status == 'pending'">
+                  <div
+                  class="primary--text font-weight-bold"
+                 
+                  >อยู่ในคิว :{{ item.count }} รายการ
+                </div>
+                <div    class="primary--text font-weight-bold">
+                  จำนวน :{{ item.amount }}
+                </div>
+                </div>
+                <div  v-if="item.status == 'Error'">
+                  <div
+                  class="primary--text font-weight-bold"
+                 
+                  >ไม่สำเร็จ :{{ item.count }} รายการ
+                </div>
+                <div    class="primary--text font-weight-bold">
+                  จำนวน :{{ item.amount }}
+                </div>
+                </div>
+                <div  v-if="item.status == 'created'">
+                  <div
+                  class="primary--text font-weight-bold"
+                 
+                  >รอดำเนินการ :{{ item.count }} รายการ
+                </div>
+                <div    class="primary--text font-weight-bold">
+                  จำนวน :{{ item.amount }}
+                </div>
+                </div>
+              </div>
             </div>
           </div>
         </v-col>
@@ -32,7 +100,7 @@
       <v-card class="elevation-4 mt-5 rounded-lg" width="100%">
         <div class="pa-5 font-weight-bold">
           จำนวนสมาชิกทั้งหมด
-          {{ itemdeposit.meta ? itemdeposit.meta.itemCount : 0 }} คน
+          {{ itemwithdraw.meta ? itemwithdraw.meta.itemCount : 0 }} คน
         </div>
 
         <v-card width="100%" class="elevation-4 rounded-lg">
@@ -40,7 +108,7 @@
             show-expand
             class="elevation-1"
             :headers="headerCell"
-            :items="itemdeposit.data"
+            :items="itemwithdraw.data"
             single-expand
             :options.sync="options"
             :footer-props="{
@@ -49,7 +117,7 @@
               'items-per-page-options': [50, 100],
             }"
             :server-items-length="
-              itemdeposit.meta ? itemdeposit.meta.itemCount : 0
+              itemwithdraw.meta ? itemwithdraw.meta.itemCount : 0
             "
           >
             <template #[`item.no`]="{ index }">
@@ -89,12 +157,16 @@
             </template>
             <template #[`item.requsettime`]="{ item }">
               <span>
-                {{ item.requsettime.slice(0,20)  }}
+                {{ item.requsettime.slice(0, 20) }}
               </span>
             </template>
             <template #[`item.transferTime`]="{ item }">
               <span>
-                {{ renderDate(item.transferTime)? renderDate(item.transferTime):'โอนมือ'  }}
+                {{
+                  renderDate(item.transferTime)
+                    ? renderDate(item.transferTime)
+                    : "โอนมือ"
+                }}
               </span>
             </template>
             <template #[`item.bfafcredit`]="{ item }">
@@ -330,8 +402,8 @@ export default {
       ],
       options_deposit: {},
       options: {},
-      itemdeposit: [],
-      depositbalance: 0,
+      itemwithdraw: [],
+      depositbalance: [],
       dateFilter: {
         inputfilter: "",
         startDate: new Date().toISOString().slice(0, 10),
@@ -345,7 +417,7 @@ export default {
   components: { ImgBank, LoadingPage },
   async fetch() {
     let wdlist = await this.getData();
-    this.itemdeposit = wdlist.data;
+    this.itemwithdraw = wdlist.data;
   },
   watch: {
     options: {
@@ -365,20 +437,54 @@ export default {
   },
   methods: {
     ...mapActions("transaction", ["getwdListtransaction"]),
-    renderDate(date){
-    
-     if(date[0] == 'p'){
-      return 'โอนมือ'
-     } 
-     
-      return  dayjs(date).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
+    async getDataOption(input = null){
+      this.isLoading = true;
+      let params = this.getParameter();
+
+      if (!input) {
+        try {
+          console.log(params);
+          const data = await this.getwdListtransaction(params);
+          this.itemwithdraw = data;
+          this.depositbalance = data.sum;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      } else {
+        console.log(input);
+        params.options = input;
+        params.username = null
+        try {
+          console.log(params);
+          const data = await this.getwdListtransaction(params);
+          this.itemwithdraw = data;
+          this.depositbalance = data.sum;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      }
+    },
+    renderDate(date) {
+      if (date[0] == "p") {
+        return "โอนมือ";
+      }
+
+      return dayjs(date).add(+7, "hours").format("YYYY-MM-DD HH:mm:ss");
     },
     getParameter() {
       let parameter = {
         take: this.options.itemsPerPage,
         page: this.options.page,
-        start: this.dateFilter.startDate,
-        end: this.dateFilter.endDate,
+        start: dayjs(this.dateFilter.startDate)
+          .startOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        end: dayjs(this.dateFilter.endDate)
+          .endOf("day")
+          .format("YYYY-MM-DD HH:mm:ss"),
         username: null,
       };
       return parameter;
@@ -400,7 +506,7 @@ export default {
       try {
         console.log(params);
         const data = await this.getwdListtransaction(params);
-        this.itemdeposit = data;
+        this.itemwithdraw = data;
         this.depositbalance = data.sum;
       } catch (error) {
         console.log(error);
@@ -417,7 +523,7 @@ export default {
       try {
         console.log(params);
         const data = await this.getwdListtransaction(params);
-        this.itemdeposit = data;
+        this.itemwithdraw = data;
         this.depositbalance = data.sum;
       } catch (error) {
         console.log(error);
@@ -434,7 +540,7 @@ export default {
         try {
           console.log(params);
           const data = await this.getwdListtransaction(params);
-          this.itemdeposit = data;
+          this.itemwithdraw = data;
           this.depositbalance = data.sum;
         } catch (error) {
           console.log(error);
@@ -447,7 +553,7 @@ export default {
         try {
           console.log(params);
           const data = await this.getwdListtransaction(params);
-          this.itemdeposit = data;
+          this.itemwithdraw = data;
         } catch (error) {
           console.log(error);
           this.isLoading = false;

@@ -107,7 +107,7 @@
             </template>
             <template #[`item.smsdatetime`]="{ item }">
               <span>
-                {{ item.smsdatetime | dateFormat }}
+                {{ renderDate(item.smsdatetime) | dateFormat }}
               </span>
             </template>
             <template #[`item.created_at`]="{ item }">
@@ -249,7 +249,13 @@ export default {
   },
   methods: {
     ...mapActions("transaction", ["getbankinfoSum", "getdpListtransaction"]),
+    renderDate(date) {
+      if (date[0] == "p") {
+        return "โอนมือ";
+      }
 
+      return dayjs(date).add(+7, "hours").format("YYYY-MM-DD HH:mm:ss");
+    },
     getParameter() {
       let parameter = {
         take: this.options.itemsPerPage,
