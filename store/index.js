@@ -446,7 +446,7 @@ export default function () {
         {
           value: "TMB",
           code: "TMB",
-          text: "ธนาคารทหารไทย",
+          text: "ธนาคารทีเอ็มบีธนชาต TTB",
         },
         {
           value: "BBL",

@@ -125,7 +125,7 @@ export default {
         { value: "TRUEWALLET", text: "TRUEWALLET - ทรูมันนี่วอลเลท" },
         { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
         { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
-        { value: "TMB", text: "TMB - ธนาคารทหารไทย" },
+        { value: "TMB", text: "TMB - ธนาคารทีเอ็มบีธนชาต TTB" },
         { value: "BBL", text: "BBL - ธนาคารกรุงเทพ" },
         { value: "KTB", text: "KTB - ธนาคารกรุงไทย" },
         { value: "BAY", text: "BAY - ธนาคารกรุงศรีอยุธยา" },

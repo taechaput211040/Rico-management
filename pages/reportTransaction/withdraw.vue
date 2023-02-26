@@ -89,7 +89,12 @@
             </template>
             <template #[`item.requsettime`]="{ item }">
               <span>
-                {{ item.requsettime | dateFormat }}
+                {{ item.requsettime.slice(0,20)  }}
+              </span>
+            </template>
+            <template #[`item.transferTime`]="{ item }">
+              <span>
+                {{ renderDate(item.transferTime)? renderDate(item.transferTime):'โอนมือ'  }}
               </span>
             </template>
             <template #[`item.bfafcredit`]="{ item }">
@@ -360,7 +365,14 @@ export default {
   },
   methods: {
     ...mapActions("transaction", ["getwdListtransaction"]),
-
+    renderDate(date){
+    
+     if(date[0] == 'p'){
+      return 'โอนมือ'
+     } 
+     
+      return  dayjs(date).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
+    },
     getParameter() {
       let parameter = {
         take: this.options.itemsPerPage,
