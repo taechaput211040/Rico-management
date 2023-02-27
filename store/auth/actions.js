@@ -32,7 +32,22 @@ export function login(context, { username, password, agentkey }) {
 //login//
 
 //two-facter
-
+export function getOnlineMember(context) {
+  return new Promise(async (resolve, reject) => {
+  
+    try {
+      let { data } = await this.$axios.get(
+        `${process.env.CHECK_MAINTAINANCE}/api/UserStat/online/${context.rootState.auth.agent.toLowerCase()}`,
+      
+      );
+      await context.commit("set_online_member", data);
+      resolve(data);
+      // return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 export function twofactor(context, input) {
   return new Promise(async (resolve, reject) => {

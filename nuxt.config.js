@@ -133,6 +133,7 @@ export default {
     BASIC_AUTH_USERNAME: process.env.BASIC_AUTH_USERNAME,
     BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
     VERSION_APP: process.env.VERSION_APP,
-    ALL_INCOMING:process.env.ALL_INCOMING
+    ALL_INCOMING:process.env.ALL_INCOMING,
+    CHECK_MAINTAINANCE:process.env.CHECK_MAINTAINANCE
   },
 };

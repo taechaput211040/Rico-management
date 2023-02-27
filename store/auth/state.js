@@ -146,6 +146,8 @@ export default function() {
 
       GN: "Genesis"
   },
+
+  memberOnline:{count:0,data:[]}
   };
   
 }
