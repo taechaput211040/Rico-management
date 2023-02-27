@@ -1,12 +1,13 @@
 <template>
   <v-flex>
+    <loading-page v-if="isLoading"></loading-page>
     <v-container>
       <v-row class="mb-2 pa-3"
         ><h2>รายการเงินที่กดซ่อน</h2>
         <search-filter
           :filter="dateFilter"
-          @search="getData(dateFilter.inputfilter)"
-          :searchinput="true"
+          @search="getData()"
+          :searchinput="false"
           @yesterday="getYesterDay()"
           @today="getToday()"
         ></search-filter
@@ -14,17 +15,38 @@
       <v-card width="100%" class="elevation-4 mt-5 rounded-lg">
         <v-card class="mt-5">
           <v-data-table
+            :items="itemhidedepotsit.data"
+            single-expand
             :options.sync="options"
+            :headers="headerCell"
             :footer-props="{
               showFirstLastPage: true,
               'items-per-page-text': '',
               'items-per-page-options': [50, 100],
             }"
-            class="elevation-1"
-            :items="itemhidedepotsit"
-            :headers="headerCell"
+            :server-items-length="
+            itemhidedepotsit.meta ? itemhidedepotsit.meta.itemCount : 0
+            "
           >
+          <template #[`item.no`]="{ index }">
+            <span class="font-weight-bold">{{
+              options.itemsPerPage * (options.page - 1) + (index + 1)
+            }}</span>
+          </template>
+          <template #[`item.dateSms`]="{ item }">
+            <span class="font-weight-bold">
+              {{ renderDateHide(item)  }}
+            </span >
+          </template>
+       
+          <template #[`item.updated_at`]="{ item }">
+            <span class="font-weight-bold">
+             {{renderDate(item.updated_at)  }} 
+            </span>
+          </template>
+
           </v-data-table>
+       
         </v-card>
       </v-card>
     </v-container>
@@ -33,10 +55,13 @@
 
 <script>
 import dayjs from "dayjs";
+import ImgBank from "../../components/ImgBank.vue";
+import LoadingPage from "../../components/LoadingPage.vue";
 import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      isLoading: false,
       options: {},
       headerCell: [
         {
@@ -56,7 +81,7 @@ export default {
         },
         {
           text: "เวลาใน SMS",
-          value: "smsdatetime",
+          value: "dateSms",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -71,21 +96,15 @@ export default {
         },
         {
           text: "รหัสอ้างอิง(ถ้ามี)",
-          value: "ref",
+          value: "fromBankRef",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
-        {
-          text: "ยอดเงินคงเหลือของธนาคารเว็บ",
-          value: "balance",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold ",
-        },
+
         {
           text: "ข้อความแนบ(ถ้ามี)",
-          value: "message",
+          value: "remark",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -93,51 +112,31 @@ export default {
         },
         {
           text: "มาจาก(ถ้ามี)",
-          value: "operator",
+          value: "name",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
         {
-          text: "วันที่กดซ่อน",
-          value: "hidedate",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold ",
-        },
-        {
-          text: "สถานะ",
-          value: "status",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold ",
-        },
-        {
-          text: "ผู้กดซ่อน",
-          value: "hideby",
-          align: "center",
-          sortable: false,
-          class: "font-weight-bold ",
-        },
-        {
-          text: "การดำเนินการ",
-          value: "action",
+          text: "วันที่บันทึกรายการ",
+          value: "created_at",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
       ],
       itemhidedepotsit: [],
-      depositbalance: "1630",
+      options: {},
       dateFilter: {
         inputfilter: "",
-        startDate: new Date().toISOString().substr(0, 10),
+        startDate: new Date().toISOString().slice(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
-        endDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date().toISOString().slice(0, 10),
         endTime: new Date(new Date().setHours(23, 59, 59, 999)),
       },
     };
   },
+  components: { ImgBank, LoadingPage },
   computed: {},
   watch: {
     options: {
@@ -146,25 +145,67 @@ export default {
       },
     },
   },
+  created() {
+    this.getData();
+  },
   methods: {
     ...mapActions("transaction", ["getHiddenReport"]),
-    async getData() {
-      try {
-        let { data } = await this.getHiddenReport();
-        // this.itemhidedepotsit = data;
-        this.itemhidedepotsit = [];
-      } catch (error) {
-        console.log(error);
-        this.itemhidedepotsit = [];
+    renderDate(date) {
+    
+
+      return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+    },
+
+    renderDateHide(item) {
+    if(item.companyBank != 'SCB'){
+      return  item.dateSms.slice(0,10) + ' ' + item.dateSms.slice(11,19)
+    }
+    if(item.companyBank == 'SCB'){
+      return  dayjs(item.dateSms).format("YYYY-MM-DD HH:mm:ss");
+    } else {
+      return dayjs(item.dateSms).format("YYYY-MM-DD HH:mm:ss");
+
+    }
+      
+
+  
+  },
+    async getData(input = null) {
+      this.isLoading = true;
+      console.log('xxxxxxxxxxxxxxxxxxx',this.options)
+      let params = await this.getParameter();
+
+      if (!input) {
+        try {
+          console.log(params);
+          const data = await this.getHiddenReport(params);
+          this.itemhidedepotsit = data;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
+      } else {
+        params.first = true;
+
+        try {
+          console.log(params);
+          const data = await this.getHiddenReport(params);
+          this.itemhidedepotsit = data;
+        } catch (error) {
+          console.log(error);
+          this.isLoading = false;
+        }
+        this.isLoading = false;
       }
     },
-    getParameter() {
+   async getParameter() {
       let parameter = {
-        take: this.options.itemsPerPage,
-        page: this.options.page,
-        start: this.dateFilter.startDate,
-        end: this.dateFilter.endDate,
-        username: null,
+        take: this.options.itemsPerPage? this.options.itemsPerPage:50,
+        page: this.options.page?this.options.page:1,
+        start: dayjs(this.dateFilter.startDate).format(),
+        end: dayjs(this.dateFilter.endDate).endOf("day").format(),
+    
       };
       return parameter;
     },
@@ -174,30 +215,36 @@ export default {
       this.dateFilter.endDate = dayjs().endOf(-1, "day").format("YYYY-MM-DD");
       this.dateFilter.endTime = dayjs().endOf(-1, "day").format("HH:mm:ss");
     },
-    async getYesterDay() {
+    async getYesterDay(input = null) {
       this.isLoading = true;
-      let params = this.getParameter();
+      let params = await this.getParameter();
+
       await this.setYesterday();
+
       params.start = dayjs().add(-1, "day").startOf("day").toISOString();
       params.end = dayjs().add(-1, "day").endOf("day").toISOString();
       try {
         console.log(params);
-        const data = await this.getFirstdeposit(params);
+        const data = await this.getHiddenReport(params);
         this.itemhidedepotsit = data;
+
       } catch (error) {
         console.log(error);
         this.isLoading = false;
       }
       this.isLoading = false;
     },
-    async getToday() {
+    async getToday(input = null) {
       this.isLoading = true;
-      let params = this.getParameter();
+  
+      let params = await this.getParameter();
+
       params.start = dayjs().startOf("day").toISOString();
       params.end = dayjs().endOf("day").toISOString();
+
       try {
         console.log(params);
-        const data = await this.getFirstdeposit(params);
+        const data = await this.getHiddenReport(params);
         this.itemhidedepotsit = data;
       } catch (error) {
         console.log(error);

@@ -159,7 +159,7 @@
             </template>
             <template #[`item.requsettime`]="{ item }">
               <span class="font-weight-bold">
-                {{ renderDate(item.requsettime) }}
+                {{ renderDate3(item.requsettime) }}
               </span>
             </template>
             <template #[`item.data-table-expand`]="{ isExpanded, expand }">
@@ -483,6 +483,11 @@ export default {
      
      
      return  dayjs(new Date(date)).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
+   },
+   renderDate3(date){
+     
+     
+     return  dayjs(date).format("YYYY-MM-DD HH:mm:ss")
    },
    async editmemberByOperator(){
 

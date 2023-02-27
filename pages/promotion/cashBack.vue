@@ -73,8 +73,43 @@
               </v-btn>
             </div>
           </v-col>
-          <v-col cols="12" sm="6">
+          <v-col cols="6" sm="6">
             <v-row class="pa-md-3 my-auto">
+              <v-col cols="12">
+                <v-switch
+                  hide-details="auto"
+                  class="mx-5 mt-2"
+                  color="success"
+                  :true-value="true"
+                  :false-value="false"
+                  :disabled="canwrite"
+                  :label="`โหมดการทำงาน`"
+                  v-model="cashback.cashback_type"
+                  @change="switchstatus"
+                ></v-switch>
+                <div
+                  class="elevation-4 pa-md-3 my-auto"
+                  v-if="cashback.cashback_type"
+                >
+                  <div>ตัดรอบรายวัน / รายสัปดาห์ / รายเดือน</div>
+                  <p>
+                    คิดยอดเสียให้ตามรอบการรับที่ตั้งไว้ เช่น รายวัน ตัดรอบการคิด
+                    00.00 - 23.59 ของเมื่อวาน คิดวันต่อวัน / สัปดาห์ ต่อสัปดาห์
+                    เดือน / เดือน
+                  </p>
+                </div>
+                <div
+                  class="elevation-4 pa-md-3 my-auto"
+                  v-if="!cashback.cashback_type"
+                >
+                  <div>สะสม ยอดเสีย</div>
+                  <p>
+                    คิดยอดเสียให้คำนวนจาก (ฝาก - ถอน) ตั้งแต่ การฝากครั้งแรก
+                    หรือ การกดรับแคชแบคครั้งล่าสุด
+                  </p>
+                </div>
+              </v-col>
+
               <v-col sm="4" cols="12">
                 เลือกการรับรายได้
                 <v-select
@@ -191,6 +226,115 @@
           >
         </v-row>
       </v-card>
+      <h2 class="mt-4 mb-2">ตรวจสอบ CASHBACK</h2>
+      <v-card  width="100%"
+      class="elevation-4 mt-5 pa-4 rounded-lg font-weight-bold">
+        <span class="font-weight-bold">กรอก username </span>
+
+        <div class="container-fluid">
+          <div class="card shadow p-3">
+            <div mt-3>
+              <v-row>
+                <v-col cols="6" sm="4">
+                  <div>
+                    <label>กรุณากรอก username เพื่อตรวจสอบ </label>
+                    <div class="d-flex">
+                      <v-text-field
+                        type="number"
+                        v-model="cashback.rate"
+                        dense
+                        outlined
+                        hide-details="auto"
+                      ></v-text-field>
+                      <v-btn   class="mx-auto btn_sty"
+                      color="success"
+                   
+                      >ค้นหา</v-btn>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <div>
+                    <label>เวลารับ แคชแบค ล่าสุด </label>
+                    <div class="d-flex">
+                      <v-text-field
+                        type="text"
+                        disabled
+                        dense
+                        outlined
+                        hide-details="auto"
+                      ></v-text-field>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <label>แคชแบคที่สามารถรับได้ </label>
+                  <div class="d-flex">
+                    <v-text-field
+                      type="text"
+                      disabled
+                      dense
+                      outlined
+                      hide-details="auto"
+                    ></v-text-field>
+                  </div>
+                </v-col>
+              
+              </v-row>
+
+              <v-row>
+                <v-col cols="6" sm="4">
+                  <div>
+                    <label
+                      >ยอดฝากรวม ตั้งแต่กดรับแคชแบคล่าสุดจนถึงปัจจุบัน
+                    </label>
+                    <div class="d-flex">
+                      <v-text-field
+                        type="text"
+                        disabled
+                        dense
+                        outlined
+                        hide-details="auto"
+                      ></v-text-field>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <div>
+                    <label
+                      >ยอดถอนรวม ตั้งแต่กดรับแคชแบคล่าสุดจนถึงปัจจุบัน
+                    </label>
+                    <div class="d-flex">
+                      <v-text-field
+                        type="text"
+                        disabled
+                        dense
+                        outlined
+                        hide-details="auto"
+                      ></v-text-field>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <label>winlose </label>
+                  <div class="d-flex">
+                    <v-text-field
+                      type="text"
+                      disabled
+                      dense
+                      outlined
+                      hide-details="auto"
+                    ></v-text-field>
+                  </div>
+                </v-col>
+            
+              </v-row>
+
+             
+            </div>
+          </div>
+        </div>
+      </v-card>
     </v-container>
   </v-flex>
 </template>
@@ -234,22 +378,15 @@ export default {
       await this.saveCashback(this.cashback);
       this.isLoading = false;
       this.$swal({
-          title: `ทำรายการสำเร็จ`,
-          icon: "success",
-          allowOutsideClick: true,
-          confirmButtonColor: "green",
-          confirmButtonText: "ok",
-        });
+        title: `ทำรายการสำเร็จ`,
+        icon: "success",
+        allowOutsideClick: true,
+        confirmButtonColor: "green",
+        confirmButtonText: "ok",
+      });
     },
     switchstatus() {
       this.submitCashback();
-      this.$swal({
-          title: `ทำรายการสำเร็จ`,
-          icon: "success",
-          allowOutsideClick: true,
-          confirmButtonColor: "green",
-          confirmButtonText: "ok",
-        });
     },
     selectFile(value) {
       if (value) {

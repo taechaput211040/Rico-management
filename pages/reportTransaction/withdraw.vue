@@ -21,7 +21,10 @@
           v-for="(item, i) in depositbalance"
           :key="i"
         >
-          <div class="card-child card-report elevation-5 text-center"  @click="getDataOption(item.status)">
+          <div
+            class="card-child card-report elevation-5 text-center"
+            @click="getDataOption(item.status)"
+          >
             <img
               src="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
               alt=""
@@ -37,60 +40,50 @@
                 >{{ depositbalance.count }} ครั้ง
               </span>
             </div> -->
-            <div >
+            <div>
               <img-bank :value="item.companybank"></img-bank>
               <div>
-                <div  v-if="item.status == 'Success'">
-                  <div
-                  class="primary--text font-weight-bold"
-                 
-                  >ถอนสำเร็จ :{{ item.count }} รายการ
+                <div v-if="item.status == 'Success'">
+                  <div class="primary--text font-weight-bold">
+                    ถอนสำเร็จ :{{ item.count }} รายการ
+                  </div>
+                  <div class="primary--text font-weight-bold">
+                    จำนวน :{{ item.amount }}
+                  </div>
                 </div>
-                <div    class="primary--text font-weight-bold">
-                  จำนวน :{{ item.amount }}
+
+                <div v-if="item.status == 'rejected'">
+                  <div class="primary--text font-weight-bold">
+                    rejected :{{ item.count }} รายการ
+                  </div>
+                  <div class="primary--text font-weight-bold">
+                    จำนวน :{{ item.amount }}
+                  </div>
                 </div>
+
+                <div v-if="item.status == 'pending'">
+                  <div class="primary--text font-weight-bold">
+                    อยู่ในคิว :{{ item.count }} รายการ
+                  </div>
+                  <div class="primary--text font-weight-bold">
+                    จำนวน :{{ item.amount }}
+                  </div>
                 </div>
-             
-                <div  v-if="item.status == 'rejected'">
-                  <div
-                  class="primary--text font-weight-bold"
-                 
-                  >rejected :{{ item.count }} รายการ
+                <div v-if="item.status == 'Error'">
+                  <div class="primary--text font-weight-bold">
+                    ไม่สำเร็จ :{{ item.count }} รายการ
+                  </div>
+                  <div class="primary--text font-weight-bold">
+                    จำนวน :{{ item.amount }}
+                  </div>
                 </div>
-                <div    class="primary--text font-weight-bold">
-                  จำนวน :{{ item.amount }}
-                </div>
-                </div>
-               
-                <div  v-if="item.status == 'pending'">
-                  <div
-                  class="primary--text font-weight-bold"
-                 
-                  >อยู่ในคิว :{{ item.count }} รายการ
-                </div>
-                <div    class="primary--text font-weight-bold">
-                  จำนวน :{{ item.amount }}
-                </div>
-                </div>
-                <div  v-if="item.status == 'Error'">
-                  <div
-                  class="primary--text font-weight-bold"
-                 
-                  >ไม่สำเร็จ :{{ item.count }} รายการ
-                </div>
-                <div    class="primary--text font-weight-bold">
-                  จำนวน :{{ item.amount }}
-                </div>
-                </div>
-                <div  v-if="item.status == 'created'">
-                  <div
-                  class="primary--text font-weight-bold"
-                 
-                  >รอดำเนินการ :{{ item.count }} รายการ
-                </div>
-                <div    class="primary--text font-weight-bold">
-                  จำนวน :{{ item.amount }}
-                </div>
+                <div v-if="item.status == 'created'">
+                  <div class="primary--text font-weight-bold">
+                    รอดำเนินการ :{{ item.count }} รายการ
+                  </div>
+                  <div class="primary--text font-weight-bold">
+                    จำนวน :{{ item.amount }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -133,6 +126,16 @@
               </div>
             </template>
             <template #[`item.status`]="{ item }">
+       
+            
+              <v-chip
+              small
+              v-if="item.status == 'Pending'"
+              outlined
+              color="yellow"
+            >
+              <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
+            >
               <v-chip
                 small
                 v-if="item.status == 'Success'"
@@ -141,10 +144,31 @@
               >
                 <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
               >
-              <v-chip small v-else color="error" outlined
-                ><v-icon left small>mdi-circle</v-icon>
-                {{ item.status }}</v-chip
+              <v-chip
+                small
+                v-if="item.status == 'created'"
+                outlined
+                color="blue"
               >
+                <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
+              >
+
+              <v-chip
+              small
+              v-if="item.status == 'Error'"
+              outlined
+              color="red"
+            >
+              <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
+            >
+            <v-chip
+            small
+            v-if="item.status == 'rejected'"
+            outlined
+            color="red"
+          >
+            <v-icon left small>mdi-circle</v-icon> {{ item.status }}</v-chip
+          >
             </template>
             <template #[`item.name`]="{ item }">
               <div class="pa-2">
@@ -170,6 +194,7 @@
               </span>
             </template>
             <template #[`item.bfafcredit`]="{ item }">
+           
               <div class="d-flex align-baseline justify-center">
                 <v-chip
                   class="font-weight-bold pa-2 elevation-2 mt-2 mx-2 mb-1"
@@ -217,8 +242,8 @@
                 >
               </div>
             </template>
-            <template #[`item.actions`]>
-              <div class="d-flex">
+            <template #[`item.actions`]="{ item }">
+              <div class="d-flex" >
                 <v-tooltip bottom color="success">
                   <template v-slot:activator="{ on, attrs }"
                     ><v-btn
@@ -228,6 +253,7 @@
                       color="success mx-1"
                       x-small
                       fab
+                      @click="approveWd(item)"
                       ><v-icon>mdi-check</v-icon></v-btn
                     ></template
                   >
@@ -243,6 +269,7 @@
                       color="error mx-1"
                       x-small
                       fab
+                      @click="rejectWD(item)"
                       ><v-icon>mdi-close</v-icon></v-btn
                     ></template
                   >
@@ -258,6 +285,7 @@
                       x-small
                       dark
                       fab
+                      @click="resetWD(item)"
                       ><v-icon>mdi-restore</v-icon></v-btn
                     ></template
                   >
@@ -273,6 +301,7 @@
                       x-small
                       dark
                       fab
+                      @click="manualWd(item)"
                       ><v-icon>mdi-gesture-tap</v-icon></v-btn
                     ></template
                   >
@@ -291,6 +320,141 @@
         </v-card>
       </v-card>
     </v-container>
+    <v-dialog v-model="dialogRemark" max-width="1080">
+      <v-card>
+        <v-card-title>
+          <h4>ข้อความ</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div v-if="remark_render.qrcode == null">
+            <h3 class="my-4 text-center">
+              {{ remark_render.remark }}
+            </h3>
+          </div>
+          <div v-if="remark_render.qrcode != null">
+            <div class="text-center">
+              <div>รายการโอนสำเร็จ</div>
+              <div>ยอดก่อนโอน : {{ remark_render.bf_balance }}</div>
+              <div>ยอดหลังโอน : {{ remark_render.af_balance }}</div>
+
+              <div>QR CODE สำหรับตรวจสอบรายการโอนเงิน</div>
+              <div class="d-flex" style="justify-content: center">
+                <qr-code :text="remark_render.qrcode"></qr-code>
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="success" small @click="dialogRemark = false"> ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogManualWD" max-width="290">
+      <v-card>
+        <v-card-title>
+          <h4>ยืนยันการถอนมือ</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div class="my-2">
+            เมื่อกด ถอนมือ ระบบจะเปลี่ยนสถานะของรายการนี้เป็น Success
+            ทางเว็บจะต้องดำเนินการโอนเงินให้ลูกค้าเอง ผ่านช่องทางอื่นๆ
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="success" small @click="manualWd_confirm()">
+            ยืนยัน</v-btn
+          >
+          <v-btn color="red" small @click="dialogManualWD = false"
+            >ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogRejectWD" max-width="350">
+      <v-card>
+        <v-card-title>
+          <h4>ยืนยันการ Reject รายการถอน</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div class="my-2">
+            ปฏิเสธรายการถอน และเติมเครดิต คืนให้กับ <br />user:
+            {{ withdraw_temp?.username }} พร้อมใส่เทิร์นระบบ ใช่หรือไม่ ?
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="success" small @click="rejectWd_confirm()">
+            ยืนยัน</v-btn
+          >
+          <v-btn color="red" small @click="dialogRejectWD = false"
+            >ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogApproveWD" max-width="350">
+      <v-card>
+        <v-card-title>
+          <h4>ยืนยันการ อนุมัติ รายการถอน</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div class="my-2">
+            ยินยันการโอนเงินให้ <br />user: {{ withdraw_temp?.username }}
+            ใช่หรือไม่ ?
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="success" small @click="ApproveWd_confirm()">
+            ยืนยัน</v-btn
+          >
+          <v-btn color="red" small @click="dialogApproveWD = false"
+            >ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogResetWD" max-width="350">
+      <v-card>
+        <v-card-title>
+          <h4>RESET สถานะ รายการถอน</h4>
+        </v-card-title>
+
+        <v-card-text class="font-weight-bold">
+          <div class="my-2">
+            ยินยัน RESET สถานะ รายการถอน ใช่หรือไม่ ?
+
+            <br />
+            <br />
+            หมายเหตุ: <br />
+            <p>
+              ก่อนการอนุมัติใหม่ หลังจาก reset ให้ตรวจสอบ ยอดเงิน
+              ว่าออกไปหรือยัง ก่อนทำการอนุมัติใหม่ทุกครั้ง
+              หากมีการโอนยอดซ้ำออกไป เนื่องจากการกด reset
+              ทางเราจะไม่รับผิดชอบใดๆ ทั้งสิ้น
+            </p>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="success" small @click="ResetWd_confirm()">
+            ยืนยัน</v-btn
+          >
+          <v-btn color="red" small @click="dialogResetWD = false">ยกเลิก</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-flex>
 </template>
 
@@ -298,7 +462,7 @@
 import dayjs from "dayjs";
 import ImgBank from "../../components/ImgBank.vue";
 import LoadingPage from "../../components/LoadingPage.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import moment from "moment";
 export default {
   data() {
@@ -412,12 +576,29 @@ export default {
         endTime: new Date(new Date().setHours(23, 59, 59, 999)),
         options: "username",
       },
+      checking: false,
+      dialogTopup: false,
+      dialogTopup_hide: false,
+      dialogRemark: false,
+      dialogManualWD: false,
+      dialogRejectWD: false,
+      dialogApproveWD: false,
+      dialogResetWD: false,
+      confirming: false,
+      remark: null,
+      withdraw_temp: null,
+      remark_render: {
+        remakr: null,
+        qrcode: null,
+        af_balance: null,
+        bf_balance: null,
+      },
     };
   },
   components: { ImgBank, LoadingPage },
   async fetch() {
-    let wdlist = await this.getData();
-    this.itemwithdraw = wdlist.data;
+    await this.getData();
+    // this.itemwithdraw = wdlist.data;
   },
   watch: {
     options: {
@@ -437,7 +618,209 @@ export default {
   },
   methods: {
     ...mapActions("transaction", ["getwdListtransaction"]),
-    async getDataOption(input = null){
+    ...mapActions("auth", [
+      "manualWithdrawFromDashboard",
+      "manualRejectFromDashboard",
+      "manualApproveFromDashboard",
+      "manualResetFromDashboard",
+      "hideIncomingFromDashBoardByOperator",
+      "GetInfomation",
+      "Autostatus",
+      "checkBalanceBank",
+      "updateBalanceBank",
+      "updateAutoBankStatus",
+      "topupDashboardByOperator",
+      "updateIncoming",
+      "updateWithdrawlistAction",
+      "findInWdList",
+    ]),
+
+    ...mapMutations("auth", ["update_action_bank", "updateWithdrawlist"]),
+    ...mapMutations("auth", [
+      "set_logout",
+      "update_action_bank",
+      "addIncoming",
+      "addDeposit",
+      "RemoveIncoming",
+      "updateWithdrawlist",
+      "addWithdraw",
+    ]),
+    approveWd(item) {
+      (this.withdraw_temp = item), (this.dialogApproveWD = true);
+    },
+    manualWd(item) {
+      (this.withdraw_temp = item), (this.dialogManualWD = true);
+    },
+    rejectWD(item) {
+      (this.withdraw_temp = item), (this.dialogRejectWD = true);
+    },
+    resetWD(item) {
+      (this.withdraw_temp = item), (this.dialogResetWD = true);
+    },
+    showRemark(item) {
+      if (item.remark.startsWith("QR_")) {
+        this.remark_render.qrcode = item.remark.slice(3);
+        this.remark_render.bf_balance = item.bfAmount;
+        this.remark_render.af_balance = item.afAmount;
+      } else {
+        this.remark_render.remark = item.remark;
+        this.remark_render.qrcode = null;
+      }
+
+      this.dialogRemark = true;
+    },
+    async ResetWd_confirm() {
+      this.isLoading = true;
+      this.confirming = true;
+      this.withdraw_temp.status = "created";
+      const list = await this.updateWithdrawlistAction(this.withdraw_temp);
+      await this.updateWithdrawlist(list);
+      const result = await this.manualResetFromDashboard(this.withdraw_temp);
+      this.isLoading = false;
+      if (result.status == "success") {
+        this.isLoading = false;
+        this.dialogResetWD = false;
+        this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
+        this.dialogResetWD = false;
+        this.confirming = false;
+        return;
+      } else {
+        this.isLoading = false;
+        this.dialogResetWD = false;
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: result.message,
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        this.dialogApproveWD = false;
+        this.confirming = false;
+        return;
+      }
+    },
+    async ApproveWd_confirm() {
+      this.isLoading = true;
+      this.confirming = true;
+      this.withdraw_temp.status = "Pending";
+      const list = await this.updateWithdrawlistAction(this.withdraw_temp);
+      await this.updateWithdrawlist(list);
+      const result = await this.manualApproveFromDashboard(this.withdraw_temp);
+      this.isLoading = false;
+      if (result.status == "success") {
+        this.isLoading = false;
+        this.dialogApproveWD = false;
+        this.$swal({
+          title: `นำรายการถอนเข้าคิวสำเร็จ`,
+          icon: "success",
+          text: result.message,
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
+        this.dialogTopup_hide = false;
+        this.confirming = false;
+        return;
+      } else {
+        this.isLoading = false;
+        this.dialogApproveWD = false;
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: result.message,
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        this.dialogApproveWD = false;
+        this.confirming = false;
+        return;
+      }
+    },
+    async rejectWd_confirm() {
+      this.isLoading = true;
+      this.confirming = true;
+      this.withdraw_temp.status = "rejected";
+      const list = await this.updateWithdrawlistAction(this.withdraw_temp);
+      await this.updateWithdrawlist(list);
+      const result = await this.manualRejectFromDashboard(this.withdraw_temp);
+      this.isLoading = false;
+      if (result.status == "success") {
+        this.isLoading = false;
+        this.dialogRejectWD = false;
+        this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
+        this.dialogTopup_hide = false;
+        this.confirming = false;
+        return;
+      } else {
+        this.isLoading = false;
+        this.dialogRejectWD = false;
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: result.message,
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        this.dialogRejectWD = false;
+        this.confirming = false;
+        return;
+      }
+    },
+    async manualWd_confirm() {
+      this.isLoading = true;
+      this.confirming = true;
+      this.withdraw_temp.status = "Success";
+      const list = await this.updateWithdrawlistAction(this.withdraw_temp);
+      await this.updateWithdrawlist(list);
+      const result = await this.manualWithdrawFromDashboard(this.withdraw_temp);
+      this.isLoading = false;
+      if (result.status == "success") {
+        this.isLoading = false;
+        this.dialogManualWD = false;
+        this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
+        this.dialogTopup_hide = false;
+        this.confirming = false;
+        return;
+      } else {
+        this.isLoading = false;
+        this.dialogManualWD = false;
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: result.message,
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        this.dialogTopup_hide = false;
+        this.confirming = false;
+        return;
+      }
+    },
+    async getDataOption(input = null) {
       this.isLoading = true;
       let params = this.getParameter();
 
@@ -455,7 +838,7 @@ export default {
       } else {
         console.log(input);
         params.options = input;
-        params.username = null
+        params.username = null;
         try {
           console.log(params);
           const data = await this.getwdListtransaction(params);
