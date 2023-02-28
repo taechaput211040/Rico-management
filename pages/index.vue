@@ -192,12 +192,13 @@
                   <span class="font-weight-bold"> หลังเติม</span>
                   <br />
                   <v-icon color="success">mdi-menu-up</v-icon>
-                  {{ item.afcredit ?? item.after_balance }}<br />
+                  
+                  {{ parseInt(item.afcredit) }}<br />
                 </div>
 
                 <div class="my-2">
                   <span class="font-weight-bold"> ก่อนเติม</span><br />
-                  {{ item.bfcredit ?? item.before_balance }}<br />
+                  {{  parseInt(item.bfcredit) }}<br />
                 </div>
               </div>
             </template>
@@ -443,265 +444,6 @@
 
 
 
-          <!-- close old data-table -->
-
-          <!-- <v-data-table
-            :headers="withdrawColumn"
-            :items="wdlist"
-            :items-per-page="20"
-          >
-            <template #[`item.no`]="{ item }">
-              <div class="text-center my-3 my-md-2 showdetail">
-                <div class="font-weight-bold">
-                  โอนไป<br />
-                  <img-bank :value="item.bankName"></img-bank>
-                </div>
-
-                <v-chip
-                  class="font-weight-bold pa-2 my-1 elevation-2"
-                  color="primary"
-                  small
-                  ><v-avatar left> <v-icon>mdi-account-circle</v-icon></v-avatar
-                  >{{ item.name }}</v-chip
-                >
-                <div class="font-weight-bold my-1">
-                  <v-icon small color="grey" class="mx-1"
-                    >mdi-card-text-outline</v-icon
-                  >{{ item.bankAcc }}<br />
-                  <v-icon small color="grey">mdi-account</v-icon>
-                  {{ item.username }}
-                </div>
-                <div class="my-1 font-weight-bold">
-                  โดย:
-                  <v-chip
-                    x-small
-                    class="my-1 white--text elevation-2"
-                    color="pink"
-                    label
-                  >
-                    {{ item.operator }}</v-chip
-                  >
-                </div>
-              </div>
-            </template>
-            <template #[`item.timeTransection`]="{ item }">
-              <div class="text-center my-3 my-md-2 showdetail">
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
-                  color="grey darken-4"
-                  label
-                  x-small
-                  dark
-                  ><v-icon class="mr-1" small>mdi-timer</v-icon>ถอน</v-chip
-                ><br />
-                {{ item.requsettime }}<br />
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
-                  color="grey darken-4"
-                  label
-                  x-small
-                  dark
-                  ><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip
-                ><br />
-                {{ item.transferTime }}<br />
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
-                  color="grey darken-4"
-                  label
-                  x-small
-                  dark
-                  ><v-icon class="mr-1" small>mdi-credit-card</v-icon
-                  >เครดิตก่อน</v-chip
-                ><br />
-                {{ item.bfcredit }}<br />
-                <v-chip
-                  class="font-weight-bold pa-2 elevation-2 mt-2 mb-1"
-                  color="grey darken-4"
-                  label
-                  x-small
-                  dark
-                >
-                  <v-icon class="mr-1" small>mdi-credit-card</v-icon
-                  >เครดิตหลัง</v-chip
-                ><br />
-                {{ item.afcredit }}
-              </div>
-            </template>
-            <template #[`item.credit`]="{ item }">
-              <div class="text-center my-3 my-md-2 showdetail">
-                <span class="font-weight-bold">ยอดถอน</span> <br />
-                <v-chip
-                  class="ma-2 font-weight-bold"
-                  color="error"
-                  label
-                  outlined
-                  >{{ item.amount }} บาท</v-chip
-                ><br />
-                <div class="card_status my-2">
-                  <span class="font-weight-bold">status</span><br />
-                  {{ item.status }}
-                  <v-chip
-                    v-if="item.status == 'Success'"
-                    x-small
-                    label
-                    color="success"
-                  >
-                    {{ item.status }}</v-chip
-                  >
-                  <v-chip v-else color="error" label x-small>
-                    {{ item.status }}</v-chip
-                  >
-                  <br />
-                </div>
-                <span class="font-weight-bold">หลังถอน</span><br />
-                <span v-if="!item.afAmount" class="font-weight-bold"> - </span>
-                <span v-else> - </span>
-                <br />
-                <span class="font-weight-bold">ก่อนถอน</span><br />
-                <v-icon color="error"
-                  >mdi-menu-down{{ item.afAmount | dateFormat }}</v-icon
-                >
-              </div>
-            </template>
-            <template #[`item.actions`]="{ item }">
-              
-              <div v-if="item.status == 'Success' || item.status == 'rejected'">
-                <v-btn
-                  color="primary"
-                  outlined
-                  rounded
-                  class="my-1"
-                  small
-                  @click="showRemark(item)"
-                  >หมายเหตุ</v-btn
-                >
-              </div>
-              <div v-if="item.status == 'Error'" class="ma-2 text-center">
-                <v-btn color="error" class="my-1" rounded small
-                  >ไม่อนุมัติ</v-btn
-                >
-                <v-btn
-                  v-if="item.bankName != 'TRUEWALLET'"
-                  color="primary"
-                  class="my-1"
-                  rounded
-                  small
-                  >Reset</v-btn
-                >
-                <v-btn
-                  color="grey"
-                  class="my-1"
-                  rounded
-                  small
-                  @click="manualWd(item)"
-                  >ถอนมือ</v-btn
-                >
-                <v-btn
-                  color="primary"
-                  outlined
-                  rounded
-                  class="my-1"
-                  small
-                  @click="showRemark(item)"
-                  >หมายเหตุ</v-btn
-                >
-              </div>
-              <div v-if="item.status == 'created'" class="ma-2 text-center">
-                <v-btn
-                  v-if="item.bankName != 'TRUEWALLET'"
-                  color="success"
-                  class="my-1"
-                  rounded
-                  small
-                  >อนุมัติ</v-btn
-                >
-                <v-btn color="error" class="my-1" rounded small
-                  >ไม่อนุมัติ</v-btn
-                >
-                <v-btn
-                  color="grey"
-                  class="my-1"
-                  rounded
-                  small
-                  @click="manualWd(item)"
-                  >ถอนมือ</v-btn
-                >
-                <v-btn
-                  color="primary"
-                  outlined
-                  rounded
-                  class="my-1"
-                  small
-                  @click="showRemark(item)"
-                  >หมายเหตุ</v-btn
-                >
-              </div>
-
-              <div v-if="item.status == 'Pending'" class="ma-2 text-center">
-                <v-btn
-                  v-if="item.bankName != 'TRUEWALLET'"
-                  color="primary"
-                  class="my-1"
-                  rounded
-                  small
-                  >Reset</v-btn
-                >
-                <v-btn
-                  color="primary"
-                  outlined
-                  rounded
-                  class="my-1"
-                  small
-                  @click="showRemark(item)"
-                  >หมายเหตุ</v-btn
-                >
-              </div>
-            </template>
-          </v-data-table> -->
-
-          <!-- <div v-if="data.item.status == 'rejected'">
-                <b-badge variant="danger">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'created'">
-                <b-badge variant="info">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'Pending'">
-                <b-badge variant="warning">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'Start'">
-                <b-badge variant="primary">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'WaitOtp'">
-                <b-badge variant="warning">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'Success'">
-                <b-badge variant="success">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'Error'">
-                <b-badge variant="danger">
-                  {{ data.item.status }}</b-badge
-                >
-              </div>
-              <div v-if="data.item.status == 'Timeout'">
-                <b-badge variant="danger">
-                  {{ data.item.status }}</b-badge
-                >
-              </div> -->
-
-          <!-- end close old data-table -->
-
         </v-card></v-col>
     </v-row>
     <!-- secttiondeposit -->
@@ -921,6 +663,10 @@ export default {
     } catch (error) {
       console.log(error);
     }
+    setInterval(() => {
+      this.updateOnlineMember();
+      console.log('member online opdated')
+    }, 60000);
   },
   mounted() { },
   data() {

@@ -55,6 +55,19 @@ export async function changeStatus(context, payload) {
     }
   });
 }
+
+export async function checkCashback(context,payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+    
+      let response = await this.$axios.get(`${process.env.ALL_CASHBACK}/api/cashback/Cashbackcheck/${payload}`,);
+      
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 // เชครีพอตเมมเบอร์
 // เชครีพอตเมมเบอร์ ID
 export async function getReportmemberbyid({ commit }, fillter = {}) {

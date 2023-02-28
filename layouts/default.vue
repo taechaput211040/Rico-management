@@ -404,7 +404,7 @@ export default {
       await this.getFeature();
       await this.getSetting();
     await this.getOnlineMember()
-    console.log("iiiiiiiiii",mthis.memberOnline)
+    // console.log("iiiiiiiiii",this.memberOnline)
       //await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter((x) => {

@@ -75,11 +75,12 @@
           </v-col>
           <v-col cols="6" sm="6">
             <v-row class="pa-md-3 my-auto">
-              <v-col cols="12">
-                <v-switch
+              <v-col cols="12" v-if="company !='al'">
+                <v-switch 
                   hide-details="auto"
                   class="mx-5 mt-2"
                   color="success"
+                  
                   :true-value="true"
                   :false-value="false"
                   :disabled="canwrite"
@@ -109,7 +110,23 @@
                   </p>
                 </div>
               </v-col>
-
+              <v-col cols="12" v-if="company =='al'">
+            โหมดการทำงาน  (Legacy)
+               
+                <div
+                  class="elevation-4 pa-md-3 my-auto"
+                 
+                >
+                  <div>สะสม ยอดเสีย</div>
+                  <p>
+                    คิดยอดเสียให้คำนวนจาก ยอดฝากที่ไม่ได้มีการถอน ตั้งแต่ การฝากครั้งแรก
+                    หรือ การกดรับแคชแบคครั้งล่าสุด เช่น ฝาก 100 ไม่ได้ถอน ก็จะนำยอด 100 ไปคิด แคชแบค
+                    แต่หาก ฝาก 10000 แล้วถอน 200 
+                    ยอด 10000 จะไม่ถูกคิดแคชแบค
+                  </p>
+                  
+                </div>
+              </v-col>
               <v-col sm="4" cols="12">
                 เลือกการรับรายได้
                 <v-select
@@ -229,8 +246,20 @@
       <h2 class="mt-4 mb-2">ตรวจสอบ CASHBACK</h2>
       <v-card  width="100%"
       class="elevation-4 mt-5 pa-4 rounded-lg font-weight-bold">
-        <span class="font-weight-bold">กรอก username </span>
+      <div v-if="cashback.cashback_type">
+        <div class="mt-4 mb-2" v-if="cashback.collect_type == 'DAY'"> คำนวนรายได้ของเมื่อวาน</div>
+        <div class="mt-4 mb-2" v-if="cashback.collect_type == 'WEEK'"> คำนวนรายได้ของ วันจันทร์ ที่แล้ว ถึง วันอาทิตย์ กดรับได้วันจันทร์</div>
+        <div class="mt-4 mb-2" v-if="cashback.collect_type == 'MOUNTH'"> คำนวนรายได้ของ เดือนปัจจุบัน กดรับได้วันที่ 1 เดือนถัดไป</div>
 
+      </div>
+      <div v-if="!cashback.cashback_type && company!='al'">
+        <div class="mt-4 mb-2" v-if="cashback.collect_type == 'DAY'"> คำนวนรายได้ ตั้งแต่กดรับแคชแบคล่าสุด </div>
+
+      </div>
+      <div v-if="company == 'al'">
+        <div class="mt-4 mb-2" v-if="cashback.collect_type == 'DAY'"> คำนวนรายได้ ตามยอดฝากที่ไม่มีการถอน </div>
+
+      </div>
         <div class="container-fluid">
           <div class="card shadow p-3">
             <div mt-3>
@@ -240,13 +269,13 @@
                     <label>กรุณากรอก username เพื่อตรวจสอบ </label>
                     <div class="d-flex">
                       <v-text-field
-                        type="number"
-                        v-model="cashback.rate"
+                        type="text"
+                        v-model="username_cashback"
                         dense
                         outlined
                         hide-details="auto"
                       ></v-text-field>
-                      <v-btn   class="mx-auto btn_sty"
+                      <v-btn   class="mx-auto btn_sty" @click="searchCashback(username_cashback)"
                       color="success"
                    
                       >ค้นหา</v-btn>
@@ -260,6 +289,7 @@
                       <v-text-field
                         type="text"
                         disabled
+                        v-model="cashback_info.start_caltime"
                         dense
                         outlined
                         hide-details="auto"
@@ -273,6 +303,7 @@
                     <v-text-field
                       type="text"
                       disabled
+                      v-model="cashback_info.cashback"
                       dense
                       outlined
                       hide-details="auto"
@@ -292,6 +323,7 @@
                       <v-text-field
                         type="text"
                         disabled
+                        v-model="cashback_info.deposit"
                         dense
                         outlined
                         hide-details="auto"
@@ -308,6 +340,7 @@
                       <v-text-field
                         type="text"
                         disabled
+                        v-model="cashback_info.withdraw"
                         dense
                         outlined
                         hide-details="auto"
@@ -321,6 +354,7 @@
                     <v-text-field
                       type="text"
                       disabled
+                      v-model="cashback_info.winlose"
                       dense
                       outlined
                       hide-details="auto"
@@ -340,10 +374,19 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
+      cashback_info:{
+        cashback: 0,
+          deposit: 0,
+          withdraw: 0,
+          winlose: 0,
+          start_caltime: '',
+      },
+      username_cashback:null,
       isLoading: true,
       inputPicture: undefined,
       cashback: { status: false },
@@ -363,7 +406,7 @@ export default {
     } catch (error) {}
   },
   computed: {
-    ...mapState("auth", ["menu"]),
+    ...mapState("auth", ["menu","company"]),
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("promotion_write")) return true;
@@ -373,6 +416,24 @@ export default {
   },
   methods: {
     ...mapActions("promotion", ["getCashback", "saveCashback"]),
+    ...mapActions("member", ["checkCashback"]),
+    async searchCashback(){
+      if(!this.username_cashback){
+        this.$swal({
+        title: `กรุณากรอก username`,
+        icon: "info",
+        allowOutsideClick: true,
+        confirmButtonColor: "green",
+        confirmButtonText: "ok",
+      });
+      return
+      }
+       this.isLoading=true
+       const temp_data = await this.checkCashback(this.username_cashback)
+      this.cashback_info  = temp_data
+      this.cashback_info.start_caltime = dayjs(this.cashback_info.start_caltime).format("YYYY-MM-DD HH:mm:ss")
+       this.isLoading=false
+    },
     async submitCashback() {
       this.isLoading = true;
       await this.saveCashback(this.cashback);
