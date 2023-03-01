@@ -17,7 +17,7 @@
       <v-spacer />
       <!-- <audio src="~/assets/sound/Doorbell.wav" controls></audio> -->
       <v-chip outlined class="font-weight-bold" color="success"
-        ><v-icon left c>mdi-account</v-icon>{{ memberOnline }}
+        ><v-icon left c>mdi-account</v-icon>{{ memberOnline.count }}
         Online member
         <v-icon class="mx-2" @click="showMember = true">mdi-chart-box</v-icon>
       </v-chip>
@@ -274,7 +274,18 @@
           <v-card-title class="justifiy-center font-weight-bold success--text"
             >Member Online</v-card-title
           >
-          <v-data-table :headers="headersMember" hide-default-footer>
+          <v-data-table :headers="headersMember"
+          :items="memberOnline.data"
+          
+          
+          hide-default-footer>
+          <template #[`item.updated_at`]="{ item }">
+            <span>
+              {{ item.created_at | dateFormat }}
+            </span>
+          </template>
+
+
           </v-data-table>
           <v-card-actions class="justify-end">
             <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
@@ -300,7 +311,7 @@ export default {
       headersMember: [
         {
           text: "เวลาเข้าเล่นล่าสุด",
-          value: "time",
+          value: "updated_at",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -314,35 +325,34 @@ export default {
         },
         {
           text: "ค่ายเกม",
-          value: "provider",
+          value: "provider_name",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "Game",
-          value: "game",
+          value: "game_name",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "Ip",
-          value: "ip_address",
+          value: "ip",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
         {
           text: "อุปกรณ์ที่ใช้เข้าเล่น",
-          value: "hardware",
+          value: "device",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
         },
       ],
       showMember: false,
-      memberOnline: 26,
       soundsetting: {
         noauto: true,
         dp: true,
@@ -393,7 +403,9 @@ export default {
       await this.getUser();
       await this.getFeature();
       await this.getSetting();
-      // await this.getLockdown();
+    await this.getOnlineMember()
+    // console.log("iiiiiiiiii",this.memberOnline)
+      //await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter((x) => {
         return x.status == true;
@@ -488,11 +500,13 @@ export default {
   async beforeMount() {
     await this.CheckOrganize();
   },
-  computed: {
+  computed: { 
     ...mapState("account", ["webPalette"]),
+    ...mapState("auth", ["memberOnline"]),
   },
   methods: {
     ...mapActions("auth", [
+      "getOnlineMember",
       "getUser",
       "getFeature",
       "logout",

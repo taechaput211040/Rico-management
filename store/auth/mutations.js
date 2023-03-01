@@ -15,7 +15,9 @@ export function set_login(state, payload) {
   localStorage.setItem("username", payload.username);
   // localStorage.setItem("tokenMember", payload.setting.token);
 }
-
+export function set_online_member(state,payload){
+  state.memberOnline = payload
+}
 export function set_dashboard_data_flag(state, payload) {
   // console.log(payload, "payload");
   state.datarander.data = payload;
@@ -166,6 +168,8 @@ export function addDeposit(state, payload) {
     // state.dplist.slice(0,29)
   }
 }
+
+
 export function addIncoming(state, payload) {
   state.incomingSMS.unshift(payload);
   if (state.incomingSMS.length > 20) {

@@ -211,15 +211,19 @@ export async function getFirstdeposit({ commit, params }) {
     }
   });
 }
-export async function getHiddenReport({ commit, params }) {
+export async function getHiddenReport(context, fillter = {}) {
   return new Promise(async (resolve, reject) => {
     try {
-      let response = await this.$axios.get(`/api/getHiddenReport`, {
-        params: {
-          ...params,
-        },
-      });
-      resolve(response);
+      let data = await this.$axios.get(
+        `${process.env.ALL_INCOMING}/api/all_incoming/Auto/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
+        {
+          params: {
+            ...fillter,
+          },
+        }
+      );
+
+      resolve(data.data);
     } catch (error) {
       reject(error);
     }

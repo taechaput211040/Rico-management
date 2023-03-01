@@ -139,7 +139,9 @@ export default function () {
       XP: "BetSoft",
       WC: "WM Casino",
 
-      GN: "Genesis",
-    },
+      GN: "Genesis"
+  },
+
+  memberOnline:{count:0,data:[]}
   };
 }
