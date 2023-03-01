@@ -69,6 +69,25 @@ export function updatedPromotion({ state }, payload) {
     }
   });
 }
+export function addNewPromotion(context, payload) {
+  payload.agent = context.rootState.auth.agent
+  payload.company = context.rootState.auth.company
+  payload.operator = context.rootState.auth.user
+  payload.ip_operator = context.rootState.auth.ip
+  payload.hash = context.rootState.auth.hash
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.post(
+        `${process.env.ALL_PROMOTION}/api/Promotion/Auto`,
+        { ...payload }
+      );
+      resolve(data);
+    } catch (error) {
+      reject("error");
+    }
+  });
+}
+
 export function deletedPromotion(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {

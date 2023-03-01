@@ -191,7 +191,8 @@
           ><add-promotion
             @close-dialog="addPromotion = false"
             :closeDialogMethod="closeDialog"
-            @data-sent="data = $event"
+          
+            :mock_pro="mock_add_promotion"
           ></add-promotion
           ><v-card-actions>
             <v-spacer></v-spacer>
@@ -205,6 +206,7 @@
           </v-card-actions></v-card
         >
       </v-dialog>
+    
       <v-dialog v-model="editPromotionData" max-width="1000px">
         <v-card class="pa-5">
           <!-- <editPromotions
@@ -215,517 +217,12 @@
           /> -->
           <div>
             <h3 class="mb-4">แก้ไขโปรโมชัน</h3>
-            <v-row class="pa-3">
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field
-                  outlined
-                  dense
-                  filled
-                  v-model="itemedit.promotionname"
-                  hide-details="auto"
-                  label="ใส่ชื่อโปรโมชัน"
-                ></v-text-field
-              ></v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-file-input
-                  required
-                  @change="selectFile"
-                  accept="image/png, image/jpeg,image/jpg,image/webp"
-                  color="deep-purple accent-4"
-                  counter
-                  dense
-                  hide-details="auto"
-                  label="อัพโหลดไฟล์รูปโปรโมชัน"
-                  placeholder="รูปโปรโมชัน"
-                  prepend-icon="mdi-camera"
-                  outlined
-                  :show-size="1000"
-                >
-                  <template v-slot:selection="{ index, text }">
-                    <v-chip
-                      v-if="index < 2"
-                      color="deep-purple accent-4"
-                      dark
-                      label
-                      small
-                    >
-                      {{ text }}
-                    </v-chip>
-                  </template>
-                </v-file-input></v-col
-              >
-              <div class="text-center">
-                <img
-                  :src="itemedit.promotionpic"
-                  alt=""
-                  class="img_promotion"
-                />
-              </div>
-              <v-col cols="12">
-                <v-textarea
-                  outlined
-                  v-model="itemedit.promotiondescription"
-                  hide-details="auto"
-                  label="กติกา อธิบายโปรโมชัน(ลูกค้าส่วนนี้)"
-                  auto-grow
-                ></v-textarea>
-              </v-col>
-              <div>
-                <!-- expand -->
-                <v-expansion-panels
-                  v-model="planalcheck"
-                  accordion
-                  style="width: 100%"
-                  multiple
-                >
-                  <!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
-
-                  <v-expansion-panel
-                    v-for="(item, index) in itemedit.promotion_details"
-                    :key="index"
-                  >
-                    <div class="ma-2" v-if="item">
-                      <v-expansion-panel-header
-                        color="grey lighten-2"
-                        v-if="item"
-                        @click="settingform(item, index)"
-                      >
-                        <div primary-title class="font-weight-bold">
-                          ตั้งค่า {{ item.promotiontypename }}
-                          <v-btn
-                            small
-                            color="error"
-                            v-if="item.typestatus == false"
-                            ><v-icon left>mdi-cog-outline</v-icon> ปิด</v-btn
-                          >
-                          <v-btn small color="success" v-else
-                            ><v-icon left>mdi-cog-outline</v-icon>เปิด</v-btn
-                          >
-                        </div>
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <v-card-text class="font-weight-bold">
-                          ตั้งค่าโบนัส
-                        </v-card-text>
-                        <v-row v-if="item.promotiontypename == 'ฝากต่อเนื่อง'">
-                          <v-col cols="6" sm="3">
-                            <v-text-field
-                              outlined
-                              dense
-                              hide-details="auto"
-                              label="ยอดฝากต่อวัน"
-                              v-model="item.deposit"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="3">
-                            <v-text-field
-                              outlined
-                              v-model="item.bonuscount"
-                              dense
-                              hide-details="auto"
-                              label="โบนัสที่ได้"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="3">
-                            <v-select
-                              hide-details="auto"
-                              outlined
-                              dense
-                              v-model="item.days"
-                              label="จำนวนวันที่ฝากต่อเนื่อง"
-                            ></v-select
-                          ></v-col>
-                          <v-col cols="6" sm="3">
-                            <v-text-field
-                              outlined
-                              dense
-                              v-model="item.wdlimit"
-                              hide-details="auto"
-                              label="อั้นถอน(เท่า)"
-                            ></v-text-field
-                          ></v-col>
-                        </v-row>
-                        <v-row v-if="item.promotiontypename !== 'ฝากต่อเนื่อง'">
-                          <v-col cols="6" sm="2">
-                            <v-text-field
-                              outlined
-                              v-model="item.mindp"
-                              dense
-                              hide-details="auto"
-                              label="ฝากขั้นต่ำ"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="2">
-                            <v-text-field
-                              outlined
-                              dense
-                              v-model="item.maxdp"
-                              hide-details="auto"
-                              label="ฝากสูงสุด"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="2">
-                            <v-select
-                              hide-details="auto"
-                              outlined
-                              dense
-                              :items="itemtypebonus"
-                              v-model="item.bonustype"
-                              label="โบนัส(%/ค่าคงที่)"
-                            ></v-select
-                          ></v-col>
-                          <v-col cols="6" sm="2">
-                            <v-text-field
-                              outlined
-                              dense
-                              v-model="item.bonusvalue"
-                              hide-details="auto"
-                              label="จำนวนโบนัส"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="2">
-                            <v-text-field
-                              outlined
-                              dense
-                              v-model="item.maxbonusvalue"
-                              hide-details="auto"
-                              label="โบนัสสูงสุด"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="6" sm="2"
-                            ><v-text-field
-                              outlined
-                              v-model="item.wdlimit"
-                              dense
-                              hide-details="auto"
-                              label="อั้นถอน"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col
-                            cols="12"
-                            v-if="item.promotiontypename == 'ฝากทั้งวัน'"
-                          >
-                            <v-switch
-                              hide-details="auto"
-                              class="mx-5"
-                              color="success"
-                              v-model="item.durationstatus"
-                              :label="` ระยะเวลาให้โบนัส :  ${item.durationstatus.toString()}`"
-                            ></v-switch>
-                            <div
-                              class="col-md-5 col-12 row"
-                              v-if="item.durationstatus == true"
-                            >
-                              <v-col cols="6">
-                                <el-time-picker
-                                  class="full-width"
-                                  format="HH:mm"
-                                  arrow-control
-                                  v-model="item.bonusdurationFrom"
-                                  placeholder="เวลาเริ่ม"
-                                  style="width: 100%"
-                                >
-                                </el-time-picker>
-                              </v-col>
-                              <v-col cols="6">
-                                <el-time-picker
-                                  class="full-width"
-                                  format="HH:mm"
-                                  arrow-control
-                                  v-model="item.bonusdurationTo"
-                                  placeholder="เวลาสิ้นสุด"
-                                  style="width: 100%"
-                                >
-                                </el-time-picker>
-                              </v-col>
-                            </div>
-                          </v-col>
-                        </v-row>
-                        <div>
-                          <v-card-text class="font-weight-bold">
-                            ตั้งค่าเทิร์น
-                          </v-card-text>
-                          <v-row class="mb-4">
-                            <v-col cols="6" sm="2">
-                              <v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                label="SLOT"
-                                v-model="item.SL"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2"
-                              ><v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                v-model="item.FH"
-                                label="Fishing"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2">
-                              <v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                v-model="item.SB"
-                                label="Sportbook"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2">
-                              <v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                label="ESPORT"
-                                v-model="item.ES"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2">
-                              <v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                label="HorseRacing"
-                                v-model="item.OT"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2">
-                              <v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                label="casino"
-                                v-model="item.LC"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="6" sm="2"
-                              ><v-text-field
-                                outlined
-                                dense
-                                hide-details="auto"
-                                v-model="item.LT"
-                                label="lotto"
-                              ></v-text-field
-                            ></v-col>
-                          </v-row>
-                        </div>
-
-                        <div
-                          class="d-flex align-baseline my-5"
-                          v-if="
-                            item?.newmemberRule ||
-                            item?.firstdepositRule ||
-                            item?.alldayRule
-                          "
-                        >
-                          <v-switch
-                            hide-details="auto"
-                            class="mx-5"
-                            color="success"
-                            v-model="item.rulestatus"
-                            :label="` ตั้งค่าโบนัสขั้นบันได :  ${item.rulestatus.toString()}`"
-                          ></v-switch>
-                        </div>
-                        <div v-show="item.rulestatus == true">
-                          <v-card v-if="item.newmemberRule">
-                            <v-data-table
-                              :headers="headernewmember"
-                              :items="item.newmemberRule"
-                              hide-default-footer
-                              class="elevation-1"
-                            >
-                              <template #[`item.mindp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากต่ำสุด"
-                                    v-model="item.mindp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.maxdp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากสูงสุด"
-                                    v-model="item.maxdp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.bonusvalue`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="โบนัสที่ได้(% / ค่างที่)"
-                                    v-model="item.bonusvalue"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                            </v-data-table>
-                            <v-card-actions>
-                              <v-btn
-                                small
-                                @click="addField(item.newmemberRule)"
-                                color="success"
-                                rounded
-                                ><v-icon>mdi-plus</v-icon>เพิ่ม
-                              </v-btn>
-                              <v-btn
-                                small
-                                v-show="item.newmemberRule.length > 1"
-                                @click="removeField(item.newmemberRule)"
-                                color="error"
-                                rounded
-                                ><v-icon>mdi-delete</v-icon>ลบ
-                              </v-btn>
-                            </v-card-actions>
-                          </v-card>
-                          <v-card v-if="item.firstdepositRule">
-                            <v-data-table
-                              :headers="headernewmember"
-                              :items="item.firstdepositRule"
-                              hide-default-footer
-                              class="elevation-1"
-                            >
-                              <template #[`item.mindp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากต่ำสุด"
-                                    v-model="item.mindp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.maxdp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากสูงสุด"
-                                    v-model="item.maxdp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.bonusvalue`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="โบนัสที่ได้(% / ค่างที่)"
-                                    v-model="item.bonusvalue"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                            </v-data-table>
-                            <v-card-actions>
-                              <v-btn
-                                small
-                                @click="addField(item.firstdepositRule)"
-                                color="success"
-                                rounded
-                                ><v-icon>mdi-plus</v-icon>เพิ่ม
-                              </v-btn>
-                              <v-btn
-                                small
-                                v-show="item.firstdepositRule.length > 1"
-                                @click="removeField(item.firstdepositRule)"
-                                color="error"
-                                rounded
-                                ><v-icon>mdi-delete</v-icon>ลบ
-                              </v-btn>
-                            </v-card-actions>
-                          </v-card>
-
-                          <v-card v-if="item.alldayRule">
-                            <v-data-table
-                              :headers="headernewmember"
-                              :items="item.alldayRule"
-                              hide-default-footer
-                              class="elevation-1"
-                            >
-                              <template #[`item.mindp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากต่ำสุด"
-                                    v-model="item.mindp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.maxdp`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="ฝากสูงสุด"
-                                    v-model="item.maxdp"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                              <template #[`item.bonusvalue`]="{ item }">
-                                <div class="pa-2">
-                                  <v-text-field
-                                    outlined
-                                    dense
-                                    hide-details="auto"
-                                    label="โบนัสที่ได้(% / ค่างที่)"
-                                    v-model="item.bonusvalue"
-                                    type="number"
-                                  />
-                                </div>
-                              </template>
-                            </v-data-table>
-                            <v-card-actions>
-                              <v-btn
-                                small
-                                @click="addField(item.alldayRule)"
-                                color="success"
-                                rounded
-                                ><v-icon>mdi-plus</v-icon>เพิ่ม
-                              </v-btn>
-                              <v-btn
-                                small
-                                v-show="item.alldayRule.length > 1"
-                                @click="removeField(item.alldayRule)"
-                                color="error"
-                                rounded
-                                ><v-icon>mdi-delete</v-icon>ลบ
-                              </v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </div>
-                      </v-expansion-panel-content>
-                    </div>
-                  </v-expansion-panel>
-
-                  <!-- /*ตั้งค่าโบนัสสมาชิกใหม่*/ -->
-                </v-expansion-panels>
-                <!-- expand -->
-              </div>
-            </v-row>
+            <edit-promotion
+      
+          
+            :mock_pro="itemedit"
+          ></edit-promotion
+          >
           </div>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -746,8 +243,9 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import Swal from "sweetalert2";
 import AddPromotion from "../../components/AddPromotion.vue";
+import EditPromotion from "../../components/EditPromotion.vue";
 export default {
-  components: { AddPromotion },
+  components: { AddPromotion,EditPromotion },
   data() {
     return {
       check:true,
@@ -787,6 +285,150 @@ export default {
         },
       ],
       data: "",
+      mock_add_promotion: {
+        agent: "",
+        company: "",
+        hash: "",
+        promotionname: "",
+        promotionpic: "",
+        promotiondescription: "",
+        status: true,
+        create_by: "system",
+        updated_by: "system",
+        promotion_details: [
+          {
+            promotiontypename: "สมัครสมาชิกใหม่",
+            typestatus: false,
+            rulestatus: false,
+            mindp: 100,
+            maxdp: 100,
+            bonustype: "%",
+            bonusvalue: 0,
+            maxbonusvalue: 5000,
+            wdlimit: 0,
+            bonuscount: 0,
+            bonusdurationFrom: "00:00:00",
+            bonusdurationTo: "23:59:00",
+            durationstatus: false,
+            SL: 1,
+            LC: 1,
+            SB: 1,
+            ES: 1,
+            OT: 1,
+            LT: 1,
+            FH: 1,
+            days: 7,
+            deposit: 300,
+            bonus: 300,
+            promotion_rules: [
+              {
+                mindp: 0,
+                maxdp: 0,
+                bonusvalue: 0,
+              },
+            ],
+          },
+          {
+            promotiontypename: "ฝากครั้งแรกของวัน",
+            typestatus: false,
+            rulestatus: false,
+            mindp: 0,
+            maxdp: 100000,
+            bonustype: "%",
+            bonusvalue: 0,
+            maxbonusvalue: 5000,
+            wdlimit: 0,
+            bonuscount: 0,
+            bonusdurationFrom: "00:00:00",
+            bonusdurationTo: "23:59:00",
+            durationstatus: false,
+            SL: 1,
+            LC: 1,
+            SB: 1,
+            ES: 1,
+            OT: 1,
+            LT: 1,
+            FH: 1,
+            days: 7,
+            deposit: 300,
+            bonus: 300,
+            promotion_rules: [
+              {
+                mindp:0,
+                maxdp: 0,
+                bonusvalue: 0,
+              },
+            ],
+          },
+          {
+            promotiontypename: "ฝากทั้งวัน",
+            typestatus: false,
+            rulestatus: false,
+            mindp: 0,
+            maxdp: 100000,
+            bonustype: "%",
+            bonusvalue: 0,
+            maxbonusvalue: 5000,
+            wdlimit: 0,
+            bonuscount: 0,
+            bonusdurationFrom: "00:00:00",
+            bonusdurationTo: "23:59:00",
+            durationstatus: false,
+            SL: 1,
+            LC: 1,
+            SB: 1,
+            ES: 1,
+            OT: 1,
+            LT: 1,
+            FH: 1,
+            days: 7,
+            deposit: 300,
+            bonus: 300,
+            promotion_rules: [
+              {
+                mindp: "0",
+                maxdp: "0",
+                bonusvalue: "0",
+              },
+            ],
+          },
+          {
+            promotiontypename: "ฝากต่อเนื่อง",
+            typestatus: false,
+            rulestatus: false,
+            mindp: 0,
+            maxdp: 0,
+            bonustype: "%",
+            bonusvalue: 0,
+            maxbonusvalue: 0,
+            wdlimit: 0,
+            bonuscount: 0,
+            bonusdurationFrom: "00:00:00",
+            bonusdurationTo: "23:59:59",
+            durationstatus: false,
+            SL: 1,
+            LC: 1,
+            SB: 1,
+            ES: 1,
+            OT: 1,
+            LT: 1,
+            FH: 1,
+            days: 7,
+            deposit: 300,
+            bonus: 300,
+            deletedAt: null,
+            promotion_rules: [
+              {
+                mindp:0,
+                maxdp: 0,
+                bonusvalue: 0,
+              },
+            ],
+          },
+        
+        
+        ],
+      },
     };
   },
   async fetch() {
@@ -829,6 +471,7 @@ export default {
       "getPromotion",
       "updatedPromotion",
       "deletedPromotion",
+      "addNewPromotion"
     ]),
    async deletePromotion(id) {
       Swal.fire({
@@ -891,7 +534,7 @@ export default {
       this.file = null;
     },
     async editPromotion(promotion) {
-      console.log(promotion, "data");
+  
       this.imageUpdated = promotion.promotionpic;
       this.editPromotionData = true;
    
@@ -924,10 +567,35 @@ export default {
       }
       await this.$fetch();
     },
-    closeDialog(data) {
-      console.log("test_data");
-      console.log(this.data);
+    async closeDialog(data) {
+      this.isLoading = true
+   if(!this.mock_add_promotion.promotionpic){
+    this.$swal({
+      title: "กรุณาเพิ่มรูปโปรโมชั่น !",
+      text:"กรุณาตั้งชื่อ ไฟล์ เป็นภาษาอังกฤษ ไม่เว้นวรรค ขนาดไม่เกิน 250KB",
+      icon: "error",
+      showCancelButton: true,
+      allowOutsideClick: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "OK",
+      cancelButtonText: "ยกเลิก"
+    })
+    this.isLoading = false
+    return
+   }
       // this.addPromotion = false
+      await this.addNewPromotion(this.mock_add_promotion)
+      await this.getPromotion();
+      this.isLoading = false
+      this.addPromotion = false
+      this.$swal({
+        title: "สร้างโปรโมชั่นสำเร็จ",
+        icon: "success",
+        allowOutsideClick: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      })
     },
     tougleStatus(item) {
       item.status = !item.status;
