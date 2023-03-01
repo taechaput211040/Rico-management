@@ -63,7 +63,7 @@
         <v-card class="elevation-3">
           <template>
             <v-simple-table>
-              <template >
+              <template>
                 <thead>
                   <tr>
                     <th>รายการโบนัส</th>
@@ -496,6 +496,8 @@ export default {
         column_order: "no_bonus_count",
         order: "DESC",
       };
+      params.start = this.$moment(params.start).format("YYYY-MM-DD");
+      params.end = this.$moment(params.end).format("YYYY-MM-DD");
       // console.log('-----------------');
       // console.log('this is param');
       // console.log(params)
@@ -513,6 +515,8 @@ export default {
         column_order: "date",
         order: "ASC",
       };
+      params.start = this.$moment(params.start).format("YYYY-MM-DD");
+      params.end = this.$moment(params.end).format("YYYY-MM-DD");
       // console.log('-----------------');
       // console.log('this is param');
       // console.log(params)

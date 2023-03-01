@@ -11,7 +11,7 @@
         width="100%"
         height="100vh"
         style="min-height: 100vh"
-        :src="`https://admin-static.smart-ai-api.com/#/?token=${$store.state.auth.tokenMember}`"
+        :src="`https://admin-static.smart-ai-api.com/#/?hash=${$store.state.auth.statichash}`"
       />
     </div>
   </div>
@@ -30,7 +30,9 @@ export default {
       }
     },
   },
-
+  async fetch() {
+    await this.$store.dispatch("auth/getHashStatic");
+  },
   methods() {},
 };
 </script>

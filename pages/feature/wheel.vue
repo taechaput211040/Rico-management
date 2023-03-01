@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container">
+    <loading-page v-if="isLoading"></loading-page>
+    <div class="container" >
       <h3>ตั้งค่ากงล้อเสี่ยงโชค</h3>
       <v-card
         class="col-md-3 col-12 elevation-2 mt-5 pa-4 rounded-lg text-center"
@@ -338,6 +339,12 @@
         </div>
       </div>
     </div>
+    <!-- <div v-else>
+      <label
+        >สถานะ FEATURE นี้ยังไม่เปิดใช้งาน .. ติดต่อ smart-bet
+        เพื่อทำการเปิดใช้งาน Feature นี้</label
+      >
+    </div> -->
   </div>
 </template>
 
@@ -470,6 +477,8 @@ export default {
         rate: 0,
       },
       settingitem: [],
+      isLoading: false,
+      feature_status: false,
     };
   },
   computed: {
@@ -482,40 +491,38 @@ export default {
     },
   },
   async fetch() {
-    this.turn = await this.getWheel()
- try {
-  
- } catch (error) {
-  
- }
-    await this.$axios
-    .$get(
-        `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
-        {
-          auth: {
-            username:`${process.env.BASIC_AUTH_USERNAME}`,
-            password: `${process.env.BASIC_AUTH_PASSWORD}`,
-          },
-        }
-      )
-      .then((response) => {
-        this.roullet = response;
-      })
-      .catch((err) => {
-        this.$nuxt.$emit("alert", err.response.data.ResponseStatus);
-        this.roullet = [];
-      });
+    this.isLoading = true;
+    try {
+      this.turn = await this.getWheel();
+      this.status = this.turn.isActive;
+      this.feature_status = this.turn.feature_status;
+      await this.$axios
+        .$get(
+          `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
+          {
+            auth: {
+              username: `${process.env.BASIC_AUTH_USERNAME}`,
+              password: `${process.env.BASIC_AUTH_PASSWORD}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.roullet = response;
+        })
+        .catch((err) => {
+          this.$nuxt.$emit("alert", err.response.data.ResponseStatus);
+          this.roullet = [];
+        });
+    } catch (error) {
+      this.status = false;
+      console.log(error);
+      this.feature_status = false;
+    }
+    this.isLoading = false;
   },
 
-  async mounted() {
-    try {
-      this.turn = await this.getWheel()
-    } catch (error) {
-      console.log(error);
-    }
-  },
   methods: {
-    ...mapActions("member", ["updateWheel","getWheel"]),
+    ...mapActions("member", ["updateWheel", "getWheel"]),
     openSetting(item, index) {
       this.$bvModal.show("setting-roulette") == true;
       this.settingitem = item;
@@ -577,10 +584,11 @@ export default {
       }
     },
     async submitTurn() {
+      console.log(this.turn);
       this.loading = true;
       this.turn.service_id = this.roullet[0].agent_id;
       try {
-        await this.updateWheel(this.turn)
+        await this.updateWheel(this.turn);
         this.showSuccessAlert("บันทึกสำเร็จ");
         this.loading = false;
       } catch (error) {
@@ -588,8 +596,33 @@ export default {
         this.loading = false;
       }
     },
-    switchstatus(status) {
-      status = !status;
+    async switchstatus(status) {
+      this.turn.isActive = status;
+      try {
+        await this.updateWheel(this.turn);
+        this.showSuccessAlert("บันทึกสำเร็จ");
+        this.loading = false;
+      } catch (error) {
+        this.showErrorAlert("error");
+        this.loading = false;
+      }
+    },
+    showSuccessAlert(message) {
+      // Use sweetalret2
+
+      this.$swal.fire("สำเร็จ", message, "success", "OK");
+    },
+    showErrorAlert(message) {
+      // Use sweetalret2
+      this.$swal.fire("ERROR!", message, "error", "OK");
+    },
+    showInfoAlert(message) {
+      // Use sweetalret2
+      this.$swal.fire("ระวัง!", message, "warning", "OK");
+    },
+    showInfoAlert2(message) {
+      // Use sweetalret2
+      this.$swal.fire("โปรดทราบ", message, "info", "OK", "CANCLE");
     },
   },
 };

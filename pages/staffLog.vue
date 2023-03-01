@@ -13,18 +13,19 @@
       <v-data-table
         :footer-props="{
           showFirstLastPage: true,
-          'items-per-page-text': ''
+          'items-per-page-text': '',
+          'items-per-page-options': [20,50],
         }"
         :server-items-length="items.meta ? items.meta.itemCount : 0"
         :options.sync="options"
         :headers="headers"
         :items="items.data"
       >
-        <template #[`item.no`]="{index}">
+        <template #[`item.no`]="{ index }">
           {{ options.itemsPerPage * (options.page - 1) + (index + 1) }}
         </template>
-        <template #[`item.created_at`]="{item}">
-          {{ item.created_at | dateFormat  }}
+        <template #[`item.created_at`]="{ item }">
+          {{ item.created_at | dateFormat }}
         </template>
       </v-data-table>
     </v-card>
@@ -44,7 +45,7 @@ export default {
         startDate: new Date().toISOString().substr(0, 10),
         startTime: new Date(new Date().setHours(0, 0, 0, 0)),
         endDate: new Date().toISOString().substr(0, 10),
-        endTime: new Date(new Date().setHours(23, 59, 59, 999))
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
       },
       options: {},
       headers: [
@@ -54,60 +55,60 @@ export default {
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
-          width: "50px"
+          width: "50px",
         },
         {
           text: "เวลา",
           value: "created_at",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ผู้ทำการ",
           value: "username",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "ผู้ทำการ",
           value: "username",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "action",
           value: "action",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "รายการ",
           value: "details",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
+          class: "font-weight-bold ",
         },
         {
           text: "IP",
           value: "ip",
           align: "center",
           sortable: false,
-          class: "font-weight-bold "
-        }
+          class: "font-weight-bold ",
+        },
       ],
-      items: []
+      items: [],
     };
   },
   watch: {
     options: {
       async handler() {
         await this.getdata();
-      }
-    }
+      },
+    },
   },
   methods: {
     searchdata(item) {
@@ -124,7 +125,7 @@ export default {
         take: undefined,
         action: "ALL",
         start: undefined,
-        end: undefined
+        end: undefined,
       }
     ) {
       console.log(this.options);
@@ -147,8 +148,8 @@ export default {
         console.log(error);
       }
       this.isLoading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

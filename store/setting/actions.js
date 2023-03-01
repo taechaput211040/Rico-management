@@ -1,6 +1,6 @@
 //ตั้งค่าระบบ
-export function getSetting(context, rootState, commit, state ) {
-  console.log(context)
+export function getSetting(context, rootState, commit, state) {
+  console.log(context);
   return new Promise(async (resolve, reject) => {
     if (!context.rootState.setting.setting) {
       try {
@@ -10,7 +10,7 @@ export function getSetting(context, rootState, commit, state ) {
         );
         await context.commit("setAllsetting", data);
 
-        console.log('asdasdasdasd',data)
+        console.log("asdasdasdasd", data);
         resolve(data);
       } catch (error) {
         reject(error);
@@ -474,6 +474,159 @@ export function getgame({ commit, state }) {
       );
       //
       resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function getCreditFree({ commit, rootState }) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(`api/Creditfree/Activity`);
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin?hash=${rootState.auth.hash}`,
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+      commit("setActivity", data);
+      //
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function createActivity({ commit, rootState }, payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(/api/Activity/admin`);
+      let { data } = await this.$axios.post(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin`,
+        {
+          ...payload,
+          hash: rootState.auth.hash,
+          company: rootState.auth.company,
+          agent: rootState.auth.agent,
+        },
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+      //
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function searchUserAdmin({ commit }, params) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(``);
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin/activity/withuser`,
+        {
+          params: {
+            id: params.id,
+            username: params.username,
+          },
+        },
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function topupById({ commit }, id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(``);
+      let { data } = await this.$axios.post(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin/activity?id='${id}`,
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function updateUserFreecredit({ commit }, user_id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(``);
+      let { data } = await this.$axios.patch(
+        `${process.env.ALL_CREDIT_FREE}/api/User/${user_id}`,
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function deleteFreecredit({ commit }, id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(``);
+      let data = await this.$axios.delete(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin?id=${id}`,
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function updateActivity({ commit, rootState }, payload) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let { data } = await this.$axios.get(``);
+      let data = await this.$axios.patch(
+        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin/${payload.id}`,
+        {
+          ...payload,
+          hash: rootState.auth.hash,
+          company: rootState.auth.company,
+          agent: rootState.auth.agent,
+        },
+        {
+          headers: {
+            Authorization: "f3900da4ef8305ad228dea2eb219baef",
+          },
+        }
+      );
+
+      resolve(data);
     } catch (error) {
       reject(error);
     }

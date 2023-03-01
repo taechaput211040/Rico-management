@@ -70,16 +70,15 @@
                   <div :id="item.value"></div>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                      <div
-                        v-bind="attrs"
-                        v-on="on"
-                        :class="{
-                          active_bank: item === toBank,
-                        }"
-                        style="cursor: pointer"
-                        @click="selectBank(item)"
-                      >
-                        <img-bank :value="item.value"></img-bank>
+                      <div v-bind="attrs" v-on="on" @click="selectBank(item)">
+                        <div
+                          :class="{
+                            active_bank: item === toBank,
+                          }"
+                          style="cursor: pointer; line-height: 0"
+                        >
+                          <img-bank :value="item.value"></img-bank>
+                        </div>
                       </div>
                       <br />
                     </template>
@@ -272,44 +271,46 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="modal_multi_2" max-width="800"
-    no-close-on-backdrop
-    no-close-on-esc
-    hide-footer
+    <v-dialog
+      v-model="modal_multi_2"
+      max-width="800"
+      no-close-on-backdrop
+      no-close-on-esc
+      hide-footer
     >
-    <v-card>
-      <div v-if="emailData">
-        <p class="my-2">
-          โปรดกรอก รหัส PIN จากอีเมลล์
-          {{ emailData.email.email }} ที่ลงทะเบียนไว้
-        </p>
-        <p class="my-2">
-          รหัสอ้างอิง : <b>{{ emailData.ref }}</b>
-        </p>
-        <v-text-field
-          v-model="emailData.pin"
-          name="otp"
-          type="text"
-          required
-          class="mv-3"
-          size="sm"
-          min="0"
-          pattern="[0-9]+"
-        >
-        </v-text-field>
-      </div>
-      <v-card-actions>
-        <div>
-          <v-btn variant="success" @click="confirmPinTransfer">ยืนยัน</v-btn>
-          <v-btn variant="danger" @click="reset_value">ยกเลิก</v-btn>
-        </div>
+      <v-card>
         <div v-if="emailData">
-          <p>รหัส PIN จะหมดอายุภายใน {{ display_time }}</p>
+          <p class="my-2">
+            โปรดกรอก รหัส PIN จากอีเมลล์
+            {{ emailData.email.email }} ที่ลงทะเบียนไว้
+          </p>
+          <p class="my-2">
+            รหัสอ้างอิง : <b>{{ emailData.ref }}</b>
+          </p>
+          <v-text-field
+            v-model="emailData.pin"
+            name="otp"
+            type="text"
+            required
+            class="mv-3"
+            size="sm"
+            min="0"
+            pattern="[0-9]+"
+          >
+          </v-text-field>
         </div>
-      </v-card-actions>
-    </v-card>
+        <v-card-actions>
+          <div>
+            <v-btn variant="success" @click="confirmPinTransfer">ยืนยัน</v-btn>
+            <v-btn variant="danger" @click="reset_value">ยกเลิก</v-btn>
+          </div>
+          <div v-if="emailData">
+            <p>รหัส PIN จะหมดอายุภายใน {{ display_time }}</p>
+          </div>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
-    
+
     <v-dialog v-model="remark_dialog" max-width="290">
       <v-card>
         <v-card-title>
@@ -321,18 +322,16 @@
             <div>รายการโอนสำเร็จ</div>
             <div>ยอดก่อนโอน : {{ remark_render.bf_balance }}</div>
             <div>ยอดหลังโอน : {{ remark_render.af_balance }}</div>
-  
+
             <div>QR CODE สำหรับตรวจสอบรายการโอนเงิน</div>
             <div class="d-flex" style="justify-content: center">
               <qr-code :text="remark_render.qrcode"></qr-code>
             </div>
           </div>
         </v-card>
-          <v-btn color="red" small @click="remark_dialog = false"> ยกเลิก</v-btn>
-      
+        <v-btn color="red" small @click="remark_dialog = false"> ยกเลิก</v-btn>
       </v-card>
     </v-dialog>
-   
   </div>
 </template>
 
@@ -343,7 +342,7 @@ Vue.component("qr-code", VueQRCodeComponent);
 export default {
   data() {
     return {
-      remark_dialog:false,
+      remark_dialog: false,
       modal_multi_2: false,
       confirmTransfer: false,
       display_time: "",
@@ -457,7 +456,7 @@ export default {
       this.remark_render.qrcode = item.remark.slice(3);
       this.remark_render.bf_balance = item.bfAmount;
       this.remark_render.af_balance = item.afAmount;
-      this.remark_dialog = true
+      this.remark_dialog = true;
     },
     reset_value() {
       this.transfer_acc = { text: "", value: "", acc_num: "", amount: 0 };

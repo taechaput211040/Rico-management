@@ -465,7 +465,7 @@ export function updateWheel(context, turn){
    
     try {
       let response = await this.$axios.patch(
-        `${process.env.ALL_WHEEL}/api/Wheel/admin/${turn.id}`,
+        `${process.env.ALL_WHEEL}/api/Wheel/admin/${turn.service_id}`,
         turn
       );
 

@@ -10,3 +10,10 @@ export function setAllsetting(state, payload) {
 export function setAllmessage(state, payload) {
   state.message = payload;
 }
+export function setActivity(state, payload) {
+  state.activity = payload;
+}
+
+export function setActivityLogout(state, payload) {
+  state.activity = null;
+}
