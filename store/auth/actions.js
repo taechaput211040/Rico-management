@@ -414,6 +414,7 @@ export async function manualApproveFromDashboard(context, withdrawlist) {
 
   withdrawlist.operator = context.state.user;
   withdrawlist.ip_operator = context.state.ip;
+  withdrawlist.amount = Math.floor(this.withdrawlist.amount)
   withdrawlist.remark = `${context.state.user} อนุมัติรายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`;
 
   try {

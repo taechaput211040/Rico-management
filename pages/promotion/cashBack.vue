@@ -39,9 +39,10 @@
               <v-file-input
                 v-model="inputPicture"
                 color="deep-purple accent-4"
-                @change="selectFile"
+              
                 counter
                 dense
+                @change="selectFile"
                 :disabled="canwrite"
                 hide-details="auto"
                 label="เปลี่ยนรูปโปรโมชั่น"
