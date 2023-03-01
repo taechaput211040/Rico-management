@@ -134,5 +134,7 @@ export default {
     BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
     VERSION_APP: process.env.VERSION_APP,
     ALL_CREDIT_FREE: process.env.ALL_CREDIT_FREE,
+    ALL_INCOMING: process.env.ALL_INCOMING,
+    CHECK_MAINTAINANCE: process.env.CHECK_MAINTAINANCE,
   },
 };
