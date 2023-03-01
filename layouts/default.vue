@@ -568,7 +568,6 @@ export default {
       try {
         await this.logout();
         await localStorage.clear();
-
         await this.$router.push("/login");
       } catch (err) {
         console.log(err);

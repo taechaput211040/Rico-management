@@ -146,6 +146,8 @@ export default {
       this.isLoading = true;
       try {
         let params = this.axiosParams();
+        params.start = this.$moment(params.start).utc().format("YYYY-MM-DD");
+        params.end = this.$moment(params.end).utc().format("YYYY-MM-DD");
         let response = await this.getProfitReport(params);
         this.total_dp_amount = response.deposit;
         this.total_wd_amount = response.withdraw;

@@ -1,12 +1,12 @@
-
-export default function() {
+export default function () {
   return {
+    statichash: localStorage.getItem("statichash") || null, // ||,
     verify: false,
     tfa_credential: null,
     tfa_data: null,
     key: localStorage.getItem("key") || null, //token
     user: localStorage.getItem("username") || null,
-    ip:null,
+    ip: null,
     menu: localStorage.getItem("menu") || null, // ||
     hash: localStorage.getItem("hash") || null, //token
     agent: localStorage.getItem("agent") || null,
@@ -15,31 +15,26 @@ export default function() {
     isAdmin: localStorage.getItem("isAdmin") || null,
     tokenMember: localStorage.getItem("tokenMember") || null,
 
+    componentKey: true,
 
-
-    componentKey:true,
-
-    datarander : {
-      data:false,
+    datarander: {
+      data: false,
       depositbalance: 0,
       withdrawbalance: 0,
-      profitlossDate:
-        0,
-      profitlossmounth: 0
+      profitlossDate: 0,
+      profitlossmounth: 0,
     },
-    dpbank : [],
-    wdbank : [],
-    dplist : [],
-    wdlist : [],
-    incomingSMS :[],
-    actionBankState: 
-      {
-        kbank:"start",
-        scb: "start",
-        true: "start"
-      },
-    
-    
+    dpbank: [],
+    wdbank: [],
+    dplist: [],
+    wdlist: [],
+    incomingSMS: [],
+    actionBankState: {
+      kbank: "start",
+      scb: "start",
+      true: "start",
+    },
+
     gameType: {
       SL: "SLOT",
       LC: "LIVE-CASINO",
@@ -50,9 +45,9 @@ export default function() {
       PK: "POKER",
       FH: "FISHING",
       CB: "CARD & BOARD",
-      MG: "MINI GAME"
-  },
-  provider: {
+      MG: "MINI GAME",
+    },
+    provider: {
       PGL: "PG Soft(l)",
       SML: "Smart Lotto",
       S2S: "Sexy Baccarat",
@@ -144,8 +139,7 @@ export default function() {
       XP: "BetSoft",
       WC: "WM Casino",
 
-      GN: "Genesis"
-  },
+      GN: "Genesis",
+    },
   };
-  
 }

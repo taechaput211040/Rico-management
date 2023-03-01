@@ -66,7 +66,6 @@
           :items="response.data"
           :server-items-length="response.total ?? 0"
           :items-per-page="limit"
-        
           :options.sync="options"
         >
           <template #[`item.no`]="{ index }">
@@ -276,6 +275,8 @@ export default {
       this.isLoading = true;
       try {
         let params = this.axiosParamsSummary();
+        params.start = this.$moment(params.start).utc().format("YYYY-MM-DD");
+        params.end = this.$moment(params.end).utc().format("YYYY-MM-DD");
         let response = await this.getProfitReport(params);
         this.total_dp_amount = response.deposit;
         this.total_wd_amount = response.withdraw;
@@ -363,6 +364,8 @@ export default {
       this.isLoading = true;
       try {
         let params = this.axiosParams();
+        params.start = this.$moment(params.start).utc().format("YYYY-MM-DD");
+        params.end = this.$moment(params.end).utc().format("YYYY-MM-DD");
         let response = await this.getProfitByUserReport(params);
         this.response = response;
         this.total_user = response.total;

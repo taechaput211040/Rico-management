@@ -6,7 +6,7 @@ export function login(context, { username, password, agentkey }) {
     console.log(process.env.VUE_APP_PATH_MICROSERVICE, "env");
 
     localStorage.setItem("version", process.env.VERSION_APP);
-// console.log("versionnnnnnnnnnn",localStorage.getItem("version"))
+    // console.log("versionnnnnnnnnnn",localStorage.getItem("version"))
     // await context.commit("set_version", process.env.VERSION_APP);
     try {
       let { data } = await this.$axios.post(
@@ -32,7 +32,6 @@ export function login(context, { username, password, agentkey }) {
 //login//
 
 //two-facter
-
 
 export function twofactor(context, input) {
   return new Promise(async (resolve, reject) => {
@@ -228,21 +227,20 @@ export function GetInfomation(context) {
 export function Autostatus(context) {
   return new Promise(async (resolve, reject) => {
     try {
-
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/AutoBankStatus/${context.state.company}/${context.state.agent}`
       );
-      let status_auto
+      let status_auto;
       //[{"kbank":"start"},{"scb":"start"},{"true":"start"}]
-        if( Array.isArray(response.data)){
-           status_auto = {
-            kbank:response.data[0].kbank,
-            scb:response.data[0].scb,
-            true:response.data[0].true,
-          }
-        } else {
-          status_auto = response.data
-        }
+      if (Array.isArray(response.data)) {
+        status_auto = {
+          kbank: response.data[0].kbank,
+          scb: response.data[0].scb,
+          true: response.data[0].true,
+        };
+      } else {
+        status_auto = response.data;
+      }
       context.commit("update_action_bank", status_auto);
 
       resolve(response);
@@ -272,69 +270,52 @@ export function updateAutoBankStatus(context, { data }) {
   });
 }
 
-
 export async function updateIncoming(context, incomingSMS) {
   // console.log('geee')
-  console.log('ssss:', incomingSMS)
-  incomingSMS.operator = context.state.user
-  let incomingData = context.state.incomingSMS
+  console.log("ssss:", incomingSMS);
+  incomingSMS.operator = context.state.user;
+  let incomingData = context.state.incomingSMS;
   for (let index = 0; index < state.incomingSMS; index++) {
     const element = incomingData[index];
-    console.log(element.id)
-    console.log('count', index)
+    console.log(element.id);
+    console.log("count", index);
     if (element.id == payload.id) {
-      delete incomingData[index]
+      delete incomingData[index];
     }
   }
 
-  console.log('incomingData:', incomingData)
-
+  console.log("incomingData:", incomingData);
 }
 
 export async function updateWithdrawlistAction(context, payload) {
-
-  let wd_temp = context.state.wdlist
+  let wd_temp = context.state.wdlist;
 
   for (let index = 0; index < wd_temp.length; index++) {
     const element = wd_temp[index];
     if (element.id == payload.id) {
-      console.log(
-        'found id :', payload
-      )
-      wd_temp[index] = payload
+      console.log("found id :", payload);
+      wd_temp[index] = payload;
     }
-
-
-
   }
 
-
-  return wd_temp
-
+  return wd_temp;
 }
 export async function findInWdList(context, withdrawlist) {
-
-
-  let temp_wd = context.state.wdlist
+  let temp_wd = context.state.wdlist;
 
   for (let index = 0; index < temp_wd.length; index++) {
     const element = temp_wd[index];
     if (element.id == withdrawlist.id) {
-      return true
+      return true;
     }
-
-
   }
-  return false
-
-
+  return false;
 }
 
 export async function memberManualWithdrawByOperator(context, body) {
   // console.log('geee')
 
-
-  console.log('before send:', body)
+  console.log("before send:", body);
 
   try {
     let response = await this.$axios.post(
@@ -343,32 +324,26 @@ export async function memberManualWithdrawByOperator(context, body) {
         credit: body.wdAmount,
         username: body.username,
         operator: context.state.user,
-        ip_operator: context.state.ip
+        ip_operator: context.state.ip,
       }
-
     );
-   
-    return { status: 'success', message: response.data.message }
+
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export async function manualRejectFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
-
-  withdrawlist.operator = context.state.user
-  withdrawlist.ip_operator = context.state.ip
-  withdrawlist.remark = `${context.state.user} กด reject ยอด ${withdrawlist.amount}`
-
+  withdrawlist.operator = context.state.user;
+  withdrawlist.ip_operator = context.state.ip;
+  withdrawlist.remark = `${context.state.user} กด reject ยอด ${withdrawlist.amount}`;
 
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/RejectWd/Dashboard`,
       withdrawlist
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -382,28 +357,24 @@ export async function manualRejectFromDashboard(context, withdrawlist) {
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export async function manualWithdrawFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
+  withdrawlist.operator = context.state.user;
+  withdrawlist.ip_operator = context.state.ip;
 
-  withdrawlist.operator = context.state.user
-  withdrawlist.ip_operator = context.state.ip
-
-  console.log('before send:', withdrawlist)
-  console.log('before send state:', context.state.wdlist)
+  console.log("before send:", withdrawlist);
+  console.log("before send state:", context.state.wdlist);
 
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/ManualWd/Dashboard`,
       withdrawlist
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -417,27 +388,22 @@ export async function manualWithdrawFromDashboard(context, withdrawlist) {
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export async function manualApproveFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
-
-  withdrawlist.operator = context.state.user
-  withdrawlist.ip_operator = context.state.ip
-  withdrawlist.remark = `${context.state.user} อนุมัติรายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`
-
+  withdrawlist.operator = context.state.user;
+  withdrawlist.ip_operator = context.state.ip;
+  withdrawlist.remark = `${context.state.user} อนุมัติรายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`;
 
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/ApproveWd/Dashboard`,
       withdrawlist
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -451,27 +417,22 @@ export async function manualApproveFromDashboard(context, withdrawlist) {
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export async function manualResetFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
-
-  withdrawlist.operator = context.state.user
-  withdrawlist.ip_operator = context.state.ip
-  withdrawlist.remark = `${context.state.user} กด RESET รายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`
-
+  withdrawlist.operator = context.state.user;
+  withdrawlist.ip_operator = context.state.ip;
+  withdrawlist.remark = `${context.state.user} กด RESET รายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`;
 
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/ResetWd/Dashboard`,
       withdrawlist
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -485,34 +446,35 @@ export async function manualResetFromDashboard(context, withdrawlist) {
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 
-export async function hideIncomingFromDashBoardByOperator(context, incomingSMS) {
+export async function hideIncomingFromDashBoardByOperator(
+  context,
+  incomingSMS
+) {
   // console.log('geee')
 
-  incomingSMS.operator = context.state.user
-  const state_incomingData = context.state.incomingSMS
+  incomingSMS.operator = context.state.user;
+  const state_incomingData = context.state.incomingSMS;
 
-
-  let updated_state_incomingData = state_incomingData.map(x => {
-    if (x.id != incomingSMS.id) {
-      return x
-    }
-    return null
-  }).filter(x => x)
+  let updated_state_incomingData = state_incomingData
+    .map((x) => {
+      if (x.id != incomingSMS.id) {
+        return x;
+      }
+      return null;
+    })
+    .filter((x) => x);
 
   context.commit("updateIncoming", updated_state_incomingData);
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/Hide/Dashboard`,
       incomingSMS
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -526,35 +488,33 @@ export async function hideIncomingFromDashBoardByOperator(context, incomingSMS) 
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export async function topupDashboardByOperator(context, incomingSMS) {
   // console.log('geee')
-  console.log('ssss:', incomingSMS)
-  incomingSMS.operator = context.state.user
-  console.log('state:', context.state)
-  incomingSMS.operator = context.state.user
-  const state_incomingData = context.state.incomingSMS
+  console.log("ssss:", incomingSMS);
+  incomingSMS.operator = context.state.user;
+  console.log("state:", context.state);
+  incomingSMS.operator = context.state.user;
+  const state_incomingData = context.state.incomingSMS;
 
-
-  let updated_state_incomingData = state_incomingData.map(x => {
-    if (x.id != incomingSMS.id) {
-      return x
-    }
-    return null
-  }).filter(x => x)
+  let updated_state_incomingData = state_incomingData
+    .map((x) => {
+      if (x.id != incomingSMS.id) {
+        return x;
+      }
+      return null;
+    })
+    .filter((x) => x);
 
   context.commit("updateIncoming", updated_state_incomingData);
   try {
     let response = await this.$axios.post(
       `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/Dashboard/${incomingSMS.username}`,
       incomingSMS
-
     );
     //             "balance" => $balance,
     //             "balanceupdatetime" => Carbon::now()->toDateTimeString(),
@@ -568,12 +528,10 @@ export async function topupDashboardByOperator(context, incomingSMS) {
     //   confirmButtonColor: "green",
     //   confirmButtonText: "ok"
     // })
-    return { status: 'success', message: response.data.message }
+    return { status: "success", message: response.data.message };
   } catch (error) {
-    return { status: 'error', message: error.response.data.message }
+    return { status: "error", message: error.response.data.message };
   }
-
-
 }
 export function updateBalanceBank(context, { id, balance }) {
   // console.log('geee')
@@ -700,13 +658,30 @@ export function logout(context) {
         `${process.env.ALL_RICO_USER}/api/Auth/logout`
         // `http://localhost:3200/api/Auth/logout`
       );
-      context.commit("set_logout",context);
+      context.commit("set_logout", context);
       resolve(response);
 
       // resolve(response);
       return;
     } catch (error) {
       reject(error);
+    }
+  });
+}
+export function getHashStatic({ state, commit }) {
+  return new Promise(async (resolve, reject) => {
+    if (!state.statichash) {
+      try {
+        let response = await this.$axios.get(
+          `${process.env.ALL_SUPPORT}/api/Website/StaticInfo/${state.company}/${state.agent}`
+        );
+        commit("set_statichash", { response });
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    } else {
+      resolve(state.statichash);
     }
   });
 }

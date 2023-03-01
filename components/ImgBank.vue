@@ -1,29 +1,29 @@
 <template>
   <div>
     <img
-    src="~/assets/image/bank/operator.png"
-    v-if="value == 'MANUALBONUS'"
-    alt=""
-    class="icon-bank img-icon"
-  />
+      src="~/assets/image/bank/operator.png"
+      v-if="value == 'MANUALBONUS'"
+      alt=""
+      class="icon-bank img-icon"
+    />
     <img
-    src="~/assets/image/bank/operator.png"
-    v-if="value == 'AUTO'"
-    alt=""
-    class="icon-bank img-icon"
-  />
-  <img
-  src="~/assets/image/bank/operator.png"
-  v-if="value == 'xxxxxx'"
-  alt=""
-  class="icon-bank img-icon"
-/>
+      src="~/assets/image/bank/operator.png"
+      v-if="value == 'AUTO'"
+      alt=""
+      class="icon-bank img-icon"
+    />
     <img
-    src="~/assets/image/bank/wheel.png"
-    v-if="value == 'WHEEL'"
-    alt=""
-    class="icon-bank img-icon"
-  />
+      src="~/assets/image/bank/operator.png"
+      v-if="value == 'xxxxxx'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+    <img
+      src="~/assets/image/bank/wheel.png"
+      v-if="value == 'WHEEL'"
+      alt=""
+      class="icon-bank img-icon"
+    />
     <img
       src="~/assets/image/bank/BAAC.png"
       v-if="value == 'BAAC'"
@@ -122,19 +122,18 @@
     />
 
     <img
-    src="https://smart-binary.cloud/storage/pic-380b4e56-7527-4c0f-9ef8-13bcf89802a3-free_PNG90788.png"
-    v-if="value == 'CREDITFREE'"
-    alt=""
-    class="icon-bank img-icon"
-  />
-  <img
-  src="https://smart-binary.cloud/storage/pic-6c29e1b0-b579-414d-9a6c-c1fb6fdac41e-263240.png"
-  v-if="value == 'XXXXXX'"
-  alt=""
-  class="icon-bank img-icon"
-/>
-  
-    
+      src="https://smart-binary.cloud/storage/pic-380b4e56-7527-4c0f-9ef8-13bcf89802a3-free_PNG90788.png"
+      v-if="value == 'CREDITFREE'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+    <img
+      src="https://smart-binary.cloud/storage/pic-6c29e1b0-b579-414d-9a6c-c1fb6fdac41e-263240.png"
+      v-if="value == 'XXXXXX'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+
     <img
       src="~/assets/image/bank/TRUEWALLET.png"
       v-if="value == 'TRUEWALLET'"
@@ -163,7 +162,7 @@
       src="~/assets/image/bank/RICO.png"
       v-if="value == 'RICO' || value == 'Logo_Ricoautocash-01'"
       alt=""
-      class=" img-icon icon-Logo"
+      class="img-icon icon-Logo"
     />
     <img
       src="~/assets/image/bank/KBZpay.png"
@@ -189,8 +188,8 @@
 <script>
 export default {
   props: {
-    value: ""
-  }
+    value: "",
+  },
 };
 </script>
 
