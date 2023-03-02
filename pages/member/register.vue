@@ -366,6 +366,7 @@ export default {
         }).then(async (result) => {
           if (result.isConfirmed) {
             // console.log(this.formCreate)
+            this.formRegister.bankAcc = this.formRegister.bankAcc.trim()
            let result =  await this.createMember(this.formRegister);
            this.submit_result = result.data
            this.dialogRegister = true

@@ -148,8 +148,8 @@
                   <v-text-field v-model.number="mock_pro.promotion_details[1].mindp" outlined dense hide-details="auto" label="ฝากขั้นต่ำ"></v-text-field></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field v-model.number="mock_pro.promotion_details[1].maxdp" outlined dense hide-details="auto" label="ฝากสูงสุด"></v-text-field></v-col>
-                <!-- <v-col cols="6" sm="2">
-                  <v-select :items="typeBonus" v-model="mock_pro.promotion_details[1].bonustype" hide-details="auto" outlined dense label="โบนัส(%/ค่าคงที่)"></v-select></v-col> -->
+                <v-col cols="6" sm="2">
+                  <v-select :items="typeBonus" v-model="mock_pro.promotion_details[1].bonustype" hide-details="auto" outlined dense label="โบนัส(%/ค่าคงที่)"></v-select></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field v-model.number="mock_pro.promotion_details[1].bonusvalue" outlined dense hide-details="auto" label="จำนวนโบนัส"></v-text-field></v-col>
                 <v-col cols="6" sm="2">
@@ -402,7 +402,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      typeBonus:[{text:'%', value:'%',text:'ค่าคงที่',value:'ค่าคงที่'}],
+      typeBonus:[{text:'%', value:'%'},{text:'ค่าคงที่',value:'ค่าคงที่'}],
       typeDay:[2,3,4,5,6,7,8,9,10],
       inputPicture:null,
       mock_add_promotion: {

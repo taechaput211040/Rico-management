@@ -387,7 +387,7 @@
               <td>
                 <div class="text-center my-3 my-md-2 showdetail">
                   <span class="font-weight-bold">ยอดถอน</span> <br />
-                  <v-chip class="ma-2 font-weight-bold" color="error" label outlined>{{ Math.floor(item.amount) }}
+                  <v-chip class="ma-2 font-weight-bold" color="error" label outlined>{{ Math.floor(item.amount?item.amount:0) }}
                     บาท</v-chip><br />
                   <div class="card_status my-2">
                     <span class="font-weight-bold">status</span><br />
