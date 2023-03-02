@@ -191,7 +191,6 @@
           ><add-promotion
             @close-dialog="addPromotion = false"
             :closeDialogMethod="closeDialog"
-          
             :mock_pro="mock_add_promotion"
           ></add-promotion
           ><v-card-actions>
@@ -206,7 +205,7 @@
           </v-card-actions></v-card
         >
       </v-dialog>
-    
+
       <v-dialog v-model="editPromotionData" max-width="1000px">
         <v-card class="pa-5">
           <!-- <editPromotions
@@ -218,11 +217,9 @@
           <div>
             <h3 class="mb-4">แก้ไขโปรโมชัน</h3>
             <edit-promotion
-      
-          
-            :mock_pro="itemedit"
-          ></edit-promotion
-          >
+              :planel="planalcheck"
+              :mock_pro="itemedit"
+            ></edit-promotion>
           </div>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -245,10 +242,10 @@ import Swal from "sweetalert2";
 import AddPromotion from "../../components/AddPromotion.vue";
 import EditPromotion from "../../components/EditPromotion.vue";
 export default {
-  components: { AddPromotion,EditPromotion },
+  components: { AddPromotion, EditPromotion },
   data() {
     return {
-      check:true,
+      check: true,
       file: null,
       url: null,
       tempFile: null,
@@ -354,7 +351,7 @@ export default {
             bonus: 300,
             promotion_rules: [
               {
-                mindp:0,
+                mindp: 0,
                 maxdp: 0,
                 bonusvalue: 0,
               },
@@ -419,14 +416,12 @@ export default {
             deletedAt: null,
             promotion_rules: [
               {
-                mindp:0,
+                mindp: 0,
                 maxdp: 0,
                 bonusvalue: 0,
               },
             ],
           },
-        
-        
         ],
       },
     };
@@ -466,14 +461,17 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("promotion", ["set_promotion","updatePromotionAfterDelete"]),
+    ...mapMutations("promotion", [
+      "set_promotion",
+      "updatePromotionAfterDelete",
+    ]),
     ...mapActions("promotion", [
       "getPromotion",
       "updatedPromotion",
       "deletedPromotion",
-      "addNewPromotion"
+      "addNewPromotion",
     ]),
-   async deletePromotion(id) {
+    async deletePromotion(id) {
       Swal.fire({
         title: "ลบโปรโมชั่นนี้หรือไม่",
         icon: "warning",
@@ -482,31 +480,28 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "ลบ",
         cancelButtonText: "ยกเลิก",
-      }).then( async(result) => {
-      
-        if (result.isConfirmed) {
-          this.deletedPromotion(id);
-          await this.updatePromotionAfterDelete(id)
-          Swal.fire({
-            icon: "success",
-            confirmButtonColor: "red",
-            title: "ลบเสร็จสิ้น",
-            confirmButtonText: "ปิด",
-          });
-        }
-   
-      }).then(async (success) =>{
-
-        
-        this.isLoading = true
-        console.log('ooooooooo')
-      this.check = false
-        await this.getPromotion();
-        this.check = true
-        console.log('ssssssssssss')
-        this.isLoading =  false
-      });
-  
+      })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            this.deletedPromotion(id);
+            await this.updatePromotionAfterDelete(id);
+            Swal.fire({
+              icon: "success",
+              confirmButtonColor: "red",
+              title: "ลบเสร็จสิ้น",
+              confirmButtonText: "ปิด",
+            });
+          }
+        })
+        .then(async (success) => {
+          this.isLoading = true;
+          console.log("ooooooooo");
+          this.check = false;
+          await this.getPromotion();
+          this.check = true;
+          console.log("ssssssssssss");
+          this.isLoading = false;
+        });
     },
     selectFile(event) {
       if (event) {
@@ -534,10 +529,9 @@ export default {
       this.file = null;
     },
     async editPromotion(promotion) {
-  
       this.imageUpdated = promotion.promotionpic;
       this.editPromotionData = true;
-   
+
       this.itemedit = promotion;
       this.planalcheck = promotion.promotion_details.map((element, index) => {
         if (element.typestatus) {
@@ -568,34 +562,34 @@ export default {
       await this.$fetch();
     },
     async closeDialog(data) {
-      this.isLoading = true
-   if(!this.mock_add_promotion.promotionpic){
-    this.$swal({
-      title: "กรุณาเพิ่มรูปโปรโมชั่น !",
-      text:"กรุณาตั้งชื่อ ไฟล์ เป็นภาษาอังกฤษ ไม่เว้นวรรค ขนาดไม่เกิน 250KB",
-      icon: "error",
-      showCancelButton: true,
-      allowOutsideClick: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "OK",
-      cancelButtonText: "ยกเลิก"
-    })
-    this.isLoading = false
-    return
-   }
+      this.isLoading = true;
+      if (!this.mock_add_promotion.promotionpic) {
+        this.$swal({
+          title: "กรุณาเพิ่มรูปโปรโมชั่น !",
+          text: "กรุณาตั้งชื่อ ไฟล์ เป็นภาษาอังกฤษ ไม่เว้นวรรค ขนาดไม่เกิน 250KB",
+          icon: "error",
+          showCancelButton: true,
+          allowOutsideClick: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "OK",
+          cancelButtonText: "ยกเลิก",
+        });
+        this.isLoading = false;
+        return;
+      }
       // this.addPromotion = false
-      await this.addNewPromotion(this.mock_add_promotion)
+      await this.addNewPromotion(this.mock_add_promotion);
       await this.getPromotion();
-      this.isLoading = false
-      this.addPromotion = false
+      this.isLoading = false;
+      this.addPromotion = false;
       this.$swal({
         title: "สร้างโปรโมชั่นสำเร็จ",
         icon: "success",
         allowOutsideClick: true,
         confirmButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      })
+        confirmButtonText: "OK",
+      });
     },
     tougleStatus(item) {
       item.status = !item.status;
