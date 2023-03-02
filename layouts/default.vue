@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title class="font-weight-bold"  />
+      <v-toolbar-title class="font-weight-bold" />
       <button
         class="btn btn-primary btn-sm"
         @click.prevent="
@@ -274,18 +274,16 @@
           <v-card-title class="justifiy-center font-weight-bold success--text"
             >Member Online</v-card-title
           >
-          <v-data-table :headers="headersMember"
-          :items="memberOnline.data"
-          
-          
-          hide-default-footer>
-          <template #[`item.updated_at`]="{ item }">
-            <span>
-              {{ item.created_at | dateFormat }}
-            </span>
-          </template>
-
-
+          <v-data-table
+            :headers="headersMember"
+            :items="memberOnline.data"
+            hide-default-footer
+          >
+            <template #[`item.updated_at`]="{ item }">
+              <span>
+                {{ item.created_at | dateFormat }}
+              </span>
+            </template>
           </v-data-table>
           <v-card-actions class="justify-end">
             <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
@@ -403,8 +401,8 @@ export default {
       await this.getUser();
       await this.getFeature();
       await this.getSetting();
-    await this.getOnlineMember()
-    // console.log("iiiiiiiiii",this.memberOnline)
+      await this.getOnlineMember();
+      // console.log("iiiiiiiiii",this.memberOnline)
       //await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter((x) => {
@@ -500,7 +498,7 @@ export default {
   async beforeMount() {
     await this.CheckOrganize();
   },
-  computed: { 
+  computed: {
     ...mapState("account", ["webPalette"]),
     ...mapState("auth", ["memberOnline"]),
   },

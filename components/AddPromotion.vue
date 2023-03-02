@@ -257,6 +257,7 @@
               <v-row class="mt-4">
                 <v-col cols="6" sm="4">
                   <v-text-field outlined dense hide-details="auto"
+                  v-model.number="mock_pro.promotion_details[2].bonuscount"
                     label="จำนวนครั้งที่รับได้(0 คือรับได้ไม่จำกัด)"></v-text-field></v-col>
                 <v-col cols="12">
                   <v-switch hide-details="auto" class="mx-5" color="success" v-model="mock_pro.promotion_details[2].durationstatus"

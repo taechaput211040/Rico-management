@@ -41,7 +41,7 @@ export function getPromotion(context) {
           "company"
         )}/${localStorage.getItem("agent")}`
       );
-
+    
       context.commit("set_promotion", data);
 
       let bonuslist = data.map((x) => {
