@@ -360,7 +360,7 @@
                 <v-col cols="6" sm="2">
                   <v-text-field v-model="mock_pro.promotion_details[3].deposit" outlined dense hide-details="auto" label="ฝากขั้นต่ำ"></v-text-field></v-col>
                 <v-col cols="6" sm="2">
-                  <v-text-field v-model="mock_pro.promotion_details[3].bonus" outlined dense hide-details="auto" label="ฝากสูงสุด"></v-text-field></v-col>
+                  <v-text-field v-model="mock_pro.promotion_details[3].bonus" outlined dense hide-details="auto" label="โบนัสที่ได้รับเมื่อฝากครบ"></v-text-field></v-col>
                 <v-col cols="6" sm="2">
                   <v-select :items="typeDay" v-model="mock_pro.promotion_details[3].days" hide-details="auto" outlined dense label="โบนัส(%/ค่าคงที่)"></v-select></v-col>
                 <v-col cols="6" sm="2">

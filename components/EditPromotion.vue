@@ -814,7 +814,7 @@
                     outlined
                     dense
                     hide-details="auto"
-                    label="ฝากสูงสุด"
+                    label="โบนัสที่ได้รับหลังจากฝากครบ"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="2">
