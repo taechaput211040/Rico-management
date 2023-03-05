@@ -173,6 +173,7 @@
                     {{ item.topupby }}</v-chip>
                   <v-chip v-else x-small class="my-1 white--text elevation-2" color="pink" label>
                     {{ item.topupby ?? item.bank_name }}</v-chip>
+                    
                 </div>
               </div>
             </template>
@@ -183,7 +184,7 @@
                 {{ renderDate2(item.created_at ?? item.deposit_time) }}<br />
                 <v-chip class="font-weight-bold pa-2 elevation-2 mt-2" color="grey darken-4" dark label x-small>
                   <v-icon class="mr-1" small>mdi-message-processing</v-icon>SMS</v-chip><br />
-                {{ renderDate( item.smsdatetime ?? item.sms_time)  }}<br />
+                {{ item.smsdatetime   }}<br />
               </div>
             </template>
             <template #[`item.credit`]="{ item }">
@@ -365,6 +366,11 @@
                     โดย:
                     <v-chip x-small class="my-1 white--text elevation-2" color="pink" label>
                       {{ item.operator }}</v-chip>
+                  </div>
+                  <div class="my-1 font-weight-bold" v-if="item.type == 'affiliate'" >
+                  
+                    <v-chip x-small class="my-1 white--text elevation-2" color="purple" label>
+                      {{ item.type }}</v-chip>
                   </div>
                 </div>
               </td>

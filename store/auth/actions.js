@@ -303,6 +303,19 @@ export async function updateIncoming(context, incomingSMS) {
   console.log("incomingData:", incomingData);
 }
 
+export async function UpdateKBankBalance(context, payload) {
+  let bank = context.state.dpbank;
+
+  for (let index = 0; index < bank.length; index++) {
+    const element = bank[index];
+    if (element.id == payload.id) {
+      console.log("found id :", payload);
+      bank[index] = payload;
+    }
+  }
+
+  return bank;
+}
 export async function updateWithdrawlistAction(context, payload) {
   let wd_temp = context.state.wdlist;
 
@@ -409,6 +422,8 @@ export async function manualWithdrawFromDashboard(context, withdrawlist) {
     return { status: "error", message: error.response.data.message };
   }
 }
+
+
 export async function manualApproveFromDashboard(context, withdrawlist) {
   // console.log('geee')
 

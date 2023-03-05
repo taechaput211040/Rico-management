@@ -613,7 +613,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("auth", ["menu", "operator"]),
+    ...mapState("auth", ["menu", "user"]),
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("manageMember_write")) return true;
@@ -642,9 +642,21 @@ export default {
       this.dialogEditTopup = true;
     },
     async editTopupCredit_confirm() {
+      if(!this.formEditCredit.username ||this.formEditCredit.credit <=0 ){
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: 'กรุณาใส่ username ให้ถูกต้อง หรือ กรอกจำนวนเงิน',
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        return
+      }
       this.isLoading = true;
+      
       this.formEditCredit.type = "เติม";
-      this.formEditCredit.remark += ` เติมเงิน ${this.formEditCredit.username}  โดย ${this.operator}`;
+      this.formEditCredit.remark += ` เติมเงิน ${this.formEditCredit.username}  โดย ${this.user}`;
       const result = await this.PostEditTopupCredit(this.formEditCredit);
       if (result.data.status == "success") {
         this.$swal({
@@ -661,7 +673,7 @@ export default {
         this.$swal({
           title: `รายการไม่สำเร็จ`,
           icon: "error",
-          text: result.message,
+          text: result.data.message,
           allowOutsideClick: true,
           confirmButtonColor: "red",
           confirmButtonText: "ok",
@@ -674,9 +686,20 @@ export default {
       this.dialogCutcredit = true;
     },
     async editCutcredit_confirm() {
+      if(!this.formEditCredit.username ||this.formEditCredit.credit <=0 ){
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: 'กรุณาใส่ username ให้ถูกต้อง หรือ กรอกจำนวนเงิน',
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        return
+      }
       this.isLoading = true;
       this.formEditCredit.type = "ตัด";
-      this.formEditCredit.remark += ` ตัดเครดิต ${this.formEditCredit.username}  โดย ${this.operator}`;
+      this.formEditCredit.remark += ` ตัดเครดิต ${this.formEditCredit.username}  โดย ${this.user}`;
       const result = await this.PostEditCutCredit(this.formEditCredit);
       if (result.data.status == "success") {
         this.$swal({
@@ -693,7 +716,7 @@ export default {
         this.$swal({
           title: `รายการไม่สำเร็จ`,
           icon: "error",
-          text: result.message,
+          text: result.data.message,
           allowOutsideClick: true,
           confirmButtonColor: "red",
           confirmButtonText: "ok",
@@ -706,9 +729,20 @@ export default {
       this.dialogEditBonus = true;
     },
     async editTopupBonus_confirm() {
+      if(!this.formEditCredit.username ||this.formEditCredit.bonus <=0 ){
+        this.$swal({
+          title: `รายการไม่สำเร็จ`,
+          icon: "error",
+          text: 'กรุณาใส่ username ให้ถูกต้อง หรือ กรอกจำนวนเงิน',
+          allowOutsideClick: true,
+          confirmButtonColor: "red",
+          confirmButtonText: "ok",
+        });
+        return
+      }
       this.isLoading = true;
       this.formEditCredit.type = "โบนัส";
-      this.formEditCredit.remark += ` เติมโบนัส ${this.formEditCredit.username} โดย ${this.operator}`;
+      this.formEditCredit.remark += ` เติมโบนัส ${this.formEditCredit.username} โดย ${this.user}`;
       const result = await this.PostEditTopupBonus(this.formEditCredit);
       if (result.data.status == "success") {
         this.$swal({
@@ -725,7 +759,7 @@ export default {
         this.$swal({
           title: `รายการไม่สำเร็จ`,
           icon: "error",
-          text: result.message,
+          text: result.data.message,
           allowOutsideClick: true,
           confirmButtonColor: "red",
           confirmButtonText: "ok",

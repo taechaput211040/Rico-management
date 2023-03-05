@@ -1,0 +1,56 @@
+PATH_MICROSERVICE=http://localhost:3000
+# ALL_RICO_USER=http://localhost:3200
+ALL_RICO_USER=https://all-rico-user-ehhif4jpyq-as.a.run.app
+
+# ALL_DEPOSIT=http://localhost:3100
+ALL_DEPOSIT=https://all-deposit-ehhif4jpyq-as.a.run.app
+ALL_SETTING=https://all-setting-ehhif4jpyq-as.a.run.app
+REAL_TIME_REPORT_URL_SEAMLESS=https://all-winlose-brit-ehhif4jpyq-as.a.run.app
+# ALL_MEMBER=http://localhost:5150
+ALL_MEMBER=https://all-member-ehhif4jpyq-as.a.run.app
+
+ALL_SUPPORT=https://all-support-api-ehhif4jpyq-as.a.run.app
+
+# ALL_SUPPORT=http://localhost:5010
+AFF_SETTING=https://aff-setting-ehhif4jpyq-as.a.run.app
+AFF_MEMBER=https://aff-member-ehhif4jpyq-as.a.run.app
+ALL_CHECKIN=https://all-checkin-ehhif4jpyq-as.a.run.app 
+ALL_COMPANY_BANK=https://all-company-ehhif4jpyq-as.a.run.app
+ALL_CRIMINAL=https://zamba777.com/api
+ALL_MESSAGE_WEB=https://all-web-message-ehhif4jpyq-as.a.run.app
+ALL_JSON_STATIC=https://all-json-config-ehhif4jpyq-as.a.run.app
+
+AGENT_DOMAIN=rico.betkubking.com
+MICROSERVICE_KEY=
+AUTH_SECRET=ramidasky
+
+# ALL_RICO_REPORT=http://localhost:3003
+ALL_RICO_REPORT=https://all-rico-report-ehhif4jpyq-as.a.run.app
+ALL_PROMOTION=https://all-promotion-ehhif4jpyq-as.a.run.app
+# ALL_PROMOTION=http://localhost:5200
+API_SCB_CORE=https://all-scb-api-ehhif4jpyq-as.a.run.app
+
+ALL_LINE_NOTIFY=https://all-support-api-ehhif4jpyq-as.a.run.app
+ALL_NOTIFICATE=https://all-notification-ehhif4jpyq-as.a.run.app/
+
+# ALL_EDITCREDIT=http://localhost:3201
+ALL_EDITCREDIT=https://all-edit-credit-ehhif4jpyq-as.a.run.app
+# ALL_WHEEL=http://localhost:3420
+ALL_WHEEL=https://all-wheel-ehhif4jpyq-as.a.run.app 
+BASIC_AUTH_USERNAME=admin
+BASIC_AUTH_PASSWORD=jm098llst278p242
+# ALL_CASHBACK=http://localhost:3001
+ALL_CASHBACK=https://all-cashback-ehhif4jpyq-as.a.run.app
+
+# ALL_INCOMING=http://localhost:3102
+ALL_INCOMING=https://all-incoming-ehhif4jpyq-as.a.run.app
+ALL_CREDIT_FREE=https://all-credit-free-ehhif4jpyq-as.a.run.app
+
+CHECK_MAINTAINANCE=https://all-provider-maintainance-check-ehhif4jpyq-as.a.run.app
+# ALL_CREDITFREE=http://localhost:3320
+ALL_CREDITFREE=https://all-credit-free-ehhif4jpyq-as.a.run.app
+VERSION_APP=2.9
+
+qlws7pv5wa
+
+

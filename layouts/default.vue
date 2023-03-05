@@ -10,7 +10,7 @@
             'http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3'
           )
         "
-      >
+      ><b> {{setting?.companyurl? setting.companyurl:''}}</b>
         <span class="fa fa-play-circle-o"></span>
       </button>
 
@@ -490,6 +490,14 @@ export default {
           // await this.addIncoming(JSON.parse(msg));
           // await this.playSoundNoauto();
         });
+        this.socket.on("balance", async (msg) => {
+          console.log("balance websocket initiate");
+          console.log(JSON.parse(msg));
+          const bank_update = await this.UpdateKBankBalance(JSON.parse(msg));
+          await this.updateBank(bank_update);
+          // await this.addIncoming(JSON.parse(msg));
+          // await this.playSoundNoauto();
+        });
       }
     } catch (error) {
       console.log(error);
@@ -501,6 +509,7 @@ export default {
   computed: {
     ...mapState("account", ["webPalette"]),
     ...mapState("auth", ["memberOnline"]),
+    ...mapState("setting", ["setting"]),
   },
   methods: {
     ...mapActions("auth", [
@@ -513,6 +522,8 @@ export default {
       "findInWdList",
       "updateWithdrawlistAction",
       "GetInfomation",
+      "UpdateKBankBalance"
+      
     ]),
     ...mapActions("account", ["getPalletePreset"]),
     ...mapMutations("auth", [
@@ -524,6 +535,7 @@ export default {
       "updateWithdrawlist",
       "addWithdraw",
       "updateComponentkey",
+      "updateBank"
     ]),
     ...mapActions("setting", ["getSetting"]),
     async playSoundNoauto() {

@@ -186,6 +186,10 @@ export function updateWithdrawlist(state, payload) {
   console.log("doing");
   state.wdlist = payload;
 }
+export function updateBank(state, payload) {
+  console.log("doing");
+  state.dpbank = payload;
+}
 export function updateComponentkey(state, payload) {
   console.log("componentKey ", payload);
   state.componentKey = payload;

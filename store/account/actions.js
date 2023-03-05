@@ -18,7 +18,26 @@ export async function getPalletePreset({ commit, state, rootState }) {
     }
   });
 }
-
+// export async function getFreatureCreditfree({ commit, state, rootState }) {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       let { data } = await this.$axios.get(
+//         `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`,
+//         {
+//           // headers: {
+//           //   key: "ramidasky",
+//           //   origin: "https://member.rafa168.com",
+//           // },
+//         }
+//       );
+//       console.log(data, "data");
+//       commit("setPallete", data);
+//       resolve(data);
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// }
 export function updatePalette(
   { commit },
   params = {
@@ -72,6 +91,21 @@ export function CreatePreset(
         }
       );
       resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export async function getFreatureCreditfree(context) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_CREDITFREE}/Activity/admin/${context.rootState.auth.hash}`
+      );
+
+      commit("setCreditFree", data);
+      resolve(data);
     } catch (error) {
       reject(error);
     }
