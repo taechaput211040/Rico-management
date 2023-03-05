@@ -683,7 +683,7 @@ export default {
       data.append("filename", this.file.name);
       try {
         let response = await this.$axios.post("/api/Upload", data);
-        //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+        //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
         console.log(response.data);
         this.modal_detail.image = response.data.picture_url;

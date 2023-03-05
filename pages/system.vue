@@ -349,7 +349,7 @@ export default {
         try {
           this.loading = true;
           let imageupdate = await this.$axios.post(
-            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            `https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
             data
           );
           this.message.img = imageupdate.data.image;

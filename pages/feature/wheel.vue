@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading-page v-if="isLoading"></loading-page>
-    <div class="container" >
+    <div class="container">
       <h3>ตั้งค่ากงล้อเสี่ยงโชค</h3>
       <v-card
         class="col-md-3 col-12 elevation-2 mt-5 pa-4 rounded-lg text-center"
@@ -498,7 +498,7 @@ export default {
       this.feature_status = this.turn.feature_status;
       await this.$axios
         .$get(
-          `https://luckydraw-ehhif4jpyq-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
+          `https://luckydraw-qlws7pv5wa-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
           {
             auth: {
               username: `${process.env.BASIC_AUTH_USERNAME}`,

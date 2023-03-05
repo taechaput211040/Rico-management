@@ -401,7 +401,7 @@ import {
   numeric,
   minValue,
 } from "vuelidate/lib/validators";
-import LoadingPage from '../../components/LoadingPage.vue';
+import LoadingPage from "../../components/LoadingPage.vue";
 export default {
   components: { LoadingPage },
   mixins: [validationMixin],
@@ -859,7 +859,7 @@ export default {
         try {
           this.loading = true;
           let imageupdate = await this.$axios.post(
-            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            `https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
             data
           );
           this.image.url = imageupdate.data.image;

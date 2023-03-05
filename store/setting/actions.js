@@ -392,7 +392,7 @@ export function getGroup({ commit, state }) {
     if (!state.provider_hash) {
       try {
         let response = await this.$axios.get(
-          `https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/a4cd92ab1f743a02f94952d8f0b2ec62`
+          `https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/a4cd92ab1f743a02f94952d8f0b2ec62`
         );
         localStorage.setItem("groups", JSON.stringify(response.data.group));
         commit("setProviderHash", response.data);
@@ -412,7 +412,7 @@ export function getGame({ commit, state }) {
     if (!state.game_hash) {
       try {
         let response = await this.$axios.get(
-          "https://all-json-config-ehhif4jpyq-as.a.run.app/api/Provider/Game/admin/aca3656a066a8407ec390f52c297f078"
+          "https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/Game/admin/aca3656a066a8407ec390f52c297f078"
         );
 
         localStorage.setItem("Gamelist", JSON.stringify(response.data));
@@ -432,7 +432,7 @@ export function getMasterGameGroup({ commit, state }) {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await axios.get("/api/Game/Master");
-      //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+      //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
       resolve(response.data);
     } catch (error) {
@@ -470,7 +470,7 @@ export function getgame({ commit, state }) {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.get(
-        `https://all-json-config-ehhif4jpyq-as.a.run.app/api/Provider/admin/game/al/ls`
+        `https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/admin/game/al/ls`
       );
       //
       resolve(response.data);

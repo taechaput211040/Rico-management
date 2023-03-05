@@ -73,7 +73,7 @@
             color="grey lighten-2"
           >
             <div primary-title class="font-weight-bold">
-             {{ mock_pro.promotion_details[0].promotiontypename }}
+              {{ mock_pro.promotion_details[0].promotiontypename }}
               <v-btn
                 small
                 color="error"
@@ -324,9 +324,24 @@
                   ></v-text-field
                 ></v-col>
                 <v-col cols="6" sm="2">
-                  <v-text-field v-model.number="mock_pro.promotion_details[1].maxdp" outlined dense hide-details="auto" label="ฝากสูงสุด"></v-text-field></v-col>
+                  <v-text-field
+                    v-model.number="mock_pro.promotion_details[1].maxdp"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="ฝากสูงสุด"
+                  ></v-text-field
+                ></v-col>
                 <v-col cols="6" sm="2">
-                  <v-select :items="typeBonus" v-model="mock_pro.promotion_details[1].bonustype" hide-details="auto" outlined dense label="โบนัส(%/ค่าคงที่)"></v-select></v-col>
+                  <v-select
+                    :items="typeBonus"
+                    v-model="mock_pro.promotion_details[1].bonustype"
+                    hide-details="auto"
+                    outlined
+                    dense
+                    label="โบนัส(%/ค่าคงที่)"
+                  ></v-select
+                ></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field
                     v-model.number="mock_pro.promotion_details[1].bonusvalue"
@@ -913,9 +928,12 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      typeBonus:[{text:'%', value:'%'},{text:'ค่าคงที่',value:'ค่าคงที่'}],
-      typeDay:[2,3,4,5,6,7,8,9,10],
-      inputPicture:null,
+      typeBonus: [
+        { text: "%", value: "%" },
+        { text: "ค่าคงที่", value: "ค่าคงที่" },
+      ],
+      typeDay: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+      inputPicture: null,
       mock_add_promotion: {
         agent: "",
         company: "",
@@ -1256,10 +1274,10 @@ export default {
       data.append("filename", this.inputPicture.name);
       try {
         let response = await this.$axios.post(
-          "https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123",
+          "https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123",
           data
         );
-        //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+        //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
         this.mock_pro.promotionpic = response.data.image;
         this.$swal({
           icon: "success",

@@ -170,7 +170,7 @@ export default {
               if (logo) {
                 try {
                   let { data } = await this.$axios.patch(
-                    `https://static-template-api-ehhif4jpyq-as.a.run.app/css/profile/rico/${this.webPalette.web_id}`,
+                    `https://static-template-api-qlws7pv5wa-as.a.run.app/css/profile/rico/${this.webPalette.web_id}`,
                     {
                       logo: logo,
                     }
@@ -211,7 +211,7 @@ export default {
     async handleUploadImage(image) {
       try {
         let { data } = await this.$axios.post(
-          `https://static-template-api-ehhif4jpyq-as.a.run.app/image/file/image/smart`,
+          `https://static-template-api-qlws7pv5wa-as.a.run.app/image/file/image/smart`,
           image
         );
         console.log(data.image, "response");

@@ -2,7 +2,7 @@ export async function getPalletePreset({ commit, state, rootState }) {
   return new Promise(async (resolve, reject) => {
     try {
       let { data } = await this.$axios.get(
-        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`,
+        `https://static-template-api-qlws7pv5wa-as.a.run.app/css/preset/rico`,
         {
           // headers: {
           //   key: "ramidasky",
@@ -22,7 +22,7 @@ export async function getPalletePreset({ commit, state, rootState }) {
 //   return new Promise(async (resolve, reject) => {
 //     try {
 //       let { data } = await this.$axios.get(
-//         `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico`,
+//         `https://static-template-api-qlws7pv5wa-as.a.run.app/css/preset/rico`,
 //         {
 //           // headers: {
 //           //   key: "ramidasky",
@@ -49,7 +49,7 @@ export function updatePalette(
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.patch(
-        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico/${params.web_id}/${params.presetId}`,
+        `https://static-template-api-qlws7pv5wa-as.a.run.app/css/preset/rico/${params.web_id}/${params.presetId}`,
         {
           palette: params.detail,
         }
@@ -66,7 +66,7 @@ export function CreateOrganizePalette({ commit }, body) {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.post(
-        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/organization/rico`,
+        `https://static-template-api-qlws7pv5wa-as.a.run.app/css/organization/rico`,
         body
       );
       resolve(response);
@@ -85,7 +85,7 @@ export function CreatePreset(
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.post(
-        `https://static-template-api-ehhif4jpyq-as.a.run.app/css/preset/rico/${params.id}`,
+        `https://static-template-api-qlws7pv5wa-as.a.run.app/css/preset/rico/${params.id}`,
         {
           palette: params.detail,
         }

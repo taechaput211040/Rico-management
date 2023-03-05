@@ -290,10 +290,10 @@ export default {
       data.append("filename", this.file.name);
       try {
         let response = await this.$axios.post(
-          "https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123",
+          "https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123",
           data
         );
-        //   "https://all-member-gateway-ehhif4jpyq-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
+        //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
         this.modal_detail.image = response.data.image;
         this.changePic = false;

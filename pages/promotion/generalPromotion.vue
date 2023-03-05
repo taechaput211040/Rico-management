@@ -516,7 +516,7 @@ export default {
         try {
           this.loading = true;
           let imageupdate = await this.$axios.post(
-            `https://admin-static-api-ehhif4jpyq-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
+            `https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123`,
             data
           );
           this.itemedit.promotionpic = imageupdate.data.image;
@@ -531,23 +531,23 @@ export default {
     async editPromotion(promotion) {
       this.imageUpdated = promotion.promotionpic;
       this.editPromotionData = true;
-      let temp_detail =[]
-promotion.promotion_details.map(x=>{
-  if(x.promotiontypename == 'สมัครสมาชิกใหม่'){
-    temp_detail[0] = x
-  }
-  if(x.promotiontypename == 'ฝากครั้งแรกของวัน'){
-    temp_detail[1] = x
-  }
-  if(x.promotiontypename == 'ฝากทั้งวัน'){
-    temp_detail[2] = x
-  }
-  if(x.promotiontypename == 'ฝากต่อเนื่อง'){
-    temp_detail[3] = x
-  }
-  return x
-})
-promotion.promotion_details = temp_detail
+      let temp_detail = [];
+      promotion.promotion_details.map((x) => {
+        if (x.promotiontypename == "สมัครสมาชิกใหม่") {
+          temp_detail[0] = x;
+        }
+        if (x.promotiontypename == "ฝากครั้งแรกของวัน") {
+          temp_detail[1] = x;
+        }
+        if (x.promotiontypename == "ฝากทั้งวัน") {
+          temp_detail[2] = x;
+        }
+        if (x.promotiontypename == "ฝากต่อเนื่อง") {
+          temp_detail[3] = x;
+        }
+        return x;
+      });
+      promotion.promotion_details = temp_detail;
       this.itemedit = promotion;
       this.planalcheck = promotion.promotion_details.map((element, index) => {
         if (element.typestatus) {
