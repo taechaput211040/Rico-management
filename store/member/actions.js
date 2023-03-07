@@ -430,6 +430,7 @@ export function PostEditTopupBonus(context, body) {
     body.ip_operator = context.rootState.auth.ip
     body.company = context.rootState.auth.company
     body.agent = context.rootState.auth.agent
+    
     try {
       let response = await this.$axios.post(
         `${process.env.ALL_SUPPORT}/api/Website/Edit/Bonus`,
