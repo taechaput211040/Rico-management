@@ -34,11 +34,11 @@ export function login(context, { username, password, agentkey }) {
 //two-facter
 export function getOnlineMember(context) {
   return new Promise(async (resolve, reject) => {
-  
     try {
       let { data } = await this.$axios.get(
-        `${process.env.CHECK_MAINTAINANCE}/api/UserStat/online/${context.rootState.auth.agent.toLowerCase()}`,
-      
+        `${
+          process.env.CHECK_MAINTAINANCE
+        }/api/UserStat/online/${context.rootState.auth.agent.toLowerCase()}`
       );
       await context.commit("set_online_member", data);
       resolve(data);
@@ -423,13 +423,12 @@ export async function manualWithdrawFromDashboard(context, withdrawlist) {
   }
 }
 
-
 export async function manualApproveFromDashboard(context, withdrawlist) {
   // console.log('geee')
 
   withdrawlist.operator = context.state.user;
   withdrawlist.ip_operator = context.state.ip;
-  withdrawlist.amount = Math.floor(withdrawlist.amount)
+  withdrawlist.amount = Math.floor(withdrawlist.amount);
   withdrawlist.remark = `${context.state.user} อนุมัติรายการถอน ยอด ${withdrawlist.amount} user: ${withdrawlist.username}`;
 
   try {
@@ -707,7 +706,7 @@ export function getHashStatic({ state, commit }) {
         let response = await this.$axios.get(
           `${process.env.ALL_SUPPORT}/api/Website/StaticInfo/${state.company}/${state.agent}`
         );
-        commit("set_statichash", { response });
+        commit("set_statichash", response);
         resolve(response);
       } catch (error) {
         reject(error);

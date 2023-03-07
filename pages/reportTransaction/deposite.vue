@@ -85,26 +85,7 @@
             <template #[`item.companyBank`]="{ item }">
               <img-bank :value="item.companyBank"></img-bank>
             </template>
-            <template #[`item.data-table-expand`]="{ isExpanded, expand }">
-              <div class="px-2">
-                <v-btn
-                  @click="expand(true)"
-                  v-if="!isExpanded"
-                  color="black"
-                  dark
-                  small
-                  >ดูเพิ่มเติม</v-btn
-                >
-                <v-btn
-                  @click="expand(false)"
-                  v-if="isExpanded"
-                  color="black"
-                  dark
-                  small
-                  >ปิด</v-btn
-                >
-              </div>
-            </template>
+           
             <template #[`item.smsdatetime`]="{ item }">
               <span>
                 {{ item.smsdatetime.slice(0,10) + ' ' + item.smsdatetime.slice(11,19)  }}
