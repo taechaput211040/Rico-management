@@ -88,7 +88,7 @@
            
             <template #[`item.smsdatetime`]="{ item }">
               <span>
-                {{ renderDate(item.smsdatetime) | dateFormat }}
+                {{ item.smsdatetime.slice(0,10) + ' ' + item.smsdatetime.slice(11,19)  }}
               </span>
             </template>
             <template #[`item.created_at`]="{ item }">

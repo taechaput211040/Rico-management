@@ -62,6 +62,12 @@
     />
     <img
       src="~/assets/image/bank/kbank.png"
+      v-if="value == 'KBank'"
+      alt=""
+      class="icon-bank img-icon"
+    />
+    <img
+      src="~/assets/image/bank/kbank.png"
       v-if="value == 'KBANK'"
       alt=""
       class="icon-bank img-icon"

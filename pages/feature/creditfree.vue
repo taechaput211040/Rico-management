@@ -702,43 +702,36 @@ export default {
         cancelButtonText: "No",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          this.loading = true;
+          
           userData["operator"] = this.$store.state.auth.user;
-          await this.$store
-            .dispatch("setting/topupById", userData)
-            .then((result) => {
-              this.showSuccessAlert(result.data.message);
-            })
-            .catch((err) => {
-              this.showErrorAlert(
-                err.response.data.message + " code " + err.response.status
-              );
-              this.onLoadActivityData();
-            });
           try {
-            const data = {
-              isActive: true,
-            };
-            const res = await this.$store.dispatch(
-              "setting/updateUserFreecredit",
-              data
-            );
-            console.log(res.data);
-            // this.selectData.user.forEach((element) => {
-            //   if (element.id == userData.id) {
-            //     element.isActive = true;
-            //   }
-            // });
-            this.loading = false;
+            this.loading = true
+            const data =  await this.$store
+            .dispatch("setting/topupById", userData)
+            if(data){
+              
+              this.showSuccessAlert(data.message);
+              await this.updateUser(data.result_topup.username)
+             
+            }
+            this.loading = false
           } catch (error) {
-            this.showErrorAlert(
-              error.response.data.message + " code " + err.response.status
-            );
-            this.loading = false;
+            this.loading = false
           }
-          this.loading = false;
+    
+     
+           
+     
         }
       });
+    },
+    async updateUser(username){
+      this.selectData.user.map(x=>{
+        if(x.username == username){
+          x.isActive = true
+        }
+        return x
+      })
     },
     showSuccessAlert(message) {
       // Use sweetalret2

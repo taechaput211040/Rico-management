@@ -1,5 +1,6 @@
 <template>
   <v-flex>
+    <loading-page v-if="isLoading"></loading-page>
     <h3 class="mb-4">ธนาคารของเว็บ</h3>
     <v-card class="elevation-3 rounded-lg">
       <div class="pa-3 font-weight-bold">
@@ -34,6 +35,26 @@
               <v-icon left small>mdi-circle</v-icon>
               ปิดใช้งาน
             </v-chip>
+          </template>
+          <template #[`item.mode`]="{ item }">
+            <div class="pt-2" v-if="item.mode == 2">
+              <v-chip color="red" small label outlined dark >
+                <v-icon left small>mdi-circle</v-icon>
+                API
+              </v-chip>
+            </div>
+            <div class="pt-2" v-if="item.mode == 0 && item.Companybank != 'TRUEWALLET'">
+              <v-chip color="green" small label outlined dark >
+                <v-icon left small>mdi-circle</v-icon>
+                SMS
+              </v-chip>
+            </div>
+            <div class="pt-2" v-if="item.mode == 0 && item.Companybank == 'TRUEWALLET'">
+              <v-chip color="blue" small label outlined dark >
+                <v-icon left small>mdi-circle</v-icon>
+                NOTI
+              </v-chip>
+            </div>
           </template>
           <template #[`item.Companybank`]="{ item }">
             <div class="pt-2">
@@ -137,6 +158,7 @@
             >เลือกธนาคาร
 
             <v-select
+            v-if="createBank.type == false"
               required
               :items="bank_options"
               v-model="createBank.Companybank"
@@ -145,6 +167,16 @@
               placeholder="กรุณาเลือกธนาคาร"
               outlined
             ></v-select>
+            <v-select
+            v-if="createBank.type == true"
+            required
+            :items="bank_options_wd"
+            v-model="createBank.Companybank"
+            dense
+            hide-details="auto"
+            placeholder="กรุณาเลือกธนาคาร"
+            outlined
+          ></v-select>
           </v-col>
           <v-col cols="12" sm="4"
             >เลขบัญชี**
@@ -223,6 +255,19 @@
               </v-radio-group>
             </div>
           </v-col>
+          <v-col cols="12" sm="6" v-if="createBank.Companybank == 'TRUEWALLET'"
+          >โหมดการใช้งาน
+          <div class="d-flex mt-3">
+            <v-radio-group
+              v-model.number="createBank.mode"
+              hide-details="auto"
+              row
+            >
+              <v-radio label="SMS" :value="0"></v-radio>
+              <v-radio label="TRUE API" :value="2"></v-radio>
+            </v-radio-group>
+          </div>
+        </v-col>
         </v-row>
         <v-card-actions class="mt-5">
           <div class="mx-auto">
@@ -264,6 +309,7 @@
               >เลือกธนาคาร
 
               <v-select
+              v-if="createBank.type == false"
                 required
                 :items="bank_options"
                 v-model="createBank.Companybank"
@@ -272,6 +318,16 @@
                 placeholder="กรุณาเลือกธนาคาร"
                 outlined
               ></v-select>
+              <v-select
+              v-if="createBank.type == true"
+              required
+              :items="bank_options_wd"
+              v-model="createBank.Companybank"
+              dense
+              hide-details="auto"
+              placeholder="กรุณาเลือกธนาคาร"
+              outlined
+            ></v-select>
             </v-col>
             <v-col cols="12" sm="4"
               >เลขบัญชี**
@@ -350,23 +406,40 @@
                 </v-radio-group>
               </div>
             </v-col>
+            <v-col cols="12" sm="6" v-if="createBank.Companybank == 'TRUEWALLET'"
+            >โหมดการใช้งาน
+            <div class="d-flex mt-3">
+              <v-radio-group
+                v-model.number="createBank.mode"
+                hide-details="auto"
+                row
+              >
+                <v-radio label="SMS" :value="0"></v-radio>
+                <v-radio label="TRUE API" :value="2"></v-radio>
+              </v-radio-group>
+            </div>
+          </v-col>
           </v-row>
-          <div id="sectionSCB" class="mt-2" v-if="createBank.mode == 2">
+          <div id="sectionTRUEAPI" class="mt-2" v-if="createBank.Companybank == 'TRUEWALLET' && createBank.mode ==2 && createBank.type == false">
             <div class="elevation-2 rounded-lg pa-2">
-              <h3 class="mt-3">ลงทะเบียน SCB</h3>
+              <h3 class="mt-3">ลงทะเบียน TRUE API</h3>
+              <p>ยอดฝากต่อเดือนมากกว่า 100 รายการเท่านั้น ติดต่อสอบถามรายละเอียดการใช้งานได้ที่เจ้าหน้าที่</p>
               <div class="row">
-                <div class="col-12 col-sm-6">
-                  หมายเลขบัตรประชาขน
-                  <v-text-field
-                    dense
-                    outlined
-                    hide-details="auto"
-                  ></v-text-field>
+                <div class="col-12 ">
+                  WEBHOOK LINK
+                  <div ref="copytext" id="texttoCopoy">
+                    {{ webhookURL+'/'+createBank.Companybankacountnumber}} 
                 </div>
+                  <v-btn class="mt-3" small color="black white--text" @click="copyCode()">คัดลอก webhook</v-btn>
+                </div>
+              
+            
                 <div class="col-12 col-sm-6">
-                  วันเกิด ปี(ค.ศ.)-เดือน-วัน ตัวอย่าง 1996-05-23
+                 SECRET 
                   <v-text-field
+                  v-model="createBank.secret"
                     dense
+                    label="secret ที่ได้ หลังจากนำ ลิ้ง webhook ไป verify"
                     outlined
                     hide-details="auto"
                   ></v-text-field>
@@ -374,18 +447,21 @@
               </div>
               <v-card-actions class="justify-end">
                 <v-spacer></v-spacer
-                ><v-btn small color="black white--text">ดำเนินการ</v-btn>
+                ><v-btn small color="black white--text" @click="saveTrueSecret">บันทึก secret</v-btn>
               </v-card-actions>
             </div>
-          </div>
+          </div> 
           <v-card-actions class="mt-5">
             <div class="mx-auto">
-              <v-btn color="primary" @click="SubmitEditBank()" class="mx-1"
+              <v-btn color="primary" @click="SubmitEditBank" class="mx-1"
                 >บันทึก</v-btn
               >
-              <v-btn color="error" class="mx-1" @click="closeEdit()">ปิด</v-btn>
+              <v-btn color="error" class="mx-1" @click="dlupdate = false"
+                >ปิด</v-btn
+              >
             </div>
           </v-card-actions>
+        
         </v-form>
       </v-card>
     </v-dialog>
@@ -395,9 +471,13 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import dayjs from "dayjs";
+
 export default {
+
   data() {
     return {
+      isLoading: false,
       modalOtp: false,
       modalSelectnumber: false,
       formScb: {},
@@ -411,6 +491,9 @@ export default {
         { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
         { value: "KBANK", text: "KBANK - ธนาคารกสิกรไทย" },
         { value: "TRUEWALLET", text: "TRUEMONEY - ทรูวอลเลท" },
+      ],
+      bank_options_wd: [
+        { value: "SCB", text: "SCB - ธนาคารไทยพานิชย์" },
       ],
       createBank: {
         Companybank: "SCB",
@@ -436,6 +519,13 @@ export default {
         {
           text: "สถานะ",
           value: "status",
+          align: "center",
+          sortable: false,
+          class: "font-weight-bold ",
+        },
+        {
+          text: "MODE",
+          value: "mode",
           align: "center",
           sortable: false,
           class: "font-weight-bold ",
@@ -484,6 +574,7 @@ export default {
       ],
     };
   },
+  
   async fetch() {
     try {
       let { data } = await this.getCompanybank();
@@ -494,6 +585,7 @@ export default {
   },
   computed: {
     ...mapState("auth", ["menu"]),
+    ...mapState("setting", ["webhookURL"]),
     canwrite() {
       if (this.menu) {
         if (!this.menu.includes("companyBank_write")) return true;
@@ -519,7 +611,54 @@ export default {
       "EditBankCompany",
       "deleteBankCompany",
       "getSetting",
+      "saveTrueAPISecret"
     ]),
+    async saveTrueSecret(){
+      if(!this.createBank.secret){
+        this.$swal({
+        title: `กรุณากรอก SECRET`,
+        icon: "infomation",
+ 
+        allowOutsideClick: true,
+       
+      })
+      return
+      }
+      this.isLoading = true
+      try {
+        await this.saveTrueAPISecret(this.createBank)
+        this.isLoading = false
+        this.$swal({
+        title: `บันทึกสำเร็จ`,
+        icon: "success",
+ 
+        allowOutsideClick: true,
+       
+      })
+      } catch (error) {
+        this.isLoading = false
+      }
+
+    },
+    copyCode() {
+      
+      this.selectText(this.$refs.copytext); // e.g. <div ref="text">
+      document.execCommand("copy");
+    },
+    selectText(element) {
+      var range;
+      if (document.selection) {
+        // IE
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        range = document.createRange();
+        range.selectNode(element);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+    },
     cancelFormScb() {
       console.log("cancel");
       this.formScb = {};

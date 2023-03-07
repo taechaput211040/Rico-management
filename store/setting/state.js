@@ -3,6 +3,7 @@ export default function() {
     provider_hash: null,
     game_hash: null,
     setting: null,
-    message: null
+    message: null,
+    webhookURL:null,
   };
 }

@@ -136,5 +136,7 @@ export default {
     ALL_CREDIT_FREE: process.env.ALL_CREDIT_FREE,
     ALL_INCOMING: process.env.ALL_INCOMING,
     CHECK_MAINTAINANCE: process.env.CHECK_MAINTAINANCE,
+    TRUEAPI_WEBHOOK_DOMAIN: process.env.TRUEAPI_WEBHOOK_DOMAIN,
+    ALL_TRUE_API:process.env.ALL_TRUE_API
   },
 };

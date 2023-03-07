@@ -136,7 +136,7 @@
               </div>
             </template>
             <template #[`item.dateSms`]="{ item }">
-              {{ item.dateSms | dateFormat }}
+              {{ item.dateSms.slice(0,10) + ' ' +item.dateSms.slice(11,29)   }}
             </template>
             <template #[`item.actions`]="{ item }">
               <span>
@@ -184,7 +184,7 @@
                 {{ renderDate2(item.created_at ?? item.deposit_time) }}<br />
                 <v-chip class="font-weight-bold pa-2 elevation-2 mt-2" color="grey darken-4" dark label x-small>
                   <v-icon class="mr-1" small>mdi-message-processing</v-icon>SMS</v-chip><br />
-                {{ item.smsdatetime   }}<br />
+                {{ item.smsdatetime.slice(0,10) + ' '  +item.smsdatetime.slice(11,19)  }}<br />
               </div>
             </template>
             <template #[`item.credit`]="{ item }">
@@ -381,7 +381,7 @@
                   {{ renderDateTest(item.requsettime).slice(0,20) }}<br />
                   <v-chip class="font-weight-bold pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-transfer</v-icon>โอน</v-chip><br />
-                  {{renderDate(item.transferTime )}}<br />
+                  {{item.transferTime }}<br />
                   <v-chip class="font-weight-bol)d pa-2 elevation-2 mt-2 mb-1" color="grey darken-4" label x-small
                     dark><v-icon class="mr-1" small>mdi-credit-card</v-icon>เครดิตก่อน</v-chip><br />
                   {{ item.bfcredit?.toFixed(2) }}<br />
@@ -669,10 +669,7 @@ export default {
     } catch (error) {
       console.log(error);
     }
-    setInterval(() => {
-      this.updateOnlineMember();
-      console.log('member online opdated')
-    }, 60000);
+    
   },
   mounted() { },
   data() {
