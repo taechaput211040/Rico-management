@@ -7,6 +7,10 @@ export function setProviderHash(state, payload) {
 export function setAllsetting(state, payload) {
   state.setting = payload;
 }
+export function setURLWebhook(state, payload) {
+  state.webhookURL = payload;
+}
+
 export function setAllmessage(state, payload) {
   state.message = payload;
 }

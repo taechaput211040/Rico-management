@@ -9,7 +9,9 @@ export function getSetting(context, rootState, commit, state) {
           `${process.env.ALL_SETTING}/api/Setting/${context.rootState.auth.hash}`
         );
         await context.commit("setAllsetting", data);
-
+        const webhook_path = `${process.env.TRUEAPI_WEBHOOK_DOMAIN}/api/Website/Webhook/${data.companykey}/${data.agent_username}`
+        await context.commit("setURLWebhook", webhook_path);
+        
         console.log("asdasdasdasd", data);
         resolve(data);
       } catch (error) {
@@ -23,7 +25,35 @@ export function getSetting(context, rootState, commit, state) {
   });
 }
 //ตั้งค่าระบบ
-
+    // npm i --save class-validator class-transformer
+    export function saveTrueAPISecret(context, payload) {
+      
+      return new Promise(async (resolve, reject) => {
+   const body = {
+    company:context.rootState.auth.company,
+    agent:context.rootState.auth.agent,
+    phone:payload.Companybankacountnumber,
+    key:context.rootState.setting.setting.companykey,
+    secret:payload.secret
+   }
+          try {
+   
+            let { data } = await this.$axios.post(
+              `${process.env.ALL_TRUE_API}/api/Website`,body
+            );
+          
+      
+          
+            resolve(data);
+          } catch (error) {
+            reject(error);
+            //** */
+          }
+  
+     
+    
+      });
+    }
 //ตั้งค่าอื่นๆ
 export function getIncome(context, params) {
   return new Promise(async (resolve, reject) => {
@@ -551,11 +581,12 @@ export function searchUserAdmin({ commit }, params) {
   });
 }
 export function topupById({ commit }, id) {
+
   return new Promise(async (resolve, reject) => {
     try {
       // let { data } = await this.$axios.get(``);
-      let { data } = await this.$axios.post(
-        `${process.env.ALL_CREDIT_FREE}/api/Activity/admin/activity?id='${id}`,
+      let { data } = await this.$axios.patch(
+        `${process.env.ALL_CREDIT_FREE}/api/User/${id.id}`,id,
         {
           headers: {
             Authorization: "f3900da4ef8305ad228dea2eb219baef",
@@ -565,6 +596,7 @@ export function topupById({ commit }, id) {
 
       resolve(data);
     } catch (error) {
+      // return error.response.data
       reject(error);
     }
   });
@@ -574,7 +606,7 @@ export function updateUserFreecredit({ commit }, user_id) {
     try {
       // let { data } = await this.$axios.get(``);
       let { data } = await this.$axios.patch(
-        `${process.env.ALL_CREDIT_FREE}/api/User/${user_id}`,
+        `${process.env.ALL_CREDIT_FREE}/api/User/${user_id.id}`,
         {
           headers: {
             Authorization: "f3900da4ef8305ad228dea2eb219baef",

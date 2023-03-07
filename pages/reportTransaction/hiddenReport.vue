@@ -33,15 +33,20 @@
               options.itemsPerPage * (options.page - 1) + (index + 1)
             }}</span>
           </template>
+          <template #[`item.no`]="{ index }">
+            <span class="font-weight-bold">{{
+              options.itemsPerPage * (options.page - 1) + (index + 1)
+            }}</span>
+          </template>
           <template #[`item.dateSms`]="{ item }">
             <span class="font-weight-bold">
-              {{ renderDateHide(item)  }}
+              {{ item.dateSms.slice(0,10) + ' ' + item.dateSms.slice(11,19)  }}
             </span >
           </template>
        
-          <template #[`item.updated_at`]="{ item }">
+          <template #[`item.created_at`]="{ item }">
             <span class="font-weight-bold">
-             {{renderDate(item.updated_at)  }} 
+             {{renderDate(item.created_at)  }} 
             </span>
           </template>
 
