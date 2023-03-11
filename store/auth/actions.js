@@ -544,7 +544,7 @@ export async function topupDashboardByOperator(context, incomingSMS) {
   context.commit("updateIncoming", updated_state_incomingData);
   try {
     let response = await this.$axios.post(
-      `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/Dashboard/${incomingSMS.username}`,
+      `${process.env.ALL_SUPPORT}/api/Website/Rico/Topup/DashboardV2/${incomingSMS.username}/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
       incomingSMS
     );
     //             "balance" => $balance,

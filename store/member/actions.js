@@ -127,7 +127,7 @@ export async function getTurnByid( context, username ) {
 //get turn
 try {
   let result = await this.$axios.get(
-    `${process.env.ALL_MEMBER}/api/MemberTurn/Auto/${username}`,
+    `${process.env.ALL_MEMBER}/api/MemberTurn/AutoV2/${username}/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
   
   );
   resolve(result);
