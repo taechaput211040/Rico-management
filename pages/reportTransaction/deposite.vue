@@ -301,6 +301,7 @@ export default {
           console.log(error);
           this.isLoading = false;
         }
+        await this.getBank()
         this.isLoading = false;
       }
     },

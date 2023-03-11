@@ -205,6 +205,15 @@
                     label="lotto"
                   ></v-text-field
                 ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    v-model.number="mock_pro.promotion_details[0].FH"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="fishing"
+                  ></v-text-field
+                ></v-col>
               </v-row>
             </div>
 
@@ -428,6 +437,15 @@
                     dense
                     hide-details="auto"
                     label="lotto"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    v-model.number="mock_pro.promotion_details[0].FH"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="fishing"
                   ></v-text-field
                 ></v-col>
               </v-row>
@@ -704,6 +722,15 @@
                     label="lotto"
                   ></v-text-field
                 ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    v-model.number="mock_pro.promotion_details[0].FH"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="fishing"
+                  ></v-text-field
+                ></v-col>
               </v-row>
             </div>
 
@@ -910,6 +937,15 @@
                     dense
                     hide-details="auto"
                     label="lotto"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="6" sm="2">
+                  <v-text-field
+                    v-model.number="mock_pro.promotion_details[0].FH"
+                    outlined
+                    dense
+                    hide-details="auto"
+                    label="fishing"
                   ></v-text-field
                 ></v-col>
               </v-row>

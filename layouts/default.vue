@@ -399,11 +399,15 @@ export default {
   async created() {
     try {
       await this.getUser();
+      await this.getLockdown();
+      console.log('ggggg')
+    const a =  
+      console.log('hhhhhh')
+      console.log(a)
       await this.getFeature();
       await this.getSetting();
       await this.getOnlineMember();
       // console.log("iiiiiiiiii",this.memberOnline)
-      //await this.getLockdown();
 
       let menuitem = await this.$store.state.menu.filter((x) => {
         return x.status == true;

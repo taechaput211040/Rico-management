@@ -67,3 +67,19 @@ export async function getPromotionReport({ commit }, paramsIn) {
     }
   });
 }
+export async function getDetailPromotion( context , paramsIn) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log('sss',paramsIn)
+      let { data } = await this.$axios.get(
+        `${process.env.ALL_DEPOSIT}/api/Deposit/DetailPromotion/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
+        {
+          params: paramsIn,
+        }
+      );
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

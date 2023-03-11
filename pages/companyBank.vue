@@ -269,6 +269,7 @@
           </div>
         </v-col>
         </v-row>
+        
         <v-card-actions class="mt-5">
           <div class="mx-auto">
             <v-btn color="primary" @click="submitCreateBank" class="mx-1"
@@ -711,17 +712,19 @@ export default {
       });
     },
     async SubmitEditBank() {
-      if (this.createBank.Companybank != "SCB") {
-        this.createBank.mode = 0;
-      }
+      // console.log(this.createBank)
+      // if (this.createBank.Companybank != "SCB" || this.createBank.Companybank != "TRUEWALLET" ) {
+      //   this.createBank.mode = 0;
+      // }
       this.createBank.updateBy = this.$store.state.auth.user;
       this.createBank.createBy = this.$store.state.auth.user;
-      if (!this.createBank.secret) {
-        this.createBank.secret = "";
-      }
+      // if (!this.createBank.secret) {
+      //   this.createBank.secret = "";
+      // }
+      console.log(this.createBank)
       this.Accref();
       this.$swal({
-        title: `แก้ไขรายชื่อธนาคาร ?`,
+        title: `บันทึกรายการ ?`,
         icon: "question",
         showCancelButton: true,
         allowOutsideClick: false,
@@ -735,7 +738,7 @@ export default {
             await this.EditBankCompany(this.createBank);
             this.$swal({
               icon: "success",
-              title: "แก้ไขสำเร็จ",
+              title: "บันทึกสำเร็จ",
               allowOutsideClick: false,
               showConfirmButton: false,
               timer: 1500,
@@ -752,7 +755,7 @@ export default {
       });
     },
     async submitCreateBank() {
-      if (this.createBank.Companybank != "SCB") {
+      if (this.createBank.Companybank != "SCB" || this.createBank.Companybank != "TRUEWALLET" ) {
         this.createBank.mode = 0;
       }
       this.createBank.updateBy = this.$store.state.auth.user;
@@ -813,7 +816,7 @@ export default {
     async updateBank(item) {
       let { data } = await this.getBankByid(item.id);
       console.log(data, "item");
-      this.createBank = Object.assign({}, data);
+      this.createBank = {...data}
       this.dlupdate = true;
     },
     closeEdit() {

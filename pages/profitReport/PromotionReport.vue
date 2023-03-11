@@ -81,7 +81,7 @@
                       {{ sum_cashback | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('cc')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -95,7 +95,7 @@
                       {{ sum_bonus_deposit | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('bt')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -109,7 +109,7 @@
                       {{ sum_new_member_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('nb')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -123,7 +123,7 @@
                       {{ sum_first_deposit_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('fb')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -137,7 +137,7 @@
                       {{ sum_allday_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('ab')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -151,7 +151,7 @@
                       {{ sum_continue_bonus | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('cb')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -165,7 +165,7 @@
                       {{ sum_wheel_deposit | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('wd')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -179,7 +179,7 @@
                       {{ sum_credit_free | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('cf')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -193,7 +193,7 @@
                       {{ sum_checkin }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('ch')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -206,7 +206,7 @@
                       {{ sum_affiliate_deposit | numberFormat }}
                     </td>
                     <td class="text-center">
-                      <v-btn color="black" dark small @click="opendetail()"
+                      <v-btn color="black" dark small @click="opendetail('ad')"
                         ><v-icon left>mdi-mail</v-icon> คลิกเพื่อดู</v-btn
                       >
                     </td>
@@ -241,8 +241,17 @@
                 show-expand
                 single-expand
                 :headers="headerDetail"
-                :items="dataDetail"
+                :items="dataDetail.data"
                 hide-default-footer
+                :options.sync="options"
+                :footer-props="{
+                  showFirstLastPage: true,
+                  'items-per-page-text': '',
+                  'items-per-page-options': [50, 100],
+                }"
+                :server-items-length="
+                dataDetail.meta ? dataDetail.meta.itemCount : 0
+              "
               >
                 <template #[`item.no`]="{ index }">
                   <span class="font-weight-bold">
@@ -251,6 +260,9 @@
                 </template>
                 <template #[`item.companyBank`]="{ item }">
                   <img-bank :value="item.companyBank"></img-bank>
+                </template>
+                <template #[`item.created_at`]="{ item }">
+                  {{ item.created_at }}
                 </template>
                 <template #[`item.data-table-expand`]="{ isExpanded, expand }">
                   <div class="px-3">
@@ -302,6 +314,7 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import { mapActions } from "vuex";
 import CardReport from "../../components/CardReport.vue";
 import ImgBank from "../../components/ImgBank.vue";
@@ -310,7 +323,8 @@ export default {
   data() {
     return {
       detailDialog: false,
-
+      options_deposit: {},
+      options: {},
       headerDetail: [
         {
           text: "ลำดับ",
@@ -461,12 +475,31 @@ export default {
       console.log(error);
     }
   },
-
+  watch: {
+    options: {
+      async handler() {
+        // await this.getDetailPromotion();
+      },
+    },
+  },
   methods: {
-    ...mapActions("profit", ["getPromotionReport", "getProfitByUserReport2"]),
+    ...mapActions("profit", ["getPromotionReport", "getProfitByUserReport2","getDetailPromotion"]),
 
     getamount() {},
-    async opendetail() {
+    async opendetail(type) {
+      this.isLoading = true
+      let paramIn = this.getParameter(type);
+      try {
+        console.log(paramIn)
+      const result =  await this.getDetailPromotion(paramIn)
+
+      this.dataDetail = result
+      this.isLoading = false
+      } catch (error) {
+        console.log(error)
+        this.isLoading = false
+      }
+  
       this.detailDialog = true;
       // let { response } = await api id
       // this.dataDetail == response.data;
@@ -483,6 +516,35 @@ export default {
       this.sum_checkin = 0;
       this.sum_affiliate_deposit = 0;
       this.sum_ALL_BONUS = 0;
+    },
+    getParameter(type) {
+      let parameter = {
+        take: this.options.itemsPerPage,
+        page: this.options.page,
+        start: dayjs(this.dateFilter.startDate).format(),
+        end: dayjs(this.dateFilter.endDate).endOf('day').format(),
+        options:type,
+        order: "DESC",
+      };
+      return parameter;
+    },
+    getDetailParam(option = null) {
+      let params = {
+        start: this.dateFilter.startDate,
+        end: this.dateFilter.endDate,
+      
+        page: 1,
+        options:option,
+        take: 100,
+    
+        order: "DESC",
+      };
+      params.start = this.$moment(params.start).format("YYYY-MM-DD");
+      params.end = this.$moment(params.end).format("YYYY-MM-DD");
+      // console.log('-----------------');
+      // console.log('this is param');
+      // console.log(params)
+      return params;
     },
     axiosParams() {
       let params = {
@@ -513,7 +575,7 @@ export default {
         username: null,
         limit: 10000,
         column_order: "date",
-        order: "ASC",
+        order: "DESC",
       };
       params.start = this.$moment(params.start).format("YYYY-MM-DD");
       params.end = this.$moment(params.end).format("YYYY-MM-DD");
