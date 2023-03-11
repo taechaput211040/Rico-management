@@ -232,12 +232,12 @@ export default {
           sortable: false,
           class: "font-weight-bold"
         },
-        {
-          text: "TURN",
-          value: "turn",
-          align: "center",
-          sortable: false
-        },
+        // {
+        //   text: "TURN",
+        //   value: "turn",
+        //   align: "center",
+        //   sortable: false
+        // },
         {
           text: "ยอด วางเดิมพัน ที่ต้องทำ",
           value: "turnTarget",
