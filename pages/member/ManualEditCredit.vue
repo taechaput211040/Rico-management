@@ -44,7 +44,7 @@
                     เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)
                     <el-time-picker
                       class="full-width mb-2"
-                      v-model="formEditCredit.smsdatetime"
+                      v-model="formEditCredit.dateSms"
                       format="HH:mm"
                       arrow-control
                       placeholder="เวลาในสลิปที่ลูกค้าแจ้ง (ไม่บังคับ)"
