@@ -155,6 +155,7 @@
         class="my-4 font-weight-bold"
         label="สถานะ"
         v-model.number="message.status"
+        @change="changeStatusMessage"
       ></v-switch>
       <div v-if="message.status == 1">
         <v-row>
@@ -427,6 +428,21 @@ export default {
           });
         }
       });
+    },
+    async changeStatusMessage(status) {
+      try {
+        this.message.status = status;
+        await this.updateMessage(this.message);
+        this.$swal({
+          icon: "success",
+          title: `${status ? "เปิด" : "ปิด"}ข้อความต้อนรับสำเร็จ`,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     async update() {
       try {
