@@ -69,7 +69,7 @@
                 small
                 color="success"
                 class="px-2"
-                outlined 
+                outlined
                 v-if="item.enable == true"
               >
                 <v-icon x-small left>mdi-circle</v-icon> เปิดใช้งาน
@@ -330,7 +330,7 @@
                           dense
                           outlined
                           type="number"
-                          v-model="dataCreate.commision_bonus_all.ES"
+                          v-model="dataCreate.commision_bonus_all.SL"
                         />
                       </div>
                     </div>
@@ -354,7 +354,7 @@
                           dense
                           outlined
                           type="number"
-                          v-model="dataCreate.commision_bonus_all.OT"
+                          v-model="dataCreate.commision_bonus_all.SB"
                         />
                       </div>
                     </div>
@@ -366,7 +366,7 @@
                           dense
                           outlined
                           type="number"
-                          v-model="dataCreate.commision_bonus_all.SB"
+                          v-model="dataCreate.commision_bonus_all.ES"
                         />
                       </div>
                     </div>
@@ -378,7 +378,7 @@
                           dense
                           outlined
                           type="number"
-                          v-model="dataCreate.commision_bonus_all.SL"
+                          v-model="dataCreate.commision_bonus_all.OT"
                         />
                       </div>
                     </div>
@@ -729,11 +729,9 @@ export default {
           );
 
           this.$swal({
-          title: "บันทึกสำเร็จ",
-         
-      
-        })
-        this.dlcreate=false
+            title: "บันทึกสำเร็จ",
+          });
+          this.dlcreate = false;
         } catch (error) {
           console.log(error);
         }
