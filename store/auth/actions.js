@@ -5,9 +5,7 @@ export function login(context, { username, password, agentkey }) {
   return new Promise(async (resolve, reject) => {
     console.log(process.env.VUE_APP_PATH_MICROSERVICE, "env");
 
-    localStorage.setItem("version", process.env.VERSION_APP);
-    // console.log("versionnnnnnnnnnn",localStorage.getItem("version"))
-    // await context.commit("set_version", process.env.VERSION_APP);
+
     try {
       let { data } = await this.$axios.post(
         // `${process.env.ALL_RICO_USER}/api/Auth/Login`,
@@ -26,6 +24,7 @@ export function login(context, { username, password, agentkey }) {
       // return;
     } catch (error) {
       reject(error);
+      // if(error == '​' )
     }
   });
 }

@@ -34,7 +34,7 @@
                     กรอกจำนวนเงิน
                     <v-text-field
                       class="mb-2"
-                      v-model="formEditCredit.credit"
+                      v-model.number="formEditCredit.credit"
                       dense
                       outlined
                       type="number"
@@ -112,7 +112,7 @@
                     <v-text-field
                       class="mb-2"
                       dense
-                      v-model="formEditCredit.credit"
+                      v-model.number="formEditCredit.credit"
                       outlined
                       type="number"
                       placeholder="กรอกจำนวนเงิน"
@@ -173,7 +173,7 @@
                     <v-text-field
                       class="mb-2"
                       dense
-                      v-model="formEditCredit.bonus"
+                      v-model.number="formEditCredit.bonus"
                       outlined
                       type="number"
                       placeholder="กรอกจำเครดิต"
@@ -197,7 +197,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
-                            v-model="formEditCredit.turn.tslot"
+                            v-model.number="formEditCredit.turn.tslot"
                             label="เทิร์น SLOT"
                             outlined
                             clearable
@@ -207,7 +207,7 @@
                         ></v-col>
                         <v-col cols="6">
                           <v-text-field
-                            v-model="formEditCredit.turn.tsportbook"
+                            v-model.number="formEditCredit.turn.tsportbook"
                             label="เทิร์น SPORTBOOK"
                             dense
                             outlined
@@ -218,7 +218,7 @@
                         ></v-col>
                         <v-col cols="6">
                           <v-text-field
-                            v-model="formEditCredit.turn.tesport"
+                            v-model.number="formEditCredit.turn.tesport"
                             label="เทิร์น ESPORT"
                             dense
                             outlined
@@ -230,7 +230,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
-                            v-model="formEditCredit.turn.tother"
+                            v-model.number="formEditCredit.turn.tother"
                             label="เทิร์น HORSE RACING"
                             outlined
                             clearable
@@ -241,7 +241,7 @@
                         <v-col cols="6">
                           <v-text-field
                             dense
-                            v-model="formEditCredit.turn.tcasino"
+                            v-model.number="formEditCredit.turn.tcasino"
                             label="เทิร์น CASINO"
                             outlined
                             type="number"
@@ -254,7 +254,7 @@
                             dense
                             label="เทิร์น LOTTO"
                             outlined
-                            v-model="formEditCredit.turn.tlotto"
+                            v-model.number="formEditCredit.turn.tlotto"
                             clearable
                             type="number"
                             hide-details="auto"
@@ -265,7 +265,7 @@
                             dense
                             label="เทิร์น FISHING"
                             outlined
-                            v-model="formEditCredit.turn.tfishing"
+                            v-model.number="formEditCredit.turn.tfishing"
                             clearable
                             type="number"
                             hide-details="auto"
@@ -274,7 +274,7 @@
                         <v-col cols="12">
                           <v-text-field
                             dense
-                            v-model="formEditCredit.turn.twidthdraw"
+                            v-model.number="formEditCredit.turn.twidthdraw"
                             label="อั้นถอน(กรอกเป็นจำนวนเงิน)"
                             outlined
                             clearable
@@ -508,14 +508,14 @@ export default {
         type: null,
         remark: "รายการแก้ไข",
         turn: {
-          tslot: "1",
-          tsportbook: "1",
-          tesport: "1",
-          tother: "1",
-          tcasino: "1",
-          tlotto: "1",
-          twidthdraw: "10000",
-          tfishing: "1",
+          tslot: 1,
+          tsportbook: 1,
+          tesport: 1,
+          tother: 1,
+          tcasino:1,
+          tlotto: 1,
+          twidthdraw: 10000,
+          tfishing:1,
         },
       },
 
@@ -778,14 +778,14 @@ export default {
         type: null,
         remark: "รายการแก้ไข",
         turn: {
-          tslot: "2",
-          tsportbook: "2",
-          tesport: "2",
-          tother: "2",
-          tcasino: "2",
-          tlotto: "2",
-          twidthdraw: "10000",
-          tfishing: "2",
+          tslot: 1,
+          tsportbook: 1,
+          tesport: 1,
+          tother:1,
+          tcasino:1,
+          tlotto:1,
+          twidthdraw: 10000,
+          tfishing:1,
         },
       };
     },

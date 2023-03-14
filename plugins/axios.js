@@ -5,7 +5,8 @@ export default function ({ $axios, redirect, store, app }) {
   //  console.log("asdasdasdasdasdads",store)
     const version = localStorage.getItem("version")
     console.log("v",version)
-    if(version != process.env.VERSION){
+    console.log("v",localStorage.getItem("version"))
+    if(version != process.env.VERSION_APP){
       localStorage.clear();
       redirect("/login");
     }

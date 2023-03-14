@@ -32,7 +32,7 @@ push-to-sharehost:
     DEPLOY_UPLOAD_URL: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=uploadfiles&dir=$DEPLOY_PATH&overwrite=1"
     DEPLOY_EXACT_SOURCE_DEST: "sourcefiles=$DEPLOY_PATH/dist-ci.zip&destfiles=$DEPLOY_PATH"
     DEPLOY_EXACT_FILE_URL: "$CPANEL_HOST/json-api/cpanel?cpanel_jsonapi_module=Fileman&cpanel_jsonapi_apiversion=2&cpanel_jsonapi_func=fileop&dir=$DEPLOY_PATH&op=extract&$DEPLOY_EXACT_SOURCE_DEST"
-  when: manual
+  # when: manual
   before_script:
     # Login to Gitlab registry
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY_IMAGE

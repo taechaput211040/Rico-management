@@ -13,6 +13,7 @@ export function set_login(state, payload) {
   localStorage.setItem("menu", payload.menu);
   localStorage.setItem("key", payload.token); //** */
   localStorage.setItem("username", payload.username);
+  localStorage.setItem("version", process.env.VERSION_APP);
   // localStorage.setItem("tokenMember", payload.setting.token);
 }
 export function set_online_member(state,payload){
