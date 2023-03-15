@@ -10,7 +10,7 @@ export async function getPalletePreset({ commit, state, rootState }) {
           // },
         }
       );
-      console.log(data, "data");
+     
       commit("setPallete", data);
       resolve(data);
     } catch (error) {

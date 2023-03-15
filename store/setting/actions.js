@@ -1,10 +1,10 @@
 //ตั้งค่าระบบ
 export function getSetting(context, rootState, commit, state) {
-  console.log(context);
+ 
   return new Promise(async (resolve, reject) => {
     if (!context.rootState.setting.setting) {
       try {
-        console.log("no");
+       
         let { data } = await this.$axios.get(
           `${process.env.ALL_SETTING}/api/Setting/${context.rootState.auth.hash}`
         );
@@ -12,14 +12,14 @@ export function getSetting(context, rootState, commit, state) {
         const webhook_path = `${process.env.TRUEAPI_WEBHOOK_DOMAIN}/api/Website/Webhook/${data.companykey}/${data.agent_username}`
         await context.commit("setURLWebhook", webhook_path);
         
-        console.log("asdasdasdasd", data);
+      
         resolve(data);
       } catch (error) {
         reject(error);
         //** */
       }
     } else {
-      console.log("hio");
+   
       resolve(context.rootState.setting.setting);
     }
   });
@@ -417,51 +417,81 @@ export function deleteBankCompany(contaxt, payload) {
   });
 }
 
-export function getGroup({ commit, state }) {
+export function getGroup(context) {
   return new Promise(async (resolve, reject) => {
-    if (!state.provider_hash) {
+    if (!context.rootState.setting.provider_hash) {
+      const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/admin/group/${context.rootState.auth.company}/${context.rootState.auth.agent.toLowerCase()}`
+   
       try {
         let response = await this.$axios.get(
-          `https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/a4cd92ab1f743a02f94952d8f0b2ec62`
-        );
-        localStorage.setItem("groups", JSON.stringify(response.data.group));
-        commit("setProviderHash", response.data);
+          url_all_json
+      );
+
+        // localStorage.setItem("groups", JSON.stringify(response.data.json));
+    
+        context.commit("setProviderHash", response.data.json);
         resolve(response.data);
       } catch (error) {
         reject(error);
       }
     }
-    localStorage.setItem("groups", JSON.stringify(state.provider_hash.group));
-    commit("setProviderHash", state.provider_hash);
-    resolve(state.provider_hash);
+    localStorage.setItem("groups", JSON.stringify(context.rootState.setting.provider_hash.group));
+    context.commit("setProviderHash", context.rootState.setting.provider_hash);
+    resolve(context.rootState.setting.provider_hash);
   });
 }
-
-export function getGame({ commit, state }) {
+export function getMasterProviderGroup(context) {
   return new Promise(async (resolve, reject) => {
-    if (!state.game_hash) {
+
+      const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/admin/group/Master/${context.rootState.auth.company}/${context.rootState.auth.agent.toLowerCase()}`
+      console.log(url_all_json)
       try {
         let response = await this.$axios.get(
-          "https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/Game/admin/aca3656a066a8407ec390f52c297f078"
+          url_all_json
         );
 
-        localStorage.setItem("Gamelist", JSON.stringify(response.data));
-        commit("setGameHash", response.data);
-
-        resolve(response.data);
+     
+      
+        localStorage.setItem("groups", JSON.stringify(context.rootState.setting.provider_hash.group));
+        context.commit("setProviderHash", context.rootState.setting.provider_hash);
+        resolve(response.data.json);
       } catch (error) {
         reject(error);
-        console.log(error);
       }
-    }
-    resolve(state.game_hash);
+  
+
+    
   });
 }
 
-export function getMasterGameGroup({ commit, state }) {
+// export function getGame({ commit, state }) {
+//   return new Promise(async (resolve, reject) => {
+//     if (!state.game_hash) {
+//       try {
+//         let response = await this.$axios.get(
+//           "https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/Game/admin/aca3656a066a8407ec390f52c297f078"
+//         );
+
+//         localStorage.setItem("Gamelist", JSON.stringify(response.data));
+//         commit("setGameHash", response.data);
+
+//         resolve(response.data);
+//       } catch (error) {
+//         reject(error);
+//         console.log(error);
+//       }
+//     }
+//     resolve(state.game_hash);
+//   });
+// }
+
+export function getMasterGameGroup(context) {
   return new Promise(async (resolve, reject) => {
+    const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/admin/game/Master/${context.rootState.auth.company}/${context.rootState.auth.agent.toLowerCase()}`
+    console.log(url_all_json)
+   
     try {
-      let response = await axios.get("/api/Game/Master");
+      let response = await this.$axios.get(url_all_json);
       //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
       resolve(response.data);
@@ -471,41 +501,74 @@ export function getMasterGameGroup({ commit, state }) {
     }
   });
 }
-export function updateHash({ commit, state }) {
+export function updateHash(context,payload) {
   return new Promise(async (resolve, reject) => {
+    const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/${payload.hash}`
+     
+//     @IsString()
+//  agent:string;
+// @IsString()
+//  company:string;
+// @IsString()
+// @IsOptional()
+//  json:string;
+const body = {
+  agent:context.rootState.auth.agent,
+  company:context.rootState.auth.company,
+  json:payload
+}
+
+
     try {
-      let response = await axios.put("/api/Provider", {
-        json: payload,
-      });
+      let response = await this.$axios.put(url_all_json, body);
       resolve(response.data);
     } catch (error) {
       reject(error);
     }
   });
 }
-export function updateHashGame({ commit, state }) {
+export function updateHashGame(context,payload) {
   return new Promise(async (resolve, reject) => {
+    const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/${payload.hash}`
+     console.log(url_all_json)
+//     @IsString()
+//  agent:string;
+// @IsString()
+//  company:string;
+// @IsString()
+// @IsOptional()
+//  json:string;
+const body = {
+  agent:context.rootState.auth.agent,
+  company:context.rootState.auth.company,
+  json:payload
+}
+
+
     try {
-      let response = await axios.put("/api/Provider/Game", {
-        json: payload,
-      });
-      //
+      let response = await this.$axios.put(url_all_json, body);
       resolve(response.data);
     } catch (error) {
       reject(error);
     }
   });
 }
-export function getgame({ commit, state }) {
+export function getGame(context) {
   return new Promise(async (resolve, reject) => {
+    const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/admin/game/${context.rootState.auth.company}/${context.rootState.auth.agent.toLowerCase()}`
+    
     try {
       let response = await this.$axios.get(
-        `https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/admin/game/al/ls`
+        url_all_json
+        // `https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/admin/game/al/ls`
       );
-      //
-      resolve(response.data);
+      localStorage.setItem("Gamelist", JSON.stringify(response.data.json));
+      context.commit("setGameHash", response.data.json);
+
+      resolve(response);
     } catch (error) {
       reject(error);
+      console.log(error);
     }
   });
 }

@@ -2,10 +2,9 @@ export default function ({ $axios, redirect, store, app }) {
   // export default function(config) {
 
   $axios.onRequest((config) => {
-  //  console.log("asdasdasdasdasdads",store)
+ 
     const version = localStorage.getItem("version")
     console.log("v",version)
-    console.log("v",localStorage.getItem("version"))
     if(version != process.env.VERSION_APP){
       localStorage.clear();
       redirect("/login");

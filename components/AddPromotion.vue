@@ -441,7 +441,7 @@
                 ></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field
-                    v-model.number="mock_pro.promotion_details[0].FH"
+                    v-model.number="mock_pro.promotion_details[1].FH"
                     outlined
                     dense
                     hide-details="auto"
@@ -724,7 +724,7 @@
                 ></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field
-                    v-model.number="mock_pro.promotion_details[0].FH"
+                    v-model.number="mock_pro.promotion_details[2].FH"
                     outlined
                     dense
                     hide-details="auto"
@@ -941,7 +941,7 @@
                 ></v-col>
                 <v-col cols="6" sm="2">
                   <v-text-field
-                    v-model.number="mock_pro.promotion_details[0].FH"
+                    v-model.number="mock_pro.promotion_details[3].FH"
                     outlined
                     dense
                     hide-details="auto"

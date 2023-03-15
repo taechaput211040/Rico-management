@@ -61,7 +61,7 @@
                   <span> {{ item.knowFrom }} </span>
                 </div>
                 <div>
-                  สมัครเมื่อ  {{ item.created_at | dateFormat }} 
+                  สมัครเมื่อ  {{  renderDate(item.created_at)  }} 
                 </div>
               </template>
               <template #[`item.username`]="{ item }">

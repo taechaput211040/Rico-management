@@ -1,16 +1,17 @@
 <template>
   <div>
+    <loading-page v-if="loading"></loading-page>
     <h2 class="mv-4">ตั้งค่าเกมสล็อต</h2>
     <v-card class="elevation-3 rounded-lg">
       <div class="pa-3 font-weight-bold">
         กรุณาเลือกค่ายเกม
-        <div class="row pa-3">
+        <div class="row pa-3" v-if="groupcard">
           <div
             class="col-sm-2 col-6"
             v-for="(item, index) in groupcard.results"
             :key="index"
           >
-            <a href="#list"
+            <a href="#list" 
               ><img
                 :src="item.image"
                 style="max-width: 100%; height: auto; cursor: pointer"
@@ -236,16 +237,16 @@ export default {
     };
   },
   async created() {
-    let { slot } = await this.$store.dispatch("setting/getGroup");
+    let result = await this.getGroup();
 
-    let res = await this.$store.dispatch("setting/getGame");
+    let res = await this.getGame();
 
-    this.grouplist = res;
-    console.log(res, "res");
+    this.grouplist = res.data.json;
+  
     this.groupKey = Object.keys(this.grouplist);
 
-    console.log(this.groupKey);
-    this.groupcard = slot;
+   
+    this.groupcard = result.json.slot?result.json.slot : [];
     // try {
     //   let { data: group } = await this.getGroup();
     //   this.grouplist = group;
@@ -254,8 +255,7 @@ export default {
     // } catch (error) {}
   },
   async mounted() {
-    let { data } = await this.$store.dispatch(`setting/getgame`);
-    console.log(data, "dadatatagetgame");
+
   },
   computed: {
     dragOptions() {
@@ -274,6 +274,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("setting", ["getGame","getMasterGameGroup","getGroup","updateHashGame"]),
     selectFile(value) {
       if (value) {
         this.file = value;
@@ -312,10 +313,7 @@ export default {
         console.log(error);
       }
     },
-    resetProvider() {
-      const temp_backup = this.listProvider_backup;
-      this.listProvider = temp_backup;
-    },
+
     confirmImage(item) {
       // this.listProvider = this.listProvider.map((x) => {
       //   if (item.name == x.name) x.image = item.image;
@@ -341,8 +339,7 @@ export default {
     },
     async saveProvider() {
       this.loading = true;
-      let res = await this.$store.dispatch(
-        "setting/updateHashGame",
+      let res = await this.updateHashGame(
         this.grouplist
       );
 
@@ -357,12 +354,25 @@ export default {
     },
     async resetProvider() {
       this.loading = true;
-      let result = await this.$store.dispatch("setting/getMasterGameGroup");
-      this.grouplist = result;
 
-      await this.$store.dispatch("setting/updateHashGame", this.grouplist);
+      let result = await this.getMasterGameGroup()
+
+  
+      this.grouplist = result.json;
+      this.grouplist.hash.replace('_m','')
+      // await this.updateHash( this.grouplist);
+      await this.updateHashGame( this.grouplist);
       const temp_backup = this.listProvider_backup;
       this.listProvider = temp_backup;
+
+
+      this.$swal({
+        icon: "success",
+        title: "บันทึกสำเร็จ",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       this.loading = false;
     },
     renderitem(item) {

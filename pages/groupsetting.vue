@@ -1,32 +1,45 @@
 <template>
   <div>
+    <loading-page v-if="loading"></loading-page>
     <h2 class="mb-4">ตั้งค่าค่ายเกม</h2>
     <v-card class="elevation-3 rounded-lg">
       <div class="pa-3 font-weight-bold">
         กรุณาเลือกหมวดเกม
-        <div class="row pa-3">
-          <div
-            class="col-sm-2 col-6"
-            v-for="(item, index) in this.groupcard.results"
-            :key="index"
+        <div class="row pa-3" v-if="grouplist.group?grouplist.group :false ">
+          <draggable
+         
+          v-model="grouplist.group.results"
+          v-bind="dragOptions"
+          class="row d-flex justify-center pa-1"
+          group="groupcard"
+          @start="drag = true"
+          @end="drag = false"
+        > 
+        <div
+        class="col-sm-2 col-6"
+        v-for="(item, index) in this.grouplist.group.results"
+        :key="index"
+      >
+        <img
+          :src="item.image"
+          style="max-width: 100%; height: auto; cursor: pointer"
+          @click="renderitem(item)"
+        />
+        <div class="text-center m-auto">
+          <v-btn
+            small
+            rounded
+            outlined
+            color="black"
+            :disabled="canwrite"
+            @click="openDetailGroup(item)"
+            >image</v-btn
           >
-            <img
-              :src="item.image"
-              style="max-width: 100%; height: auto; cursor: pointer"
-              @click="renderitem(item)"
-            />
-            <div class="text-center m-auto">
-              <v-btn
-                small
-                rounded
-                outlined
-                color="black"
-                :disabled="canwrite"
-                @click="openDetailGroup(item)"
-                >image</v-btn
-              >
-            </div>
-          </div>
+        </div>
+      </div>
+
+      
+    </draggable>
         </div>
       </div>
     </v-card>
@@ -640,8 +653,8 @@ export default {
   },
   async created() {
     let res = await this.$store.dispatch("setting/getGroup");
-    console.log(res);
-    this.grouplist = res;
+    console.log('xczxczxczxc',res);
+    this.grouplist = res.json;
 
     this.groupcard = JSON.parse(localStorage.getItem("groups"));
     // try {
@@ -668,6 +681,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("setting", ["updateHash","getMasterProviderGroup"]),
     selectFile(event) {
       if (event) {
         this.file = event;
@@ -700,20 +714,34 @@ export default {
     },
     async saveProvider() {
       this.loading = true;
-      let res = await this.$store.dispatch("updateHash", this.grouplist);
-      this.showSuccessAlert("บันทึกสำเร็จ");
+      let res = await this.updateHash( this.grouplist);
+      this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
       this.loading = false;
     },
     async resetProvider() {
       this.loading = true;
-      let result = await this.$store.dispatch("getMasterProviderGroup");
-      this.grouplist = result;
+      let result = await this.getMasterProviderGroup();
+      console.log('master',result)
+      this.grouplist = result.json;
 
       this.groupcard = JSON.parse(localStorage.getItem("groups"));
-
-      await this.$store.dispatch("updateHash", this.grouplist);
+this.grouplist.hash.replace('_m','')
+      await this.updateHash( this.grouplist);
       const temp_backup = this.listProvider_backup;
       this.listProvider = temp_backup;
+      this.$swal({
+          title: `ทำรายการสำเร็จ`,
+          icon: "success",
+          allowOutsideClick: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ok",
+        });
       this.loading = false;
     },
     confirmImageGroup(item) {

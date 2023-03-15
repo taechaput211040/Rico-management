@@ -657,6 +657,7 @@ export default {
       
       this.formEditCredit.type = "เติม";
       this.formEditCredit.remark += ` เติมเงิน ${this.formEditCredit.username}  โดย ${this.user}`;
+      console.log(this.formEditCredit)
       const result = await this.PostEditTopupCredit(this.formEditCredit);
       if (result.data.status == "success") {
         this.$swal({

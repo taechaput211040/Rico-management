@@ -113,10 +113,9 @@ export async function getReportmemberbyid({ commit }, fillter = {}) {
   });
 }
 export function providerMap(context, input) {
-  console.log(context)
-  console.log(input)
+
   const string_data = context.rootState.auth.provider[input]
-  console.log(string_data)
+ 
   return input
 }
 // เชครีพอตเมมเบอร์ ID
@@ -385,13 +384,14 @@ export function PostEditTopupCredit(context, body) {
     body.company = context.rootState.auth.company
     body.agent = context.rootState.auth.agent
     body.created_at = dayjs().toISOString()
-    if(body.smsdatetime){
-      body.smsdatetime = dayjs().format("YYYY-MM-DD ") + body.smsdatetime
+    if(body.dateSms){
+      body.dateSms = dayjs(body.dateSms).format("YYYY-MM-DD HH:mm:ss") 
+      // body.dateSms = dayjs(body.dateSms).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss") 
     } else {
-      body.smsdatetime = dayjs().format("YYYY-MM-DD HH:mm")
+      body.dateSms = dayjs().format("YYYY-MM-DD HH:mm:ss")
     }
 
-    console.log(body)
+    console.log('hheerree',body)
     try {
       let response = await this.$axios.post(
         `${process.env.ALL_SUPPORT}/api/Website/Edit/Credit`,

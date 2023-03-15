@@ -10,7 +10,7 @@
             'http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3'
           )
         "
-      ><b> {{setting?.companyurl? setting.companyurl:''}}</b>
+      ><b> {{setting?.companyurl? setting.companyurl:''}}  </b> <br>
         <span class="fa fa-play-circle-o"></span>
       </button>
 
@@ -161,8 +161,10 @@
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Logout </v-list-item-title>
+            <v-list-item-title>Logout      </v-list-item-title>
+      
           </v-list-item>
+       
         </div>
       </v-list>
 
@@ -400,10 +402,9 @@ export default {
     try {
       await this.getUser();
       await this.getLockdown();
-      console.log('ggggg')
+     
     const a =  
-      console.log('hhhhhh')
-      console.log(a)
+     
       await this.getFeature();
       await this.getSetting();
       await this.getOnlineMember();
