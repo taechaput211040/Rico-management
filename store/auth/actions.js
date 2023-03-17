@@ -604,8 +604,8 @@ export function checkBalanceBank(context, { bank }) {
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/ScbBalance/${bank.Companybankacountnumber}`
       );
-      // console.log('feeee')
-      // console.log(context)
+
+      // 
       context.dispatch("updateBalanceBank", {
         id: bank.id,
         balance: response.data.balance,

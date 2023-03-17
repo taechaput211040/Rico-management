@@ -72,8 +72,7 @@ export function set_data_secret(state, payload) {
 }
 
 export function set_logout(state, context) {
-  console.log(state);
-  console.log(context);
+  
   context.rootState.setting.setting = null;
   context.rootState.setting.message = null;
   context.rootState.provider_hash = null;

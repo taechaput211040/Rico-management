@@ -402,8 +402,8 @@ export default {
     try {
       await this.getUser();
       await this.getLockdown();
-     
-    const a =  
+   
+    
      
       await this.getFeature();
       await this.getSetting();

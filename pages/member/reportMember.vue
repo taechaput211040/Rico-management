@@ -164,7 +164,7 @@
             </template>
             <template #[`item.transferTime`]="{ item }">
               <span class="font-weight-bold">
-                {{ renderDate(item.transferTime) }}
+                {{ renderDate3(item.transferTime) }}
               </span>
             </template>
             <template #[`item.data-table-expand`]="{ isExpanded, expand }">

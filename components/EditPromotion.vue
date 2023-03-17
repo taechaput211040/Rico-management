@@ -1313,7 +1313,6 @@ export default {
           "https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123",
           data
         );
-        //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
         this.mock_pro.promotionpic = response.data.image;
         this.$swal({
           icon: "success",

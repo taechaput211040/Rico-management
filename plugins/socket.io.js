@@ -23,6 +23,7 @@ export default ({ $axios, redirect, store, app }, inject) => {
     if (store.state.auth.company && store.state.auth.agent) {
       // const socket = io("http://localhost:4000/", {
       const socket = io("https://topup-v2.smart-exchange.io", {
+        // const socket = io("http://34.87.24.45", {
         transports: ["websocket"],
         query: {
           company: store.state.auth.company,

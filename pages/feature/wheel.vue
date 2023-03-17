@@ -12,7 +12,7 @@
           hide-details="auto"
           class="mx-5 mt-2"
           color="success"
-          :label="`สถานะ`"
+          :label="`สถานะ ${renderSwitch(turn.isActive)}`"
           v-model="status"
           @change="switchstatus(status)"
         ></v-switch>
@@ -89,7 +89,7 @@
                   ยอดเงินรางวัล:
                   <v-text-field
                     required
-                    v-model="settingitem.credit"
+                    v-model.number="settingitem.credit"
                     type="number"
                     dense
                     outlined
@@ -99,7 +99,7 @@
                 <v-col cols="12">
                   โอกาสถูก(%):
                   <v-text-field
-                    v-model="settingitem.award_percent"
+                    v-model.number="settingitem.award_percent"
                     type="number"
                     hide-details="auto"
                     dense
@@ -147,13 +147,66 @@
               <form @submit.prevent="submitform" autocomplete="off">
                 <div class="row">
                   <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    โหมด BUY FEATURE :<br />
+                    <v-switch
+                      hide-details="auto"
+                      class="mx-5"
+                      :disabled="canwrite"
+                      :true-value="true"
+                      :false-value="false"
+                      color="success"
+                      v-model="turn.buy_feature"
+                      :label="`สถานะ: ${renderSwitch(turn.buy_feature)}`"
+                    ></v-switch>
+                  </div>
+                  <div
+                    class="col-12 col-sm-6 col-md-3 p-md-4 p-3"
+                    v-if="turn.buy_feature == true"
+                  >
+                    จำนวนเงินสำหรับการซื้อ 1 ครั้ง :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model.number="turn.buy_amount"
+                      required
+                    />
+                  </div>
+                  <div
+                    class="col-12 p-md-4 p-3"
+                    v-if="turn.buy_feature == true"
+                  >
+                    <v-card>
+                      คำอธิบาย : <br />
+                      ยอดรางวัลเครดิตที่ได้จากการซื้อสปินจะไม่ถูกคิดเป็น โบนัส
+                      และไม่ติดเทิร์น และไม่ใช่ เครดิตเอเจ้น เป็น
+                      เครดิตที่ได้จากเกม<br />
+                      โดยทุกครั้งที่มีการซื้อสปิน จะคิดค่าธรรมเนียม ต่อการซื้อ 1
+                      ครั้งที่ 2% ของมูลค่าที่ตั้งไว้ เช่น ตั้งไว้ ซื้อครั้งละ
+                      100 จะต้องเสียค่าคอมมิชชั่น 2 บาท
+                      โดยจะเรียกเก็บพร้อมค่าระบบ
+                    </v-card>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
+                    จำนวนยอดฝากสำหรับการหมุนฟรี 1 ครั้ง :<br />
+                    <v-text-field
+                      dense
+                      hide-details="auto"
+                      outlined
+                      type="number"
+                      v-model.number="turn.amount"
+                      required
+                    />
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                     อั้นถอน(เป็นจำนวนเท่า) :<br />
                     <v-text-field
                       dense
                       hide-details="auto"
                       outlined
                       type="number"
-                      v-model="$v.turn.wdlimit.$model"
+                      v-model.number="turn.wdlimit"
                       required
                     />
                     <div
@@ -185,7 +238,7 @@
                       hide-details="auto"
                       outlined
                       type="number"
-                      v-model="$v.turn.SLOT.$model"
+                      v-model.number="turn.SLOT"
                       required
                     />
                     <div
@@ -204,7 +257,7 @@
                       dense
                       hide-details="auto"
                       outlined
-                      v-model="$v.turn.FOOTBALL.$model"
+                      v-model.number="turn.FOOTBALL"
                       type="number"
                       required
                     />
@@ -226,7 +279,7 @@
                       dense
                       hide-details="auto"
                       outlined
-                      v-model="$v.turn.ESPORT.$model"
+                      v-model.number="turn.ESPORT"
                       type="number"
                       required
                     />
@@ -246,7 +299,7 @@
                       dense
                       hide-details="auto"
                       outlined
-                      v-model="$v.turn.HORSERACING.$model"
+                      v-model.number="turn.HORSERACING"
                       type="number"
                       required
                     />
@@ -273,7 +326,7 @@
                       hide-details="auto"
                       outlined
                       type="number"
-                      v-model="$v.turn.CASINO.$model"
+                      v-model.number="turn.CASINO"
                       required
                     />
                     <div
@@ -293,7 +346,7 @@
                       hide-details="auto"
                       outlined
                       type="number"
-                      v-model="$v.turn.LOTTO.$model"
+                      v-model.number="turn.LOTTO"
                       required
                     />
                     <div
@@ -310,7 +363,7 @@
                   <div class="col-12 col-sm-6 col-md-3 p-md-4 p-3">
                     สามารถรับได้ :<br />
                     <v-select
-                      v-model="$v.turn.rate.$model"
+                      v-model="turn.rate"
                       class="style-select"
                       :items="selectRate"
                       dense
@@ -498,7 +551,7 @@ export default {
       this.feature_status = this.turn.feature_status;
       await this.$axios
         .$get(
-          `https://luckydraw-qlws7pv5wa-as.a.run.app/api/v1/setting_list/${this.turn.service_id}`,
+          `${process.env.LUCKYDRAW}/api/v1/setting_list/${this.turn.service_id}`,
           {
             auth: {
               username: `${process.env.BASIC_AUTH_USERNAME}`,
@@ -528,6 +581,10 @@ export default {
       this.settingitem = item;
       this.no = index + 1;
     },
+    renderSwitch(value) {
+      if (value) return "เปิด";
+      return "ปิด";
+    },
     setting(item) {
       this.settingitem = Object.assign({}, item);
       this.setting_roulette = true;
@@ -535,7 +592,7 @@ export default {
     async settingOk() {
       await this.$axios
         .$put(
-          `http://35.247.150.28/api/v1/setting/${this.settingitem.id}`,
+          `${process.env.LUCKYDRAW}/api/v1/setting/${this.settingitem.id}`,
           {
             title: this.settingitem.title,
             description: this.settingitem.description,
@@ -546,6 +603,8 @@ export default {
             default_reward: 0,
             point: this.settingitem.point,
             prize_id: this.settingitem.prize_id,
+            agent_id: this.roullet[0].agent_id,
+            image: "",
           },
           {
             auth: {
@@ -607,6 +666,19 @@ export default {
         this.loading = false;
       }
     },
+    async switchstatusBuyFeature() {
+      this.turn.buy_feature = !this.turn.buy_feature;
+      try {
+        console.log(this.turn);
+        await this.updateWheel(this.turn);
+        this.showSuccessAlert("บันทึกสำเร็จ");
+        this.loading = false;
+      } catch (error) {
+        this.showErrorAlert("error");
+        this.loading = false;
+      }
+    },
+
     showSuccessAlert(message) {
       // Use sweetalret2
 

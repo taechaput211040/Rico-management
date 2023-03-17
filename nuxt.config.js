@@ -137,6 +137,7 @@ export default {
     ALL_INCOMING: process.env.ALL_INCOMING,
     CHECK_MAINTAINANCE: process.env.CHECK_MAINTAINANCE,
     TRUEAPI_WEBHOOK_DOMAIN: process.env.TRUEAPI_WEBHOOK_DOMAIN,
-    ALL_TRUE_API:process.env.ALL_TRUE_API
+    ALL_TRUE_API:process.env.ALL_TRUE_API,
+    LUCKYDRAW:process.env.LUCKYDRAW
   },
 };
