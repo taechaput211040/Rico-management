@@ -419,7 +419,7 @@ export function deleteBankCompany(contaxt, payload) {
 
 export function getGroup(context) {
   return new Promise(async (resolve, reject) => {
-    if (!context.rootState.setting.provider_hash) {
+  
       const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/admin/group/${context.rootState.auth.company}/${context.rootState.auth.agent.toLowerCase()}`
    
       try {
@@ -434,10 +434,10 @@ export function getGroup(context) {
       } catch (error) {
         reject(error);
       }
-    }
-    localStorage.setItem("groups", JSON.stringify(context.rootState.setting.provider_hash.group));
-    context.commit("setProviderHash", context.rootState.setting.provider_hash);
-    resolve(context.rootState.setting.provider_hash);
+    
+    // localStorage.setItem("groups", JSON.stringify(context.rootState.setting.provider_hash.group));
+    // context.commit("setProviderHash", context.rootState.setting.provider_hash);
+    // resolve(context.rootState.setting.provider_hash);
   });
 }
 export function getMasterProviderGroup(context) {
@@ -560,7 +560,7 @@ export function getGame(context) {
     try {
       let response = await this.$axios.get(
         url_all_json
-        // `https://all-json-config-qlws7pv5wa-as.a.run.app/api/Provider/admin/game/al/ls`
+       
       );
       localStorage.setItem("Gamelist", JSON.stringify(response.data.json));
       context.commit("setGameHash", response.data.json);
