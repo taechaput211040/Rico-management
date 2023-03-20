@@ -223,13 +223,22 @@
                 <div class="input_form">
                   <span class="px-2 text_modal">สายงาน : </span>
                   <div class="col-6 col-md-4">
-                    <v-text-field
+                    <v-text-field  v-if="dataCreate.config_name == 'default'"
+                   disabled
                       type="text"
                       hide-details="auto"
                       dense
                       outlined
                       v-model="dataCreate.config_name"
                     />
+                    <v-text-field  v-else
+                    
+                       type="text"
+                       hide-details="auto"
+                       dense
+                       outlined
+                       v-model="dataCreate.config_name"
+                     />
                   </div>
                 </div>
                 <div class="elevation-2 rounded-lg mt-2">
