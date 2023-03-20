@@ -22,14 +22,18 @@
           <template #[`item.action`]="{ item }">
             <div class="text-center d-flex justify-center">
               <v-btn
-                color="black"
+                color="black white--text"
+                :disabled="canwrite"
                 class="mx-1"
-                dark
                 small
                 @click="editEmployee(item)"
                 ><v-icon left small>mdi-cog</v-icon>แก้ไข</v-btn
               >
-              <v-btn color="error" dark small @click="deleteUser(item)"
+              <v-btn
+                :disabled="canwrite"
+                color="error"
+                small
+                @click="deleteUser(item)"
                 ><v-icon left small>mdi-delete</v-icon>ลบ</v-btn
               >
             </div>
@@ -615,10 +619,10 @@ export default {
   },
 
   computed: {
-    ...mapState("auth", ["menu"]),
+    ...mapState("auth", ["menu", "isAdmin"]),
     canwrite() {
       if (this.menu) {
-        if (!this.menu.includes("employee_write")) return true;
+        if (!this.menu.includes("employee_write") || !this.isAdmin) return true;
         else return false;
       }
     },
