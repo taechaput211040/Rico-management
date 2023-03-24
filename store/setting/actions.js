@@ -428,7 +428,7 @@ export function getGroup(context) {
       );
 
         // localStorage.setItem("groups", JSON.stringify(response.data.json));
-    
+        response.data.json.hash = response.data.hash
         context.commit("setProviderHash", response.data.json);
         resolve(response.data);
       } catch (error) {

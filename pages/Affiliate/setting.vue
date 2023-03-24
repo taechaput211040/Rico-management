@@ -703,7 +703,7 @@ export default {
     },
     closeConfig() {
       // this.$refs.createSetting.reset();
-      this.dlcreate = false;
+      this.dlcreate = false;      this.dlcreate = false;
     },
     async getDataAffiliate() {
       this.loading = true;
@@ -727,6 +727,8 @@ export default {
             `${process.env.AFF_SETTING}/api/Aff/Setting/${this.$store.state.auth.hash}`,
             this.dataCreate
           );
+          await this.getDataAffiliate()
+          this.dlcreate = false;
         } catch (error) {
           console.log(error);
         }
@@ -736,7 +738,7 @@ export default {
             `${process.env.AFF_SETTING}/api/MainSetting/Setting`,
             this.dataCreate
           );
-
+          await this.getDataAffiliate()
           this.$swal({
             title: "บันทึกสำเร็จ",
           });

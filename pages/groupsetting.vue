@@ -714,6 +714,7 @@ export default {
     },
     async saveProvider() {
       this.loading = true;
+      console.log('gdgfdgdg',this.grouplist)
       let res = await this.updateHash( this.grouplist);
       this.$swal({
           title: `ทำรายการสำเร็จ`,
