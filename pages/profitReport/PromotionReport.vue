@@ -352,7 +352,7 @@ export default {
         },
         {
           text: "USERNAME",
-          value: "member_id",
+          value: "username",
           align: "center",
           sortable: false,
           cellClass: "font-weight-bold primary--text",
@@ -492,7 +492,8 @@ export default {
       try {
         console.log(paramIn)
       const result =  await this.getDetailPromotion(paramIn)
-
+      // console.log('c1234')
+      // console.log(result)
       this.dataDetail = result
       this.isLoading = false
       } catch (error) {

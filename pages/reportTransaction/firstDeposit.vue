@@ -255,7 +255,7 @@ export default {
       if (date[0] == "p") {
         return "โอนมือ";
       }
-
+      
       return dayjs(date).add(+7, "hours").format("YYYY-MM-DD HH:mm:ss");
     },
     getParameter() {
