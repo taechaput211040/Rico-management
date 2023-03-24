@@ -416,7 +416,31 @@ export function deleteBankCompany(contaxt, payload) {
     }
   });
 }
+export function getGameId(context) {
+  return new Promise(async (resolve, reject) => {
+  if(!context.rootState.setting.gameid){
+    const url_all_json =`${process.env.ALL_JSON_STATIC}/api/Provider/999999`
 
+    try {
+      let response = await this.$axios.get(
+        url_all_json
+    );
+ 
+      // localStorage.setItem("groups", JSON.stringify(response.data.json));
+      // response.data.json.hash = response.data.hash
+      context.commit("setGameid", response.data);
+      resolve(response.data);
+    } catch (error) {
+      reject(error);
+    }
+  }
+   
+    
+    // localStorage.setItem("groups", JSON.stringify(context.rootState.setting.provider_hash.group));
+    // context.commit("setProviderHash", context.rootState.setting.provider_hash);
+    // resolve(context.rootState.setting.provider_hash);
+  });
+}
 export function getGroup(context) {
   return new Promise(async (resolve, reject) => {
   

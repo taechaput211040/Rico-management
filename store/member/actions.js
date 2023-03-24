@@ -294,6 +294,24 @@ export function getTransactionMember(context, params) {
     }
   });
 }
+export function getTransactionMemberNew(context, params) {
+  // console.log(context.state)
+  // return
+  return new Promise(async (resolve, reject) => {
+    
+    try {
+      let response = await this.$axios.get(
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/All/${params.username}/${params.starttime}/${params.endtime}?page=${params.page}&limit=${params.limit}&sort=DESC`
+        // `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
+
+      );
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 export function get5DepositRecord(context, username) {
   // console.log(context.state)
   // return

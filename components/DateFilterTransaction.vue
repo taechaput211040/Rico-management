@@ -65,7 +65,7 @@ export default {
         datePickerOptions: {
       disabledDate (date) {
 
-        return date < dayjs().add(-2,('day'))
+        return date < dayjs().add(-3,('day'))
       }
     }
       };

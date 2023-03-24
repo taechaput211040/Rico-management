@@ -21,3 +21,7 @@ export function setActivity(state, payload) {
 export function setActivityLogout(state, payload) {
   state.activity = null;
 }
+export function setGameid(state, payload) {
+  state.gameid = payload;
+}
+

@@ -5,5 +5,6 @@ export default function() {
     setting: null,
     message: null,
     webhookURL:null,
+    gameid:null
   };
 }
