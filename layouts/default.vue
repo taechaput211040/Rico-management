@@ -286,6 +286,12 @@
                 {{ item.created_at | dateFormat }}
               </span>
             </template>
+            <template #[`item.provider_name`]="{ item }">
+              <span>
+                {{  provider[item.provider_name] ? provider[item.provider_name] : item.provider_name }}
+         
+              </span>
+            </template>
           </v-data-table>
           <v-card-actions class="justify-end">
             <v-btn color="error" @click="showMember = false"> ปิด</v-btn>
@@ -519,8 +525,9 @@ export default {
   },
   computed: {
     ...mapState("account", ["webPalette"]),
-    ...mapState("auth", ["memberOnline"]),
+    ...mapState("auth", ["memberOnline","provider"]),
     ...mapState("setting", ["setting"]),
+   
   },
   methods: {
     ...mapActions("auth", [

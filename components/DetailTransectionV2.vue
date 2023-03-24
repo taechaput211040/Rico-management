@@ -54,11 +54,19 @@
           >
         </template>
         <template #[`item.status`]="{ item }">
-          <div class="success--text font-weight-bold" v-if="item.status">
-            สำเร็จ
+          <div v-if="item.provider = 'PGL'">
+            <div class="success--text font-weight-bold">
+              สำเร็จ
+            </div>
+       
           </div>
-          <div class="warning--text font-weight-bold" v-else>
-            ผลยังไม่จบ
+          <div v-else>
+            <div class="success--text font-weight-bold" v-if="item.status">
+              สำเร็จ
+            </div>
+            <div class="warning--text font-weight-bold" v-else>
+              ผลยังไม่จบ
+            </div>
           </div>
         </template>
         <template #[`item.start_time`]="{ item }">
@@ -190,12 +198,22 @@ export default {
     ...mapActions("member", ["getDetailLink"]),
     ...mapActions("setting", ["getGameId"]),
     mapGameName(item){
-      const test =  this.gameid.find(x=> x.id == `${item.provider.toLowerCase()}_${item.game_name}`)
+      if(item.game_name.startsWith('PGL')){
+        const test =  this.gameid.find(x=> x.id == `${item.game_name.toLowerCase()}`)
       if(test){
         return test.name
       } else {
         return item.game_name
       }
+      } else {
+        const test =  this.gameid.find(x=> x.id == `${item.provider.toLowerCase()}_${item.game_name}`)
+      if(test){
+        return test.name
+      } else {
+        return item.game_name
+      }
+      }
+    
       // return test.name
     },
     async detail(item) {
