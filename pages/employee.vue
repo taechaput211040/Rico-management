@@ -23,7 +23,7 @@
             <div class="text-center d-flex justify-center">
               <v-btn
                 color="black white--text"
-                :disabled="canwrite"
+                :disabled="canwrite && item.username != $store.state.auth.name"
                 class="mx-1"
                 small
                 @click="editEmployee(item)"
@@ -284,6 +284,7 @@
                 required
                 placeholder="ชื่อ-นามสกุล"
                 dense
+                :disabled="canwrite"
                 :rules="[(v) => !!v || 'กรุณากรอกชื่อ นามสกุล']"
                 v-model="updatedata.name"
                 hide-details="auto"
@@ -348,6 +349,7 @@
               <span class="font-weight-bold">เลือกตำแหน่ง</span>
               <v-radio-group
                 class="py-2"
+                :disabled="canwrite"
                 hide-details="auto"
                 v-model="updatedata.is_admin"
               >
@@ -358,6 +360,7 @@
             <v-col cols="6" sm="3">
               <span class="font-weight-bold">สถานะ</span>
               <v-switch
+                :disabled="canwrite"
                 hide-details="auto"
                 :label="`${updatedata.status ? 'เปิด' : 'ปิด'}`"
                 v-model="updatedata.status"
@@ -375,6 +378,7 @@
               <span class="font-weight-bold">ลิมิตการเติมเครดิต</span>
               <v-switch
                 hide-details="auto"
+                :disabled="canwrite"
                 :label="`${updatedata.limittopup ? 'เปิด' : 'ปิด'}`"
                 v-model="updatedata.limittopup"
               ></v-switch>
@@ -393,55 +397,56 @@
           </v-row>
 
           <div class="pa-3">
-            <v-data-table
-              hide-default-footer
-              disable-pagination
-              class="elevetion-1"
-              :headers="updatelist"
-              :items="editgroups"
-            >
-              <template #[`header.read`]>
-                <v-checkbox
-                  hide-details="auto"
-                  v-model="updateReadAll"
-                  label="ดู"
-                  :indeterminate="
-                    editgroups.filter((x) => x.read).length <
-                      editgroups.length &&
-                    editgroups.filter((x) => x.read).length > 0
-                  "
-                  @change="selectAllRead(updateReadAll)"
-                ></v-checkbox>
-              </template>
-              <template #[`header.write`]>
-                <v-checkbox
-                  hide-details="auto"
-                  :indeterminate="
-                    editgroups.filter((x) => x.write).length <
-                      editgroups.length &&
-                    editgroups.filter((x) => x.write).length > 0
-                  "
-                  v-model="updateWriteAll"
-                  @change="selectAllWrite(updateWriteAll)"
-                  label="แก้ไข"
-                >
-                </v-checkbox>
-              </template>
-              <template #[`item.read`]="{ item }">
-                <v-checkbox
-                  v-model="item.read"
-                  hide-details="auto"
-                  @change="handleReadEditPermission(item)"
-                ></v-checkbox>
-              </template>
-              <template #[`item.write`]="{ item }">
-                <v-checkbox
-                  :disabled="!item.read"
-                  v-model="item.write"
-                  hide-details="auto"
-                ></v-checkbox>
-              </template>
-            </v-data-table>
+            <v-card :disabled="canwrite">
+              <v-data-table
+                hide-default-footer
+                disable-pagination
+                class="elevetion-1"
+                :headers="updatelist"
+                :items="editgroups"
+              >
+                <template #[`header.read`]>
+                  <v-checkbox
+                    hide-details="auto"
+                    v-model="updateReadAll"
+                    label="ดู"
+                    :indeterminate="
+                      editgroups.filter((x) => x.read).length <
+                        editgroups.length &&
+                      editgroups.filter((x) => x.read).length > 0
+                    "
+                    @change="selectAllRead(updateReadAll)"
+                  ></v-checkbox>
+                </template>
+                <template #[`header.write`]>
+                  <v-checkbox
+                    hide-details="auto"
+                    :indeterminate="
+                      editgroups.filter((x) => x.write).length <
+                        editgroups.length &&
+                      editgroups.filter((x) => x.write).length > 0
+                    "
+                    v-model="updateWriteAll"
+                    @change="selectAllWrite(updateWriteAll)"
+                    label="แก้ไข"
+                  >
+                  </v-checkbox>
+                </template>
+                <template #[`item.read`]="{ item }">
+                  <v-checkbox
+                    v-model="item.read"
+                    hide-details="auto"
+                    @change="handleReadEditPermission(item)"
+                  ></v-checkbox>
+                </template>
+                <template #[`item.write`]="{ item }">
+                  <v-checkbox
+                    :disabled="!item.read"
+                    v-model="item.write"
+                    hide-details="auto"
+                  ></v-checkbox>
+                </template> </v-data-table
+            ></v-card>
           </div>
 
           <v-card-actions>
