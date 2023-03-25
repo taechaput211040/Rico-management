@@ -514,7 +514,9 @@ export default {
       setInterval(async x => {
 
      await this.getOnlineMember();
-      console.log('member online opdated')
+     console.log('member online opdated')
+     await this.GetInfomation()
+     console.log('dashboard opdated')
     }, 60000);
     } catch (error) {
       console.log(error);

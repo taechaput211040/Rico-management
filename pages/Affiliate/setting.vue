@@ -144,7 +144,7 @@
             </template>
             <template #[`item.child_setting_name`]="{ item }">
               <div class="pa-3">
-                {{ item.config_name }}
+                {{ item.child_setting_name }}
                 <v-btn
                   outlined
                   small
@@ -474,6 +474,7 @@ export default {
   components: { LoadingPage },
   data() {
     return {
+      loading:false,
       type_selectConfig: null,
       selector_value: null,
       dlupdateChild: false,
@@ -759,13 +760,18 @@ export default {
           timer: 1500,
         });
       } else {
+        this.loading = true;
         if (type === "child") {
           try {
             await this.$axios.put(
+              // `http://localhost:5011/api/Aff/Member/child/${config_id}/${this.username}`
               `${process.env.AFF_SETTING}/api/Aff/Member/child/${config_id}/${this.username}`
             );
+            await this.search()
+            this.loading = false;
             this.closeUpdateChild();
           } catch (error) {
+            this.loading = false;
             console.log(error);
           }
         } else if (type === "main") {
@@ -773,7 +779,9 @@ export default {
             await this.$axios.put(
               `${process.env.AFF_SETTING}/api/Aff/Member/${config_id}/${this.username}`
             );
+            this.loading = false;
           } catch (error) {
+            this.loading = false;
             console.log(error);
           }
           this.closeUpdateChild();
@@ -812,9 +820,8 @@ export default {
         let res = await this.$axios.get(
           `${
             process.env.AFF_SETTING
-          }/api/Aff/Member/Service/${this.username.toLowerCase()}/${
-            this.$store.state.auth.agent
-          }`
+          }/api/Aff/Member/V2/${this.username.toLowerCase()}`
+        
         );
 
         // await this.getFeatureStatus();

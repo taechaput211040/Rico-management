@@ -202,10 +202,10 @@ export function getFeature(context) {
 export function GetInfomation(context) {
   console.log("GetInfomation");
   return new Promise(async (resolve, reject) => {
-    if (context.state.datarander.data == true) {
-      // await context.commit("set_dashboard", context.auth.data);
-      return;
-    }
+    // if (context.state.datarander.data == true) {
+    //   // await context.commit("set_dashboard", context.auth.data);
+    //   return;
+    // }
     try {
       const query = {
         start: dayjs().month() + 1,

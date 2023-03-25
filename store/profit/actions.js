@@ -72,6 +72,8 @@ export async function getDetailPromotion( context , paramsIn) {
     try {
       console.log('sss',paramsIn)
       let { data } = await this.$axios.get(
+        // `http://localhost:3100/api/Deposit/DetailPromotion/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
+      
         `${process.env.ALL_DEPOSIT}/api/Deposit/DetailPromotion/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
         {
           params: paramsIn,
