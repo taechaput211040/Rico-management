@@ -626,9 +626,16 @@ export default {
   computed: {
     ...mapState("auth", ["menu", "isAdmin"]),
     canwrite() {
+   
       if (this.menu) {
-        if (!this.menu.includes("employee_write") || !this.isAdmin) return true;
-        else return false;
+        if (!this.menu.includes("employee_write") || !this.isAdmin) {
+          console.log('can not')
+          return true;
+        } else {
+          console.log('can ')
+          return false;
+        }
+         
       }
     },
   },
