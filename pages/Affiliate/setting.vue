@@ -639,8 +639,8 @@ export default {
       username: "",
       type_recieve: [
         { value: 1, text: "รายวัน" },
-        { value: 2, text: "รายเดือน" },
-        { value: 3, text: "รายสัปดาห์" },
+        { value: 3, text: "รายเดือน" },
+        { value: 2, text: "รายสัปดาห์" },
       ],
       type_line: ["A", "B"],
       type_obtion: [
