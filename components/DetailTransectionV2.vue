@@ -16,7 +16,7 @@
         }"
       >
         <template #[`item.type`]="{ item }">
-          <div>
+          <div> 
             ค่าย
             {{
               provider[item.provider] ? provider[item.provider] : item.provider
@@ -54,7 +54,7 @@
           >
         </template>
         <template #[`item.status`]="{ item }">
-          <div v-if="item.provider = 'PGL'">
+          <div v-if="item.provider == 'PGL'">
             <div class="success--text font-weight-bold">
               สำเร็จ
             </div>
@@ -186,6 +186,7 @@ export default {
   async fetch() {
     this.result;
     //get API By id ตรงนี้//
+    console.log(this.dbresult)
     await this.getGameId()
   },
   computed: {
