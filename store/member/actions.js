@@ -277,6 +277,24 @@ export async function getManualEditCredit(context, fillter = {}) {
 }
 //เเก้ไขเครดิต/รายการผิดพลาด
 
+export function getTransactionMemberGroup(context, params) {
+  // console.log(context.state)
+  // return
+  return new Promise(async (resolve, reject) => {
+    
+    try {
+      let response = await this.$axios.get(
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/GroupProvider/${params.username}/${params.starttime}/${params.endtime}`,
+      
+      );
+      // `https://all-seamless-trasaction-service-qlws7pv5wa-as.a.run.app/api/Transaction/GroupProvider/ab0044602/2023-03-28T00%3A40%3A23.817Z/2023-03-28T09%3A40%3A23.817Z`
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 export function getTransactionMember(context, params) {
   // console.log(context.state)
   // return
@@ -298,11 +316,14 @@ export function getTransactionMemberNew(context, params) {
   // console.log(context.state)
   // return
   return new Promise(async (resolve, reject) => {
+    console.log('infunction params',params)
+    console.log('page params',params.page)
+
     
     try {
       let response = await this.$axios.get(
-        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/All/${params.username}/${params.starttime}/${params.endtime}?page=${params.page}&limit=${params.limit}&sort=DESC`
-        // `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/All/${params.username}/${params.starttime}/${params.endtime}?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
+       
 
       );
       console.log(response.data);

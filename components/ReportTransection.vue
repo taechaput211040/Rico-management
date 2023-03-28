@@ -6,9 +6,12 @@
       hide-default-footer
       :items="dbresult"
     >
-      <template #[`item.grouped`]="{item}"
+      <template #[`item.providercode`]="{item}"
         ><div class="font-weight-bold text-group" @click="showmore(item)">
-          {{ item.grouped }}
+          {{
+            provider[item.providercode] ? provider[item.providercode] : item.providercode
+          }}
+      
           <v-btn class="mx-2" dark color="black" x-small
             >คลิกเพื่อดูรายละเอียด</v-btn
           >
@@ -16,13 +19,13 @@
       </template>
 
       <template #[`item.payout`]="{item}"
-        ><span>{{ item.payout.toFixed(2) }}</span>
+        ><span>{{ parseInt(item.payout)  }}</span>
       </template>
       <template #[`item.turnover`]="{item}"
-        ><span>{{ item.turnover.toFixed(2) }}</span>
+        ><span>{{  parseInt(item.turnover) }}</span>
       </template>
       <template #[`item.bet`]="{item}"
-        ><span>{{ item.bet.toFixed(2) }}</span>
+        ><span>{{ parseInt(item.bet)  }}</span>
       </template>
       <template #[`item.winlose`]="{item}"
         ><span
@@ -30,7 +33,7 @@
             { 'error--text': item.winlose < 0 },
             { 'success--text': item.winlose > 0 }
           ]"
-          >{{ item.winlose.toFixed(2) }}</span
+          >{{ parseInt(item.winlose)  }}</span
         >
       </template>
     </v-data-table></v-card
@@ -38,7 +41,7 @@
 </template>
 
 <script>
-
+import { mapState } from "vuex";
 export default {
   props: {
     dbresult: Array
@@ -48,17 +51,12 @@ export default {
       header: [
         {
           text: "ค่ายเกม",
-          value: "grouped",
+          value: "providercode",
           align: "center",
           sortable: false,
           class: "font-weight-bold"
         },
-        {
-          text: "จำนวนครั้งในการเดิมพัน",
-          value: "wagers",
-          align: "center",
-          sortable: false
-        },
+        
         {
           text: "turnover",
           value: "turnover",
@@ -86,11 +84,17 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState("auth", ["provider", "gameType"]),
+
+
+  
+  },
   methods: {
  
     async showmore(item) {
 
-      this.$router.push(`${this.$route.path}?group=${item.grouped}`);
+      this.$router.push(`${this.$route.path}?group=${item.providercode}`);
     },
    
 
