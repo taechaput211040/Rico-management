@@ -586,6 +586,7 @@ export function getGame(context) {
         url_all_json
        
       );
+      response.data.json.hash = response.data.hash
       localStorage.setItem("Gamelist", JSON.stringify(response.data.json));
       context.commit("setGameHash", response.data.json);
 
