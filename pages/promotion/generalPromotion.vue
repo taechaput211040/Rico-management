@@ -241,6 +241,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import Swal from "sweetalert2";
 import AddPromotion from "../../components/AddPromotion.vue";
 import EditPromotion from "../../components/EditPromotion.vue";
+import dayjs from "dayjs";
 export default {
   components: { AddPromotion, EditPromotion },
   data() {
@@ -549,6 +550,11 @@ export default {
       });
       promotion.promotion_details = temp_detail;
       this.itemedit = promotion;
+      this.itemedit.promotion_details.map(x=>{
+        x.bonusdurationFrom = new Date('2023-03-04T' + x.bonusdurationFrom)
+        x.bonusdurationTo = new Date('2023-03-04T' +x.bonusdurationTo)
+        return x
+      })
       this.planalcheck = promotion.promotion_details.map((element, index) => {
         if (element.typestatus) {
           return index;
