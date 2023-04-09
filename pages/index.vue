@@ -184,7 +184,7 @@
                 {{ renderDate2(item.created_at ?? item.deposit_time) }}<br />
                 <v-chip class="font-weight-bold pa-2 elevation-2 mt-2" color="grey darken-4" dark label x-small>
                   <v-icon class="mr-1" small>mdi-message-processing</v-icon>SMS</v-chip><br />
-                {{ item.smsdatetime.slice(0,10) + ' '  +item.smsdatetime.slice(11,19)  }}<br />
+                {{ renderDateSMS(item)  }}<br />
               </div>
             </template>
             <template #[`item.credit`]="{ item }">
@@ -871,6 +871,14 @@ export default {
       "updateWithdrawlist",
       "addWithdraw"
     ]),
+    renderDateSMS(date){
+      if(date.companyBank == 'KBANK'){ 
+        return dayjs(date.smsdatetime).add(-7,'hours').format("YYYY-MM-DD HH:mm:ss")
+       } else {
+        
+        return date.smsdatetime.slice(0,10) + ' '  +date.smsdatetime.slice(11,19)
+       }
+    },
     renderDate2(date){
       if((new Date(date).getSeconds() > 0) ){
         return  dayjs(new Date(date)).format("YYYY-MM-DD HH:mm:ss")
