@@ -11,8 +11,8 @@ export async function getReportmember({ commit }, fillter = {}) {
         )}/${localStorage.getItem("agent")}`,
         {
           params: {
-            ...fillter
-          }
+            ...fillter,
+          },
         }
       );
       resolve(data);
@@ -29,7 +29,7 @@ export async function changePasswordMember({ commit }, payload) {
         `${process.env.ALL_MEMBER}/api/Member/Agent/Password`,
         {
           id: payload.id,
-          password: payload.password
+          password: payload.password,
         }
       );
       resolve(data);
@@ -46,7 +46,7 @@ export async function changeStatus(context, payload) {
         {
           id: payload.id,
           status: payload.status,
-          operator :  context.rootState.auth.user
+          operator: context.rootState.auth.user,
         }
       );
       resolve(data);
@@ -56,12 +56,13 @@ export async function changeStatus(context, payload) {
   });
 }
 
-export async function checkCashback(context,payload) {
+export async function checkCashback(context, payload) {
   return new Promise(async (resolve, reject) => {
     try {
-    
-      let response = await this.$axios.get(`${process.env.ALL_CASHBACK}/api/cashback/Cashbackcheck/${payload}`,);
-      
+      let response = await this.$axios.get(
+        `${process.env.ALL_CASHBACK}/api/cashback/Cashbackcheck/${payload}`
+      );
+
       resolve(response.data);
     } catch (error) {
       reject(error);
@@ -97,9 +98,9 @@ export async function getReportmemberbyid({ commit }, fillter = {}) {
             status: true,
             updated_at: "2022-01-20 12:51:23",
             username: "BE9778772704",
-            wdAuto: false
-          }
-        ]
+            wdAuto: false,
+          },
+        ],
       };
       // let response = await api.get(`/api/progress/${fillter.username}`, {
       //   params: {
@@ -113,80 +114,71 @@ export async function getReportmemberbyid({ commit }, fillter = {}) {
   });
 }
 export function providerMap(context, input) {
+  const string_data = context.rootState.auth.provider[input];
 
-  const string_data = context.rootState.auth.provider[input]
- 
-  return input
+  return input;
 }
 // เชครีพอตเมมเบอร์ ID
 //เชคข้อมูลปัจจุบัน turn
-export async function getTurnByid( context, username ) {
-  console.log(username)
+export async function getTurnByid(context, username) {
+  console.log(username);
   return new Promise(async (resolve, reject) => {
-//get turn
-try {
-  let result = await this.$axios.get(
-    `${process.env.ALL_MEMBER}/api/MemberTurn/AutoV2/${username}/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
-  
-  );
-  resolve(result);
-} catch (error) {
-  reject(error);
-}
-//get credit
+    //get turn
+    try {
+      let result = await this.$axios.get(
+        `${process.env.ALL_MEMBER}/api/MemberTurn/AutoV2/${username}/${context.rootState.auth.company}/${context.rootState.auth.agent}`
+      );
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+    //get credit
 
-//get winlose
-  
+    //get winlose
   });
-} 
-export async function updateTurn( context, turn ) {
+}
+export async function updateTurn(context, turn) {
   // console.log(turn)
   // return
-  turn.operator = context.rootState.auth.user
-  turn.ip_operator = context.rootState.auth.ip
-  
-  return new Promise(async (resolve, reject) => {
-//get turn
-try {
-  let result = await this.$axios.put(
-    `${process.env.ALL_MEMBER}/api/MemberTurn`,turn
-  
-  );
-  resolve(result);
-} catch (error) {
-  reject(error);
-}
-//get credit
+  turn.operator = context.rootState.auth.user;
+  turn.ip_operator = context.rootState.auth.ip;
 
-//get winlose
-  
+  return new Promise(async (resolve, reject) => {
+    //get turn
+    try {
+      let result = await this.$axios.put(
+        `${process.env.ALL_MEMBER}/api/MemberTurn`,
+        turn
+      );
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+    //get credit
+
+    //get winlose
   });
-} 
-export async function getDetailLink( context, url ) {
-
-  // return
-  
-  
-  return new Promise(async (resolve, reject) => {
-//get turn
-
-try {
- 
-    let result = await this.$axios.post(
-      `${process.env.ALL_SUPPORT}/api/Website/Betdetail`,{url:url}
-    
-    );
-  
-
-  resolve(result);
-} catch (error) {
-  console.log(error)
-  reject(error);
 }
-//get credit
+export async function getDetailLink(context, url) {
+  // return
 
-//get winlose
-  
+  return new Promise(async (resolve, reject) => {
+    //get turn
+
+    try {
+      let result = await this.$axios.post(
+        `${process.env.ALL_SUPPORT}/api/Website/Betdetail`,
+        { url: url }
+      );
+
+      resolve(result);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+    //get credit
+
+    //get winlose
   });
 }
 //เชคข้อมูลปัจจุบัน turn
@@ -212,7 +204,7 @@ export async function getTransactionid({ commit, username }) {
             topupby: "RICO",
             updated_at: "2022-01-20T23:53:46.000000Z",
             ip: "103.83.188.31",
-            provider_active: "JL"
+            provider_active: "JL",
           },
           stats: [
             {
@@ -225,7 +217,7 @@ export async function getTransactionid({ commit, username }) {
               payout: 1617.87,
               turnover: 1842.1,
               wagers: 0,
-              winlose: 224.23
+              winlose: 224.23,
             },
             {
               bet: 0,
@@ -237,10 +229,10 @@ export async function getTransactionid({ commit, username }) {
               payout: 0,
               turnover: 0,
               wagers: 0,
-              winlose: 0
-            }
-          ]
-        }
+              winlose: 0,
+            },
+          ],
+        },
       };
       // let response = await api.get(`/api/progress/${fillter.username}`, {
       //   params: {
@@ -256,16 +248,14 @@ export async function getTransactionid({ commit, username }) {
 //เชคข้อมูลปัจจุบัน transection
 //เเก้ไขเครดิต/รายการผิดพลาด
 export async function getManualEditCredit(context, fillter = {}) {
-
-  
   return new Promise(async (resolve, reject) => {
     try {
-      let { data }  = await this.$axios.get(
+      let { data } = await this.$axios.get(
         `${process.env.ALL_EDITCREDIT}/api/Edit/${context.rootState.auth.company}/${context.rootState.auth.agent}`,
         {
           params: {
-            ...fillter
-          }
+            ...fillter,
+          },
         }
       );
       console.log(data);
@@ -281,11 +271,9 @@ export function getTransactionMemberGroup(context, params) {
   // console.log(context.state)
   // return
   return new Promise(async (resolve, reject) => {
-    
     try {
       let response = await this.$axios.get(
-        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/GroupProvider/${params.username}/${params.starttime}/${params.endtime}`,
-      
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/GroupProvider/${params.username}/${params.starttime}/${params.endtime}`
       );
       // `https://all-seamless-trasaction-service-qlws7pv5wa-as.a.run.app/api/Transaction/GroupProvider/ab0044602/2023-03-28T00%3A40%3A23.817Z/2023-03-28T09%3A40%3A23.817Z`
       console.log(response.data);
@@ -299,7 +287,6 @@ export function getTransactionMember(context, params) {
   // console.log(context.state)
   // return
   return new Promise(async (resolve, reject) => {
-    
     try {
       let response = await this.$axios.get(
         `${process.env.REAL_TIME_REPORT_URL_SEAMLESS}/memberProvider`,
@@ -316,15 +303,16 @@ export function getTransactionMemberNew(context, params) {
   // console.log(context.state)
   // return
   return new Promise(async (resolve, reject) => {
-    console.log('infunction params',params)
-    console.log('page params',params.page)
+    console.log("infunction params", params);
+    console.log("page params", params.page);
 
-    
     try {
       let response = await this.$axios.get(
-        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Transaction/All/${params.username}/${params.starttime}/${params.endtime}?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
-       
-
+        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Summary/Round/${
+          params.provider
+        }/${params.username}/${params.starttime}/${
+          params.endtime
+        }?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
       );
       console.log(response.data);
       resolve(response);
@@ -341,7 +329,6 @@ export function get5DepositRecord(context, username) {
     try {
       let response = await this.$axios.get(
         `${process.env.ALL_SUPPORT}/api/Website/Deposit5/${username}`
-        
       );
       console.log(response.data);
       resolve(response);
@@ -401,7 +388,7 @@ export function getMemberWithdraw(context, username) {
 export function editMember(context, body) {
   return new Promise(async (resolve, reject) => {
     // console.log(context.rootState.auth.user)
-    body.operator = context.rootState.auth.user
+    body.operator = context.rootState.auth.user;
     try {
       let response = await this.$axios.put(
         `${process.env.ALL_MEMBER}/api/Member/`,
@@ -416,21 +403,20 @@ export function editMember(context, body) {
 }
 export function PostEditTopupCredit(context, body) {
   return new Promise(async (resolve, reject) => {
-
     // console.log(context.rootState.auth.user)
-    body.operator = context.rootState.auth.user
-    body.ip_operator = context.rootState.auth.ip
-    body.company = context.rootState.auth.company
-    body.agent = context.rootState.auth.agent
-    body.created_at = dayjs().toISOString()
-    if(body.dateSms){
-      body.dateSms = dayjs(body.dateSms).format("YYYY-MM-DD HH:mm:ss") 
-      // body.dateSms = dayjs(body.dateSms).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss") 
+    body.operator = context.rootState.auth.user;
+    body.ip_operator = context.rootState.auth.ip;
+    body.company = context.rootState.auth.company;
+    body.agent = context.rootState.auth.agent;
+    body.created_at = dayjs().toISOString();
+    if (body.dateSms) {
+      body.dateSms = dayjs(body.dateSms).format("YYYY-MM-DD HH:mm:ss");
+      // body.dateSms = dayjs(body.dateSms).add(+7,'hours').format("YYYY-MM-DD HH:mm:ss")
     } else {
-      body.dateSms = dayjs().format("YYYY-MM-DD HH:mm:ss")
+      body.dateSms = dayjs().format("YYYY-MM-DD HH:mm:ss");
     }
 
-    console.log('hheerree',body)
+    console.log("hheerree", body);
     try {
       let response = await this.$axios.post(
         `${process.env.ALL_SUPPORT}/api/Website/Edit/Credit`,
@@ -446,10 +432,10 @@ export function PostEditTopupCredit(context, body) {
 export function PostEditCutCredit(context, body) {
   return new Promise(async (resolve, reject) => {
     // console.log(context.rootState.auth.user)
-    body.operator = context.rootState.auth.user
-    body.ip_operator = context.rootState.auth.ip
-    body.company = context.rootState.auth.company
-    body.agent = context.rootState.auth.agent
+    body.operator = context.rootState.auth.user;
+    body.ip_operator = context.rootState.auth.ip;
+    body.company = context.rootState.auth.company;
+    body.agent = context.rootState.auth.agent;
     try {
       let response = await this.$axios.post(
         `${process.env.ALL_SUPPORT}/api/Website/Edit/Cut`,
@@ -465,11 +451,11 @@ export function PostEditCutCredit(context, body) {
 export function PostEditTopupBonus(context, body) {
   return new Promise(async (resolve, reject) => {
     // console.log(context.rootState.auth.user)
-    body.operator = context.rootState.auth.user
-    body.ip_operator = context.rootState.auth.ip
-    body.company = context.rootState.auth.company
-    body.agent = context.rootState.auth.agent
-    
+    body.operator = context.rootState.auth.user;
+    body.ip_operator = context.rootState.auth.ip;
+    body.company = context.rootState.auth.company;
+    body.agent = context.rootState.auth.agent;
+
     try {
       let response = await this.$axios.post(
         `${process.env.ALL_SUPPORT}/api/Website/Edit/Bonus`,
@@ -482,14 +468,13 @@ export function PostEditTopupBonus(context, body) {
     }
   });
 }
-export function getWheel(context){
+export function getWheel(context) {
   return new Promise(async (resolve, reject) => {
     // console.log(context.rootState.auth.user)
-  
+
     try {
       let response = await this.$axios.get(
         `${process.env.ALL_WHEEL}/api/Wheel/admin/${context.rootState.auth.company}/${context.rootState.auth.agent}`
-      
       );
 
       resolve(response.data);
@@ -497,12 +482,11 @@ export function getWheel(context){
       reject(error);
     }
   });
- 
 }
-export function updateWheel(context, turn){
+export function updateWheel(context, turn) {
   return new Promise(async (resolve, reject) => {
     // console.log(context.rootState.auth.user)
-   
+
     try {
       let response = await this.$axios.patch(
         `${process.env.ALL_WHEEL}/api/Wheel/admin/${turn.service_id}`,
@@ -514,9 +498,4 @@ export function updateWheel(context, turn){
       reject(error);
     }
   });
-
-
-
-    
-
 }
