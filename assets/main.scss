@@ -116,13 +116,13 @@ span {
   color: #000 !important;
 }
 
-::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar space */
-  background: transparent;
-  position: absolute;
-  right: 0;
-  /* Optional: just make scrollbar invisible */
-}
+// ::-webkit-scrollbar {
+//   width: 0; /* Remove scrollbar space */
+//   background: transparent;
+//   position: absolute;
+//   right: 0;
+//   /* Optional: just make scrollbar invisible */
+// }
 .v-toolbar__content {
   background-size: cover;
 }

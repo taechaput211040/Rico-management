@@ -696,7 +696,7 @@ export default {
       data.append("file", this.file);
       data.append("filename", this.file.name);
       try {
-        let response = await this.$axios.post("/api/Upload", data);
+        let response = await this.$axios.post("https://admin-static-api-qlws7pv5wa-as.a.run.app/api/Update/file/Dynamic/test/secret123", data);
         //   "https://all-member-gateway-qlws7pv5wa-as.a.run.app/api/Gateway/Provider/145c4b748540ca78664b32853e4031b5" );
 
         console.log(response.data);
