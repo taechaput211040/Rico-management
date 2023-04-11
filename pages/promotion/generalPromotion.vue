@@ -147,7 +147,7 @@
                   </div>
                   <v-card
                     class="elevatoin-3 pa-3 rounded-lg"
-                    v-if="detail.typestatus == true"
+                    v-if="detail.typestatus == true && detail.promotiontypename != 'ฝากต่อเนื่อง'"
                   >
                     <v-row class="row" no-gutters>
                       <v-col class="col-6 col-md-6 col-lg-4">
@@ -180,6 +180,34 @@
                       >
                     </v-row>
                   </v-card>
+                  <v-card
+                  class="elevatoin-3 pa-3 rounded-lg"
+                  v-if="detail.typestatus == true && detail.promotiontypename == 'ฝากต่อเนื่อง'"
+                >
+                  <v-row class="row" no-gutters>
+                    <v-col class="col-6 col-md-6 col-lg-4">
+                      <span class="font-weight-bold">ฝากขั้นต่ำ:</span>
+                      {{ detail.deposit }}</v-col
+                    >
+                    <v-col class="col-6 col-md-6 col-lg-4"
+                      ><span class="font-weight-bold">โบนัสที่ได้รับ:</span>
+                      {{ detail.bonus }}</v-col
+                    >
+                    <v-col class="col-6 col-md-6 col-lg-4"
+                      ><span class="font-weight-bold">จำนวนวัน:</span>
+                      {{ detail.days }}</v-col
+                    >
+                
+                    <v-col class="col-6 col-md-6 col-lg-4"
+                      ><span class="font-weight-bold">เทิร์น:</span>
+                      {{ detail.SL }}</v-col
+                    >
+                    <v-col class="col-6 col-md-6 col-lg-4"
+                      ><span class="font-weight-bold"> อั้นถอน:</span>
+                      {{ detail.wdlimit }}</v-col
+                    >
+                  </v-row>
+                </v-card>
                 </div>
               </div>
             </div>
