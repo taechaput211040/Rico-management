@@ -872,6 +872,7 @@ export default {
       "addWithdraw"
     ]),
     renderDateSMS(date){
+      return date.smsdatetime.slice(0,10) + ' '  +date.smsdatetime.slice(11,19)
       if(date.companyBank == 'KBANK'){ 
         return dayjs(date.smsdatetime).add(-7,'hours').format("YYYY-MM-DD HH:mm:ss")
        } else {
