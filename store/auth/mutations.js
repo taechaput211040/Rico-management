@@ -31,6 +31,11 @@ export function update_dp_bank(state, payload) {
   // console.log(payload, "payload");
   state.datarander.dpbank = payload;
 }
+export function hodeAllIncoming(state, payload) {
+  // console.log(payload, "payload");
+  state.incomingSMS = [];
+}
+
 export function update_wd_bank(state, payload) {
   // console.log(payload, "payload");
   state.datarander.wdbank = payload;

@@ -199,6 +199,39 @@ export function getFeature(context) {
 //getuser//
 
 // getinformation
+
+export function hideAllIncoming(context) {
+  console.log("hideAllIncoming");
+  return new Promise(async (resolve, reject) => {
+    // if (context.state.datarander.data == true) {
+    //   // await context.commit("set_dashboard", context.auth.data);
+    //   return;
+    // }
+    try {
+     
+const body = {
+  company : context.state.company,
+  agent: context.state.agent,
+  operator:context.state.user,
+  ip_operator:context.state.ip
+}
+      let response = await this.$axios.post(
+        `${process.env.ALL_INCOMING}/api/all_incoming/HideAll`,body
+      );
+
+  
+      await context.commit("hodeAllIncoming", []);
+      // await context.commit("set_dashboard_data_flag", true);
+      // let response = await this.$axios.get("GetInfomation")
+      // });
+      // resolve(response);
+      resolve(response);
+      return;
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 export function GetInfomation(context) {
   console.log("GetInfomation");
   return new Promise(async (resolve, reject) => {

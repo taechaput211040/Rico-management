@@ -109,7 +109,9 @@
           <v-card-title primary-title class="font-weight-bold primary--text">
             รายการฝากเงินคงค้าง (ออโต้ไม่ผ่าน)
           </v-card-title>
-
+         <div class="pa-2 mb-5" v-if="incomingSMS.length > 0" >
+          <v-btn  small rounded color="grey" @click="hideAll()"><b>ซ่อนทั้งหมด</b> </v-btn>
+         </div>
           <v-data-table :headers="logFailedColumn" :items="incomingSMS" :items-per-page="50">
             <!-- <template v-slot:body="props">
               <tbody name="fade" is="transition-group">
@@ -846,6 +848,7 @@ export default {
 
   methods: {
     ...mapActions("auth", [
+      "hideAllIncoming",
       "manualWithdrawFromDashboard",
       "manualRejectFromDashboard",
       "manualApproveFromDashboard",
@@ -1187,6 +1190,18 @@ export default {
 
       // await this.updateBalanceBank({id:item.id,balance:balance})
       this.checking = false;
+    },
+    async hideAll() {
+      this.isLoading = true;
+      try {
+        await this.hideAllIncoming();
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+      }
+
+      // await this.updateBalanceBank({id:item.id,balance:balance})
+      this.isLoading = false;
     },
   },
 };
