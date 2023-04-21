@@ -106,7 +106,9 @@ export default {
 
       this.bank_scb_options = scb_api;
       this.loading = false;
-    } catch (error) {}
+    } catch (error) {
+      this.loading = false;
+    }
   },
   methods: {
     async getList() {
