@@ -937,6 +937,7 @@ export default {
           console.log(params);
           const data = await this.getwdListtransaction(params);
           this.itemwithdraw = data;
+          this.depositbalance = data.sum;
         } catch (error) {
           console.log(error);
           this.isLoading = false;
