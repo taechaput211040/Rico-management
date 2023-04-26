@@ -218,9 +218,18 @@ export default {
       // return test.name
     },
     async detail(item) {
-      const link = await this.getDetailLink(item.detail_links);
+      if(item.provider == 'SBO'){
 
-      window.open(link.data, "NewWin", "toolbar=no,status=no");
+    
+        // const url = `http://localhost:60737?provider=SBO&roundid=${item.detail_links.split("&")[2].slice(10)}`
+        const url = `${process.env.BILL_TRANSACTION}?provider=SBO&roundid=${item.detail_links.split("&")[2].slice(10)}`
+        window.open(url, "NewWin", "toolbar=no,status=no");
+      } else {
+        const link = await this.getDetailLink(item.detail_links);
+
+        window.open(link.data, "NewWin", "toolbar=no,status=no");
+      }
+   
     },
     getDate(date) {
       return dayjs(date).format(`YYYY-MM-DD เวลา HH:mm:ss`);
