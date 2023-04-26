@@ -305,20 +305,34 @@ export function getTransactionMemberNew(context, params) {
   return new Promise(async (resolve, reject) => {
     console.log("infunction params", params);
     console.log("page params", params.page);
-
-    try {
-      let response = await this.$axios.get(
-        `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Summary/Round/${
-          params.provider
-        }/${params.username}/${params.starttime}/${
-          params.endtime
-        }?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
-      );
-      console.log(response.data);
-      resolve(response);
-    } catch (error) {
-      reject(error);
-    }
+if(params.provider == 'SBO'){
+  try {
+    let response = await this.$axios.get(
+      `${process.env.SBO_SEAMLESS}/History/Transaction/${params.username}/${params.starttime}/${
+        params.endtime
+      }?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
+    );
+    console.log(response.data);
+    resolve(response);
+  } catch (error) {
+    reject(error);
+  }
+}else {
+  try {
+    let response = await this.$axios.get(
+      `${process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2}/api/Summary/Round/${
+        params.provider
+      }/${params.username}/${params.starttime}/${
+        params.endtime
+      }?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
+    );
+    console.log(response.data);
+    resolve(response);
+  } catch (error) {
+    reject(error);
+  }
+}
+ 
   });
 }
 export function get5DepositRecord(context, username) {
