@@ -266,7 +266,38 @@ export async function getManualEditCredit(context, fillter = {}) {
   });
 }
 //เเก้ไขเครดิต/รายการผิดพลาด
-
+export function getWheelTransaction(context, params) {
+  // console.log(context.state)
+  // return
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_WHEEL_API}/api/transaction/${params.username}/${params.starttime}/${params.endtime}`,{params:params}
+      );
+      // `https://all-seamless-trasaction-service-qlws7pv5wa-as.a.run.app/api/Transaction/GroupProvider/ab0044602/2023-03-28T00%3A40%3A23.817Z/2023-03-28T09%3A40%3A23.817Z`
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+export function getWheelSummary(context, params) {
+  // console.log(context.state)
+  // return
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await this.$axios.get(
+        `${process.env.ALL_WHEEL_API}/api/transaction/Summary`,{params:params}
+      );
+      // `https://all-seamless-trasaction-service-qlws7pv5wa-as.a.run.app/api/Transaction/GroupProvider/ab0044602/2023-03-28T00%3A40%3A23.817Z/2023-03-28T09%3A40%3A23.817Z`
+      console.log(response.data);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 export function getTransactionMemberGroup(context, params) {
   // console.log(context.state)
   // return
@@ -311,6 +342,16 @@ if(params.provider == 'SBO'){
       `${process.env.SBO_SEAMLESS}/History/Transaction/${params.username}/${params.starttime}/${
         params.endtime
       }?page=${params.page.toString()}&limit=${params.limit.toString()}&sort=DESC`
+    );
+    console.log(response.data);
+    resolve(response);
+  } catch (error) {
+    reject(error);
+  }
+} else if(params.provider == 'WHE'){
+  try {
+    let response = await this.$axios.get(
+      `${process.env.ALL_WHEEL_API}/api/transaction/${params.username}/${params.starttime}/${params.endtime}`,{params:params}
     );
     console.log(response.data);
     resolve(response);

@@ -141,6 +141,7 @@ export default {
     LUCKYDRAW:process.env.LUCKYDRAW,
     REAL_TIME_REPORT_URL_SEAMLESS_V2:process.env.REAL_TIME_REPORT_URL_SEAMLESS_V2,
     BILL_TRANSACTION:process.env.BILL_TRANSACTION,
-    SBO_SEAMLESS:process.env.SBO_SEAMLESS
+    SBO_SEAMLESS:process.env.SBO_SEAMLESS,
+    ALL_WHEEL_API:process.env.ALL_WHEEL_API
   },
 };

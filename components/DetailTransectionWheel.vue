@@ -30,26 +30,17 @@
           <!-- <div>{{ item.game_name  }}</div> -->
         </template>
 
-        <template #[`item.detail_links`]="{ item }">
-          <div v-if="item.provider != 'WHE'">
-            <v-btn small rounded color="primary" @click="detail(item)"
+        <!-- <template #[`item.detail_links`]="{ item }">
+          <v-btn small rounded color="primary" @click="detail(item)"
             >ดูรายละเอียด</v-btn
           >
-          </div>
-       <div v-else>
--
-       </div>
-        </template>
+        </template> -->
         <template #[`item.payout`]="{ item }"
           ><span>{{ item.payout }}</span>
         </template>
         <template #[`item.turnover`]="{ item }"
           ><span>{{ item.turnover }}</span>
         </template>
-        <template #[`item.username`]="{ item }"
-        ><span v-if="item.provider =='WHE'">{{ item.provider_username }}</span>
-        <span v-else>{{ item.username }}</span>
-      </template>
         <template #[`item.bet`]="{ item }"
           ><span>{{ item.bet }}</span>
         </template>
@@ -121,7 +112,7 @@ export default {
 
         {
           text: "username",
-          value: "username",
+          value: "provider_username",
           align: "center",
           sortable: false,
           cellClass: "font-weight-bold"
@@ -130,16 +121,10 @@ export default {
           text: "เวลา",
           value: "start_time",
           align: "center",
-          sortable: true,
-          cellClass: "font-weight-bold"
-        },
-        {
-          text: "รายละเอียด",
-          value: "detail_links",
-          align: "center",
           sortable: false,
           cellClass: "font-weight-bold"
         },
+      
         {
           text: "เดิมพัน",
           value: "bet",
@@ -155,19 +140,13 @@ export default {
           cellClass: "font-weight-bold"
         },
         {
-          text: "แพ้ชนะ",
+          text: "เว็บแพ้ชนะ",
           value: "winlose",
           align: "center",
           sortable: true,
           cellClass: "font-weight-bold"
         },
-        {
-          text: "สถานะการคิดผล",
-          value: "status",
-          align: "center",
-          sortable: false,
-          cellClass: "font-weight-bold"
-        },
+     
         {
           text: "ก่อนเดิมพัน",
           value: "bf_balance",
@@ -181,7 +160,14 @@ export default {
           align: "center",
           sortable: false,
           cellClass: "font-weight-bold"
-        }
+        },
+        {
+          text: "ค่าบริการระบบ",
+          value: "commission",
+          align: "center",
+          sortable: false,
+          cellClass: "font-weight-bold"
+        },
       ]
     };
   },

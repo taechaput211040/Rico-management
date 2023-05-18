@@ -83,6 +83,7 @@
                     dense
                     hide-details="auto"
                     outlined
+                    maxLength="10"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -392,6 +393,113 @@
         </div>
       </div>
     </div>
+    <div>
+      <h2 class="mb-2">สรุปรายการซื้อสปินกงล้อของสมาฃิก</h2>
+      <search-filter
+      :searchinput="false"
+      :filter="dateFilter"
+      @search="searchSummary"
+      @yesterday="searchSummary"
+      @today="searchSummary"
+    ></search-filter>
+      <v-row class="mt-3 justify-center">
+        <v-col cols="12" sm="4" lg="2" class="pa-2">
+          <card-report
+            title="เดิมพันทั้งหมด"
+            titleclass="primary--text"
+            :value="dataSummary.bet"
+            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/donation.png"
+          ></card-report>
+        </v-col>
+        <v-col cols="12" sm="4" lg="2" class="pa-2">
+          <card-report
+            title="จ่าย"
+            titleclass="red--text"
+            :value="dataSummary.payout"
+            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/icon/atm.png"
+          ></card-report>
+        </v-col>
+     
+        <v-col cols="12" sm="4" lg="2" class="pa-2">
+          <card-report
+            titleclass="purple--text"
+            title="จำนวนสมาชิกทั้งหมด"
+        
+            :value="dataSummary.count"
+            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin-stack.png"
+          ></card-report>
+        </v-col>
+        <v-col cols="12" sm="4" lg="2" class="pa-2">
+          <card-report
+            title="ค่าบริการ"
+            titleclass="purple--text"
+            :value="dataSummary.commission"
+            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/coin.png"
+          ></card-report>
+        </v-col>
+        <v-col cols="12" sm="4" lg="2" class="pa-2">
+          <card-report
+            title="กำไรขาดทุน (เดิมพัน - จ่าย - ค่าบริการ)"
+            :titleclass="
+            dataSummary.winlose - dataSummary.commission > 0
+                ? 'success--text'
+                : 'error--text'
+            "
+            :value=" dataSummary.winlose - dataSummary.commission"
+            iconSrc="https://image.smart-ai-api.com/public/image-storage/Ricoredesign/iconprofit/monitoring.png"
+          ></card-report>
+        </v-col> </v-row
+      >
+      <h2 class="mb-2 mt-2">ค้นหารายการเดิมพัน</h2>
+      <v-row class="d-flex align-baseline ma-auto">
+        <v-col cols="12" sm="3" class="d-flex align-baseline">
+          <v-text-field
+            name="name"
+            v-model="username"
+            dense
+            outlined
+            clearable
+            label="กรอก username เพื่อค้นหา"
+            placeholder="เช่น xx1234567"
+            hide-details="auto"
+          ></v-text-field> </v-col
+        ><v-col cols="12" sm="9" class="d-flex align-baseline">
+          <!-- <date-filter :filter="dateFilter"></date-filter> -->
+          <date-filter-transaction :filter="dateFilter"></date-filter-transaction>
+        </v-col>
+        <v-col cols="12" sm="3" class="d-flex align-baseline">
+          <div class="pa-3">
+            <v-btn color="primary" @click="searchdata()">
+              <v-icon left dark> mdi-magnify </v-icon>
+              ค้นหา</v-btn
+            >
+          </div>
+        </v-col>
+      </v-row>
+      <v-card v-if="username"> 
+        <span>username : {{ userSummary.provider_usrname  }}</span>
+        <span> , เดิมพัน :{{ userSummary.bet  }}</span>
+
+        <span> , จ่าย :{{ userSummary.payout  }}</span>
+
+        <span> , เว็บแพ้ชนะ :{{ userSummary.winlose  }}</span>
+
+        <span> , จำนวนครั้งในการเดิมพัน :{{ userSummary.count  }}</span>
+
+    
+    
+      </v-card>
+    
+      <v-card class="elevation-4 mt-5 rounded-lg">
+       
+      
+        <detail-transection-wheel
+  
+        :dbresult="itemDetail"
+        @options="handleEmite"
+      ></detail-transection-wheel>
+      </v-card>
+    </div>
     <!-- <div v-else>
       <label
         >สถานะ FEATURE นี้ยังไม่เปิดใช้งาน .. ติดต่อ smart-bet
@@ -404,6 +512,15 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { validationMixin } from "vuelidate";
+
+import DateFilter from "../../components/DateFilter.vue";
+import { saveExcel } from "@progress/kendo-vue-excel-export";
+import dayjs from "dayjs";
+
+import DetailTransectionWheel from "../../components/DetailTransectionWheel.vue";
+
+import LoadingPage from "../../components/LoadingPage.vue";
+import DateFilterTransaction from "../../components/DateFilterTransaction.vue";
 import {
   required,
   minLength,
@@ -412,6 +529,12 @@ import {
   minValue,
 } from "vuelidate/lib/validators";
 export default {
+  components: {
+    DateFilter,
+    LoadingPage,
+    DateFilterTransaction,
+    DetailTransectionWheel
+  },
   mixins: [validationMixin],
   validations: {
     turn: {
@@ -458,6 +581,18 @@ export default {
   watch: {},
   data() {
     return {
+      userSummary:{bet:0,commission:0,payout:0,winlose:0,provider_usrname:'',count:0},
+      dataSummary:{bet:0,commission:0,payout:0,winlose:0,provider_usrname:''},
+      username:'',
+      options: {},
+      itemDetail: [],
+      dateFilter: {
+        startDate: new Date(),
+        startTime: new Date(new Date().setHours(0, 0, 0, 0)),
+        endDate: new Date(),
+        endTime: new Date(new Date().setHours(23, 59, 59, 999)),
+        dateLimit: 3,
+      },
       status: true,
       wheelHeader: [
         {
@@ -545,6 +680,7 @@ export default {
   },
   async fetch() {
     this.isLoading = true;
+    await this.getWheelSummaryFetch()
     try {
       this.turn = await this.getWheel();
       this.status = this.turn.isActive;
@@ -575,7 +711,121 @@ export default {
   },
 
   methods: {
-    ...mapActions("member", ["updateWheel", "getWheel"]),
+    ...mapActions("member", ["getWheelSummary","updateWheel", "getWheel","getWheelTransaction"]),
+   async getWheelSummaryFetch(){
+   const params = this.getParameter();
+
+  const response =   await this.getWheelSummary(params)
+    this.dataSummary = response.data;
+   },
+    getDateTime(date, time) {
+      let dateFormat = "YYYY-MM-DD";
+      let timeFormat = "HH:mm:ss";
+      return this.$moment(
+        `${this.$moment(date).format(dateFormat)} ${this.$moment(time).format(
+          timeFormat
+        )}`,
+        "YYYY-MM-DD HH:mm:ss"
+      )
+        .utc()
+        .format(`${dateFormat} ${timeFormat}`);
+    },
+    getDateFilter() {
+      let start = undefined;
+      let end = undefined;
+      if (this.dateFilter.startDate) {
+        if (this.dateFilter.startTime) {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            this.dateFilter.startTime
+          );
+        } else {
+          start = this.getDateTime(
+            this.dateFilter.startDate,
+            new Date().setHours(0, 0, 0, 0)
+          );
+        }
+      }
+      if (this.dateFilter.endDate) {
+        if (this.dateFilter.endTime) {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            this.dateFilter.endTime
+          );
+        } else {
+          end = this.getDateTime(
+            this.dateFilter.endDate,
+            new Date().setHours(23, 59, 59, 999)
+          );
+        }
+      }
+      return {
+        end: this.$moment(end).format("YYYY-MM-DD HH:mm:ss") + "Z",
+        start: this.$moment(start).format("YYYY-MM-DD HH:mm:ss") + "Z",
+      };
+    },
+    getParameter() {
+      let dateFill = this.getDateFilter();
+      let parameter = {
+        username: this.username,
+        provider: undefined ? undefined : this.$route.query.group,
+        roundid: undefined,
+        starttime: dayjs(dateFill.start).toISOString(),
+        endtime: dayjs(dateFill.end).toISOString(),
+        page: this.options.page,
+        limit: this.options.itemsPerPage,
+      };
+      return parameter;
+    },
+    async searchSummary() {
+      this.isLoading = true;
+      console.log('ssss')
+        try {
+          let params;
+          params = this.getParameter();
+          let response;
+          console.log("sadsasd option", this.options);
+          console.log("sadsasd params", params);
+      
+            console.log("get group");
+            response = await this.getWheelSummary(params);
+  console.log('ssss',response.data)
+            this.dataSummary = response.data;
+          
+
+   
+        } catch (error) {
+          console.log(error);
+        }
+      
+      this.isLoading = false;
+    },
+    async searchdata() {
+      this.isLoading = true;
+      if (this.username) {
+        try {
+          let params;
+          params = this.getParameter();
+          let response;
+          console.log("sadsasd option", this.options);
+          console.log("sadsasd params", params);
+      
+            console.log("get group");
+            response = await this.getWheelTransaction(params);
+  this.userSummary = response.data.summary
+            this.itemDetail = response.data;
+          
+
+   
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      this.isLoading = false;
+    },
+    handleEmite(value) {
+      this.options = value;
+    },
     openSetting(item, index) {
       this.$bvModal.show("setting-roulette") == true;
       this.settingitem = item;

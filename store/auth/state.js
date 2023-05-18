@@ -48,6 +48,7 @@ export default function () {
       MG: "MINI GAME",
     },
     provider: {
+      WHE: "กงล้อ",
       PGL: "PG Soft(l)",
       SML: "Smart Lotto",
       S2S: "Sexy Baccarat",
