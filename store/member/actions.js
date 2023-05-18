@@ -285,6 +285,8 @@ export function getWheelTransaction(context, params) {
 export function getWheelSummary(context, params) {
   // console.log(context.state)
   // return
+  params.agent = context.rootState.auth.agent
+  params.company = context.rootState.auth.company
   return new Promise(async (resolve, reject) => {
     try {
       let response = await this.$axios.get(
